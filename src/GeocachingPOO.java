@@ -31,7 +31,8 @@ public class GeocachingPOO {
                 }
             } else {    // User logged in
                 switch (option) {
-                    case 1: user = null;
+                    case 1: changePassword(); break;
+                    case 2: user = null; break;
                     default: break;
                 }
             }
@@ -51,7 +52,8 @@ public class GeocachingPOO {
             System.out.println("3: Exit");
         } else {
             System.out.println("Logged in as: " + user.getName());
-            System.out.println("1: Log Out");
+            System.out.println("1: Change password");
+            System.out.println("2: Log Out");
         }
 
         return sc.nextInt();
@@ -107,71 +109,29 @@ public class GeocachingPOO {
     /**
      * Method to change current password
      */
-    public void changePassword(){
+    private static void changePassword() {
         Scanner sc = new Scanner(System.in);
-        String currentpassw, newpassw; int i=0; //3 trys to change password each time
+        String currentpass, newpass;
+        int i = 0; //3 trys to change password each time
         
         System.out.println("Type your current password: ");
-        currentpassw = sc.nextLine();
+        currentpass = sc.nextLine();
         
-        //While user doesn't type correct current password, he has 2 more trys.
-        while(i<3 && encryptPass(currentpassw).equals(user.getPass())){
+        // Give user 3 tries to inser current password
+        while(i<3 && !user.confirmPass(currentpass)) {
             System.out.println("Passwords don't match! Try again.");
             i++;
             System.out.println("Type your current password: ");
-            currentpassw = sc.nextLine();
+            currentpass = sc.nextLine();
             if(i==3)System.out.println(" Passwords don't match! ");
         }
         
-        //If User sucessfully types current password, he may change it.
-        if(encryptPass(currentpassw).equals(user.getPass())){
+        //If User sucessfully types current password, he may change it
+        if(user.confirmPass(currentpass)){
             System.out.println("Type new password: ");
-            newpassw = sc.nextLine();
+            newpass = sc.nextLine();
             
-            userbase.getUser(user.getMail(),currentpassw).setPass(newpassw);
-          //user.setPass(newpassw
-            
-            
-            /*//Removes the old and inserts the new one with same infos except for new password
-            User newuser = new User(user.getMail(), newpassw, user.getName());
-            
-            userbase.values.remove(user.getMail());
-            
-            user = userbase.getUser(newuser.getMail, newpassw);
-            //Now the user logged in is the same but with the new password fixed.
-            userbase.addUser(user);
-            /*Since we deleted the old user with the old password,
-            we now add the one with the new password.
-            And since we set user = newuser, we can add it using the user pointer
-            allright? 
-            remove method wont let me... userbase.remove(user.getMail()) wont work idk why
-            */
-            
-            
-            
-        }
-        
-
-    }
-    
-    /**
-     * Function to encrypt password when creating user
-     * @arg pass Password to be encrypted
-     */
-    private String encryptPass (String pass) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            md.update(pass.getBytes());
-
-            byte byteData[] = md.digest();
-            StringBuffer sb = new StringBuffer();
-
-            for (int i = 0; i < byteData.length; i++)
-                sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
-
-            return sb.toString();
-        } catch (NoSuchAlgorithmException e){   // Unable to ecnrypt password
-            return pass;
+            userbase.getUser(user.getMail(),currentpass).setPass(newpass);
         }
     }
 }

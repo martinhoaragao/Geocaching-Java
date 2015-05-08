@@ -36,7 +36,7 @@ public class UserBase {
 
         if (aux == null) { return null; }   // No user with the given mail
         else {
-            if (encryptPass(pass).equals(aux.getPass()))
+            if (aux.confirmPass(pass))
                 return aux;
             else
                 return null;

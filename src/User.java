@@ -129,6 +129,15 @@ public class User {
     }
 
     /**
+     * Confirm if the given password is equal to the one stored
+     * @arg pass
+     */
+    public boolean confirmPass (String pass) {
+        if (this.getPass().equals(encryptPass(pass))) return true;
+        else return false;
+    }
+    
+    /**
      * Function to encrypt password when creating user
      * @arg pass Password to be encrypted
      */
