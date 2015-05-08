@@ -2,14 +2,18 @@ import java.util.GregorianCalendar;
 import java.util.ArrayList;
 
 /**
- * Classe geral para Caches. SuperClasse para todos os tipos de cache. Estes vão ser subclasses desta, 
+ * Super-Class for all the kinds of existing caches. 
+ * The other classes will be sub-classes of this one by writing this signature:
+ *  
  * public class CacheMini extends Cache
+ * 
+ * for instance.
  */
 public class Cache
 {
     private Coordinates coord;          // Cache coordinates
-    private ArrayList<String> registo;  // Cache register
-    private ArrayList<Object> tesouro;  // Cache treasure
+    private ArrayList<String> registry;  // registration of the cache / Record book / Registry
+    private ArrayList<Object> treasure;  // Cache treasure
     private ArrayList<String> infos;    // Cache info
     private String mail;                // Cache owner mail
 }
