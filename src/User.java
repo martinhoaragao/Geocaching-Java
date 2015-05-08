@@ -96,7 +96,14 @@ public class User {
     public void setGender(String gender){
         this.gender = gender;
     }
-
+    
+    /**
+     * Set the password for the first time
+     */
+    public void setPass(String passw){
+        this.pass = encryptPass(passw);
+    }
+    
     /**
      * Change the adress
      */

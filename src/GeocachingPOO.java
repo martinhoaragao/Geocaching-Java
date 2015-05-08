@@ -6,6 +6,9 @@
  */
 
 import java.util.Scanner;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 
 public class GeocachingPOO {
     private static User user = null;           // User that is logged in
@@ -98,6 +101,77 @@ public class GeocachingPOO {
             user = userbase.getUser(mail, pass);
             if (user == null)
                 System.out.println("Wrong password!");
+        }
+    }
+    
+    /**
+     * Method to change current password
+     */
+    public void changePassword(){
+        Scanner sc = new Scanner(System.in);
+        String currentpassw, newpassw; int i=0; //3 trys to change password each time
+        
+        System.out.println("Type your current password: ");
+        currentpassw = sc.nextLine();
+        
+        //While user doesn't type correct current password, he has 2 more trys.
+        while(i<3 && encryptPass(currentpassw).equals(user.getPass())){
+            System.out.println("Passwords don't match! Try again.");
+            i++;
+            System.out.println("Type your current password: ");
+            currentpassw = sc.nextLine();
+            if(i==3)System.out.println(" Passwords don't match! ");
+        }
+        
+        //If User sucessfully types current password, he may change it.
+        if(encryptPass(currentpassw).equals(user.getPass())){
+            System.out.println("Type new password: ");
+            newpassw = sc.nextLine();
+            
+            userbase.getUser(user.getMail(),currentpassw).setPass(newpassw);
+          //user.setPass(newpassw
+            
+            
+            /*//Removes the old and inserts the new one with same infos except for new password
+            User newuser = new User(user.getMail(), newpassw, user.getName());
+            
+            userbase.values.remove(user.getMail());
+            
+            user = userbase.getUser(newuser.getMail, newpassw);
+            //Now the user logged in is the same but with the new password fixed.
+            userbase.addUser(user);
+            /*Since we deleted the old user with the old password,
+            we now add the one with the new password.
+            And since we set user = newuser, we can add it using the user pointer
+            allright? 
+            remove method wont let me... userbase.remove(user.getMail()) wont work idk why
+            */
+            
+            
+            
+        }
+        
+
+    }
+    
+    /**
+     * Function to encrypt password when creating user
+     * @arg pass Password to be encrypted
+     */
+    private String encryptPass (String pass) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(pass.getBytes());
+
+            byte byteData[] = md.digest();
+            StringBuffer sb = new StringBuffer();
+
+            for (int i = 0; i < byteData.length; i++)
+                sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e){   // Unable to ecnrypt password
+            return pass;
         }
     }
 }
