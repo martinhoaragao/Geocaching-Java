@@ -87,4 +87,60 @@ public class User {
     public String getPass () {
         return this.pass;
     }
+    
+    /**
+     * @return User B-date
+     */
+    public String getBdate(){
+        return this.bdate.toString();
+    }
+    
+    //Setters
+    /**
+     * Changes the email ? coulndt be that simple, or can it be?
+     */
+    public void setMail(String mail){
+        this.mail = mail;
+    }
+    
+    /**
+     * Chanches the User name
+     */
+    public void setName(String name){
+        this.name = name;
+    }
+    
+    /**
+     * Change the gender
+     */
+    public void setGender(String gender){
+        this.gender = gender;
+    }
+    
+    /**
+     * Change the adress
+     */
+    public void setAddress(String city, String country){
+        Address r = new Address(city, country);
+        
+        this.address = r;
+    }
+    
+    /**
+     * Change the b-date ? Can I? 
+     */
+    public void setBDate(String date){ 
+        //"03/05/1994"
+        String[] parts = date.split("/");
+        String d = parts[0]; String m = parts[1];
+        String y = parts[2];
+        
+        GregorianCalendar c = new GregorianCalendar();
+        c.set(GregorianCalendar.YEAR, Integer.parseInt(y));
+        c.set(GregorianCalendar.MONTH, Integer.parseInt(m));
+        c.set(GregorianCalendar.DATE,Integer.parseInt(d));
+        
+        this.bdate = c;
+        
+    }
 }
