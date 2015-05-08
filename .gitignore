@@ -9,6 +9,7 @@
 *.ear
 
 #BlueJ
+.bluej
 **/doc
 *.pkh
 *.ctxt
