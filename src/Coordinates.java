@@ -1,5 +1,7 @@
 /**
- * Class to represent Coordinates with a given latitude and longitude
+ * Class to represent Coordinates with a given latitude and longitude.
+ * 
+ * @version 06/05/2015
  */
 
 public class Coordinates {

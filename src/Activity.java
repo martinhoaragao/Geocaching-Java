@@ -1,3 +1,9 @@
+/**
+ * Class that represents the Activity of a given User.
+ * 
+ * @version 07/05/2015
+ */
+
 import java.util.GregorianCalendar;
 
 public class Activity {

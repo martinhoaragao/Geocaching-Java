@@ -1,3 +1,10 @@
+/**
+ * Subclass of Cache which the User needs to solve a Puzzle to get the right
+ * coordinates to find it.
+ * 
+ *  @version 08/05/2015
+ */
+
 public class MisteryCache extends Cache
 {
     private Puzzle puzzle; //Solve the puzzle to find the right coordinates

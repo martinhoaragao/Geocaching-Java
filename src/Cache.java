@@ -8,6 +8,8 @@ import java.util.ArrayList;
  * public class CacheMini extends Cache
  * 
  * for instance.
+ * 
+ *  @version 08/05/2015
  */
 public class Cache
 {

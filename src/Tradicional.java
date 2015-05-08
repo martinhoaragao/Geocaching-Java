@@ -5,6 +5,8 @@ import java.util.ArrayList;
  * So this one is already performed by the Super-Class "Cache".
  * But in doubt, ask the tutor.
  * (I'm pretty sure it is what I just said ... ).
+ * 
+ *  @version 08/05/2015
  */
 public class Tradicional extends Cache
 {
