@@ -8,38 +8,52 @@
 import java.util.Scanner;
 
 public class GeocachingPOO {
-    private User user = null;           // User that is logged in
+    private static User user = null;           // User that is logged in
     private static UserBase userbase = null;   // User data base
-    
+
     //Random main method/function to complete.
     public static int main() {
-        boolean running = true;
+        boolean running = true;     // Set the program as running
         int option = 0;
-        userbase = new UserBase();
-        
+        userbase = new UserBase();  // Create new user base
+
         while (running) {
             option = menu();
-            switch (option) {
-                case 1: register(); break;
-                case 2: running = false; break;
+            if (user == null) { // No user logged in
+                switch (option) {
+                    case 1: register(); break;
+                    case 2: login(); break;
+                    case 3: running = false; break;
+                    default: break;
+                }
+            } else {    // User logged in
+                switch (option) {
+                    case 1: user = null;
+                    default: break;
+                }
             }
         }
-        
         return 0;
     }
-    
+
     /**
      * Display the menu and return the user choice
      */
     private static int menu () {
         Scanner sc = new Scanner(System.in);
-        
-        System.out.println("1: Register");
-        System.out.println("2: Exit");
-        
+
+        if (user == null) { // No user logged in
+            System.out.println("1: Register");
+            System.out.println("2: Login");
+            System.out.println("3: Exit");
+        } else {
+            System.out.println("Logged in as: " + user.getName());
+            System.out.println("1: Log Out");
+        }
+
         return sc.nextInt();
     }
-    
+
     /**
      * Function to register new user
      */
@@ -47,20 +61,43 @@ public class GeocachingPOO {
         Scanner sc = new Scanner(System.in);
         String mail, pass, name;
         User newuser;
-        
+
         System.out.print("E-mail: ");
         mail = sc.nextLine();
         System.out.print("Name: ");
         name = sc.nextLine();
         System.out.print("Password: ");
         pass = sc.nextLine();
-        
+
         if (userbase.exists(mail)) {    // E-maill already in use
-            System.out.println("E-mail already in use");
+            System.out.println("E-mail already in use.");
         } else {
             newuser = new User(mail, pass, name);
             userbase.addUser(newuser);
             newuser = null;
+        }
+
+        sc.close();
+    }
+
+    /**
+     * Login auxiliary function
+     */
+    private static void login () {
+        Scanner sc = new Scanner(System.in);
+        String mail, pass;
+
+        System.out.print("E-mail: ");
+        mail = sc.nextLine();
+        System.out.print("Pass: ");
+        pass = sc.nextLine();
+
+        if (!userbase.exists(mail))
+            System.out.println("There is no user with the given e-mail.");
+        else {
+            user = userbase.getUser(mail, pass);
+            if (user == null)
+                System.out.println("Wrong password!");
         }
     }
 }
