@@ -46,23 +46,10 @@ public class User {
     public User (String mail, String pass, String name) {
         this.mail = mail;
         this.name = name;
+        this.pass = encryptPass(pass);
 
-        // Encrypt password
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            md.update(pass.getBytes());
-
-            byte byteData[] = md.digest();
-
-            StringBuffer sb = new StringBuffer();
-
-            for (int i = 0; i < byteData.length; i++)
-                sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
-
-            this.pass = sb.toString();
-        } catch (NoSuchAlgorithmException e){
-            this.pass = null;
-        }
+        if (this.pass.equals(pass))
+            throw new IllegalStateException("Try another password");
     }
 
     // Getters
@@ -80,70 +67,78 @@ public class User {
     public String getName () {
         return this.name;
     }
-    
+
     /**
-     * @return User password
+     * @return User encrypted password
      */
     public String getPass () {
         return this.pass;
     }
-    
+
     /**
      * @return User B-date
      */
     public String getBdate(){
         return this.bdate.toString();
     }
-    
+
     //Setters
-    /**
-     * Changes the email ? coulndt be that simple, or can it be?
-     */
-    public void setMail(String mail){
-        this.mail = mail;
-    }
-    
     /**
      * Chanches the User name
      */
     public void setName(String name){
         this.name = name;
     }
-    
+
     /**
      * Change the gender
      */
     public void setGender(String gender){
         this.gender = gender;
     }
-    
+
     /**
      * Change the adress
      */
-    public void setAddress(String city, String country){
+    public void setAddress (String city, String country){
         Address r = new Address(city, country);
-        
+
         this.address = r;
     }
-    
+
     /**
-     * Change the b-date ? Can I? 
+     * Change the user birthdate
+     * @arg date Date formated as 'DD/MM/YY'
      */
     public void setBDate(String date){ 
         //"03/05/1994"
         String[] parts = date.split("/");
-        String d = parts[0]; String m = parts[1];
-        String y = parts[2];
-        
-        GregorianCalendar c = new GregorianCalendar();
-        /*c.set(GregorianCalendar.YEAR, Integer.parseInt(y));
-        c.set(GregorianCalendar.MONTH, Integer.parseInt(m));
-        c.set(GregorianCalendar.DATE,Integer.parseInt(d));*/
-        
-        c.set(GregorianCalendar.YEAR, 1994);
-         c.set(GregorianCalendar.MONTH, 8);
-          c.set(GregorianCalendar.DATE, 25);
-        this.bdate = c;
-        
+
+        int d = Integer.parseInt(parts[0]);
+        int m = Integer.parseInt(parts[1]);
+        int y = Integer.parseInt(parts[2]);
+
+        this.bdate = new GregorianCalendar(y,m,d);
+    }
+
+    /**
+     * Function to encrypt password when creating user
+     * @arg pass Password to be encrypted
+     */
+    private String encryptPass (String pass) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(pass.getBytes());
+
+            byte byteData[] = md.digest();
+            StringBuffer sb = new StringBuffer();
+
+            for (int i = 0; i < byteData.length; i++)
+                sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e){   // Unable to ecnrypt password
+            return pass;
+        }
     }
 }
