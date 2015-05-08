@@ -136,10 +136,13 @@ public class User {
         String y = parts[2];
         
         GregorianCalendar c = new GregorianCalendar();
-        c.set(GregorianCalendar.YEAR, Integer.parseInt(y));
+        /*c.set(GregorianCalendar.YEAR, Integer.parseInt(y));
         c.set(GregorianCalendar.MONTH, Integer.parseInt(m));
-        c.set(GregorianCalendar.DATE,Integer.parseInt(d));
+        c.set(GregorianCalendar.DATE,Integer.parseInt(d));*/
         
+        c.set(GregorianCalendar.YEAR, 1994);
+         c.set(GregorianCalendar.MONTH, 8);
+          c.set(GregorianCalendar.DATE, 25);
         this.bdate = c;
         
     }
