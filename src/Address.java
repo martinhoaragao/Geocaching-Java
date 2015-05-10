@@ -1,6 +1,6 @@
 /**
  * Class to represent a simple Address with a country and a city
- * 
+ *
  * @version 08/05/2015
  */
 
@@ -64,5 +64,23 @@ public class Address {
             throw new IllegalStateException("Country must have content");
 
         this.country = country;
+    }
+
+    /**
+     * Return Address info as String
+     */
+    public String toString () {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append( city + ", " + country + "\n");
+        return sb.toString();
+    }
+
+    /**
+     * Create a clone of this object
+     */
+    public Address clone () {
+        Address aux = new Address(this.city, this.country);
+        return aux;
     }
 }

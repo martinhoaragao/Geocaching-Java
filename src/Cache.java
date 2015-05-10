@@ -11,11 +11,27 @@ import java.util.ArrayList;
  * 
  *  @version 08/05/2015
  */
-public class Cache
+public abstract class Cache
 {
     private Coordinates coord;          // Cache coordinates
     private ArrayList<String> registry;  // registration of the cache / Record book / Registry
     private ArrayList<Object> treasure;  // Cache treasure
     private ArrayList<String> infos;    // Cache info
     private String mail;                // Cache owner mail
+    
+    /**
+     * Set cache coordinates
+     * @arg lon, coordinates longitude
+     * @arg lat, coordinates latitude
+     */
+    public void setCoordinates (double lon, double lat) {
+        this.coord = new Coordinates(lon, lat);
+    }
+    
+    /**
+     * @return Owner e-mail
+     */
+    public String getMail () {
+        return this.mail;
+    }
 }

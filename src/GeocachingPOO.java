@@ -34,7 +34,8 @@ public class GeocachingPOO {
             } else {    // User logged in
                 switch (option) {
                     case 1: changePassword(); break;
-                    case 2: user = null; break;
+                    case 2: System.out.println(user.toString()); break;
+                    case 3: user = null; break;
                     default: break;
                 }
             }
@@ -55,7 +56,8 @@ public class GeocachingPOO {
         } else {
             System.out.println("Logged in as: " + user.getName());
             System.out.println("1: Change password");
-            System.out.println("2: Log Out");
+            System.out.println("2: Display Personal Info");
+            System.out.println("3: Log Out");
         }
 
         return sc.nextInt();

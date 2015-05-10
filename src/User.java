@@ -1,9 +1,10 @@
 /**
  * Class to represent a user with some personal information, the user activities,
  * statistics and friends
- * 
+ *
  * @version 08/05/2015
  */
+
 import java.util.TreeMap;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -52,6 +53,19 @@ public class User {
             throw new IllegalStateException("Try another password");
     }
 
+    /**
+     * Construct a new User with the same info as a given User
+     * @arg user User from which the information will be fetched
+     */
+    public User (User user) {
+        this.mail = user.getMail(); this.pass = user.getPass();
+        this.name = user.getName(); this.address = user.getAddress();
+        this.bdate = user.getBDate(); this.points = user.getPoints();
+        this.activities = user.getActivities();
+        this.statistics = user.getStatistics();
+        this.friends = user.getFriends();
+    }
+
     // Getters
 
     /**
@@ -82,7 +96,57 @@ public class User {
         return this.bdate.toString();
     }
 
+    /**
+     * @return User gender
+     */
+    public String getGender () {
+        return this.gender;
+    }
+
+    /**
+     * @return User Address
+     */
+    public Address getAddress () {
+        return this.address.clone();
+    }
+
+    /**
+     * @return User birthdate
+     */
+    public GregorianCalendar getBDate () {
+        return (GregorianCalendar) this.bdate.clone();
+    }
+
+    /**
+     * @return User points
+     */
+    public Integer getPoints () {
+        return this.points;
+    }
+
+    /**
+     * @return User activities
+     */
+    public TreeMap<Integer, Activity> getActivities () {
+        return (TreeMap<Integer, Activity>) this.activities.clone();
+    }
+
+    /**
+     * @return User statistics
+     */
+    public Statistic getStatistics () {
+        return this.statistics.clone();
+    }
+
+    /**
+     * @return User friends list
+     */
+    public ArrayList<User> getFriends () {
+        return new ArrayList<User>(this.friends);
+    }
+
     //Setters
+
     /**
      * Chanches the User name
      */
@@ -96,14 +160,14 @@ public class User {
     public void setGender(String gender){
         this.gender = gender;
     }
-    
+
     /**
      * Set the password for the first time
      */
     public void setPass(String passw){
         this.pass = encryptPass(passw);
     }
-    
+
     /**
      * Change the adress
      */
@@ -117,7 +181,7 @@ public class User {
      * Change the user birthdate
      * @arg date Date formated as 'DD/MM/YY'
      */
-    public void setBDate(String date){ 
+    public void setBDate(String date){
         //"03/05/1994"
         String[] parts = date.split("/");
 
@@ -128,6 +192,61 @@ public class User {
         this.bdate = new GregorianCalendar(y,m,d);
     }
 
+    // toString, equals and clone
+
+    /**
+     * Transform user info into a String
+     */
+    public String toString () {
+        StringBuilder sb = new StringBuilder();
+        String day, month, year;
+
+        sb.append("Mail: " + this.mail + "\n");
+        sb.append("Name: " + this.name + "\n");
+        sb.append("Gender: " + this.gender + "\n");
+        sb.append("Address: " + this.address.toString() + "\n");
+        if (bdate != null) {
+            day = String.valueOf(bdate.get(GregorianCalendar.DAY_OF_MONTH));
+            month = String.valueOf(bdate.get(GregorianCalendar.MONTH));
+            year = String.valueOf(bdate.get(GregorianCalendar.YEAR));
+            sb.append("Birthdate: " + day + "/" + month + "/" + year + "\n");
+        }
+
+        return sb.toString();
+    }
+
+    /**
+     * Compares this object with another User to check if they are equal
+     * @arg user User to compare with
+     */
+    public boolean equals (Object user) {
+        if (this == user) return true;
+
+        if ((user == null) || (this.getClass() != user.getClass())) return false;
+
+        User aux = (User) user;
+        boolean comp = this.mail.equals(aux.getMail());
+        comp = comp && (this.pass.equals(aux.getPass()));
+        comp = comp && (this.name.equals(aux.getName()));
+        comp = comp && (this.gender.equals(aux.getGender()));
+        comp = comp && (this.address.equals(aux.getAddress()));
+        comp = comp && (this.bdate.equals(aux.getBDate()));
+        comp = comp && (this.points == aux.getPoints());
+        comp = comp && (this.activities.equals(aux.getActivities()));
+        comp = comp && (this.statistics.equals(aux.getStatistics()));
+        comp = comp && (this.friends.equals(aux.getFriends()));
+        return comp;
+    }
+
+    /**
+     * Create a clone of this object
+     */
+    public User clone () {
+        return new User(this);
+    }
+
+    // Other methods
+
     /**
      * Confirm if the given password is equal to the one stored
      * @arg pass
@@ -136,7 +255,7 @@ public class User {
         if (this.getPass().equals(encryptPass(pass))) return true;
         else return false;
     }
-    
+
     /**
      * Function to encrypt password when creating user
      * @arg pass Password to be encrypted
