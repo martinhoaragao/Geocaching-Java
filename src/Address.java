@@ -1,7 +1,7 @@
 /**
  * Class to represent a simple Address with a country and a city
  *
- * @version 08/05/2015
+ * @version 10/05/2015
  */
 
 public class Address {
@@ -21,7 +21,17 @@ public class Address {
 
         this.city = city; this.country = country;
     }
-
+    
+    public Address(){
+        this.country = "Portugal";
+        this.city="Braga";
+    }
+    
+    public Address(Address a ){
+        this.country = a.country;
+        this.city = a.city;
+    }
+    
     // Getters
 
     /**
@@ -65,7 +75,21 @@ public class Address {
 
         this.country = country;
     }
-
+    
+    
+    /**
+     * Compare this Address to another to check if they are equal
+     * @arg ad Address to use for comparison
+     */
+    public boolean equals(Address ad){
+        if(this == ad) return true;
+        if(this.getClass() != ad.getClass()) return false;
+        
+        Address aux = (Address) ad;
+        return aux.getCity() == this.getCity() && aux.getCountry() == this.getCountry();
+    }
+    
+    
     /**
      * Return Address info as String
      */
