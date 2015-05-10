@@ -2,13 +2,13 @@ import java.util.GregorianCalendar;
 import java.util.ArrayList;
 
 /**
- * Super-Class for all the kinds of existing caches. 
+ * Super-Class for all the kinds of existing caches.
  * The other classes will be sub-classes of this one by writing this signature:
- *  
+ *
  * public class CacheMini extends Cache
- * 
+ *
  * for instance.
- * 
+ *
  *  @version 08/05/2015
  */
 public abstract class Cache
@@ -18,7 +18,7 @@ public abstract class Cache
     private ArrayList<Object> treasure;  // Cache treasure
     private ArrayList<String> infos;    // Cache info
     private String mail;                // Cache owner mail
-    
+
     /**
      * Set cache coordinates
      * @arg lon, coordinates longitude
@@ -27,7 +27,16 @@ public abstract class Cache
     public void setCoordinates (double lon, double lat) {
         this.coord = new Coordinates(lon, lat);
     }
-    
+
+    // Getters
+
+    /**
+     * @return Cache coordinates
+     */
+    public Coordinates getCoords () {
+        return this.coord.clone();
+    }
+
     /**
      * @return Owner e-mail
      */
