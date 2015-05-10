@@ -1,7 +1,7 @@
 /**
  * Class that represents an Activity, which is the finding of a cache by a User.
  *
- * @version 07/05/2015
+ * @version 10/05/2015
  */
 
 import java.util.GregorianCalendar;
@@ -40,7 +40,7 @@ public class Activity {
         this.cache = cache;
         this.kms = kms;
     }
-
+    
     /**
      * Constructs an Activity using another Activity as reference
      * @arg act Activity to use as reference
@@ -50,7 +50,8 @@ public class Activity {
         this.cache = act.getCache();
         this.kms = act.getKms();
     }
-
+    
+    
     // Getters
 
     /**
@@ -59,7 +60,14 @@ public class Activity {
     public GregorianCalendar getDate () {
         return (GregorianCalendar) this.date.clone();
     }
-
+    
+    /**
+     * @return the month of the activity
+     */
+    public int getMonth(){
+        return this.date.get(GregorianCalendar.MONTH);
+    }
+    
     /**
      * @return Cache found in this activity
      */
