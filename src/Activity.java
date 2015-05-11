@@ -1,7 +1,7 @@
 /**
  * Class that represents an Activity, which is the finding of a cache by a User.
  *
- * @version 10/05/2015
+ * @version 11/05/2015
  */
 
 import java.util.GregorianCalendar;

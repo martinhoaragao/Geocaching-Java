@@ -1,7 +1,7 @@
 /**
  * Class to represent a simple Address with a country and a city
  *
- * @version 10/05/2015
+ * @version 11/05/2015
  */
 
 public class Address {
@@ -22,11 +22,17 @@ public class Address {
         this.city = city; this.country = country;
     }
     
+    /**
+     * Empty Constructor
+     */
     public Address(){
         this.country = "Portugal";
         this.city="Braga";
     }
     
+    /**
+     * Copy Constructor
+     */
     public Address(Address a ){
         this.country = a.country;
         this.city = a.city;
