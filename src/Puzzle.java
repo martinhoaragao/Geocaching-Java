@@ -129,13 +129,33 @@ public class Puzzle {
      * (String q, String a, Coordinates l)
      */
 
-    public Puzzle pNumbers(){
+    public Puzzle pNumber0(){
         Coordinates c = new Coordinates(35,40);
-        Puzzle a = new Puzzle("What is, what is, this little thing, that we learn since pre-school... It is Transcendental and irrational \n We may confuse it with food which makes us look like a fool?!", "", c);
+        Puzzle a = new Puzzle(" It is Transcendental and irrational. \n We learn it since pre-school... \n We may confuse it with food \n which makes us look like a fool. ", "PI", c);
     
     
         a.setStar(7);
+        return a;
+    }
     
+    public Puzzle pCipher0(){
+        Coordinates o = new Coordinates(20, 15);
+        //twenty _ fifteen
+        Puzzle a = new Puzzle(" t ve 3 ~ t j   ,  1 & 1 t 3 3 ~ " ,"(twenty,fifteen)",o);
+        a.setStar(3);
+        return a;
+    }
+    
+    
+    
+    
+    public String Cipher(){
+        StringBuilder c = new StringBuilder();
+        c.append("| A * |"); c.append(" B 8 |"); c.append(" C [ |"); c.append(" D } |");
+        c.append(" E 3 |" + " F 1 |" + " G 6 |" + " H / |" + " I & |" + " J x | K 0 | L l | M + | N ~ | O o | P § | Q 0 | R { | S % | T t | U ç | V bb | W ve | X ics | Y j | Z 4 |");
+        
+        return c.toString();
+        
     }
     
     
