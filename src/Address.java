@@ -92,7 +92,7 @@ public class Address {
         if(this.getClass() != ad.getClass()) return false;
         
         Address aux = (Address) ad;
-        return aux.getCity() == this.getCity() && aux.getCountry() == this.getCountry();
+        return aux.getCity().equals(this.getCity()) && aux.getCountry().equals(this.getCountry());
     }
     
     

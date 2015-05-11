@@ -35,6 +35,16 @@ public class Puzzle {
         
     }
     
+    /**
+     * Copy Constructor
+     */
+    public Puzzle(Puzzle a){
+        this.question = a.question;
+        this.answer = a.answer;
+        this.star = a.star;
+        this.local = a.local.clone();
+    }
+    
     
     //Seters
     
@@ -159,5 +169,27 @@ public class Puzzle {
     }
     
     
+    /**
+     * Clone, toString and equals
+     */
     
+    public boolean equals(Object o){
+        if(this == o) return true;
+        if(this.getClass() != o.getClass()) return false;
+        
+        Puzzle a = (Puzzle) o;
+        return a.question.equals(this.question) && a.answer.equals(this.answer) && a.local.equals(this.local);
+        
+    }
+    
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Q: " + this.getQuestion()); sb.append(" A: " + this.getAnswer());
+        sb.append(local.toString());
+        return sb.toString();
+    }
+    
+    public Puzzle clone(){
+        return new Puzzle(this);
+    }
 }
