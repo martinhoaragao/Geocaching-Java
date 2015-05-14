@@ -18,6 +18,7 @@ public abstract class Cache
     private ArrayList<Object> treasure;  // Cache treasure
     private ArrayList<String> infos;    // Cache info
     private String mail;                // Cache owner mail
+    private String id;
 
     /**
      * Set cache coordinates
@@ -42,5 +43,12 @@ public abstract class Cache
      */
     public String getMail () {
         return this.mail;
+    }
+    
+    /**
+     * Get the id of a class
+     */
+    public String getID(){
+        return this.id;
     }
 }

@@ -1,7 +1,7 @@
 /**
  * Class that represents an Activity, which is the finding of a cache by a User.
  *
- * @version 11/05/2015
+ * @version 14/05/2015
  */
 
 import java.util.GregorianCalendar;
@@ -109,7 +109,8 @@ public class Activity {
     public void setKms (double kms) {
         this.kms = kms;
     }
-
+    
+    
     // toString, equals and clone
 
     /**

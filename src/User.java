@@ -65,7 +65,22 @@ public class User {
         this.statistics = user.getStatistics();
         this.friends = user.getFriends();
     }
-
+    
+    
+    /**
+     * Removes a Cache from this User: from Statistics and from the TreeMap, given an id
+     * 
+     * @arg id Identifier of the Cache
+     * 
+     * private TreeMap<Integer, Activity> activities;  // User activities  ? whats that integer?
+     */
+    public void removeCache(String id){
+        this.statistics.removeCache(id); //Removes from Statistics.
+        
+        for(Activity a : this.activities.values()){
+            if(a.getCache().getID().equals(id)) activities.remove(a.getCache()); 
+        }
+    }
     // Getters
 
     /**

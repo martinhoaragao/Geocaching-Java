@@ -6,8 +6,10 @@
  * @version 11/05/2015
  */
 
+import java.util.GregorianCalendar;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.ArrayList;
 
 public class Statistic
 {
@@ -109,7 +111,7 @@ public class Statistic
     }
     
     /**
-     * [?] Removes an Activity
+     * Removes an Activity
      */
     public void removeAct(Activity a){
         
@@ -147,6 +149,70 @@ public class Statistic
         return ret;
     }
     
+   /**
+    * Returns the current month
+    */
+   public int getCMonth(){
+    GregorianCalendar gc = new GregorianCalendar();
+        String monthh = String.valueOf(gc.get(GregorianCalendar.MONTH));
+        return Integer.parseInt(monthh)+1;
+    }
+    
+    /**
+     * Returns a List of the last 10 activities
+     */
+    public ArrayList<Activity> get10LastA(){
+        TreeSet<Activity> am = new TreeSet<>();
+        int m = this.getCMonth();
+        am = this.getActMonth(m);
+        
+        ArrayList<Activity> ret  = new ArrayList<>();
+        while(am == null){
+            m--;
+            am = this.getActMonth(m);
+        }
+        if(am != null ){
+            while(ret.size()!=10){
+              for(Activity a : am){
+                ret.add(a.clone());
+              }
+              
+              am = this.getActMonth(m-1);
+              while(am == null) am = this.getActMonth(m-1);
+              
+              
+            }
+        }
+
+        return ret;
+       
+    }
+    
+    /**
+     * Find a cache with a given id
+     */
+    public Cache getCacheid(String idd){
+        
+        for(int i=0;i<12;i++){
+            TreeSet<Activity> actaux = this.stats.get(i);
+                for(Activity a : actaux){
+                    if(a.getCache().getID().equals(idd)) return a.getCache();
+                }
+        }
+        return null;
+    }
+    
+    /**
+     * Removes a Cache given the id 
+     */
+    public void removeCache(String id){
+         for(int i=0;i<12;i++){
+            TreeSet<Activity> actaux = this.stats.get(i);
+                for(Activity a : actaux){
+                    if(a.getCache().getID().equals(id)) actaux.remove(a);
+                }
+        }
+    }
     
     /**
      * Clone,toString and equals
