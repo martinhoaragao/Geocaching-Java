@@ -17,7 +17,7 @@ public class GeocachingPOO {
     private static UserBase userbase = null;   // User data base
 
     //Random main method/function to complete.
-    public static int main() {
+    public static void main() {
         boolean running = true;     // Set the program as running
         int option = 0;
         userbase = new UserBase();  // Create new user base
@@ -40,7 +40,7 @@ public class GeocachingPOO {
                 }
             }
         }
-        return 0;
+        return;
     }
 
     /**
@@ -68,23 +68,39 @@ public class GeocachingPOO {
      */
     private static void register () {
         Scanner sc = new Scanner(System.in);
-        String mail, pass, name;
+        String mail, pass, name, country, city, gender, bdate;
         User newuser;
-
+        int i=0;
         System.out.print("E-mail: ");
         mail = sc.nextLine();
+        
+        while (userbase.exists(mail)) {    // E-maill already in use
+            System.out.println("E-mail already in use.");
+            i++;
+            System.out.print("E-mail: ");
+            mail = sc.nextLine();
+            if(i==2) return;
+        }
+        
         System.out.print("Name: ");
         name = sc.nextLine();
         System.out.print("Password: ");
         pass = sc.nextLine();
 
-        if (userbase.exists(mail)) {    // E-maill already in use
-            System.out.println("E-mail already in use.");
-        } else {
             newuser = new User(mail, pass, name);
+            
+            System.out.print("Country: ");
+            country = sc.nextLine();
+            System.out.print("City: "); city = sc.nextLine();
+            newuser.setAddress(city,country);
+            System.out.print("Gender (g for girl, b for boy): "); gender = sc.nextLine();
+            System.out.print("Birthday date DD/MM/YY format: "); bdate = sc.nextLine();
+            newuser.setGender(gender); newuser.setBDate(bdate);
+            
             userbase.addUser(newuser);
+            System.out.println("Your account has been successfully created: Name " + name + ". E-Mail: " + mail + "!");
             newuser = null;
-        }
+        
 
         sc.close();
     }
@@ -95,19 +111,34 @@ public class GeocachingPOO {
     private static void login () {
         Scanner sc = new Scanner(System.in);
         String mail, pass;
-
+           
+        int i=0;
+        
         System.out.print("E-mail: ");
         mail = sc.nextLine();
+        
+        while (!userbase.exists(mail)){
+            System.out.println("There is no user with the given e-mail.");
+            if(i==2) return;
+            //User has 3 more tries, then he's OUT!
+            System.out.print("E-mail: ");
+            mail = sc.nextLine();
+            i++;
+            
+        }
         System.out.print("Pass: ");
         pass = sc.nextLine();
-
-        if (!userbase.exists(mail))
-            System.out.println("There is no user with the given e-mail.");
-        else {
+        
+            i=0;
             user = userbase.getUser(mail, pass);
-            if (user == null)
+            while (user == null){ //Allow user to try again pass 2 more times
                 System.out.println("Wrong password!");
-        }
+                i++;
+                if(i==2) return;
+                System.out.print("Pass: ");
+                pass = sc.nextLine();
+                
+            }
     }
     
     /**

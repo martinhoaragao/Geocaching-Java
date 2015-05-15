@@ -15,10 +15,11 @@ public abstract class Cache
 {
     private Coordinates coord;          // Cache coordinates
     private ArrayList<String> registry;  // registration of the cache / Record book / Registry
-    private ArrayList<Object> treasure;  // Cache treasure
+    private ArrayList<Treasure> treasure;  // Cache treasure
     private ArrayList<String> infos;    // Cache info
     private String mail;                // Cache owner mail
-    private String id;
+    private String id;                  //Cache identifier
+    
 
     /**
      * Set cache coordinates

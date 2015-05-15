@@ -10,6 +10,7 @@ public class Activity {
     private GregorianCalendar date; // Acitivty date
     private Cache cache;            // Cache found on this activity
     private double kms;             // Quilometers covered
+    private int points;             //Each activity gives points to the User.
 
     /**
      * Constructor with arguments
