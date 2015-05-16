@@ -19,6 +19,7 @@ public class User {
     private Address address;          // User Address
     private GregorianCalendar bdate;  // User birthdate
     private int points;               // User points
+    private int id;                   // User Id
 
     private TreeMap<Integer, Activity> activities;  // User activities
     private Statistic statistics;                   // User statistics
@@ -40,14 +41,16 @@ public class User {
 
     /**
      * Construtor with arguments
-     * @arg mail User e-mail
-     * @arg pass User password
-     * @arg name User name
+     * @param mail User e-mail
+     * @param pass User password
+     * @param name User name
+     * @param id   User id
      */
-    public User (String mail, String pass, String name) {
+    public User (String mail, String pass, String name, int id) {
         this.mail = mail;
         this.name = name;
         this.pass = encryptPass(pass);
+        this.id = id;
 
         if (this.pass.equals(pass))
             throw new IllegalStateException("Try another password");
@@ -55,7 +58,7 @@ public class User {
 
     /**
      * Construct a new User with the same info as a given User
-     * @arg user User from which the information will be fetched
+     * @param user User from which the information will be fetched
      */
     public User (User user) {
         this.mail = user.getMail(); this.pass = user.getPass();
@@ -145,6 +148,13 @@ public class User {
         return new ArrayList<User>(this.friends);
     }
 
+    /**
+     * @return The user Id
+     */
+    public Integer getId () {
+        return this.id;
+    }
+
     //Setters
 
     /**
@@ -179,7 +189,7 @@ public class User {
 
     /**
      * Change the user birthdate
-     * @arg date Date formated as 'DD/MM/YY'
+     * @param date Date formated as 'DD/MM/YY'
      */
     public void setBDate(String date){
         //"03/05/1994"
@@ -217,7 +227,7 @@ public class User {
 
     /**
      * Compares this object with another User to check if they are equal
-     * @arg user User to compare with
+     * @param user User to compare with
      */
     public boolean equals (Object user) {
         if (this == user) return true;
@@ -249,7 +259,7 @@ public class User {
 
     /**
      * Confirm if the given password is equal to the one stored
-     * @arg pass
+     * @param pass
      */
     public boolean confirmPass (String pass) {
         if (this.getPass().equals(encryptPass(pass))) return true;
@@ -258,7 +268,7 @@ public class User {
 
     /**
      * Function to encrypt password when creating user
-     * @arg pass Password to be encrypted
+     * @param pass Password to be encrypted
      */
     private String encryptPass (String pass) {
         try {
