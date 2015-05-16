@@ -23,6 +23,7 @@ public class User {
     private TreeMap<Integer, Activity> activities;  // User activities
     private Statistic statistics;                   // User statistics
     private ArrayList<User> friends;                // User friends
+    private ReportedCacheBase reportedmine;        // My reports
 
     /**
      * Constructor without arguments
@@ -207,6 +208,61 @@ public class User {
         this.bdate = new GregorianCalendar(y,m,d);
     }
 
+    
+
+    // Other methods
+
+    /**
+     * Confirm if the given password is equal to the one stored
+     * @arg pass
+     */
+    public boolean confirmPass (String pass) {
+        if (this.getPass().equals(encryptPass(pass))) return true;
+        else return false;
+    }
+
+    /**
+     * Function to encrypt password when creating user
+     * @arg pass Password to be encrypted
+     */
+    private String encryptPass (String pass) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(pass.getBytes());
+
+            byte byteData[] = md.digest();
+            StringBuffer sb = new StringBuffer();
+
+            for (int i = 0; i < byteData.length; i++)
+                sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e){   // Unable to ecnrypt password
+            return pass;
+        }
+    }
+    
+    /**
+     * Report a Cache - call the method addCache (Cache ca as argument.
+     * The id is one field of the cache so its not necessary to pass as an argument.)
+     * (now...) For the user it is important to report by id.
+     * -- Report Cache by an id: Changes:
+     * he inserts the id. Check if it exists in the reports base already.
+     * if not make method on Cache to find that Cache by the id. 
+     * 
+     * (done).
+     * 
+     * CHANGE the SCOPE OF THIS...
+     * Usually this goes to GeoCaching with all the prints and all...
+     */
+    public void reportCache(String id){
+        if(!reportedmine.exists(id)){
+            reportedmine.addCache(id);
+        }
+    }
+    
+    
+    
     // toString, equals and clone
 
     /**
@@ -258,37 +314,5 @@ public class User {
      */
     public User clone () {
         return new User(this);
-    }
-
-    // Other methods
-
-    /**
-     * Confirm if the given password is equal to the one stored
-     * @arg pass
-     */
-    public boolean confirmPass (String pass) {
-        if (this.getPass().equals(encryptPass(pass))) return true;
-        else return false;
-    }
-
-    /**
-     * Function to encrypt password when creating user
-     * @arg pass Password to be encrypted
-     */
-    private String encryptPass (String pass) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            md.update(pass.getBytes());
-
-            byte byteData[] = md.digest();
-            StringBuffer sb = new StringBuffer();
-
-            for (int i = 0; i < byteData.length; i++)
-                sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
-
-            return sb.toString();
-        } catch (NoSuchAlgorithmException e){   // Unable to ecnrypt password
-            return pass;
-        }
     }
 }

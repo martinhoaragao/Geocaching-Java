@@ -71,6 +71,37 @@ public class UserBase {
         return ts;
     }
 
+    
+
+    // Other methods
+
+    /**
+     * Add a user to the data base
+     * @arg user User to be added
+     * -- nao é pa fazer user.clone() ?
+     */
+    public void addUser (User user) {
+        this.users.put(user.getMail(), user);
+    }
+
+    /**
+     * Check if a given e-mail already has a user associated
+     * @arg mail E-mail to check if it's already in use
+     */
+    public boolean exists (String mail) {
+        return this.users.containsKey(mail);
+    }
+
+    /**
+     * Check if a given User is in the UserBase
+     * @arg user User to be found in the UserBase
+     */
+    public boolean exists (User user) {
+        for (User u : this.users.values())
+            if (u.equals(user)) return true;
+        return false;
+    }
+    
     // toString, equals and clone
 
     /**
@@ -113,33 +144,5 @@ public class UserBase {
      */
     public UserBase clone () {
         return new UserBase(this);
-    }
-
-    // Other methods
-
-    /**
-     * Add a user to the data base
-     * @arg user User to be added
-     */
-    public void addUser (User user) {
-        this.users.put(user.getMail(), user);
-    }
-
-    /**
-     * Check if a given e-mail already has a user associated
-     * @arg mail E-mail to check if it's already in use
-     */
-    public boolean exists (String mail) {
-        return this.users.containsKey(mail);
-    }
-
-    /**
-     * Check if a given User is in the UserBase
-     * @arg user User to be found in the UserBase
-     */
-    public boolean exists (User user) {
-        for (User u : this.users.values())
-            if (u.equals(user)) return true;
-        return false;
     }
 }

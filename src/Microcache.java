@@ -7,8 +7,12 @@
 
 public class Microcache extends Cache
 {
-    public Microcache(){
+    public Microcache(Microcache a){
         
+    }
+    
+    public Cache clone(){
+        return this;
     }
     
 }

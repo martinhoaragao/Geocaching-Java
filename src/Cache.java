@@ -20,6 +20,11 @@ public abstract class Cache
     private String mail;                // Cache owner mail
     private String id;                  //Cache identifier
     
+    /**
+     * Constructor of copy - Fazer de novo, só para evitar o erro nas outras classes...
+     * Construtores apenas fazer em cada subclasse.
+     */
+    
 
     /**
      * Set cache coordinates
@@ -51,5 +56,15 @@ public abstract class Cache
      */
     public String getID(){
         return this.id;
+    }
+    
+    
+    
+    /**
+     * Clone a cache -- Este clone é abstrato. 
+     * O necessário é fazer clone e construtores em cada subclasse...
+     */
+    public Cache clone(){
+        return this;
     }
 }

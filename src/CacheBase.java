@@ -84,6 +84,28 @@ public class CacheBase {
 
       return found;
     }
+    
+    /**
+     * Check it a given Cache is present in the Cache data base
+     * @arg id Cache id
+     */
+    public boolean exists(String id){
+        for(Cache a: this.caches){
+            if(a.getID().equals(id)) return true;
+        }
+        return false;
+    }
+    
+    /**
+     * Get this cache if the id is the right one
+     * @arg id The id of that Cache
+     */
+    public Cache getCache(String id){
+       for(Cache a : this.caches){
+           if(a.getID().equals(id)) return a.clone();
+        }
+        return null;
+    }
 
     // toString, equals and clone
 
