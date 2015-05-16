@@ -13,30 +13,69 @@ import java.util.ArrayList;
  */
 public abstract class Cache
 {
-    private Coordinates coord;          // Cache coordinates
+    private String id;                  //Cache identifier
+    private Coordinates coords;          // Cache coordinates
+    private String mail;                // Cache owner mail
     private ArrayList<String> registry;  // registration of the cache / Record book / Registry
     private ArrayList<Treasure> treasure;  // Cache treasure
     private ArrayList<String> infos;    // Cache info
-    private String mail;                // Cache owner mail
-    private String id;                  //Cache identifier
-    
+
+    // Constructors
+
+    /*+
+     * Construtor without arguments
+     */
+    public Cache () {
+       this.id = "";
+       this.coords = new Coordinates();
+       this.mail = "";
+       this.registry = new ArrayList<String>();
+       this.treasure = new ArrayList<Treasure>();
+       this.infos = new ArrayList<String>();
+     }
 
     /**
-     * Set cache coordinates
-     * @arg lon, coordinates longitude
-     * @arg lat, coordinates latitude
+     * Constructor of new Cache
+     * @arg id String cache identifier
+     * @arg coord Coordinates
+     * @arg mail String e-mail of owner
      */
-    public void setCoordinates (double lon, double lat) {
-        this.coord = new Coordinates(lon, lat);
+    public Cache (String id, Coordinates coords, String mail) {
+        this.id = id;
+        this.coords = coords.clone();
+        this.mail = mail;
+        this.registry = new ArrayList<String>();
+        this.treasure = new ArrayList<Treasure>();
+        this.infos = new ArrayList<String>();
+    }
+
+    /**
+     * Construct a Cache using another cache as reference
+     * @arg cache Cache
+     */
+    public Cache (Cache cache) {
+        this.id = cache.getId();
+        this.coords = cache.getCoords();
+        this.mail = cache.getMail();
+        this.registry = cache.getRegistry();
+        this.treasure = cache.getTreasure();
+        this.infos = cache.getInfos();
     }
 
     // Getters
 
     /**
+     * @return ID of a Cache
+     */
+    public String getId() {
+        return this.id;
+    }
+
+    /**
      * @return Cache coordinates
      */
     public Coordinates getCoords () {
-        return this.coord.clone();
+        return this.coords.clone();
     }
 
     /**
@@ -45,11 +84,61 @@ public abstract class Cache
     public String getMail () {
         return this.mail;
     }
-    
+
     /**
-     * Get the id of a class
+     *  @return Registry (The Record book)
      */
-    public String getID(){
-        return this.id;
+    public ArrayList<String> getRegistry () {
+        ArrayList<String> registry = new ArrayList<String>();
+
+        for(String aux : this.registry)
+            registry.add(aux);
+        return registry;
     }
+
+    /**
+     *  @return Treasure
+     */
+    public ArrayList<Treasure> getTreasure () {
+        ArrayList<Treasure> treasure = new ArrayList<Treasure>();
+
+        for(Treasure aux : this.treasure)
+            treasure.add(aux.clone());
+        return treasure;
+    }
+
+    /**
+     *  @return Information of a cache
+     */
+    public ArrayList<String> getInfos () {
+        ArrayList<String> infos = new ArrayList<String>();
+
+        for(String aux : this.infos)
+            infos.add(aux);
+        return infos;
+    }
+
+    // Setters
+
+    /**
+     * Set cache ID
+     * @arg, id, String cache identifier
+     */
+    public void setId (String id) {
+        this.id = id;
+    }
+
+    /**
+     * Set cache coordinates
+     * @arg lon, coordinates longitude
+     * @arg lat, coordinates latitude
+     */
+    public void setCoordinates (double lon, double lat) {
+        this.coords = new Coordinates(lon, lat);
+    }
+
+
+
+
+
 }
