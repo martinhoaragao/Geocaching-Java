@@ -9,6 +9,7 @@
 
 import java.util.Scanner;
 import java.util.Arrays;
+import java.util.GregorianCalendar;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.io.Console;
@@ -72,18 +73,25 @@ public class GeocachingPOO {
         Scanner sc = new Scanner(System.in);
         Console console = System.console();
         String mail, name, pass;
+        String[] bdate_fields;
+        GregorianCalendar bdate = null;
         User newuser;
 
         System.out.print("E-mail: ");
         mail = sc.nextLine().replaceAll("[\n\r]", "");
         System.out.print("Name: ");
         name = sc.nextLine().replaceAll("[\n\r]", "");
+        System.out.print("Birthdate (Day/Month/Year): ");
+        bdate_fields = sc.nextLine().replaceAll("[\n\r]","").split("/");
+        // Needs checking to make sure date was correctly passed
+        bdate = new GregorianCalendar(Integer.parseInt(bdate_fields[2]),
+            Integer.parseInt(bdate_fields[1]), Integer.parseInt(bdate_fields[0]));
         pass = new String(console.readPassword("Password: "));
 
         if (userbase.exists(mail)) {    // E-maill already in use
             System.out.println("E-mail already in use.");
         } else {
-            newuser = new User(mail, pass, name, id);
+            newuser = new User(mail, pass, name, id, bdate);
             userbase.addUser(newuser);
             newuser = null; id++;
         }

@@ -121,6 +121,24 @@ public class UserBase {
         return new UserBase(this);
     }
 
+    /**
+     * Create a clone of the user and eliminate the password
+     * @param id User Id
+     */
+    public User getUserInfo (int id) {
+        Iterator it = this.users.iterator();
+        boolean found = false;
+        User u = null;
+
+        while (it.hasNext() && !found) {
+            u = (User) it.next();
+            if (u.getId() == id) { found = true; u = u.clone(); u.setPass(""); }
+        }
+        if (!found) u = null;
+
+        return u;
+    }
+
     // Other methods
 
     /**
@@ -142,7 +160,7 @@ public class UserBase {
           User aux = (User) it.next();
           if (aux.getMail().equals(mail)) found = true;
         }
-        return found; 
+        return found;
     }
 
     /**
@@ -157,7 +175,7 @@ public class UserBase {
             User u = (User) it.next();
             if (u.equals(user)) return true;
         }
-            
+
         return found;
     }
 }

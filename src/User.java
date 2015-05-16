@@ -23,7 +23,7 @@ public class User {
 
     private TreeMap<Integer, Activity> activities;  // User activities
     private Statistic statistics;                   // User statistics
-    private ArrayList<User> friends;                // User friends
+    private ArrayList<Integer> friends;             // User friends
 
     /**
      * Constructor without arguments
@@ -33,27 +33,28 @@ public class User {
         this.gender = "";
         this.address = new Address("New York","USA");
         this.bdate = new GregorianCalendar();
-        this.points = 0;
+        this.points = 0; this.id = 0;
         this.activities = new TreeMap<Integer, Activity>();
         this.statistics = new Statistic();
-        this.friends = new ArrayList<User>();
+        this.friends = new ArrayList<Integer>();
     }
 
     /**
      * Construtor with arguments
-     * @param mail User e-mail
-     * @param pass User password
-     * @param name User name
-     * @param id   User id
+     * @param mail  User e-mail
+     * @param pass  User password
+     * @param name  User name
+     * @param id    User id
+     * @param bdate User birthdate
      */
-    public User (String mail, String pass, String name, int id) {
+    public User (String mail, String pass, String name, int id, GregorianCalendar bdate) {
         this.mail = mail;
         this.name = name;
         this.pass = encryptPass(pass);
         this.id = id;
-
-        if (this.pass.equals(pass))
-            throw new IllegalStateException("Try another password");
+        this.bdate = (GregorianCalendar) bdate.clone();
+        this.gender = null; this.address = null; this.points = 0;
+        this.activities = null; this.statistics = null; this.friends = null;
     }
 
     /**
@@ -67,6 +68,7 @@ public class User {
         this.activities = user.getActivities();
         this.statistics = user.getStatistics();
         this.friends = user.getFriends();
+        this.id = user.getId();
     }
 
     // Getters
@@ -144,8 +146,8 @@ public class User {
     /**
      * @return User friends list
      */
-    public ArrayList<User> getFriends () {
-        return new ArrayList<User>(this.friends);
+    public ArrayList<Integer> getFriends () {
+        return new ArrayList<Integer>(this.friends);
     }
 
     /**
@@ -173,6 +175,7 @@ public class User {
 
     /**
      * Set the password for the first time
+     * @param passw Password for the user
      */
     public void setPass(String passw){
         this.pass = encryptPass(passw);
@@ -213,14 +216,15 @@ public class User {
 
         sb.append("Mail: " + this.mail + "\n");
         sb.append("Name: " + this.name + "\n");
-        sb.append("Gender: " + this.gender + "\n");
-        sb.append("Address: " + this.address.toString() + "\n");
         if (bdate != null) {
             day = String.valueOf(bdate.get(GregorianCalendar.DAY_OF_MONTH));
             month = String.valueOf(bdate.get(GregorianCalendar.MONTH));
             year = String.valueOf(bdate.get(GregorianCalendar.YEAR));
             sb.append("Birthdate: " + day + "/" + month + "/" + year + "\n");
         }
+        if (gender != null) sb.append("Gender: " + this.gender + "\n");
+        if (address != null) sb.append("Address: " + this.address.toString() + "\n");
+        sb.append("User id: " + this.id + "\n");
 
         return sb.toString();
     }
