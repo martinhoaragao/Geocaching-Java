@@ -37,9 +37,13 @@ public class GeocachingPOO {
                 }
             } else {    // User logged in
                 switch (option) {
-                    case 1: changePassword(); break;
-                    case 2: System.out.println(user.toString()); break;
-                    case 3: user = null; break;
+                    case 1: printInfo(); break;
+                    case 2: changePassword(); break;
+                    case 3: changeName(); break;
+                    case 4: changeAddress(); break;
+                    case 5: changeBDate(); break;
+                    case 6: changeGender(); break;
+                    case 7: user = null; break;
                     default: break;
                 }
             }
@@ -51,25 +55,30 @@ public class GeocachingPOO {
      */
     private static int menu () {
         Scanner sc = new Scanner(System.in);
+        System.out.print("\033[H\033[2J");  // Clear terminal view
 
         if (user == null) { // No user logged in
             System.out.println("1: Register");
             System.out.println("2: Login");
             System.out.println("3: Exit");
         } else {
-            System.out.println("Logged in as: " + user.getName());
-            System.out.println("1: Change password");
-            System.out.println("2: Display Personal Info");
-            System.out.println("3: Log Out");
+            System.out.println("Logged in as: " + user.getName() + " | " + user.getPoints() + " points");
+            System.out.println("1: Personal Information");
+            System.out.println("2: Change Password");
+            System.out.println("3: Change Name");
+            System.out.println("4: Change Address");
+            System.out.println("5: Change Birthdate");
+            System.out.println("6: Change Gender");
+            System.out.println("7: Log Out");
         }
 
         return sc.nextInt();
     }
 
-    /**
-     * Function to register new user
-     */
+    /** Auxiliary function to register new user */
     private static void register () {
+        System.out.print("\033[H\033[2J");  // Clear terminal view
+
         Scanner sc = new Scanner(System.in);
         Console console = System.console();
         String mail, name, pass;
@@ -97,14 +106,13 @@ public class GeocachingPOO {
         }
     }
 
-    /**
-     * Login auxiliary function
-     */
+    /** Auxiliary login function */
     private static void login () {
         Scanner sc = new Scanner(System.in);
         Console console = System.console();
         String mail, pass;
 
+        System.out.print("\033[H\033[2J");  // Clear terminal view
         System.out.print("E-mail: ");
         mail = sc.nextLine();
         pass = new String(console.readPassword("Password: "));
@@ -118,16 +126,26 @@ public class GeocachingPOO {
         }
     }
 
-    /**
-     * Method to change current password
-     */
+    /** Auxiliary function to print user information */
+    private static void printInfo () {
+        Console c = System.console();
+
+        System.out.print("\033[H\033[2J"); // Clear terminal
+        System.out.println(user.toString());
+
+        if (c != null) {
+            c.readLine();
+        }
+    }
+
+    /** Auxiliary function to change user password */
     private static void changePassword() {
         Console console = System.console();
         String currentpass, newpass;
         int i = 0; //3 trys to change password each time
 
+        System.out.print("\033[H\033[2J");  // Clear terminal view
         currentpass = new String(console.readPassword("Current password: "));
-
 
         // Give user 3 tries to inser current password
         while(i<3 && !user.confirmPass(currentpass)) {
@@ -144,5 +162,46 @@ public class GeocachingPOO {
 
             userbase.getUser(user.getMail(),currentpass).setPass(newpass);
         }
+    }
+
+    /** Auxiliary function to change User name */
+    private static void changeName () {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("\033[H\033[2J");  // Clear terminal view
+
+        System.out.print("Name: ");
+        user.setName(sc.nextLine().replaceAll("[\n\r]", ""));
+    }
+
+    /** Auxiliary function to change User Address */
+    private static void changeAddress () {
+        Scanner sc = new Scanner(System.in);
+        String city, country;
+
+        System.out.print("\033[H\033[2J");  // Clear terminal view
+        System.out.print("City: ");
+        city = sc.nextLine().replaceAll("[\n\r]", "");
+        System.out.print("Country: ");
+        country = sc.nextLine().replaceAll("[\n\r]", "");
+        user.setAddress(city, country);
+    }
+
+    /** Auxiliary function to change User birthdate */
+    private static void changeBDate () {
+        Scanner sc = new Scanner(System.in);
+        String[] bdate;
+
+        System.out.print("\033[H\033[2J");  // Clear terminal view
+        System.out.print("Birthdate (Day/Month/Year): ");
+        user.setBDate(sc.nextLine().replaceAll("[\n\r]", ""));
+    }
+
+    /** Auxiliary function to change User gender */
+    private static void changeGender () {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("\033[H\033[2J");  // Clear terminal view
+        System.out.print("Gender: ");
+        user.setGender(sc.nextLine().replaceAll("[\n\r]", ""));
     }
 }

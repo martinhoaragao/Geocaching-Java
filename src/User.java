@@ -129,9 +129,11 @@ public class User {
         return this.points;
     }
 
+
     /**
      * @return User activities
      */
+    @SuppressWarnings("unchecked")
     public TreeMap<Integer, Activity> getActivities () {
         return (TreeMap<Integer, Activity>) this.activities.clone();
     }
