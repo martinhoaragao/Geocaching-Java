@@ -48,13 +48,11 @@ public class User {
      * @param bdate User birthdate
      */
     public User (String mail, String pass, String name, int id, GregorianCalendar bdate) {
-        this.mail = mail;
-        this.name = name;
-        this.pass = encryptPass(pass);
-        this.id = id;
+        this();
+        this.mail = mail; this.name = name;
+        this.pass = encryptPass(pass); this.id = id;
+        this.address = new Address();
         this.bdate = (GregorianCalendar) bdate.clone();
-        this.gender = null; this.address = null; this.points = 0;
-        this.activities = null; this.statistics = null; this.friends = null;
     }
 
     /**
@@ -92,13 +90,6 @@ public class User {
      */
     public String getPass () {
         return this.pass;
-    }
-
-    /**
-     * @return User B-date
-     */
-    public String getBdate(){
-        return this.bdate.toString();
     }
 
     /**
@@ -148,8 +139,9 @@ public class User {
     /**
      * @return User friends list
      */
+    @SuppressWarnings("unchecked")
     public ArrayList<Integer> getFriends () {
-        return new ArrayList<Integer>(this.friends);
+        return (ArrayList<Integer>) this.friends.clone();
     }
 
     /**
@@ -291,5 +283,19 @@ public class User {
         } catch (NoSuchAlgorithmException e){   // Unable to ecnrypt password
             return pass;
         }
+    }
+
+    /**
+     * Add a user as a friend
+     * @param user User to be added
+     * @return true if friend was added, false otherwise
+     */
+    public boolean addFriend (User user) {
+        if (user == null) return false;
+        else {
+            if (friends == null) friends = new ArrayList<Integer>();
+            friends.add(user.getId());
+        }
+        return true;
     }
 }

@@ -139,6 +139,24 @@ public class UserBase {
         return u;
     }
 
+    /**
+     * Create a clone of the user and eliminate the password
+     * @param mail User e-mail
+     */
+    public User getUserInfo (String mail) {
+        Iterator it = this.users.iterator();
+        boolean found = false;
+        User u = null;
+
+        while (it.hasNext() && !found) {
+            u = (User) it.next();
+            if (u.getMail().equals(mail)) { found = true; u = u.clone(); u.setPass(""); }
+        }
+        if (!found) u = null;
+
+        return u;
+    }
+
     // Other methods
 
     /**

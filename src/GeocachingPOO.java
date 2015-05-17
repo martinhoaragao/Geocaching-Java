@@ -9,6 +9,7 @@
 
 import java.util.Scanner;
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -27,8 +28,8 @@ public class GeocachingPOO {
         userbase = new UserBase();  // Create new user base
 
         while (running) {
-            option = menu();
             if (user == null) { // No user logged in
+                option = mainMenu();
                 switch (option) {
                     case 1: register(); break;
                     case 2: login(); break;
@@ -36,6 +37,7 @@ public class GeocachingPOO {
                     default: break;
                 }
             } else {    // User logged in
+                option = userMenu();
                 switch (option) {
                     case 1: printInfo(); break;
                     case 2: changePassword(); break;
@@ -43,34 +45,42 @@ public class GeocachingPOO {
                     case 4: changeAddress(); break;
                     case 5: changeBDate(); break;
                     case 6: changeGender(); break;
-                    case 7: user = null; break;
+                    case 7: addFriend(); break;
+                    case 8: showFriends(); break;
+                    case 9: user = null; break;
                     default: break;
                 }
             }
         }
     }
 
-    /**
-     * Display the menu and return the user choice
-     */
-    private static int menu () {
+    /** Display the main menu and return the user choice */
+    private static int mainMenu () {
         Scanner sc = new Scanner(System.in);
         System.out.print("\033[H\033[2J");  // Clear terminal view
 
-        if (user == null) { // No user logged in
-            System.out.println("1: Register");
-            System.out.println("2: Login");
-            System.out.println("3: Exit");
-        } else {
-            System.out.println("Logged in as: " + user.getName() + " | " + user.getPoints() + " points");
-            System.out.println("1: Personal Information");
-            System.out.println("2: Change Password");
-            System.out.println("3: Change Name");
-            System.out.println("4: Change Address");
-            System.out.println("5: Change Birthdate");
-            System.out.println("6: Change Gender");
-            System.out.println("7: Log Out");
-        }
+        System.out.println("1: Register");
+        System.out.println("2: Login");
+        System.out.println("3: Exit");
+
+        return sc.nextInt();
+    }
+
+    /** Auxiliary function to display user menu */
+    private static int userMenu () {
+        Scanner sc = new Scanner(System.in);
+        System.out.print("\033[H\033[2J");  // Clear terminal view
+
+        System.out.println("Logged in as: " + user.getName() + " | " + user.getPoints() + " points");
+        System.out.println("1: Personal Information");
+        System.out.println("2: Change Password");
+        System.out.println("3: Change Name");
+        System.out.println("4: Change Address");
+        System.out.println("5: Change Birthdate");
+        System.out.println("6: Change Gender");
+        System.out.println("7: Add Friend");
+        System.out.println("8: Show Friends");
+        System.out.println("9: Log Out");
 
         return sc.nextInt();
     }
@@ -203,5 +213,41 @@ public class GeocachingPOO {
         System.out.print("\033[H\033[2J");  // Clear terminal view
         System.out.print("Gender: ");
         user.setGender(sc.nextLine().replaceAll("[\n\r]", ""));
+    }
+
+    /** Auxiliary function to add a user as friend */
+    private static void addFriend () {
+        Scanner sc = new Scanner(System.in);
+        Console c = System.console();
+        User u;
+        System.out.print("\033[H\033[2J");  // Clear terminal
+
+        u = userbase.getUserInfo(sc.nextLine().replaceAll("[\n\r]", ""));
+        if (u != null) {
+            user.addFriend(u);
+            System.out.println("Friend Added");
+        } else {
+            System.out.println("No User with such e-mail");
+        }
+
+        if (c != null) c.readLine();
+    }
+
+    /** Auxiliary function to show friends */
+    private static void showFriends () {
+        Console c = System.console();
+        User u;
+        System.out.print("\033[H\033[2J");  // Clear terminal
+
+        ArrayList<Integer> list = user.getFriends();
+
+        for (Integer id : list) {
+            u = userbase.getUserInfo(id);
+            if (u != null)
+                System.out.println(u.getName() + " - " + u.getMail());
+        }
+
+
+        if (c != null) c.readLine();
     }
 }
