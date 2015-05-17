@@ -87,32 +87,45 @@ public class GeocachingPOO {
 
     /** Auxiliary function to register new user */
     private static void register () {
-        System.out.print("\033[H\033[2J");  // Clear terminal view
-
         Scanner sc = new Scanner(System.in);
         Console console = System.console();
-        String mail, name, pass;
+        String name, pass, mail = "";
         String[] bdate_fields;
         GregorianCalendar bdate = null;
         User newuser;
+        MailValidator mv = new MailValidator();
+        boolean aux = true;
 
-        System.out.print("E-mail: ");
-        mail = sc.nextLine().replaceAll("[\n\r]", "");
+        System.out.print("\033[H\033[2J");  // Clear terminal view
+        do {
+            if (!aux) System.out.println("Invalid e-mail!");
+            System.out.print("E-mail: ");
+            mail = sc.nextLine().replaceAll("[\n\r]","");
+            aux = mv.validate(mail);
+        } while (!aux);
+
         System.out.print("Name: ");
         name = sc.nextLine().replaceAll("[\n\r]", "");
-        System.out.print("Birthdate (Day/Month/Year): ");
-        bdate_fields = sc.nextLine().replaceAll("[\n\r]","").split("/");
-        // Needs checking to make sure date was correctly passed
+
+        do {    // Ask for date while date is wrong
+            if (!aux) System.out.println("Invalid date!");
+            System.out.print("Birthdate (Day/Month/Year): ");
+            bdate_fields = sc.nextLine().replaceAll("[\n\r]","").split("/");
+        } while ( !(aux = (bdate_fields.length == 3)) );
+
         bdate = new GregorianCalendar(Integer.parseInt(bdate_fields[2]),
             Integer.parseInt(bdate_fields[1]), Integer.parseInt(bdate_fields[0]));
+
         pass = new String(console.readPassword("Password: "));
 
         if (userbase.exists(mail)) {    // E-maill already in use
             System.out.println("E-mail already in use.");
-        } else {
+        } else {                        // New e-mail
             newuser = new User(mail, pass, name, id, bdate);
             userbase.addUser(newuser);
             newuser = null; id++;
+            System.out.println("User sucessfuly created!");
+            if (console != null) console.readLine();
         }
     }
 
