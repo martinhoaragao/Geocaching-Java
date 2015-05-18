@@ -28,7 +28,7 @@ public class ReportedCacheBase{
         Iterator it = caches.iterator();
         while(it.hasNext()){
             Cache aux = (Cache) it.next();
-            this.reports.put(aux.getID(), aux);
+            this.reports.put(aux.getId(), aux);
         }
     }
     
@@ -65,6 +65,7 @@ public class ReportedCacheBase{
         TreeSet<Cache> cc = new TreeSet<>();
         
         for(Cache a : this.reports.values()){
+            
             cc.add(a.clone());
             
         }
@@ -80,7 +81,7 @@ public class ReportedCacheBase{
      * @arg ca Cache to be added
      */
      public void addCache (Cache ca){
-       this.reports.put(ca.getID(), ca.clone());  
+       this.reports.put(ca.getId(), ca.clone());  
      }
     
     /**
@@ -138,7 +139,7 @@ public class ReportedCacheBase{
         if(this.reports.size() != a.reports.size()) return false;
         
         for(Cache c : this.reports.values()){
-            if(!a.exists(c.getID())) return false;
+            if(!a.exists(c.getId())) return false;
             
         }
         return true;

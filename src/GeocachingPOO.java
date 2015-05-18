@@ -117,27 +117,23 @@ public class GeocachingPOO {
         System.out.print("E-mail: ");
         mail = sc.nextLine();
         
-        while (!userbase.exists(mail)){
-            System.out.println("There is no user with the given e-mail.");
-            if(i==2) return;
-            //User has 3 more tries, then he's OUT!
-            System.out.print("E-mail: ");
-            mail = sc.nextLine();
-            i++;
-            
-        }
         System.out.print("Pass: ");
         pass = sc.nextLine();
         
-            i=0;
+           
             user = userbase.getUser(mail, pass);
-            while (user == null){ //Allow user to try again pass 2 more times
-                System.out.println("Wrong password!");
+        
+            while (!userbase.exists(mail) || user == null){ //Allow user to try again pass 2 more times
                 i++;
-                if(i==2) return;
+                if(i==3) return;
+                
+                System.out.println("Email or password are incorrect. Please try again.");
+
+                System.out.print("E-mail: ");
+                mail = sc.nextLine();
                 System.out.print("Pass: ");
                 pass = sc.nextLine();
-                
+                user = userbase.getUser(mail, pass);
             }
     }
     
@@ -154,11 +150,17 @@ public class GeocachingPOO {
         
         // Give user 3 tries to inser current password
         while(i<3 && !user.confirmPass(currentpass)) {
-            System.out.println("Passwords don't match! Try again.");
+            
+            if(i==2){
+                System.out.println(" Passwords don't match! ");
+                return;
+            }
             i++;
+            System.out.println("Passwords don't match! Try again.");
+            
             System.out.println("Type your current password: ");
             currentpass = sc.nextLine();
-            if(i==3)System.out.println(" Passwords don't match! ");
+            
         }
         
         //If User sucessfully types current password, he may change it

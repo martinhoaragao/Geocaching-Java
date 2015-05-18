@@ -79,7 +79,7 @@ public class User {
         this.statistics.removeCache(id); //Removes from Statistics.
         
         for(Activity a : this.activities.values()){
-            if(a.getCache().getID().equals(id)) activities.remove(a.getCache()); 
+            if(a.getCache().getId().equals(id)) activities.remove(a.getCache()); 
         }
     }
     // Getters
