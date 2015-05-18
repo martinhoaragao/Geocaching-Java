@@ -125,9 +125,6 @@ public class GeocachingPOO {
         } while ( bdate_return != 0 );
 
         System.out.print("Pass: ");
-        pass = sc.nextLine().replaceAll("[\n\r]","");
-
-        // Get User Password
         newuser.setPass(sc.nextLine().replaceAll("[\n\r]",""));
 
         // Get User Address
