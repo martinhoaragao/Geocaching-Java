@@ -92,11 +92,14 @@ public class GeocachingPOO {
         String name, pass, country, city, gender, mail = "";
         String[] bdate_fields;
         GregorianCalendar bdate = null;
-        User newuser;
+        User newuser = new User();
+        int bdate_return;
         MailValidator mv = new MailValidator();
         boolean aux = true;
 
         System.out.print("\033[H\033[2J");  // Clear terminal view
+
+        // Get User E-mail
         do {
             if (!aux) System.out.println("Invalid e-mail!");
             System.out.print("E-mail: ");
@@ -104,38 +107,47 @@ public class GeocachingPOO {
             aux = mv.validate(mail);
         } while (!aux);
 
+        // Check if e-mail is in use
+        if (userbase.exists(mail)) {
+            System.out.println("E-mail already in use!");
+            return;
+        } else newuser.setMail(mail);
+
+        // Get User Name
         System.out.print("Name: ");
-        name = sc.nextLine().replaceAll("[\n\r]", "");
+        newuser.setName(sc.nextLine().replaceAll("[\n\r]", ""));
 
-        do {    // Ask for date while date is wrong
-            if (!aux) System.out.println("Invalid date!");
+        // Get User BDate
+        do {
             System.out.print("Birthdate (Day/Month/Year): ");
-            bdate_fields = sc.nextLine().replaceAll("[\n\r]","").split("/");
-        } while ( !(aux = (bdate_fields.length == 3)) );
+            bdate_return = newuser.setBDate(sc.nextLine().replaceAll("[\n\r]",""));
 
-        bdate = new GregorianCalendar(Integer.parseInt(bdate_fields[2]),
-        Integer.parseInt(bdate_fields[1]), Integer.parseInt(bdate_fields[0]));
+            if (bdate_return == 1)
+                System.out.println("Invalid day!");
+            else if (bdate_return == 2)
+                System.out.println("Invalid month!");
+            else if (bdate_return == 3)
+                System.out.println("Invalid year");
+        } while ( bdate_return != 0 );
 
-        pass = new String(console.readPassword("Password: "));
+        // Get User Password
+        newuser.setPass(new String(console.readPassword("Password: ")));
 
+        // Get User Address
         System.out.print("Country: ");
         country = sc.nextLine().replaceAll("[\n\r]","");
         System.out.print("City: ");
         city = sc.nextLine().replaceAll("[\n\r]","");
+        newuser.setAddress(city, country);
+
+        // Get User Gender
         System.out.print("Gender (g for girl, b for boy): ");
         gender = sc.nextLine().replaceAll("[\n\r]","");
+        newuser.setGender(gender);
 
-        if (userbase.exists(mail)) {    // E-maill already in use
-            System.out.println("E-mail already in use.");
-        } else {                        // New e-mail
-            newuser = new User(mail, pass, name, id, bdate);
-            newuser.setAddress(city, country);
-            userbase.addUser(newuser);
-            newuser.setGender(gender);
-            newuser = null; id++;
-            System.out.println("User sucessfuly created!");
-            if (console != null) console.readLine();
-        }
+        System.out.println("User sucessfully created!");
+        newuser = null; id++;
+        if (console != null) console.readLine();
     }
 
     /** Auxiliary login function */

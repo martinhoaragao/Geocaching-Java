@@ -201,18 +201,36 @@ public class User {
     }
 
     /**
+     * Change user e-mail
+     * @param mail E-mail to be saved
+     */
+    public void setMail (String mail) {
+        this.mail = mail;
+    }
+
+    /**
      * Change the user birthdate
      * @param date Date formated as 'DD/MM/YY'
+     * @return 0 if valid date, 1 if invalid day, 2 if invalid month, 3 if invalid year
      */
-    public void setBDate(String date){
-        //"03/05/1994"
+    public int setBDate (String date){
         String[] parts = date.split("/");
+        int return_value = 0;
 
         int d = Integer.parseInt(parts[0]);
         int m = Integer.parseInt(parts[1]);
         int y = Integer.parseInt(parts[2]);
 
         this.bdate = new GregorianCalendar(y,m,d);
+
+        if (d != this.bdate.get(GregorianCalendar.DAY_OF_MONTH))
+            return_value = 1;
+        else if (m != this.bdate.get(GregorianCalendar.MONTH))
+            return_value = 2;
+        else if  (y != this.bdate.get(GregorianCalendar.YEAR))
+            return_value = 3;
+
+        return return_value;
     }
 
     // Other methods
