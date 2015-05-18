@@ -50,6 +50,25 @@ public class Statistic
      */
     
     /**
+     * Sum points of this statistic
+     * @param points Total points of this User Statistic
+     */
+    public int gettotp(){
+        int r=0;
+        for(int i=0;i<12;i++){ //In every month of this TreeMap
+            
+            TreeSet<Activity> actaux = this.stats.get(i);
+            //Act of this month
+            for(Activity a : actaux){
+                r+=a.getpoints();
+            }
+            
+
+        }
+        return r;
+    }
+    
+    /**
      * Add an Activity in the Statistic.
      * (The month is in the information of the Activity, so no need 
      * to receive the extra param month for this method).

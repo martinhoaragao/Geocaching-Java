@@ -82,6 +82,8 @@ public class Activity {
     public double getKms () {
         return this.kms;
     }
+    
+    public int getpoints(){return this.points;}
 
     // Setters
 
@@ -111,6 +113,9 @@ public class Activity {
         this.kms = kms;
     }
     
+    public void setpoints(int points){
+        this.points = points;
+    }
     
     // toString, equals and clone
 
