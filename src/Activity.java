@@ -7,9 +7,9 @@
 import java.util.GregorianCalendar;
 
 public class Activity {
-    private GregorianCalendar date; // Acitivty date
+    private GregorianCalendar date; // Acitivity date
     private Cache cache;            // Cache found on this activity
-    private double kms;             // Quilometers covered
+    private double kms;             // Kilometers covered
     private int points;             //Each activity gives points to the User.
 
     /**
