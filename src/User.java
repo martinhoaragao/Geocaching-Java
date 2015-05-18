@@ -15,7 +15,7 @@ public class User {
     private String mail;              // User mail
     private String pass;              // User Password
     private String name;              // User name
-    private String gender;            // User gender
+    private boolean gender;           // User gender
     private Address address;          // User Address
     private GregorianCalendar bdate;  // User birthdate
     private int points;               // User points
@@ -31,7 +31,7 @@ public class User {
      */
     public User () {
         this.mail = ""; this.pass = ""; this.name = "";
-        this.gender = "";
+        this.gender = true;
         this.address = new Address("New York","USA");
         this.bdate = new GregorianCalendar();
         this.points = 0; this.id = 0;
@@ -48,10 +48,28 @@ public class User {
      * @param id    User id
      * @param bdate User birthdate
      */
-    public User (String mail, String pass, String name, int id, GregorianCalendar bdate) {
+    public User (String mail, String pass, String name, int id, GregorianCalendar bdate) throws NullPointerException, IllegalStateException {
         this();
-        this.mail = mail; this.name = name;
-        this.pass = encryptPass(pass); this.id = id;
+
+        if (mail == null)
+            throw new NullPointerException("mail can't be null!");
+        if (mail.trim() == "")
+            throw new IllegalStateException("mail can't be empty!");
+        this.mail = mail;
+
+        if (pass == null)
+            throw new NullPointerException("pass can't be null!");
+        if (pass.trim() == "")
+            throw new IllegalStateException("pass can't be empty!");
+        this.pass = encryptPass(pass);
+
+        if (name == null)
+            throw new NullPointerException("name can't be null!");
+        if (name.trim() == "")
+            throw new IllegalStateException("name can't be empty!");
+        this.name = name;
+
+        this.id = id;
         this.address = new Address();
         this.bdate = (GregorianCalendar) bdate.clone();
     }
@@ -60,7 +78,10 @@ public class User {
      * Construct a new User with the same info as a given User
      * @param user User from which the information will be fetched
      */
-    public User (User user) {
+    public User (User user) throws NullPointerException {
+        if (user == null)
+            throw new NullPointerException("user can't be null!");
+
         this.mail = user.getMail(); this.pass = user.getPass();
         this.name = user.getName(); this.address = user.getAddress();
         this.bdate = user.getBDate(); this.points = user.getPoints();
@@ -78,7 +99,12 @@ public class User {
      *
      * private TreeMap<Integer, Activity> activities;  // User activities  ? whats that integer?
      */
-    public void removeCache(String id){
+    public void removeCache (String id) throws NullPointerException, IllegalStateException {
+        if (id == null)
+            throw new NullPointerException("id can't be null!");
+        if (id.trim() == "")
+            throw new IllegalStateException("id can't be empty");
+
         this.statistics.removeCache(id); //Removes from Statistics.
 
         for(Activity a : this.activities.values()){
@@ -111,7 +137,7 @@ public class User {
     /**
      * @return User gender
      */
-    public String getGender () {
+    public boolean getGender () {
         return this.gender;
     }
 
@@ -135,7 +161,6 @@ public class User {
     public Integer getPoints () {
         return this.points;
     }
-
 
     /**
      * @return User activities
@@ -172,14 +197,18 @@ public class User {
     /**
      * Chanches the User name
      */
-    public void setName(String name){
+    public void setName (String name) throws NullPointerException, IllegalStateException {
+        if (name == null)
+            throw new NullPointerException("name can't be null!");
+        if (name.trim() == "")
+            throw new IllegalStateException("name can't be empty");
         this.name = name;
     }
 
     /**
      * Change the gender
      */
-    public void setGender(String gender){
+    public void setGender (boolean gender) {
         this.gender = gender;
     }
 
@@ -187,24 +216,43 @@ public class User {
      * Set the password for the first time
      * @param passw Password for the user
      */
-    public void setPass(String passw){
+    public void setPass (String passw) throws NullPointerException, IllegalStateException {
+        if (passw == null)
+            throw new NullPointerException("passw can't be null!");
+        if (passw.trim() == "")
+            throw new IllegalStateException("passw can't be empty!");
+
         this.pass = encryptPass(passw);
     }
 
     /**
      * Change the adress
      */
-    public void setAddress (String city, String country){
-        Address r = new Address(city, country);
+    public void setAddress (String city, String country) throws NullPointerException, IllegalStateException {
 
-        this.address = r;
+        // Exceptions
+        if (city == null)
+            throw new NullPointerException("city can't be null!");
+        if (city.trim() == "")
+            throw new IllegalStateException("city can't be empty!");
+        if (country == null)
+            throw new NullPointerException("country can't be null!");
+        if (country.trim() == "")
+            throw new IllegalStateException("country can't be empty!");
+
+        this.address = new Address(city, country);
     }
 
     /**
      * Change user e-mail
      * @param mail E-mail to be saved
      */
-    public void setMail (String mail) {
+    public void setMail (String mail) throws NullPointerException, IllegalStateException {
+        if (mail == null)
+            throw new NullPointerException("mail can't be null!");
+        if (mail.trim() == "")
+            throw new IllegalStateException("mail can't be empty!");
+
         this.mail = mail;
     }
 
@@ -213,9 +261,20 @@ public class User {
      * @param date Date formated as 'DD/MM/YY'
      * @return 0 if valid date, 1 if invalid day, 2 if invalid month, 3 if invalid year
      */
-    public int setBDate (String date){
-        String[] parts = date.split("/");
+    public int setBDate (String date) throws NullPointerException, IllegalStateException {
+        String[] parts;
         int return_value = 0;
+
+        // Exceptions
+        if (date == null)
+            throw new NullPointerException("date can't be null!");
+        if (date.trim() == "")
+            throw new IllegalStateException("date can't be empty!");
+
+        parts = date.split("/");
+
+        if (parts.length != 3)
+            throw new IllegalStateException("date is in wrong format!");
 
         int d = Integer.parseInt(parts[0]);
         int m = Integer.parseInt(parts[1]);
@@ -248,7 +307,12 @@ public class User {
      * CHANGE the SCOPE OF THIS...
      * Usually this goes to GeoCaching with all the prints and all...
      */
-    public void reportCache(String id){
+    public void reportCache(String id) throws NullPointerException, IllegalStateException {
+        if (id == null)
+            throw new NullPointerException("id can't be null!");
+        if (id.trim() == "")
+            throw new IllegalStateException("id can't be empty!");
+
         if(!reportedmine.exists(id)){
             reportedmine.addCache(id);
         }
@@ -271,7 +335,7 @@ public class User {
             year = String.valueOf(bdate.get(GregorianCalendar.YEAR));
             sb.append("Birthdate: " + day + "/" + month + "/" + year + "\n");
         }
-        if (gender != null) sb.append("Gender: " + this.gender + "\n");
+        sb.append("Gender: " + (this.gender ? "F" : "M" + "\n"));
         if (address != null) sb.append("Address: " + this.address.toString() + "\n");
         sb.append("User id: " + this.id + "\n");
 
@@ -282,7 +346,10 @@ public class User {
      * Compares this object with another User to check if they are equal
      * @param user User to compare with
      */
-    public boolean equals (Object user) {
+    public boolean equals (Object user) throws NullPointerException {
+        if (user == null)
+            throw new NullPointerException("user can't be null!");
+
         if (this == user) return true;
 
         if ((user == null) || (this.getClass() != user.getClass())) return false;
@@ -291,7 +358,7 @@ public class User {
         boolean comp = this.mail.equals(aux.getMail());
         comp = comp && (this.pass.equals(aux.getPass()));
         comp = comp && (this.name.equals(aux.getName()));
-        comp = comp && (this.gender.equals(aux.getGender()));
+        comp = comp && (this.gender == (aux.getGender()));
         comp = comp && (this.address.equals(aux.getAddress()));
         comp = comp && (this.bdate.equals(aux.getBDate()));
         comp = comp && (this.points == aux.getPoints());
@@ -314,7 +381,12 @@ public class User {
      * Confirm if the given password is equal to the one stored
      * @param pass
      */
-    public boolean confirmPass (String pass) {
+    public boolean confirmPass (String pass) throws NullPointerException, IllegalStateException {
+        if (pass == null)
+            throw new NullPointerException("pass can't be null!");
+        if (pass.trim() == "")
+            throw new IllegalStateException("pass can't be empty!");
+
         if (this.getPass().equals(encryptPass(pass))) return true;
         else return false;
     }
@@ -323,7 +395,12 @@ public class User {
      * Function to encrypt password when creating user
      * @param pass Password to be encrypted
      */
-    private String encryptPass (String pass) {
+    private String encryptPass (String pass) throws NullPointerException, IllegalStateException {
+        if (pass == null)
+            throw new NullPointerException("pass can't be null!");
+        if (pass.trim() == "")
+            throw new IllegalStateException("pass can't be empty!");
+
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             md.update(pass.getBytes());
