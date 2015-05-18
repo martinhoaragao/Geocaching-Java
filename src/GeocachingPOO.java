@@ -145,13 +145,14 @@ public class GeocachingPOO {
         // Get User Gender
         System.out.print("Gender (g for girl, b for boy): ");
         gender = sc.nextLine().replaceAll("[\n\r]","");
-        newuser.setGender(gender);
+        if (gender.equals("g"))
+            newuser.setGender(true);
+        else newuser.setGender(false);
 
         if (userbase.exists(mail)) {    // E-maill already in use
             System.out.println("E-mail already in use.");
         } else {                        // New e-mail
             userbase.addUser(newuser);
-            newuser.setGender(gender);
             newuser = null; id++;
             System.out.println("User sucessfuly created!");
         }
@@ -299,8 +300,10 @@ public class GeocachingPOO {
     private static void changeGender () {
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("Gender: ");
-        user.setGender(sc.nextLine().replaceAll("[\n\r]", ""));
+        System.out.print("Gender (g for girl/b for boy): ");
+        if (sc.nextLine().replaceAll("[\n\r]", "").equals("g"))
+            user.setGender(true);
+        else user.setGender(false);
     }
 
     /** Auxiliary function to add a user as friend */
