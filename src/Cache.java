@@ -122,7 +122,7 @@ public abstract class Cache
 
     /**
      * Set cache ID
-     * @arg, id, String cache identifier
+     * @arg id, String cache identifier
      */
     public void setId (String id) {
         this.id = id;
@@ -136,4 +136,58 @@ public abstract class Cache
     public void setCoordinates (double lon, double lat) {
         this.coords = new Coordinates(lon, lat);
     }
+
+    /**
+     * Set mail of owner
+     * @arg mail, String email
+     */
+    public void setMail (String mail) {
+        this.mail = mail;
+    }
+
+    /**
+     * Set book of registers
+     * @arg registry, ArrayList of Strings regarding previous activities
+     */
+    public void setRegistry (ArrayList<String> registry) {
+        ArrayList<String> newRegistry = new ArrayList<String>();
+
+        for(String aux : registry)
+            newRegistry.add(aux);
+
+        this.registry = newRegistry;
+    }
+
+    // toString, equals
+
+    /**
+     * Translate Cache's basic info to a String
+     */
+    public String toString () {
+        StringBuilder sb = new StringBuilder();
+        sb.append("ID: " + this.id + "\n");
+        sb.append(this.coords.toString());
+        sb.append("Email: " + this.mail + "\n");
+
+        return sb.toString();
+    }
+    /**
+     * Compares this  cache with another object to check if they are equal
+     * @arg cache Object to compare with it
+     */
+    public boolean equals (Object cache) {
+        if (this == cache) return true;
+
+        if ((cache == null) || (this.getClass() != cache.getClass())) return false;
+
+        Cache aux = (Cache) cache;
+        boolean comp = this.id.equals(aux.getId());
+        comp = comp && (this.mail.equals(aux.getMail()));
+        comp = comp && (this.coords.equals(aux.getCoords()));
+        comp = comp && (this.registry.equals(aux.getRegistry()));
+        comp = comp && (this.treasure.equals(aux.getTreasure()));
+        comp = comp && (this.infos.equals(aux.getInfos()));
+        return comp;
+    }
+
 }
