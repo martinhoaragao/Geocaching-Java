@@ -90,7 +90,8 @@ public class GeocachingPOO {
         String[] bdate_fields;
         String bbdate;
         GregorianCalendar bdate = null;
-        User newuser;
+        User newuser = new User();
+        int bdate_return;
         MailValidator mv = new MailValidator();
         boolean aux = true;
         int i=0; //Tries for the user. After 3rd try, menu to register closes. (Avoiding infinite loop).
@@ -105,44 +106,50 @@ public class GeocachingPOO {
             i++;
         } while (!aux);
 
-        if (userbase.exists(mail)) {    // E-maill already in use
-            System.out.println("E-mail already in use.");
+        // Check if e-mail is in use
+        if (userbase.exists(mail)) {
+            System.out.println("E-mail already in use!");
             return;
-        }
+        } else newuser.setMail(mail);
 
+        // Get User Name
         System.out.print("Name: ");
-        name = sc.nextLine().replaceAll("[\n\r]", "");
+        newuser.setName(sc.nextLine().replaceAll("[\n\r]", ""));
 
+        // Get User BDate
+        do {
+            System.out.print("Birthdate (Day/Month/Year): ");
+            bdate_return = newuser.setBDate(sc.nextLine().replaceAll("[\n\r]",""));
+
+            if (bdate_return == 1)
+                System.out.println("Invalid day!");
+            else if (bdate_return == 2)
+                System.out.println("Invalid month!");
+            else if (bdate_return == 3)
+                System.out.println("Invalid year");
+        } while ( bdate_return != 0 );
 
         System.out.print("Pass: ");
         pass = sc.nextLine().replaceAll("[\n\r]","");
 
-        /*do {    // Ask for date while date is wrong
-            if (!aux) System.out.println("Invalid date!");
-            System.out.print("Birthdate (Day/Month/Year): ");
+        // Get User Password
+        newuser.setPass(sc.nextLine().replaceAll("[\n\r]",""));
 
-           bdate_fields = sc.nextLine().replaceAll("[\n\r]","").split("/");
+        // Get User Address
+        System.out.print("Country: ");
+        country = sc.nextLine().replaceAll("[\n\r]","");
+        System.out.print("City: ");
+        city = sc.nextLine().replaceAll("[\n\r]","");
+        newuser.setAddress(city, country);
 
-        } while ( !(aux = (bdate_fields.length == 3)) );
-        bdate = new GregorianCalendar(Integer.parseInt(bdate_fields[2]),
-        Integer.parseInt(bdate_fields[1]), Integer.parseInt(bdate_fields[0]));
-        */
+        // Get User Gender
+        System.out.print("Gender (g for girl, b for boy): ");
+        gender = sc.nextLine().replaceAll("[\n\r]","");
+        newuser.setGender(gender);
 
-       //New code for the bdate approval
-
-
-        GregorianCalendar bbbdate = typebdate();
-        if(bbbdate != null){
-            newuser = new User(mail, pass, name, id, bbbdate);
-
-            System.out.print("Country: ");
-            country = sc.nextLine().replaceAll("[\n\r]","");
-            System.out.print("City: ");
-            city = sc.nextLine().replaceAll("[\n\r]","");
-            System.out.print("Gender (g for girl, b for boy): ");
-            gender = sc.nextLine().replaceAll("[\n\r]","");
-
-            newuser.setAddress(city, country);
+        if (userbase.exists(mail)) {    // E-maill already in use
+            System.out.println("E-mail already in use.");
+        } else {                        // New e-mail
             userbase.addUser(newuser);
             newuser.setGender(gender);
             newuser = null; id++;
