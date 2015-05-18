@@ -19,11 +19,12 @@ public class User {
     private Address address;          // User Address
     private GregorianCalendar bdate;  // User birthdate
     private int points;               // User points
+    private int id;                   // User Id
 
     private TreeMap<Integer, Activity> activities;  // User activities
     private Statistic statistics;                   // User statistics
-    private ArrayList<User> friends;                // User friends
     private ReportedCacheBase reportedmine;        // My reports
+    private ArrayList<Integer> friends;             // User friends
 
     /**
      * Constructor without arguments
@@ -33,30 +34,31 @@ public class User {
         this.gender = "";
         this.address = new Address("New York","USA");
         this.bdate = new GregorianCalendar();
-        this.points = 0;
+        this.points = 0; this.id = 0;
         this.activities = new TreeMap<Integer, Activity>();
         this.statistics = new Statistic();
-        this.friends = new ArrayList<User>();
+        this.friends = new ArrayList<Integer>();
     }
 
     /**
      * Construtor with arguments
-     * @arg mail User e-mail
-     * @arg pass User password
-     * @arg name User name
+     * @param mail  User e-mail
+     * @param pass  User password
+     * @param name  User name
+     * @param id    User id
+     * @param bdate User birthdate
      */
-    public User (String mail, String pass, String name) {
-        this.mail = mail;
-        this.name = name;
-        this.pass = encryptPass(pass);
-
-        if (this.pass.equals(pass))
-            throw new IllegalStateException("Try another password");
+    public User (String mail, String pass, String name, int id, GregorianCalendar bdate) {
+        this();
+        this.mail = mail; this.name = name;
+        this.pass = encryptPass(pass); this.id = id;
+        this.address = new Address();
+        this.bdate = (GregorianCalendar) bdate.clone();
     }
 
     /**
      * Construct a new User with the same info as a given User
-     * @arg user User from which the information will be fetched
+     * @param user User from which the information will be fetched
      */
     public User (User user) {
         this.mail = user.getMail(); this.pass = user.getPass();
@@ -65,21 +67,22 @@ public class User {
         this.activities = user.getActivities();
         this.statistics = user.getStatistics();
         this.friends = user.getFriends();
+        this.id = user.getId();
     }
-    
-    
+
+
     /**
      * Removes a Cache from this User: from Statistics and from the TreeMap, given an id
-     * 
+     *
      * @arg id Identifier of the Cache
-     * 
+     *
      * private TreeMap<Integer, Activity> activities;  // User activities  ? whats that integer?
      */
     public void removeCache(String id){
         this.statistics.removeCache(id); //Removes from Statistics.
-        
+
         for(Activity a : this.activities.values()){
-            if(a.getCache().getId().equals(id)) activities.remove(a.getCache()); 
+            if(a.getCache().getId().equals(id)) activities.remove(a.getCache());
         }
     }
     // Getters
@@ -103,13 +106,6 @@ public class User {
      */
     public String getPass () {
         return this.pass;
-    }
-
-    /**
-     * @return User B-date
-     */
-    public String getBdate(){
-        return this.bdate.toString();
     }
 
     /**
@@ -140,9 +136,11 @@ public class User {
         return this.points;
     }
 
+
     /**
      * @return User activities
      */
+    @SuppressWarnings("unchecked")
     public TreeMap<Integer, Activity> getActivities () {
         return (TreeMap<Integer, Activity>) this.activities.clone();
     }
@@ -157,8 +155,16 @@ public class User {
     /**
      * @return User friends list
      */
-    public ArrayList<User> getFriends () {
-        return new ArrayList<User>(this.friends);
+    @SuppressWarnings("unchecked")
+    public ArrayList<Integer> getFriends () {
+        return (ArrayList<Integer>) this.friends.clone();
+    }
+
+    /**
+     * @return The user Id
+     */
+    public Integer getId () {
+        return this.id;
     }
 
     //Setters
@@ -179,6 +185,7 @@ public class User {
 
     /**
      * Set the password for the first time
+     * @param passw Password for the user
      */
     public void setPass(String passw){
         this.pass = encryptPass(passw);
@@ -195,7 +202,7 @@ public class User {
 
     /**
      * Change the user birthdate
-     * @arg date Date formated as 'DD/MM/YY'
+     * @param date Date formated as 'DD/MM/YY'
      */
     public void setBDate(String date){
         //"03/05/1994"
@@ -208,50 +215,18 @@ public class User {
         this.bdate = new GregorianCalendar(y,m,d);
     }
 
-    
-
     // Other methods
 
-    /**
-     * Confirm if the given password is equal to the one stored
-     * @arg pass
-     */
-    public boolean confirmPass (String pass) {
-        if (this.getPass().equals(encryptPass(pass))) return true;
-        else return false;
-    }
-
-    /**
-     * Function to encrypt password when creating user
-     * @arg pass Password to be encrypted
-     */
-    private String encryptPass (String pass) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            md.update(pass.getBytes());
-
-            byte byteData[] = md.digest();
-            StringBuffer sb = new StringBuffer();
-
-            for (int i = 0; i < byteData.length; i++)
-                sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
-
-            return sb.toString();
-        } catch (NoSuchAlgorithmException e){   // Unable to ecnrypt password
-            return pass;
-        }
-    }
-    
     /**
      * Report a Cache - call the method addCache (Cache ca as argument.
      * The id is one field of the cache so its not necessary to pass as an argument.)
      * (now...) For the user it is important to report by id.
      * -- Report Cache by an id: Changes:
      * he inserts the id. Check if it exists in the reports base already.
-     * if not make method on Cache to find that Cache by the id. 
-     * 
+     * if not make method on Cache to find that Cache by the id.
+     *
      * (done).
-     * 
+     *
      * CHANGE the SCOPE OF THIS...
      * Usually this goes to GeoCaching with all the prints and all...
      */
@@ -260,9 +235,7 @@ public class User {
             reportedmine.addCache(id);
         }
     }
-    
-    
-    
+
     // toString, equals and clone
 
     /**
@@ -274,21 +247,22 @@ public class User {
 
         sb.append("Mail: " + this.mail + "\n");
         sb.append("Name: " + this.name + "\n");
-        sb.append("Gender: " + this.gender + "\n");
-        sb.append("Address: " + this.address.toString() + "\n");
         if (bdate != null) {
             day = String.valueOf(bdate.get(GregorianCalendar.DAY_OF_MONTH));
             month = String.valueOf(bdate.get(GregorianCalendar.MONTH));
             year = String.valueOf(bdate.get(GregorianCalendar.YEAR));
             sb.append("Birthdate: " + day + "/" + month + "/" + year + "\n");
         }
+        if (gender != null) sb.append("Gender: " + this.gender + "\n");
+        if (address != null) sb.append("Address: " + this.address.toString() + "\n");
+        sb.append("User id: " + this.id + "\n");
 
         return sb.toString();
     }
 
     /**
      * Compares this object with another User to check if they are equal
-     * @arg user User to compare with
+     * @param user User to compare with
      */
     public boolean equals (Object user) {
         if (this == user) return true;
@@ -314,5 +288,51 @@ public class User {
      */
     public User clone () {
         return new User(this);
+    }
+
+    // Other methods
+
+    /**
+     * Confirm if the given password is equal to the one stored
+     * @param pass
+     */
+    public boolean confirmPass (String pass) {
+        if (this.getPass().equals(encryptPass(pass))) return true;
+        else return false;
+    }
+
+    /**
+     * Function to encrypt password when creating user
+     * @param pass Password to be encrypted
+     */
+    private String encryptPass (String pass) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(pass.getBytes());
+
+            byte byteData[] = md.digest();
+            StringBuffer sb = new StringBuffer();
+
+            for (int i = 0; i < byteData.length; i++)
+                sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e){   // Unable to ecnrypt password
+            return pass;
+        }
+    }
+
+    /**
+     * Add a user as a friend
+     * @param user User to be added
+     * @return true if friend was added, false otherwise
+     */
+    public boolean addFriend (User user) {
+        if (user == null) return false;
+        else {
+            if (friends == null) friends = new ArrayList<Integer>();
+            friends.add(user.getId());
+        }
+        return true;
     }
 }
