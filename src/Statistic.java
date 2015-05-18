@@ -196,7 +196,7 @@ public class Statistic
         for(int i=0;i<12;i++){
             TreeSet<Activity> actaux = this.stats.get(i);
                 for(Activity a : actaux){
-                    if(a.getCache().getID().equals(idd)) return a.getCache();
+                    if(a.getCache().getId().equals(idd)) return a.getCache();
                 }
         }
         return null;
@@ -209,7 +209,7 @@ public class Statistic
          for(int i=0;i<12;i++){
             TreeSet<Activity> actaux = this.stats.get(i);
                 for(Activity a : actaux){
-                    if(a.getCache().getID().equals(id)) actaux.remove(a);
+                    if(a.getCache().getId().equals(id)) actaux.remove(a);
                 }
         }
     }

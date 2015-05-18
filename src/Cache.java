@@ -103,7 +103,8 @@ public abstract class Cache
         ArrayList<Treasure> treasure = new ArrayList<Treasure>();
 
         for(Treasure aux : this.treasure)
-            treasure.add(aux.clone());
+        //fazer clone treasuere
+            treasure.add(aux);
         return treasure;
     }
 
@@ -158,7 +159,7 @@ public abstract class Cache
         this.registry = newRegistry;
     }
 
-    // toString, equals
+    // toString, equals, clone
 
     /**
      * Translate Cache's basic info to a String
@@ -189,5 +190,10 @@ public abstract class Cache
         comp = comp && (this.infos.equals(aux.getInfos()));
         return comp;
     }
+    
+    /**
+     *  Create a clone of Cache, to be overridden.
+     */
+    public abstract Cache clone();
 
 }

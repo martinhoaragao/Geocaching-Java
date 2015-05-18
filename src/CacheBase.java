@@ -91,7 +91,7 @@ public class CacheBase {
      */
     public boolean exists(String id){
         for(Cache a: this.caches){
-            if(a.getID().equals(id)) return true;
+            if(a.getId().equals(id)) return true;
         }
         return false;
     }
@@ -102,7 +102,8 @@ public class CacheBase {
      */
     public Cache getCache(String id){
        for(Cache a : this.caches){
-           if(a.getID().equals(id)) return a.clone();
+           //fazer clone cache
+           if(a.getId().equals(id)) return a;
         }
         return null;
     }
