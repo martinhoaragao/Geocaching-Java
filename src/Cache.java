@@ -173,7 +173,7 @@ public abstract class Cache
         return sb.toString();
     }
     /**
-     * Compares this  cache with another object to check if they are equal
+     * Compares this cache with another object to check if they are equal
      * @arg cache Object to compare with it
      */
     public boolean equals (Object cache) {
@@ -190,7 +190,7 @@ public abstract class Cache
         comp = comp && (this.info.equals(aux.getInfo()));
         return comp;
     }
-    
+
     /**
      *  Create a clone of Cache, to be overridden.
      */

@@ -34,6 +34,8 @@ public class MicroCache extends Cache
         super(microCache);
     }
 
+    // clone
+
     /**
      * Create a clone of MicroCache
      */

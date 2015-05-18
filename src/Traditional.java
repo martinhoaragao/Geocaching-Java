@@ -38,6 +38,8 @@ public class Traditional extends Cache
         super(cache);
     }
 
+    // clone
+
     /**
      * Create a clone of Traditional cache
      */

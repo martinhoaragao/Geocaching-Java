@@ -1,16 +1,16 @@
 /**
  * A puzzle to solve by the user, when looking for a "MisteryCache".
- * 
+ *
  * @version 08/05/2015
  */
 
 public class Puzzle {
-    private String question; 
+    private String question;
     private String answer;
     private Coordinates local;
     private int star; //The star difficulty rating for 1 to 10;
-    
-    
+
+
     /**
      * Constructor with arguments
      * @arg q Question
@@ -23,7 +23,7 @@ public class Puzzle {
         local = l;
         this.star = 3;
     }
-    
+
     /**
      * Empty Constructor
      */
@@ -32,9 +32,9 @@ public class Puzzle {
         this.question = "";
         this.answer = "";
         this.star = 2;
-        
+
     }
-    
+
     /**
      * Copy Constructor
      */
@@ -45,22 +45,22 @@ public class Puzzle {
         this.local = a.local.clone();
     }
     
-    
-    //Seters
-    
+
+    //Setters
+
     /**
      * Set the Coordinates for the treasure local.
-     * 
+     *
      * @arg lat Latitude
      * @arg lon Longitude
      */
     public void setCord(int lat, int lon){
         this.local.setLon(lon); this.local.setLat(lat);
     }
-    
+
     /**
      * Make a question and an answer for this Puzzle
-     * 
+     *
      * @arg q Question as a String
      * @arg a Answer as a String
      */
@@ -68,16 +68,16 @@ public class Puzzle {
         this.question = q;
         this.answer = a;
     }
-    
+
     /**
      * Sets the rate of the difficulty of the puzzle by giving a 1-10 star.
-     * 
+     *
      * @arg n Number ratting.
      */
     public void setStar(int n){
         this.star = n;
     }
-    
+
     //Getters and Shows
     /**
      * Get the difficulty of a Puzzle.
@@ -85,49 +85,49 @@ public class Puzzle {
     public int getStar(){
         return this.star;
     }
-    
+
     /**
      * Get the coordinates of the treasure.
      */
     public Coordinates getCoord(){
         return local;
     }
-    
+
     /**
      * Get the Question of this puzzle
      */
     public String getQuestion(){
         return this.question;
     }
-    
+
     /**
      * Show the Question of this puzzle
      */
     public void showQuestion(){
         System.out.println(this.getQuestion());
     }
-    
+
     /**
      * Get the answer of this puzzle
      */
     public String getAnswer(){
         return this.answer;
     }
-    
+
     /**
      * Show the answer of this puzzle
      */
     public void showAnswer(){
         System.out.println(this.getAnswer());
     }
-    
+
     /**
-     * Some Puzzles. 
+     * Some Puzzles.
      * The methods that return this puzzels are written in this signature, so don't confuse with other methods:
      * "public Puzzle p_____" where in the underscore there is the type of the puzzle followed by a number,
      * that can be seen as an index.
-     * 
-     * 
+     *
+     *
      * Types of Puzzles:
      * Visual (picture where coordinates are hidden)
      * Newspaper (sudokku...)
@@ -135,19 +135,19 @@ public class Puzzle {
      * Cipher (Cipher Code) (or different alphabet)...
      * Trivia (answering questions)
      * Numbers (Math to get the right coordinates, the c are... )
-     * 
+     *
      * (String q, String a, Coordinates l)
      */
 
     public Puzzle pNumber0(){
         Coordinates c = new Coordinates(35,40);
         Puzzle a = new Puzzle(" It is Transcendental and irrational. \n We learn it since pre-school... \n We may confuse it with food \n which makes us look like a fool. ", "PI", c);
-    
-    
+
+
         a.setStar(7);
         return a;
     }
-    
+
     public Puzzle pCipher0(){
         Coordinates o = new Coordinates(20, 15);
         //twenty _ fifteen
@@ -155,40 +155,40 @@ public class Puzzle {
         a.setStar(3);
         return a;
     }
-    
-    
-    
-    
+
+
+
+
     public String Cipher(){
         StringBuilder c = new StringBuilder();
         c.append("| A * |"); c.append(" B 8 |"); c.append(" C [ |"); c.append(" D } |");
         c.append(" E 3 |" + " F 1 |" + " G 6 |" + " H / |" + " I & |" + " J x | K 0 | L l | M + | N ~ | O o | P § | Q 0 | R { | S % | T t | U ç | V bb | W ve | X ics | Y j | Z 4 |");
-        
+
         return c.toString();
-        
+
     }
-    
-    
+
+
     /**
      * Clone, toString and equals
      */
-    
+
     public boolean equals(Object o){
         if(this == o) return true;
         if(this.getClass() != o.getClass()) return false;
-        
+
         Puzzle a = (Puzzle) o;
         return a.question.equals(this.question) && a.answer.equals(this.answer) && a.local.equals(this.local);
-        
+
     }
-    
+
     public String toString(){
         StringBuilder sb = new StringBuilder();
         sb.append("Q: " + this.getQuestion()); sb.append(" A: " + this.getAnswer());
         sb.append(local.toString());
         return sb.toString();
     }
-    
+
     public Puzzle clone(){
         return new Puzzle(this);
     }
