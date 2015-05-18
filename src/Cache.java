@@ -18,7 +18,7 @@ public abstract class Cache
     private String mail;                // Cache owner mail
     private ArrayList<String> registry;  // registration of the cache / Record book / Registry
     private ArrayList<Treasure> treasure;  // Cache treasure
-    private ArrayList<String> infos;    // Cache info
+    private ArrayList<String> info;    // Cache info
 
     // Constructors
 
@@ -31,13 +31,13 @@ public abstract class Cache
        this.mail = "";
        this.registry = new ArrayList<String>();
        this.treasure = new ArrayList<Treasure>();
-       this.infos = new ArrayList<String>();
+       this.info = new ArrayList<String>();
      }
 
     /**
      * Constructor of new Cache
      * @arg id String cache identifier
-     * @arg coord Coordinates
+     * @arg coord Coordininates
      * @arg mail String e-mail of owner
      */
     public Cache (String id, Coordinates coords, String mail) {
@@ -46,7 +46,7 @@ public abstract class Cache
         this.mail = mail;
         this.registry = new ArrayList<String>();
         this.treasure = new ArrayList<Treasure>();
-        this.infos = new ArrayList<String>();
+        this.info = new ArrayList<String>();
     }
 
     /**
@@ -59,7 +59,7 @@ public abstract class Cache
         this.mail = cache.getMail();
         this.registry = cache.getRegistry();
         this.treasure = cache.getTreasure();
-        this.infos = cache.getInfos();
+        this.info = cache.getInfo();
     }
 
     // Getters
@@ -110,12 +110,12 @@ public abstract class Cache
     /**
      *  @return Information of a cache
      */
-    public ArrayList<String> getInfos () {
-        ArrayList<String> infos = new ArrayList<String>();
+    public ArrayList<String> getInfo () {
+        ArrayList<String> info = new ArrayList<String>();
 
-        for(String aux : this.infos)
-            infos.add(aux);
-        return infos;
+        for(String aux : this.info)
+            info.add(aux);
+        return info;
     }
 
     // Setters
@@ -186,7 +186,7 @@ public abstract class Cache
         comp = comp && (this.coords.equals(aux.getCoords()));
         comp = comp && (this.registry.equals(aux.getRegistry()));
         comp = comp && (this.treasure.equals(aux.getTreasure()));
-        comp = comp && (this.infos.equals(aux.getInfos()));
+        comp = comp && (this.info.equals(aux.getInfo()));
         return comp;
     }
 
