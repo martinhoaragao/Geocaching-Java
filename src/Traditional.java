@@ -10,12 +10,6 @@ import java.util.ArrayList;
  */
 public class Traditional extends Cache
 {
-    private String id;                  //Cache identifier
-    private Coordinates coords;          // Cache coordinates
-    private String mail;                // Cache owner mail
-    private ArrayList<String> registry;  // registration of the cache / Record book / Registry
-    private ArrayList<Treasure> treasure;  // Cache treasure
-    private ArrayList<String> infos;    // Cache info
 
     // Constructors
 
@@ -23,12 +17,7 @@ public class Traditional extends Cache
      * Construtor without arguments
      */
     public Traditional () {
-       this.id = "";
-       this.coords = new Coordinates();
-       this.mail = "";
-       this.registry = new ArrayList<String>();
-       this.treasure = new ArrayList<Treasure>();
-       this.infos = new ArrayList<String>();
+        super();
      }
 
     /**
@@ -38,12 +27,7 @@ public class Traditional extends Cache
      * @arg mail String e-mail of owner
      */
     public Traditional (String id, Coordinates coords, String mail) {
-        this.id = id;
-        this.coords = coords.clone();
-        this.mail = mail;
-        this.registry = new ArrayList<String>();
-        this.treasure = new ArrayList<Treasure>();
-        this.infos = new ArrayList<String>();
+        super(id, coords, mail);
     }
 
     /**
@@ -51,19 +35,13 @@ public class Traditional extends Cache
      * @arg cache Cache
      */
     public Traditional (Cache cache) {
-        this.id = cache.getId();
-        this.coords = cache.getCoords();
-        this.mail = cache.getMail();
-        this.registry = cache.getRegistry();
-        this.treasure = cache.getTreasure();
-        this.infos = cache.getInfos();
+        super(cache);
     }
-
-    // equals
 
     /**
      * Create a clone of Traditional cache
      */
+    @Override
     public Traditional clone () {
         return new Traditional(this);
     }
