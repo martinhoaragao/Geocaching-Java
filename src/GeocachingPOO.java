@@ -90,7 +90,8 @@ public class GeocachingPOO {
         String[] bdate_fields;
         String bbdate;
         GregorianCalendar bdate = null;
-        User newuser;
+        User newuser = new User();
+        int bdate_return;
         MailValidator mv = new MailValidator();
         boolean aux = true, gender;
         int i=0; //Tries for the user. After 3rd try, menu to register closes. (Avoiding infinite loop).
@@ -111,8 +112,7 @@ public class GeocachingPOO {
         }
 
         System.out.print("Name: ");
-        name = sc.nextLine().replaceAll("[\n\r]", "");
-
+        newuser.setName(sc.nextLine().replaceAll("[\n\r]", ""));
 
         System.out.print("Pass: ");
         pass = sc.nextLine().replaceAll("[\n\r]","");
@@ -146,7 +146,6 @@ public class GeocachingPOO {
 
             newuser.setAddress(city, country);
             userbase.addUser(newuser);
-            newuser.setGender(gender);
             newuser = null; id++;
             System.out.println("User sucessfuly created!");
         }
@@ -308,7 +307,7 @@ public class GeocachingPOO {
     private static void changeGender () {
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("Gender: ");
+        System.out.print("Gender (g for girl/b for boy): ");
         if (sc.nextLine().replaceAll("[\n\r]", "").equals("g"))
             user.setGender(true);
         else user.setGender(false);
