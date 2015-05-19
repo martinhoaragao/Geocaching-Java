@@ -86,14 +86,13 @@ public class GeocachingPOO {
     /** Auxiliary function to register new user */
     private static void register () {
         Scanner sc = new Scanner(System.in);
-        String name, pass, country, city, gender, mail = "";
+        String name, pass, country, city, mail = "";
         String[] bdate_fields;
         String bbdate;
         GregorianCalendar bdate = null;
-        User newuser = new User();
-        int bdate_return;
+        User newuser;
         MailValidator mv = new MailValidator();
-        boolean aux = true;
+        boolean aux = true, gender;
         int i=0; //Tries for the user. After 3rd try, menu to register closes. (Avoiding infinite loop).
         int d,m,y,yy;
         do {
@@ -106,53 +105,48 @@ public class GeocachingPOO {
             i++;
         } while (!aux);
 
-        // Check if e-mail is in use
-        if (userbase.exists(mail)) {
-            System.out.println("E-mail already in use!");
+        if (userbase.exists(mail)) {    // E-maill already in use
+            System.out.println("E-mail already in use.");
             return;
-        } else newuser.setMail(mail);
+        }
 
-        // Get User Name
         System.out.print("Name: ");
-        newuser.setName(sc.nextLine().replaceAll("[\n\r]", ""));
+        name = sc.nextLine().replaceAll("[\n\r]", "");
 
-        // Get User BDate
-        do {
-            System.out.print("Birthdate (Day/Month/Year): ");
-            bdate_return = newuser.setBDate(sc.nextLine().replaceAll("[\n\r]",""));
-
-            if (bdate_return == 1)
-                System.out.println("Invalid day!");
-            else if (bdate_return == 2)
-                System.out.println("Invalid month!");
-            else if (bdate_return == 3)
-                System.out.println("Invalid year");
-        } while ( bdate_return != 0 );
 
         System.out.print("Pass: ");
         pass = sc.nextLine().replaceAll("[\n\r]","");
 
-        // Get User Password
-        newuser.setPass(sc.nextLine().replaceAll("[\n\r]",""));
+        /*do {    // Ask for date while date is wrong
+            if (!aux) System.out.println("Invalid date!");
+            System.out.print("Birthdate (Day/Month/Year): ");
 
-        // Get User Address
-        System.out.print("Country: ");
-        country = sc.nextLine().replaceAll("[\n\r]","");
-        System.out.print("City: ");
-        city = sc.nextLine().replaceAll("[\n\r]","");
-        newuser.setAddress(city, country);
+           bdate_fields = sc.nextLine().replaceAll("[\n\r]","").split("/");
 
-        // Get User Gender
-        System.out.print("Gender (g for girl, b for boy): ");
-        gender = sc.nextLine().replaceAll("[\n\r]","");
-        if (gender.equals("g"))
-            newuser.setGender(true);
-        else newuser.setGender(false);
+        } while ( !(aux = (bdate_fields.length == 3)) );
+        bdate = new GregorianCalendar(Integer.parseInt(bdate_fields[2]),
+        Integer.parseInt(bdate_fields[1]), Integer.parseInt(bdate_fields[0]));
+        */
 
-        if (userbase.exists(mail)) {    // E-maill already in use
-            System.out.println("E-mail already in use.");
-        } else {                        // New e-mail
+       //New code for the bdate approval
+
+
+        GregorianCalendar bbbdate = typebdate();
+        if(bbbdate != null){
+            newuser = new User(mail, pass, name, id, bbbdate);
+
+            System.out.print("Country: ");
+            country = sc.nextLine().replaceAll("[\n\r]","");
+            System.out.print("City: ");
+            city = sc.nextLine().replaceAll("[\n\r]","");
+            System.out.print("Gender (g for girl, b for boy): ");
+            if (sc.nextLine().replaceAll("[\n\r]","").equals("g"))
+                gender = true;
+            else gender = false;
+
+            newuser.setAddress(city, country);
             userbase.addUser(newuser);
+            newuser.setGender(gender);
             newuser = null; id++;
             System.out.println("User sucessfuly created!");
         }
@@ -257,7 +251,12 @@ public class GeocachingPOO {
             System.out.println("Type new password: ");
             newpass = sc.nextLine().replaceAll("[\n\r]","");
 
-            userbase.getUser(user.getMail(),currentpass).setPass(newpass);
+            try {
+                userbase.getUser(user.getMail(),currentpass).setPass(newpass);
+            } catch (Exception e) {
+                System.out.println("Error! Unable to change password!");
+            }
+
         }
     }
 
@@ -266,7 +265,12 @@ public class GeocachingPOO {
         Scanner sc = new Scanner(System.in);
 
         System.out.print("Name: ");
-        user.setName(sc.nextLine().replaceAll("[\n\r]", ""));
+        try {
+            user.setName(sc.nextLine().replaceAll("[\n\r]", ""));
+        } catch (Exception e) {
+            System.out.println("Error! Unable to change name!");
+        }
+
     }
 
     /** Auxiliary function to change User Address */
@@ -278,7 +282,11 @@ public class GeocachingPOO {
         city = sc.nextLine().replaceAll("[\n\r]", "");
         System.out.print("Country: ");
         country = sc.nextLine().replaceAll("[\n\r]", "");
-        user.setAddress(city, country);
+
+        try { user.setAddress(city, country); }
+        catch (Exception e) {
+            System.out.println("Error! Unable to change Address!");
+        }
     }
 
     /** Auxiliary function to change User birthdate */
@@ -300,7 +308,7 @@ public class GeocachingPOO {
     private static void changeGender () {
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("Gender (g for girl/b for boy): ");
+        System.out.print("Gender: ");
         if (sc.nextLine().replaceAll("[\n\r]", "").equals("g"))
             user.setGender(true);
         else user.setGender(false);

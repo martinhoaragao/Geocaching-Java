@@ -291,7 +291,16 @@ public class User {
 
         return return_value;
     }
-    
+
+    /**
+     * Change the user birthdate
+     * @param date Date formated as GregorianCalendar
+     */
+    public void setBDate(GregorianCalendar date) {
+        //"03/05/1994"
+        GregorianCalendar bbb = (GregorianCalendar) date.clone();
+        this.bdate = bbb;
+    }
 
     // Other methods
 
@@ -430,15 +439,5 @@ public class User {
             friends.add(user.getId());
         }
         return true;
-    }
-    
-    /**
-     * Change the user birthdate
-     * @param date Date formated as GregorianCalendar
-     */
-    public void setBDate(GregorianCalendar date){
-        //"03/05/1994"
-        GregorianCalendar bbb = (GregorianCalendar) date.clone();
-        this.bdate = bbb;
     }
 }
