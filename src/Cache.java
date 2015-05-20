@@ -182,7 +182,7 @@ public abstract class Cache
         if ((cache == null) || (this.getClass() != cache.getClass())) return false;
 
         Cache aux = (Cache) cache;
-        boolean comp = this.id.equals(aux.getId());
+        boolean comp = (this.id == aux.getId());
         comp = comp && (this.mail.equals(aux.getMail()));
         comp = comp && (this.coords.equals(aux.getCoords()));
         comp = comp && (this.registry.equals(aux.getRegistry()));
