@@ -127,19 +127,26 @@ public class CacheBase {
      * Return CacheBase info in String
      */
     public String toString () {
-      StringBuilder sb = new StringBuilder();
-      Iterator it = this.caches.iterator();
+        StringBuilder sb = new StringBuilder();
+        Iterator it = this.caches.iterator();
 
-      sb.append(this.caches.size() + " caches are stored.\n");
+        sb.append(this.caches.size() + " caches are stored.\n");
 
-      while (it.hasNext()) {
-        Cache aux = (Cache) it.next();
-        Coordinates coords = aux.getCoords();
-        sb.append("Lat: " + coords.getLat());
-        sb.append(" Lon: " + coords.getLon() + "\n");
-      }
+        while (it.hasNext()) {
+          Cache aux = (Cache) it.next();
+          Coordinates coords = aux.getCoords();
+          sb.append("Lat: " + coords.getLat());
+          sb.append(" Lon: " + coords.getLon() + "\n");
+        }
 
-      return sb.toString();
+        while (it.hasNext()) {
+            Cache aux = (Cache) it.next();
+            Coordinates coords = (Coordinates) aux.getCoords();
+            sb.append("Lat: " + coords.getLat());
+            sb.append(" Lon: " + coords.getLon() + "\n");
+        }
+
+        return sb.toString();
     }
 
     /**

@@ -6,8 +6,10 @@
  */
 
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -21,9 +23,9 @@ public class User {
     private int points;               // User points
     private Double id;                   // User Id
 
-    private TreeMap<Integer, Activity> activities;  // User activities
-    private Statistic statistics;                   // User statistics
-    private ArrayList<Double> friends;             // User friends
+    private TreeSet<Activity> activities;  // Last 10 User activities
+    private Statistic statistics;          // User statistics
+    private ArrayList<Double> friends;     // User friends
 
     /**
      * Constructor without arguments
@@ -34,7 +36,7 @@ public class User {
         this.address = new Address("New York","USA");
         this.bdate = new GregorianCalendar();
         this.points = 0; this.id = 0.0;
-        this.activities = new TreeMap<Integer, Activity>();
+        this.activities = new TreeSet<Activity>(new CacheDateComparator());
         this.statistics = new Statistic();
         this.friends = new ArrayList<Double>();
     }
@@ -145,8 +147,16 @@ public class User {
      * @return User activities
      */
     @SuppressWarnings("unchecked")
-    public TreeMap<Integer, Activity> getActivities () {
-        return (TreeMap<Integer, Activity>) this.activities.clone();
+    public TreeSet<Activity> getActivities () {
+      TreeSet<Activity> ts = new TreeSet<Activity>(new CacheDateComparator());
+      Iterator it = activities.iterator();
+      Activity aux;
+
+      while (it.hasNext()) {
+        aux = (Activity) it.next();
+        ts.add(aux.clone());
+      }
+      return ts;
     }
 
     /**
@@ -401,7 +411,25 @@ public class User {
     public void addFriend (User user) throws NullPointerException {
         if (user == null)
           throw new NullPointerException("user can't be null!");
-        else 
+        else
           friends.add(user.getId());
+    }
+
+    /** Add an Activity to the activities queue
+     * @param act Activity to be added
+     */
+    public void addActivity (Activity act) throws NullPointerException {
+      Activity aux = null;
+
+      if (act == null)
+        throw new NullPointerException("act can't be null!");
+
+      // Remove head if there are already 10 activities
+      if (this.activities.size() == 10)
+        try { aux = this.activities.first(); }
+        catch (Exception e) { aux = null; }
+      if (aux != null) this.activities.remove(aux);
+
+      this.activities.add(act);
     }
 }
