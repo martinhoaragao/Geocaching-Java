@@ -23,9 +23,10 @@ public class User {
     private int points;               // User points
     private Double id;                   // User Id
 
-    private TreeSet<Activity> activities;  // Last 10 User activities
-    private Statistic statistics;          // User statistics
-    private ArrayList<Double> friends;     // User friends
+    private TreeSet<Activity> activities;       // Last 10 User activities
+    private Statistic statistics;               // User statistics
+    private ArrayList<Double> friends;          // User friends
+    private ArrayList<Double> friend_requests;  // Friend Requests
 
     /**
      * Constructor without arguments
@@ -164,14 +165,6 @@ public class User {
      */
     public Statistic getStatistics () {
         return this.statistics.clone();
-    }
-
-    /**
-     * @return User friends list
-     */
-    @SuppressWarnings("unchecked")
-    public ArrayList<Double> getFriends () {
-        return (ArrayList<Double>) this.friends.clone();
     }
 
     /**
@@ -403,6 +396,18 @@ public class User {
         }
     }
 
+    // Code for Friends
+
+    /** Add a User id to the friends request
+     * @param id The user id
+     */
+    public void addFriendRequest (Double id) throws IllegalArgumentException {
+      if (id < 0)
+        throw new IllegalArgumentException("id has to be positive!");
+
+      this.friend_requests.add(id);
+    }
+
     /**
      * Add a user as a friend
      * @param user User to be added
@@ -413,6 +418,20 @@ public class User {
           throw new NullPointerException("user can't be null!");
         else
           friends.add(user.getId());
+    }
+
+    /**
+     * @return User friends list
+     */
+    @SuppressWarnings("unchecked")
+    public ArrayList<Double> getFriends () {
+        return (ArrayList<Double>) this.friends.clone();
+    }
+
+    /** @return Friend Requests list */
+    @SuppressWarnings("unchecked")
+    public ArrayList<Double> getFriendRequests () {
+        return (ArrayList<Double>) this.friend_requests.clone();
     }
 
     /** Add an Activity to the activities queue

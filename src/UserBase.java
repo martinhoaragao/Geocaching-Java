@@ -38,6 +38,33 @@ public class UserBase {
 
     // Getters
 
+    /** Function to be used only by the user base to get a user
+     * @param id User id
+     */
+    private User getUser (Double id) {
+        Iterator it = users.iterator();
+        User user;
+
+        while (it.hasNext()) {
+            user = (User) it.next();
+            if (user.getId() == id) return user;
+        }
+        return null;
+    }
+
+    /** Function to be used inly by the user base to get a user
+     * @param mail User e-mail
+     */
+    private User getUser (String mail) {
+        Iterator it = users.iterator();
+        User user;
+
+        while (it.hasNext()) {
+            user = (User) it.next();
+            if (user.getMail().equals(mail)) return user;
+        }
+    }
+
     /**
      * Returns the user with the specified e-mail if passwords match
      * @param mail User mail
@@ -197,4 +224,21 @@ public class UserBase {
 
         return found;
     }
+
+    /** Create friend request from a given user to another
+     * @param mail Mail of the user to send the request
+     * @param id Id of the user sendind the request
+     */
+    public void sendFriendRequest (Double id, String mail) {
+        User u = this.getUser()
+
+        if (u != null)
+            try { u.addFriendRequest(id); }
+            catch
+    }
+
+    /** Accept a friend request
+     * Add the id of the user that accepted to the list of friends of the user
+     * that sent the request
+     */
 }
