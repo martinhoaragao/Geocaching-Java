@@ -19,12 +19,11 @@ public class User {
     private Address address;          // User Address
     private GregorianCalendar bdate;  // User birthdate
     private int points;               // User points
-    private int id;                   // User Id
+    private Double id;                   // User Id
 
     private TreeMap<Integer, Activity> activities;  // User activities
     private Statistic statistics;                   // User statistics
-    private ReportedCacheBase reportedmine;        // My reports
-    private ArrayList<Integer> friends;             // User friends
+    private ArrayList<Double> friends;             // User friends
 
     /**
      * Constructor without arguments
@@ -34,10 +33,10 @@ public class User {
         this.gender = true;
         this.address = new Address("New York","USA");
         this.bdate = new GregorianCalendar();
-        this.points = 0; this.id = 0;
+        this.points = 0; this.id = 0.0;
         this.activities = new TreeMap<Integer, Activity>();
         this.statistics = new Statistic();
-        this.friends = new ArrayList<Integer>();
+        this.friends = new ArrayList<Double>();
     }
 
     /**
@@ -48,7 +47,7 @@ public class User {
      * @param id    User id
      * @param bdate User birthdate
      */
-    public User (String mail, String pass, String name, int id, GregorianCalendar bdate) throws NullPointerException, IllegalStateException {
+    public User (String mail, String pass, String name, Double id, GregorianCalendar bdate) throws NullPointerException, IllegalStateException {
         this();
 
         if (mail == null)
@@ -95,15 +94,11 @@ public class User {
     /**
      * Removes a Cache from this User: from Statistics and from the TreeMap, given an id
      *
-     * @arg id Identifier of the Cache
-     *
-     * private TreeMap<Integer, Activity> activities;  // User activities  ? whats that integer?
+     * @param id Identifier of the Cache
      */
-    public void removeCache (String id) throws NullPointerException, IllegalStateException {
+    public void removeCache (Double id) throws NullPointerException, IllegalStateException {
         if (id == null)
             throw new NullPointerException("id can't be null!");
-        if (id.trim() == "")
-            throw new IllegalStateException("id can't be empty");
 
         this.statistics.removeCache(id); //Removes from Statistics.
 
@@ -181,14 +176,14 @@ public class User {
      * @return User friends list
      */
     @SuppressWarnings("unchecked")
-    public ArrayList<Integer> getFriends () {
-        return (ArrayList<Integer>) this.friends.clone();
+    public ArrayList<Double> getFriends () {
+        return (ArrayList<Double>) this.friends.clone();
     }
 
     /**
      * @return The user Id
      */
-    public Integer getId () {
+    public Double getId () {
         return this.id;
     }
 
@@ -306,39 +301,13 @@ public class User {
      * Change the user id
      * @param id New user id
      */
-    public void setId (Integer id) throws NullPointerException, IllegalStateException {
+    public void setId (Double id) throws NullPointerException, IllegalStateException {
         if (id == null)
           throw new NullPointerException("id can't be null!");
         if (id < 0)
           throw new IllegalStateException("id can't be negative!");
 
         this.id = id;
-    }
-
-    // Other methods
-
-    /**
-     * Report a Cache - call the method addCache (Cache ca as argument.
-     * The id is one field of the cache so its not necessary to pass as an argument.)
-     * (now...) For the user it is important to report by id.
-     * -- Report Cache by an id: Changes:
-     * he inserts the id. Check if it exists in the reports base already.
-     * if not make method on Cache to find that Cache by the id.
-     *
-     * (done).
-     *
-     * CHANGE the SCOPE OF THIS...
-     * Usually this goes to GeoCaching with all the prints and all...
-     */
-    public void reportCache(String id) throws NullPointerException, IllegalStateException {
-        if (id == null)
-            throw new NullPointerException("id can't be null!");
-        if (id.trim() == "")
-            throw new IllegalStateException("id can't be empty!");
-
-        if(!reportedmine.exists(id)){
-            reportedmine.addCache(id);
-        }
     }
 
     // toString, equals and clone
@@ -445,12 +414,10 @@ public class User {
      * @param user User to be added
      * @return true if friend was added, false otherwise
      */
-    public boolean addFriend (User user) {
-        if (user == null) return false;
-        else {
-            if (friends == null) friends = new ArrayList<Integer>();
-            friends.add(user.getId());
-        }
-        return true;
+    public void addFriend (User user) throws NullPointerException {
+        if (user == null)
+          throw new NullPointerException("user can't be null!");
+        else 
+          friends.add(user.getId());
     }
 }
