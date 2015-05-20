@@ -53,7 +53,7 @@ public class Statistic
      * Sum points of this statistic
      * @param points Total points of this User Statistic
      */
-    public int gettotp(){
+    public int getSumPoints(){
         int r=0;
         for(int i=0;i<12;i++){ //In every month of this TreeMap
             
