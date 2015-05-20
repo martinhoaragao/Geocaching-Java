@@ -411,7 +411,7 @@ public class User {
     public void addFriend (User user) throws NullPointerException {
         if (user == null)
           throw new NullPointerException("user can't be null!");
-        else 
+        else
           friends.add(user.getId());
     }
 
@@ -426,7 +426,7 @@ public class User {
 
       // Remove head if there are already 10 activities
       if (this.activities.size() == 10)
-        try { aux = this.activities.first(); }  
+        try { aux = this.activities.first(); }
         catch (Exception e) { aux = null; }
       if (aux != null) this.activities.remove(aux);
 
