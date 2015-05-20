@@ -26,11 +26,11 @@ public class MultiCache extends Cache
 
     /**
      * Constructor of new MultiCache
-     * @arg id String cache identifier
+     * @arg id double cache identifier
      * @arg coord Coordinates
      * @arg mail String e-mail of owner
      */
-    public MultiCache (String id, Coordinates coords, String mail) {
+    public MultiCache (double id, Coordinates coords, String mail) {
         super(id, coords, mail);
         this.locals = new ArrayList<Coordinates>();
         this.stage = 0;
@@ -116,7 +116,7 @@ public class MultiCache extends Cache
         if ((multiCache == null) || (this.getClass() != multiCache.getClass())) return false;
 
         MultiCache aux = (MultiCache) multiCache;
-        boolean comp = this.getId().equals(aux.getId());
+        boolean comp = (this.getId() == aux.getId());
         comp = comp && (this.getMail().equals(aux.getMail()));
         comp = comp && (this.getCoords().equals(aux.getCoords()));
         comp = comp && (this.getRegistry().equals(aux.getRegistry()));

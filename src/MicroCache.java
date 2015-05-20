@@ -18,11 +18,11 @@ public class MicroCache extends Cache
 
     /**
      * Constructor of new MicroCache
-     * @arg id String cache identifier
+     * @arg id double cache identifier
      * @arg coord Coordinates
      * @arg mail String e-mail of owner
      */
-    public MicroCache (String id, Coordinates coords, String mail) {
+    public MicroCache (double id, Coordinates coords, String mail) {
         super(id, coords, mail);
     }
 

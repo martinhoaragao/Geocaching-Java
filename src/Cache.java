@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public abstract class Cache
 {
-    private String id;                  //Cache identifier
+    private double id;                  //Cache identifier
     private Coordinates coords;          // Cache coordinates
     private String mail;                // Cache owner mail
     private ArrayList<String> registry;  // registration of the cache / Record book / Registry
@@ -26,7 +26,7 @@ public abstract class Cache
      * Construtor without arguments
      */
     public Cache () {
-       this.id = "";
+       this.id = 0;
        this.coords = new Coordinates();
        this.mail = "";
        this.registry = new ArrayList<String>();
@@ -36,11 +36,11 @@ public abstract class Cache
 
     /**
      * Constructor of new Cache
-     * @arg id String cache identifier
+     * @arg id double cache identifier
      * @arg coord Coordininates
      * @arg mail String e-mail of owner
      */
-    public Cache (String id, Coordinates coords, String mail) {
+    public Cache (double id, Coordinates coords, String mail) {
         this.id = id;
         this.coords = coords.clone();
         this.mail = mail;
@@ -67,7 +67,7 @@ public abstract class Cache
     /**
      * @return ID of a Cache
      */
-    public String getId() {
+    public double getId() {
         return this.id;
     }
 
@@ -125,7 +125,7 @@ public abstract class Cache
      * Set cache ID
      * @arg id, String cache identifier
      */
-    public void setId (String id) {
+    public void setId (double id) {
         this.id = id;
     }
 

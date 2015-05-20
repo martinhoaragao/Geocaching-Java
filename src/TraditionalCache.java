@@ -8,7 +8,7 @@ import java.util.ArrayList;
  *
  *  @version 08/05/2015
  */
-public class Traditional extends Cache
+public class TraditionalCache extends Cache
 {
 
     // Constructors
@@ -16,17 +16,17 @@ public class Traditional extends Cache
     /*+
      * Construtor without arguments
      */
-    public Traditional () {
+    public TraditionalCache () {
         super();
      }
 
     /**
      * Constructor of new Cache
-     * @arg id String cache identifier
+     * @arg id double cache identifier
      * @arg coord Coordinates
      * @arg mail String e-mail of owner
      */
-    public Traditional (String id, Coordinates coords, String mail) {
+    public TraditionalCache (double id, Coordinates coords, String mail) {
         super(id, coords, mail);
     }
 
@@ -34,18 +34,18 @@ public class Traditional extends Cache
      * Construct a Cache using another cache as reference
      * @arg cache Cache
      */
-    public Traditional (Cache cache) {
+    public TraditionalCache (Cache cache) {
         super(cache);
     }
 
     // clone
 
     /**
-     * Create a clone of Traditional cache
+     * Create a clone of TraditionalCache cache
      */
     @Override
-    public Traditional clone () {
-        return new Traditional(this);
+    public TraditionalCache clone () {
+        return new TraditionalCache(this);
     }
 
 }
