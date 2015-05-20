@@ -5,13 +5,14 @@
  */
 
 import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class UserBase {
-    private TreeSet<User> users;
+    private ArrayList<User> users;          /* Array to store users */
+    private TreeMap<String, Double> mails;  /* Map between mails and ids */
 
     // Constructors
 
@@ -19,7 +20,8 @@ public class UserBase {
      * Constructor without arguments
      */
     public UserBase () {
-        this.users = new TreeSet<User>(new AlphabeticComparator());
+        this.users = new ArrayList<User>();
+        this.mails = new TreeMap<String, Double>(new MailComparator());
     }
 
     /**
@@ -27,13 +29,8 @@ public class UserBase {
      * @param userbase UserBase from where Users will be fetched
      */
     public UserBase (UserBase userbase) {
-        TreeSet users = userbase.getUsers();
-        Iterator it = users.iterator();
-
-        while (it.hasNext()) {
-            User aux = (User) it.next();
-            this.users.add(aux);
-        }
+        this.users = userbase.getUsers();
+        this.mails = userbase.getMails();
     }
 
     // Getters
@@ -42,27 +39,17 @@ public class UserBase {
      * @param id User id
      */
     private User getUser (Double id) {
-        Iterator it = users.iterator();
-        User user;
-
-        while (it.hasNext()) {
-            user = (User) it.next();
-            if (user.getId() == id) return user;
-        }
-        return null;
+        if (id < users.size())
+            return users.get(id.intValue() - 1);
+        else
+            return null;
     }
 
     /** Function to be used inly by the user base to get a user
      * @param mail User e-mail
      */
     private User getUser (String mail) {
-        Iterator it = users.iterator();
-        User user;
-
-        while (it.hasNext()) {
-            user = (User) it.next();
-            if (user.getMail().equals(mail)) return user;
-        }
+        return this.users.get(this.mails.get(mail).intValue() - 1);
     }
 
     /**
@@ -71,17 +58,14 @@ public class UserBase {
      * @param pass User password
      */
     public User getUser (String mail, String pass) {
-        Iterator it = this.users.iterator();
-        boolean found = false;
-        User aux = null;
+        /* Get the user id */
+        Integer id = this.mails.get(mail).intValue();
 
-        while (it.hasNext() && !found) {
-          aux = (User) it.next();
-          if (aux.confirmPass(pass)) found = true;
+        if (id != null) {
+            User user = this.users.get(id - 1);
+            if (user.confirmPass(pass)) return user;
         }
-
-        if (found) return aux;
-        else return null;
+        return null;
     }
 
     /**
@@ -95,8 +79,26 @@ public class UserBase {
      * @return TreeSet with all the users in the UserBase
      */
     @SuppressWarnings("unchecked")
-    public TreeSet<User> getUsers () {
-        return (TreeSet<User>) this.users.clone();
+    public ArrayList<User> getUsers () {
+        ArrayList<User> list = new ArrayList<User>();
+        Iterator it = users.iterator();
+
+        for (User user : this.users) {
+            list.add(user.clone());
+        }
+
+        return list;
+    }
+
+    /** @return TreeMap with the mapping between e-mails and ids */
+    @SuppressWarnings("unchecked")
+    public TreeMap<String, Double> getMails () {
+        TreeMap<String, Double> tm = new TreeMap<String, Double>();
+
+        for (String mail : mails.keySet())
+            tm.put(mail, mails.get(mail));
+
+        return tm;
     }
 
     // toString, equals and clone
@@ -130,15 +132,11 @@ public class UserBase {
 
         UserBase aux = (UserBase) ubase;
         boolean result;
+        /* Compare number of users */
         result = (this.users.size() == aux.getNumOfUsers());
-        // Should also check if Users are equal
-        if (result) {
-            Iterator it = this.users.iterator();
-            while (it.hasNext()) {
-              User a = (User) it.next();
-              result = result && (aux.exists(a.getMail()));
-            }
-        }
+        /* Compare all users */
+        for (User user : aux.getUsers())
+            result = result && (this.getUser(user.getId()).equals(user));
         return result;
     }
 
@@ -154,17 +152,14 @@ public class UserBase {
      * @param id User Id
      */
     public User getUserInfo (Double id) {
-        Iterator it = this.users.iterator();
-        boolean found = false;
-        User u = null;
+        User user = this.users.get(id.intValue() - 1);
 
-        while (it.hasNext() && !found) {
-            u = (User) it.next();
-            if (u.getId() == id) { found = true; u = u.clone(); u.setPass(""); }
+        if (user != null) {
+            user = user.clone();
+            user.setPass("----");
         }
-        if (!found) u = null;
 
-        return u;
+        return user;
     }
 
     /**
@@ -172,17 +167,10 @@ public class UserBase {
      * @param mail User e-mail
      */
     public User getUserInfo (String mail) {
-        Iterator it = this.users.iterator();
-        boolean found = false;
-        User u = null;
-
-        while (it.hasNext() && !found) {
-            u = (User) it.next();
-            if (u.getMail().equals(mail)) { found = true; u = u.clone(); u.setPass(""); }
-        }
-        if (!found) u = null;
-
-        return u;
+        int id = this.mails.get(mail).intValue();
+        User user = this.users.get(id - 1).clone();
+        user.setPass("----");
+        return user;
     }
 
     // Other methods
@@ -193,6 +181,7 @@ public class UserBase {
      */
     public void addUser (User user) {
         this.users.add(user);
+        this.mails.put(user.getMail(), user.getId());
     }
 
     /**
@@ -200,13 +189,7 @@ public class UserBase {
      * @param mail E-mail to check if it's already in use
      */
     public boolean exists (String mail) {
-        Iterator it = this.users.iterator();
-        boolean found = false;
-        while (it.hasNext() && !found) {
-          User aux = (User) it.next();
-          if (aux.getMail().equals(mail)) found = true;
-        }
-        return found;
+        return (this.mails.get(mail) != null);
     }
 
     /**
@@ -214,15 +197,12 @@ public class UserBase {
      * @param user User to be found in the UserBase
      */
     public boolean exists (User user) {
-        boolean found = false;
-        Iterator it = this.users.iterator();
+        int id = user.getId().intValue();
 
-        while (it.hasNext() && !found) {
-            User u = (User) it.next();
-            if (u.equals(user)) return true;
-        }
-
-        return found;
+        if (id < this.users.size())
+            return (this.users.get(id - 1).equals(user));
+        else
+            return false;
     }
 
     /** Create friend request from a given user to another
@@ -230,11 +210,15 @@ public class UserBase {
      * @param id Id of the user sendind the request
      */
     public void sendFriendRequest (Double id, String mail) {
-        User u = this.getUser()
+        int user_id = this.mails.get(mail).intValue();
+
+        User u = this.users.get(user_id - 1);
 
         if (u != null)
             try { u.addFriendRequest(id); }
-            catch
+            catch (Exception e) {
+                /* User does not exist */;
+            }
     }
 
     /** Accept a friend request
