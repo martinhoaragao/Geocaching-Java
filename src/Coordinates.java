@@ -54,14 +54,18 @@ public class Coordinates {
     /**
      * Sets the latitude.
      */
-    public void setLat(int lat){
+    public void setLat(int lat) throws IllegalArgumentException {
+        if (lat < 0 || lat > 90)
+            throw new IllegalArgumentException("Out of boundary argument");
         this.latitude = lat;
     }
 
     /**
      * Sets the longitude.
      */
-    public void setLon(int lon){
+    public void setLon(int lon) throws IllegalArgumentException {
+        if (lon < -180 || lon > 180)
+            throw new IllegalArgumentException("Out of boundary argument");
         this.longitude = lon;
     }
 

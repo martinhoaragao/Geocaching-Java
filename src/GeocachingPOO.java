@@ -214,7 +214,7 @@ public class GeocachingPOO {
         System.out.print("Current Password: ");
         currentpass = sc.nextLine().replaceAll("[\n\r]","");
 
-        // Give user 3 tries to inser current password
+        // Give user 3 tries to insert current password
         while(i<3 && !user.confirmPass(currentpass)) {
 
             if(i==2){
