@@ -40,6 +40,7 @@ public class Activity {
         this.date = (GregorianCalendar) date.clone();
         this.cache = cache;
         this.kms = kms;
+        
     }
     
     /**
@@ -50,6 +51,7 @@ public class Activity {
         this.date = act.getDate();
         this.cache = act.getCache();
         this.kms = act.getKms();
+        this.points = act.points;
     }
     
     

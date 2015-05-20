@@ -5,7 +5,7 @@
  *
  * @version 11/05/2015
  */
-
+import java.util.Comparator;
 import java.util.GregorianCalendar;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -22,7 +22,7 @@ public class Statistic
      * Constructor without arguments
      */
     public Statistic(){
-        acts = new TreeSet<Activity>();
+        acts = new TreeSet<Activity>(new AComparator());
         stats = new TreeMap<Integer, TreeSet<Activity>>();
     }
 
@@ -79,7 +79,7 @@ public class Statistic
         //Now check is this set is empty or not
         if(actSet == null){
 
-            actSet = new TreeSet<Activity>();
+            actSet = new TreeSet<Activity>(new AComparator());
             actSet.add(a);
             this.stats.put(monthh, actSet);
         }
@@ -88,6 +88,17 @@ public class Statistic
             this.stats.put(monthh, actSet);
         }
         //I think there is no need to test at all... right?
+    }
+    
+    /**
+     * Activity Comparator
+     */
+    class AComparator implements Comparator<Activity>{
+        public int compare(Activity a, Activity b){
+            return (a.getDate().compareTo(b.getDate()));
+            //if(num < 0) return -1;
+            //if(num >=0) return 1;
+        }
     }
 
     /**
@@ -193,6 +204,7 @@ public class Statistic
         }
         if(am != null ){
             while(ret.size()!=10){
+                
               for(Activity a : am){
                 ret.add(a.clone());
               }
@@ -314,4 +326,6 @@ public class Statistic
 
         return sb.toString();
     }
+    
+    
 }
