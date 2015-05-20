@@ -135,7 +135,6 @@ public class GeocachingPOO {
             newuser = null;
             System.out.println("User sucessfuly created!");
         }
-        sc.close();
     }
 
     /** Auxiliary login function */
@@ -155,7 +154,6 @@ public class GeocachingPOO {
 
             if(user == null && i==3){
                 System.out.println("E-mail or password were incorrect.");
-                sc.close();
                 return;
             }
             if(user == null ){
@@ -163,8 +161,6 @@ public class GeocachingPOO {
             }
 
         } while ((user == null) );
-
-        sc.close();
     }
 
     /**
@@ -197,7 +193,6 @@ public class GeocachingPOO {
             else {
                 aux = false;
                 bbbdate = new GregorianCalendar(y,m,d);
-                sc.close();
                 return bbbdate;
             }
             //when numm == 0 everything is ok.
