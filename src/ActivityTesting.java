@@ -45,8 +45,8 @@ public class ActivityTesting
     {
         java.util.GregorianCalendar gregoria1 = new java.util.GregorianCalendar(2015, 4, 25);
         Coordinates CordLocal = new Coordinates(20, 30);
-        Traditional traditio1 = new Traditional("1", CordLocal, "jess@gmail.com");
-        MicroCache microCac1 = new MicroCache("2", CordLocal, "jess@gmail.com");
+        TraditionalCache traditio1 = new TraditionalCache(1, CordLocal, "jess@gmail.com");
+        MicroCache microCac1 = new MicroCache(2, CordLocal, "jess@gmail.com");
         Activity activity1 = new Activity(gregoria1, traditio1, 300);
         Activity activity2 = new Activity(gregoria1, microCac1, 500);
         activity1.getMonth();
