@@ -113,7 +113,7 @@ public class CacheBase {
      * Get this cache if the id is the right one
      * @arg id The id of that Cache
      */
-    public Cache getCache(double id){
+    public Cache getCache (double id){
        for(Cache a : this.caches){
            //fazer clone cache
            if(a.getId() == id) return a;
@@ -170,6 +170,17 @@ public class CacheBase {
 
         return comp;
     }
+
+    // Code to invalidate a cache
+    /** Invalidate (delete) a cache if the owner wants so
+     * @param id Cache Id
+     * @param user Owner of the cache
+     */
+    public void invalidateCache (Double id, User user) {
+        if (this.getCache(id).getMail().equals(user.getMail()))
+            delCache(id);
+    }
+
 
     // Code for reported caches
 
