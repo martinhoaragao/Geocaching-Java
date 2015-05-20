@@ -222,7 +222,7 @@ public class GeocachingPOO {
                 return;
             }
             i++;
-            System.out.println("Incorret! Type Current Password: ");
+            System.out.println("Incorrect! Type Current Password: ");
             currentpass = sc.nextLine().replaceAll("[\n\r]","");
         }
 
