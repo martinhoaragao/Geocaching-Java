@@ -3,11 +3,11 @@
  * represented by an integer from 0 to 11.
  * Name has to be different from statistics (already used in class User) so I called it "stats".
  *
- * @version 11/05/2015
+ * @version 20/05/2015
  */
 import java.util.Comparator;
 import java.util.GregorianCalendar;
-import java.util.TreeMap;
+import java.util.Arrays;
 import java.util.TreeSet;
 import java.util.ArrayList;
 
@@ -15,79 +15,45 @@ public class Statistic
 {
     //Could I declare private int month and then TreeSet<month, a> , for instace?
     //my opinion is no, but what do you think?
-    private TreeSet<Activity> acts; //List of actitivites
-    private TreeMap<Integer,  TreeSet<Activity> > stats; // Visited Caches. key: month. value: activity.
+    private ArrayList < TreeSet<Activity>>  stats; // Visited Caches for each month. Comparable by date.
 
     /**
      * Constructor without arguments
      */
     public Statistic(){
-        acts = new TreeSet<Activity>(new AComparator());
-        stats = new TreeMap<Integer, TreeSet<Activity>>();
+       int i;
+       stats = new ArrayList<>(12);
+       
+       for(i=0;i<12;i++){
+           stats.add(new TreeSet<Activity>(new AComparator())); 
+       }
     }
 
     /**
      * Copy Constructor (preserving encapsulation)
-     * !Complex!
+     *
      */
     public Statistic(Statistic stt){
-        stats = new TreeMap<>(); //Diamond style
-
-
-        for(int i=0;i<12;i++){
-            acts = new TreeSet<>();
-            for(Activity a : stt.acts){
-                 acts.add(a.clone());
+        int i;
+        for(i=0; i<12; i++){
+            this.stats.add(new TreeSet<Activity>());
+            for(Activity a : stats.get(i)){
+                this.stats.get(i).add(a);
             }
-            this.stats.put(i,acts);
-            //a.getMonth() == i  for sure!
         }
+        
     }
-
 
     /**
      * Methods
      */
-
-    /**
-     * Sum points of this statistic
-     * @param points Total points of this User Statistic
-     */
-    public int getSumPoints(){
-        int r=0;
-        for(int i=0;i<12;i++){ //In every month of this TreeMap
-
-            TreeSet<Activity> actaux = this.stats.get(i);
-            //Act of this month
-            for(Activity a : actaux){
-                r+=a.getpoints();
-            }
-
-
-        }
-        return r;
-    }
-
     /**
      * Add an Activity in the Statistic.
-     * (The month is in the information of the Activity, so no need
-     * to receive the extra param month for this method).
+     * @param Activity a.
      */
     public void addAct(Activity a){
-        int monthh = a.getMonth();
-        TreeSet<Activity> actSet = this.stats.get(monthh);
-        //Now check is this set is empty or not
-        if(actSet == null){
-
-            actSet = new TreeSet<Activity>(new AComparator());
-            actSet.add(a);
-            this.stats.put(monthh, actSet);
-        }
-        else{
-            actSet.add(a);
-            this.stats.put(monthh, actSet);
-        }
-        //I think there is no need to test at all... right?
+        int month = a.getMonth();
+        this.stats.get(month-1).add(a);
     }
     
     /**
@@ -95,93 +61,72 @@ public class Statistic
      */
     class AComparator implements Comparator<Activity>{
         public int compare(Activity a, Activity b){
-            return (a.getDate().compareTo(b.getDate()));
+            int m = (a.getDate().compareTo(b.getDate()));
+            if(m==0) return -1;
+            else return m;
             //if(num < 0) return -1;
             //if(num >=0) return 1;
         }
     }
 
     /**
-     * Creates a Set of 3 Activities of the same month.
-     * [?]
-     * (For testing)
-     */
-    public TreeSet<Activity> creatSetAct(Activity a, Activity b, Activity c){
-        int m1, m2, m3; m1 = a.getMonth(); m2 = b.getMonth(); m3 = c.getMonth();
-        if(m1 == m2 && m2 == m3){
-            TreeSet<Activity> ret = new TreeSet<Activity>();
-            ret.add(a); ret.add(b); ret.add(c);
-            System.out.println("Sucessfuly added");
-            return ret;
-        }
-
-        else System.out.println("Those Activities are not of the same month!");
-
-        return null;
-
-
-    }
-
-    /**
-     * [?] Puts a Set of Activities of the same month in the stats.
-     */
-    public void putActSet(TreeSet<Activity> aa){
-        int monthhh = aa.first().getMonth();
-        int monthh;
-
-        //Testing the month
-        for(Activity a : aa){
-            monthh = a.getMonth();
-            if(monthh != monthhh){
-                System.out.println("The Activities are not of the same month!");
-                return;
-            }
-        }
-
-        this.stats.put(monthhh, aa);
-    }
-
-    /**
-     * Removes an Activity
+     * Removes an Activity in the array of TreeSet<Activity>.
+     * 
+     * @param Activity a.
      */
     public void removeAct(Activity a){
 
         int month = a.getMonth();
-        this.stats.get(month).remove(a);
-        //in Stats, acts of the month, remove the object.
-
+        this.stats.get(month-1).remove(a);
     }
 
     /**
-     * [?] Get the Set of Activities by a given month:
+     * Get the Set of Activities by a given month.
+     * @param int m month.
      */
-    /**
-     * Make method to give the acts of a month
-     *
-     * @arg m Month of the Activity Set we want.
-     * Note: must not return clones. This method is auxiliary to the equals method.
-     */
-    public TreeSet<Activity> getActMonth(int m){
+    public TreeSet<Activity> getTreeSet(int m){
+        //Array starts from 0 to 11. Receives 1 , returns stats[0].
         TreeSet<Activity> ret = this.stats.get(m-1);
-        return ret;
+        TreeSet<Activity> novo = new TreeSet<Activity>(new AComparator());
+        for(Activity ac : ret){
+            novo.add(ac.clone());
+        }
+        return novo;
     }
 
     /**
-     * [?] Get a Set of Activities that has a given Cache
+     * Get a Set of Activities that has a given type of Cache.
+     * 
+     * @param String with information of how many caches of different type user has.
      */
-    public TreeSet<Activity> getSetCache(Cache m ){
-        TreeSet<Activity> ret = new TreeSet<>();
-        for(int i=0;i<12;i++){
+    public String getinfoNumberCaches(){
+        StringBuilder sb = new StringBuilder();
+        int micro=0, multi=0, trad=0, mystery=0, virtual = 0, event = 0,i;
+        for(i=0;i<12;i++){
             for(Activity a : this.stats.get(i)){
-                if(a.getCache().equals(m))
-                ret.add(a);
+                if (a.getCache() instanceof MicroCache) micro++;
+                if(a.getCache() instanceof MultiCache) multi++;
+                if(a.getCache() instanceof TraditionalCache) trad++;
+                if(a.getCache() instanceof MysteryCache) mystery++;
+                //if(a.getCache() instanceof Virtual) virtual++;
+                //if(a.getCache() instanceof Event) event++;
             }
         }
-        return ret;
+        sb.append("Micro :"); sb.append(Integer.toString(micro) + ".");
+        sb.append("\n");
+        sb.append("Multi :"); sb.append(Integer.toString(multi)+ ".");
+        sb.append("\n");
+        sb.append("Tradicional :"); sb.append(Integer.toString(trad)+ ".");
+        sb.append("\n");
+        sb.append("Mystery :"); sb.append(Integer.toString(mystery)+ ".");
+        sb.append("\n");
+        System.out.println(sb.toString());
+        return sb.toString();
     }
 
    /**
-    * Returns the current month
+    * Returns the current month.
+    * @return current month.
     */
    public int getCMonth(){
     GregorianCalendar gc = new GregorianCalendar();
@@ -190,46 +135,53 @@ public class Statistic
     }
 
     /**
-     * Returns a List of the last 10 activities
+     * Returns a List of the last 10 activities.
+     * 
+     * @return String with information. 
+     * (Just for testing times).
      */
-    public ArrayList<Activity> get10LastA(){
-        TreeSet<Activity> am = new TreeSet<>();
-        int m = this.getCMonth();
-        am = this.getActMonth(m);
-
-        ArrayList<Activity> ret  = new ArrayList<>();
-        while(am == null){
-            m--;
-            am = this.getActMonth(m);
-        }
-        if(am != null ){
-            while(ret.size()!=10){
-                
-              for(Activity a : am){
-                ret.add(a.clone());
-              }
-
-              am = this.getActMonth(m-1);
-              while(am == null) am = this.getActMonth(m-1);
-
-
+    public String get10LastA(){
+        int number = 0; boolean acabou = false;
+        int mesatual = getCMonth()-1;
+        int meses = 0;
+        StringBuilder sb = new StringBuilder();
+        while(number < 10 || !acabou){
+            
+            while(this.stats.get(mesatual).size() == 0){
+                if(mesatual == 0) mesatual = 11; else mesatual--;
+                meses++;
+            } //Encontrou no array set que tem conteudo.
+            
+            for(Activity a : this.stats.get(mesatual)){
+            sb.append(Integer.toString(number+1) + "º: ");
+            sb.append(a.toString() + ".\n" );
+            number++;
+            if(number == 9) return sb.toString();
             }
+            meses++;
+            mesatual--; if(mesatual == 0) mesatual = 11;
+            while(this.stats.get(mesatual).size() == 0){
+                if(mesatual == 0) mesatual = 0;
+                else mesatual--;
+                meses++;
+            } //Procura um set nao vazio no mês anterior a este para completar as 10.
+            
+            if(meses >=11) acabou = true;
+            //call activity.toString();
         }
-
-        return ret;
-
+        return sb.toString();
     }
 
     /**
      * Find a cache with a given id
      */
-    public Cache getCacheid(double idd){
-
-        for(int i=0;i<12;i++){
-            TreeSet<Activity> actaux = this.stats.get(i);
-                for(Activity a : actaux){
-                    if(a.getCache().getId() == idd) return a.getCache();
-                }
+    public Cache getCacheid(double id){
+        int i;
+        for(i=0;i<12;i++){
+            for(Activity a : this.stats.get(i)){
+                if(a.getCache().getId() == id) 
+                return a.getCache();
+            }
         }
         return null;
     }
@@ -238,18 +190,88 @@ public class Statistic
      * Removes a Cache given the id
      */
     public void removeCache(double id){
-         for(int i=0;i<12;i++){
-            TreeSet<Activity> actaux = this.stats.get(i);
-                for(Activity a : actaux){
-                    if(a.getCache().getId() == id) actaux.remove(a);
-                }
+        int i;
+        for(i=0;i<12;i++){
+            for(Activity a : this.stats.get(i)){
+                if(a.getCache().getId() == id) 
+                this.stats.get(i).remove(id);
+            }
         }
     }
-
+    
+    /**
+     * Method that sums all points.
+     * @return points : Total of points of this User's Statistic.
+     */
+    public int getSumPoints(){
+        int i,r=0;
+        for(i=0;i<12;i++){
+            r+=getSumPointsM(i+1);
+        }
+        return r;
+    }
+    
+    /**
+     * Method that sums all points of a given month.
+     * @return int Sum of points.
+     */
+    public int getSumPointsM(int month){
+        int sum=0;
+        for(Activity a : this.stats.get(month-1)){
+            sum+=a.getpoints();
+        }
+        return sum;
+    }
+    
+    /**
+     * Method that sums all kilometers of a given month.
+     * @return double Total kms of a month.
+     */
+    public double getSumkmsM(int month){
+        double sum=0;
+        for(Activity a : this.stats.get(month-1)){
+            sum+=a.getKms();
+        }
+        return sum;
+    }
+    
+    /**
+     * Method that sums all kms.
+     * @return int kms : Total of kms of this User's Statistic.
+     */
+    public double getSumKms(){
+        int i; double r=0;
+        for(i=0;i<12;i++){
+            r+=getSumkmsM(i+1);
+        }
+        return r;
+    }
+    
+    /**
+     * Method that sums all Caches.
+     * @return int Total of caches of this User's Statistic.
+     */
+    public int getSumTotalCaches(){
+        int i,r=0;
+        for(i=0;i<12;i++){
+            r+=getSumAM(i+1);
+        }
+        return r;
+    }
+    
+    /**
+     * Method that sums all activities / caches of a given month.
+     */
+    public int getSumAM(int month){
+        int sum=0;
+        for(Activity a : this.stats.get(month-1)){
+            sum++;
+        }
+        return sum;
+    }
     /**
      * Clone,toString and equals
      */
-
     /**
      * Create a clone of this object
      */
@@ -262,48 +284,18 @@ public class Statistic
      * @arg sa Statistic to use for comparison
      */
     public boolean equals(Object sa){
+        int i;
         if (this == sa) return true;
-
-        if ((sa == null) || (sa.getClass() != this.getClass())) return false;
-
-
-        Statistic aux = (Statistic) sa;
-        if(aux.stats.size() != this.stats.size()) return false;
-        if(aux.stats.size() == 0 && this.stats.size() == 0) return true;
-        //If both Map's don't have the same size then they must be different.
-
-        for(int i=0;i<12;i++){
-
-            TreeSet<Activity> actaux = this.stats.get(i);
-            //Act of this month
-            TreeSet<Activity> actauxaux = aux.stats.get(i);
-            //Act of this month of the stats of the parameter.
-            if(actaux.size() != actauxaux.size()) return false;
-
-        }
-        //Check the size of each TreeSet in the month.
-
-
-
-        for(int i = 0; i<12;i++){ //Complete!
-            //Make method to give the acts of a month
-            //TreeSet<Activity> actaux = this.getActMonth(i+1);
-            //Delete the method
-            TreeSet<Activity> actaux = this.stats.get(i);
-            //get(i) returns the values of the map for the month i;
-
-            TreeSet<Activity> actauxaux = aux.stats.get(i);
-
-            for(Activity a : actauxaux){
-                if(!actaux.contains(a)) return false;
-                /*Since we tested the size, now we test if the activity is in the other, in te scope of
-                a given month, of course.
-                */
+        if(sa.getClass() != this.getClass()) return false;
+        
+        Statistic a = (Statistic) sa;
+        for(i=0;i<12;i++){
+            if(a.stats.get(i).size() != this.stats.get(i).size()) return false;
+            for(Activity ac : a.stats.get(i)){
+                if(!this.stats.get(i).contains(ac)) return false;
             }
-
         }
         return true;
-
     }
 
     /**
@@ -311,21 +303,20 @@ public class Statistic
      */
     public String toString(){
         StringBuilder sb = new StringBuilder();
-
-        for(int i=0;i<12;i++){
+        int i;
+        for(i=0;i<12;i++){
             sb.append("Month: " + (i+1));
-            TreeSet<Activity> aa = this.stats.get(i);
-            for(Activity a : aa){
-                sb.append(a.toString());
-                sb.append("\n");
-            }
+            sb.append(" #Caches: " + this.getSumAM(i+1) + ".");
             sb.append("\n");
-
+            sb.append(" #Points: " + this.getSumPointsM(i+1)+ ".");
+            sb.append("\n");
+            sb.append(" #Kms travelled: " + this.getSumkmsM(i+1) + ".");
+            sb.append("\n");
+            
+            
         }
-
-
+        sb.append(this.getinfoNumberCaches());
+        System.out.println(sb.toString());
         return sb.toString();
     }
-    
-    
 }

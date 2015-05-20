@@ -138,6 +138,7 @@ public class Activity {
         sb.append("Cache found on " + day + "/" + month + "/" + year + "\n");
         sb.append(this.kms + " kilometers covered!");
         sb.append("Cache localization: " + latitude + "," + longitude + "\n");
+        sb.append(" Total points accumulated: " + points);
         return sb.toString();
     }
 
