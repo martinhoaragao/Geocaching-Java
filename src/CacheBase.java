@@ -84,26 +84,26 @@ public class CacheBase {
 
       return found;
     }
-    
+
     /**
      * Check it a given Cache is present in the Cache data base
      * @arg id Cache id
      */
-    public boolean exists(String id){
+    public boolean exists(double id){
         for(Cache a: this.caches){
-            if(a.getId().equals(id)) return true;
+            if(a.getId() == id) return true;
         }
         return false;
     }
-    
+
     /**
      * Get this cache if the id is the right one
      * @arg id The id of that Cache
      */
-    public Cache getCache(String id){
+    public Cache getCache(double id){
        for(Cache a : this.caches){
            //fazer clone cache
-           if(a.getId().equals(id)) return a;
+           if(a.getId() == id) return a;
         }
         return null;
     }
@@ -116,12 +116,12 @@ public class CacheBase {
     public String toString () {
       StringBuilder sb = new StringBuilder();
       Iterator it = this.caches.iterator();
-      
+
       sb.append(this.caches.size() + " caches are stored.\n");
 
       while (it.hasNext()) {
         Cache aux = (Cache) it.next();
-        Coordinates coords = (Coordinates) aux.getCoords();
+        Coordinates coords = aux.getCoords();
         sb.append("Lat: " + coords.getLat());
         sb.append(" Lon: " + coords.getLon() + "\n");
       }

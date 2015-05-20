@@ -24,11 +24,11 @@ public class MysteryCache extends Cache
 
     /**
      * Constructor of new MysteryCache
-     * @arg id String cache identifier
+     * @arg id double cache identifier
      * @arg coord Coordinates
      * @arg mail String e-mail of owner
      */
-    public MysteryCache (String id, Coordinates coords, String mail) {
+    public MysteryCache (double id, Coordinates coords, String mail) {
         super(id, coords, mail);
         this.puzzle = new Puzzle();
     }
@@ -66,7 +66,7 @@ public class MysteryCache extends Cache
         if ((mysteryCache == null) || (this.getClass() != mysteryCache.getClass())) return false;
 
         MysteryCache aux = (MysteryCache) mysteryCache;
-        boolean comp = this.getId().equals(aux.getId());
+        boolean comp = (this.getId() == aux.getId());
         comp = comp && (this.getMail().equals(aux.getMail()));
         comp = comp && (this.getCoords().equals(aux.getCoords()));
         comp = comp && (this.getRegistry().equals(aux.getRegistry()));
