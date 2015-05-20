@@ -302,6 +302,19 @@ public class User {
         this.bdate = bbb;
     }
 
+    /**
+     * Change the user id
+     * @param id New user id
+     */
+    public void setId (Integer id) throws NullPointerException, IllegalStateException {
+        if (id == null)
+          throw new NullPointerException("id can't be null!");
+        if (id < 0)
+          throw new IllegalStateException("id can't be negative!");
+
+        this.id = id;
+    }
+
     // Other methods
 
     /**
@@ -346,7 +359,7 @@ public class User {
             sb.append("Birthdate: " + day + "/" + month + "/" + year + "\n");
         }
         sb.append("Gender: " + (this.gender ? "F" : "M" + "\n"));
-        if (address != null) sb.append("Address: " + this.address.toString() + "\n");
+        sb.append("Address: " + this.address.toString());
         sb.append("User id: " + this.id + "\n");
 
         return sb.toString();

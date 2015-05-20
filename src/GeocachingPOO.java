@@ -15,7 +15,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.io.Console;
 
-
 public class GeocachingPOO {
     private static int id = 1;
     private static User user = null;           // User that is logged in
@@ -109,47 +108,34 @@ public class GeocachingPOO {
         if (userbase.exists(mail)) {    // E-maill already in use
             System.out.println("E-mail already in use.");
             return;
-        }
+        } else newuser.setMail(mail);
 
         System.out.print("Name: ");
         newuser.setName(sc.nextLine().replaceAll("[\n\r]", ""));
 
         System.out.print("Pass: ");
-        pass = sc.nextLine().replaceAll("[\n\r]","");
+        newuser.setPass(sc.nextLine().replaceAll("[\n\r]",""));
 
-        /*do {    // Ask for date while date is wrong
-            if (!aux) System.out.println("Invalid date!");
-            System.out.print("Birthdate (Day/Month/Year): ");
-
-           bdate_fields = sc.nextLine().replaceAll("[\n\r]","").split("/");
-
-        } while ( !(aux = (bdate_fields.length == 3)) );
-        bdate = new GregorianCalendar(Integer.parseInt(bdate_fields[2]),
-        Integer.parseInt(bdate_fields[1]), Integer.parseInt(bdate_fields[0]));
-        */
-
-       //New code for the bdate approval
-
-
+        //New code for the bdate approval
         GregorianCalendar bbbdate = typebdate();
         if(bbbdate != null){
-            newuser = new User(mail, pass, name, id, bbbdate);
-
             System.out.print("Country: ");
             country = sc.nextLine().replaceAll("[\n\r]","");
             System.out.print("City: ");
             city = sc.nextLine().replaceAll("[\n\r]","");
             System.out.print("Gender (g for girl, b for boy): ");
             if (sc.nextLine().replaceAll("[\n\r]","").equals("g"))
-                gender = true;
-            else gender = false;
+                newuser.setGender(true);
+            else newuser.setGender(false);
 
             newuser.setAddress(city, country);
             userbase.addUser(newuser);
-            newuser = null; id++;
+            newuser.setId(id);
+            id++;
+            newuser = null;
             System.out.println("User sucessfuly created!");
         }
-            sc.close();
+        sc.close();
     }
 
     /** Auxiliary login function */
@@ -192,29 +178,29 @@ public class GeocachingPOO {
         String[] bdate_fields;
         int d,m,y,yy;
         Scanner sc = new Scanner(System.in);
-       do{
-           System.out.print("Birthdate (Day/Month/Year): ");
-           bbdate = sc.nextLine();
-           bdate_fields = bbdate.split("/");
-           d = Integer.parseInt(bdate_fields[0]);
-           m = Integer.parseInt(bdate_fields[1]);
-           y = Integer.parseInt(bdate_fields[2]);
-           GregorianCalendar Calendar  = new GregorianCalendar();
-           yy = Calendar.get(Calendar.YEAR); //returns the current year yay.
+        do{
+            System.out.print("Birthdate (Day/Month/Year): ");
+            bbdate = sc.nextLine();
+            bdate_fields = bbdate.split("/");
+            d = Integer.parseInt(bdate_fields[0]);
+            m = Integer.parseInt(bdate_fields[1]);
+            y = Integer.parseInt(bdate_fields[2]);
+            GregorianCalendar Calendar  = new GregorianCalendar();
+            yy = Calendar.get(Calendar.YEAR); //returns the current year yay.
 
-           if(d <=0 || d >31 ) System.out.println("Day invalid!");
-           else if(m <= 0 || m >12) System.out.println("Month invalid!");
-           else if(y <=0 || y > yy) System.out.println("Year invalid!");
-           else if( (y%4 != 0 && m == 2 && d>28) || (m == 4 && d > 30) || (m == 6 && d > 30) || (m == 9 && d > 30) || (m == 11 && d > 30)   )
-           System.out.println("Date invalid!");
+            if(d <=0 || d >31 ) System.out.println("Day invalid!");
+            else if(m <= 0 || m >12) System.out.println("Month invalid!");
+            else if(y <=0 || y > yy) System.out.println("Year invalid!");
+            else if( (y%4 != 0 && m == 2 && d>28) || (m == 4 && d > 30) || (m == 6 && d > 30) || (m == 9 && d > 30) || (m == 11 && d > 30)   )
+                System.out.println("Date invalid!");
 
-           else {
-               aux = false;
-               bbbdate = new GregorianCalendar(y,m,d);
-               sc.close();
-               return bbbdate;
-               }
-        //when numm == 0 everything is ok.
+            else {
+                aux = false;
+                bbbdate = new GregorianCalendar(y,m,d);
+                sc.close();
+                return bbbdate;
+            }
+            //when numm == 0 everything is ok.
         }while( aux );
         return null;
     }
@@ -230,7 +216,7 @@ public class GeocachingPOO {
         Scanner sc = new Scanner(System.in);
         int i = 0; //3 trys to change password each time
 
-        System.out.println("Current Password: ");
+        System.out.print("Current Password: ");
         currentpass = sc.nextLine().replaceAll("[\n\r]","");
 
         // Give user 3 tries to inser current password
@@ -247,7 +233,7 @@ public class GeocachingPOO {
 
         //If User sucessfully types current password, he may change it
         if(user.confirmPass(currentpass)){
-            System.out.println("Type new password: ");
+            System.out.print("Type new password: ");
             newpass = sc.nextLine().replaceAll("[\n\r]","");
 
             try {
@@ -297,9 +283,8 @@ public class GeocachingPOO {
         System.out.print("Birthdate (Day/Month/Year): ");
 
 
-
         user.setBDate(sc.nextLine().replaceAll("[\n\r]", ""));
-        */
+         */
 
     }
 
