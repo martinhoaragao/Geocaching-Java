@@ -90,22 +90,6 @@ public class User {
         this.id = user.getId();
     }
 
-
-    /**
-     * Removes a Cache from this User: from Statistics and from the TreeMap, given an id
-     *
-     * @param id Identifier of the Cache
-     */
-    public void removeCache (Double id) throws NullPointerException, IllegalStateException {
-        if (id == null)
-            throw new NullPointerException("id can't be null!");
-
-        this.statistics.removeCache(id); //Removes from Statistics.
-
-        for(Activity a : this.activities.values()){
-            if(a.getCache().getId().equals(id)) activities.remove(a.getCache());
-        }
-    }
     // Getters
 
     /**

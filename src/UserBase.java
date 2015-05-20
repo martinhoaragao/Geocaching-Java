@@ -126,7 +126,7 @@ public class UserBase {
      * Create a clone of the user and eliminate the password
      * @param id User Id
      */
-    public User getUserInfo (int id) {
+    public User getUserInfo (Double id) {
         Iterator it = this.users.iterator();
         boolean found = false;
         User u = null;

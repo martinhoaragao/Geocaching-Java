@@ -16,7 +16,7 @@ import java.security.NoSuchAlgorithmException;
 import java.io.Console;
 
 public class GeocachingPOO {
-    private static int id = 1;
+    private static Double id = 1.0;
     private static User user = null;           // User that is logged in
     private static UserBase userbase = null;   // User data base
 
@@ -317,9 +317,9 @@ public class GeocachingPOO {
     private static void showFriends () {
         User u;
 
-        ArrayList<Integer> list = user.getFriends();
+        ArrayList<Double> list = user.getFriends();
 
-        for (Integer id : list) {
+        for (Double id : list) {
             u = userbase.getUserInfo(id);
             if (u != null)
                 System.out.println(u.getName() + " - " + u.getMail());
