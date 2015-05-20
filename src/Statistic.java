@@ -78,8 +78,9 @@ public class Statistic
         TreeSet<Activity> actSet = this.stats.get(monthh);
         //Now check is this set is empty or not
         if(actSet == null){
-            
+            actSet = new TreeSet<Activity>();
             actSet.add(a);
+            
             this.stats.put(monthh, actSet);
         }
         else{
