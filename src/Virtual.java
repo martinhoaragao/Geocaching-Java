@@ -6,7 +6,7 @@
  * @version 08/05/2015
  */
 
-public class Virtual extends Cache
+public class Virtual
 {
     private String revelation; //this revelation guarantees the User was present.
 

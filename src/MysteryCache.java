@@ -63,9 +63,9 @@ public class MysteryCache extends Cache
     public boolean equals (Object mysteryCache) {
         if (this == mysteryCache) return true;
 
-        if ((mysteryCache == null) || (this.getClass() != mi.getClass())) return false;
+        if ((mysteryCache == null) || (this.getClass() != mysteryCache.getClass())) return false;
 
-        MicroCache aux = (MicroCache) microCache;
+        MysteryCache aux = (MysteryCache) mysteryCache;
         boolean comp = this.getId().equals(aux.getId());
         comp = comp && (this.getMail().equals(aux.getMail()));
         comp = comp && (this.getCoords().equals(aux.getCoords()));

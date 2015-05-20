@@ -4,7 +4,7 @@
  * @version 08/05/2015
  */
 
-public class Event extends Cache
+public class Event
 {
    
     //This class updates the Statistic and Activity to the User.
