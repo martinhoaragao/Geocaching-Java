@@ -316,7 +316,7 @@ public class User {
         }
         sb.append("Gender: " + (this.gender ? "F" : "M" + "\n"));
         sb.append("Address: " + this.address.toString());
-        sb.append("User id: " + this.id + "\n");
+        sb.append("User id: " + this.id.intValue() + "\n");
 
         return sb.toString();
     }

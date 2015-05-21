@@ -59,10 +59,10 @@ public class UserBase {
      */
     public User getUser (String mail, String pass) {
         /* Get the user id */
-        Integer id = this.mails.get(mail).intValue();
+        Double id = this.mails.get(mail);
 
         if (id != null) {
-            User user = this.users.get(id - 1);
+            User user = this.users.get(id.intValue() - 1);
             if (user.confirmPass(pass)) return user;
         }
         return null;
