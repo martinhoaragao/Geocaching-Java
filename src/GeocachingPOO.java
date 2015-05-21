@@ -14,18 +14,21 @@ import java.util.GregorianCalendar;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.io.Console;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.Iterator;
 
 public class GeocachingPOO {
     private static Double id = 1.0;
     private static User user = null;           // User that is logged in
     private static UserBase userbase = null;   // User data base
-
+    private static CacheBase cachebase = null; //Cache data base
     //Random main method/function to complete.
     public static void main(String[] args) {
         boolean running = true;     // Set the program as running
         int option = 0;
         userbase = new UserBase();  // Create new user base
-
+        cachebase = new CacheBase(); //Create new cache base
         while (running) {
             if (user == null) { // No user logged in
                 option = mainMenu();
@@ -325,4 +328,153 @@ public class GeocachingPOO {
                 System.out.println(u.getName() + " - " + u.getMail());
         }
     }
+    
+    /**
+     * Auxiliary function to report a cache
+       @param double id The cache id to be reported
+     */
+     private static void UserReportCache(double id){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Are you sure you want to report this cache? [y/n]");
+        if(!sc.nextLine().toUpperCase().contains("Y") ){
+            
+            return;
+        }
+        else{
+            System.out.println("Whats the id of the cache you want to report?");
+            double idcache = sc.nextDouble();
+            String email = user.getMail();
+            System.out.println("Reasons why you want to report this cache: ");
+            String message = sc.nextLine();
+            
+            Report rep = new Report(idcache, email, message);
+            
+            cachebase.addReport(rep);
+            System.out.println("Sucessfuly reported cache with id number of" + " " + idcache);
+            
+            
+        }
+    }
+    
+    /**Auxiliary funtion: Show all reports*/
+    
+    private static void showAllReports(){
+        double n;
+        Scanner sc = new Scanner(System.in);
+        TreeMap<Double,Report> reps = cachebase.getReportedCaches();
+        
+        System.out.println("Want to display ID's and report messages? [y/n]");
+        if(!sc.nextLine().toUpperCase().contains("Y") ){
+            for(Report r : reps.values()){
+            System.out.println("| ID : " + r.getId() + "| " );
+            }
+        }
+        else{
+            for(Report r : reps.values()){
+            System.out.println("| ID : " + r.getId() + "| " + "Msg: " + r.getMessage());
+            }
+        }
+        System.out.println("Type the ID of the cache to see details: (0 to leave)");
+        if((n = sc.nextDouble()) != 0){
+            System.out.println(reps.get(n).getMessage());
+        }
+        
+        
+    }
+    
+    
+    /**Auxiliary function: Show all caches */
+    private static void showAllCaches(){
+        double n ;
+        Scanner sc = new Scanner(System.in);
+        TreeSet<Cache> caches = cachebase.getAllCaches();
+
+       for(Cache c : caches){
+                System.out.println("| ID : " + c.getId() + "| " + "Coords: " + c.getCoords().toString() + "Creator: " + c.getMail());
+       }
+       
+       System.out.println("Menu: \n 1. Show treasures; \n 2. Show registry book. \n 3. Show details");
+       int o = sc.nextInt();
+       while(o!=0){
+           
+           switch (o) {
+                    case 1: 
+                    System.out.println("Type id. (0 to leave)");
+                    n = sc.nextDouble();
+                    if(n == 0) break;
+                    else{
+                        Iterator it = caches.iterator();
+                        Cache cache;
+                        while(it.hasNext()){
+                            cache = (Cache) it.next();
+                            if(cache.getId() == n){
+                                ArrayList<Treasure> treasures = cache.getTreasure();
+                                for(Treasure t : treasures) System.out.println(t.toString());
+                            }
+                            else{
+                                System.out.println("There isn't such cache with that id. Sorry.");
+                            }
+                        }
+                    }
+                    o = sc.nextInt();
+                    break;
+                    
+                    
+                    case 2: 
+                    System.out.println("Type the id of the cache to see more details. (0 to leave)");
+                    n = sc.nextDouble();
+                    if(n == 0) break;
+                    else{
+                        Iterator it = caches.iterator();
+                        Cache cache;
+                        while(it.hasNext()){
+                            cache = (Cache) it.next();
+                            if(cache.getId() == n){
+                                ArrayList<String> regs = cache.getRegistry();
+                                for(String s : regs) System.out.println(s);
+                            }
+                            else{
+                                System.out.println("There isn't such cache with that id. Sorry.");
+                            }
+                        }
+                    }
+                    o = sc.nextInt();
+                    break;
+                    
+                    
+                    case 3: 
+                    System.out.println("Type the id of the cache to see more details. (0 to leave)");
+                    n = sc.nextDouble();
+                    if(n == 0) break;
+                    else{
+                        Iterator it = caches.iterator();
+                        Cache cache;
+                        while(it.hasNext()){
+                            cache = (Cache) it.next();
+                            if(cache.getId() == n){
+                                ArrayList<String> info = cache.getInfo();
+                                for(String s : info) System.out.println(s);
+                            }
+                            else{
+                                System.out.println("There isn't such cache with that id. Sorry.");
+                            }
+                        }
+                    }
+                    o = sc.nextInt();
+                    break;
+                    
+                    default: 
+                    break;
+                }
+        }
+       
+    }
+    
+    
+    
+    
+    /**Auxiliary function: Menu Option: Shows all caches to 1. report one already, 2: Show details   2.1. Report this cache 2.2 return to show all caches */
+
+    /**Auxiliary function: Menu Option for Admin: Show all reported caches to 1. Delete one cache 2. Delete one report  3. Show details of a cache   3.1 Delete this cache  3.2Detele this report and maintain this cache 3.3Return to show all reported caches  */
+
 }
