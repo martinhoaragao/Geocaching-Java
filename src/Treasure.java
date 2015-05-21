@@ -75,7 +75,7 @@ public class Treasure{
     public String toString () {
         StringBuilder sb = new StringBuilder();
 
-        sb.append(this.id + this.info + "\n");
+        sb.append(this.id + " " + this.info + "\n");
 
         return sb.toString();
     }
