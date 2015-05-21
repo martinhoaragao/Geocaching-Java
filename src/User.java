@@ -40,6 +40,7 @@ public class User {
         this.activities = new TreeSet<Activity>(new CacheDateComparator());
         this.statistics = new Statistic();
         this.friends = new ArrayList<Double>();
+        this.friend_requests = new ArrayList<Double>();
     }
 
     /**
@@ -81,6 +82,8 @@ public class User {
      * @param user User from which the information will be fetched
      */
     public User (User user) throws NullPointerException {
+        this();
+
         if (user == null)
             throw new NullPointerException("user can't be null!");
 
@@ -408,16 +411,25 @@ public class User {
       this.friend_requests.add(id);
     }
 
+    /** Remove User id from the friends request
+     * @param id Id to be removed
+     */
+    public void removeFriendRequest (Double id) throws IllegalArgumentException {
+        if (id < 0) /* Invalid id */
+            throw new IllegalArgumentException("id has to be positive.");
+
+        this.friend_requests.remove(id);
+    }
+
     /**
      * Add a user as a friend
-     * @param user User to be added
-     * @return true if friend was added, false otherwise
+     * @param id User to be added id
      */
-    public void addFriend (User user) throws NullPointerException {
-        if (user == null)
-          throw new NullPointerException("user can't be null!");
-        else
-          friends.add(user.getId());
+    public void addFriend (Double id) throws IllegalArgumentException {
+        if (id < 0) /* Invalid id */
+            throw new IllegalArgumentException("id has to be positive.");
+
+        this.friends.add(id);
     }
 
     /**

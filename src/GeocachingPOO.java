@@ -44,9 +44,11 @@ public class GeocachingPOO {
           case 4: changeAddress(); break;
           case 5: changeBDate(); break;
           case 6: changeGender(); break;
-          case 7: addFriend(); break;
-          case 8: showFriends(); break;
-          case 9: user = null; break;
+          case 7: sendFriendRequest(); break;
+          case 8: showRequests(); break;
+          case 9: acceptFriendRequest(); break;
+          case 10: showFriends(); break;
+          case 11: user = null; break;
           default: break;
         }
       }
@@ -67,17 +69,22 @@ public class GeocachingPOO {
   /** Auxiliary function to display user menu */
   private static int userMenu () {
     Scanner sc = new Scanner(System.in);
+    ArrayList<Double> requests = user.getFriendRequests();
 
     System.out.println("Logged in as: " + user.getName() + " | " + user.getPoints() + " points");
+    if (requests.size() > 0)  /* There are friend requests */
+      System.out.println("Friend Requests: " + requests.size());
     System.out.println("1: Personal Information");
     System.out.println("2: Change Password");
     System.out.println("3: Change Name");
     System.out.println("4: Change Address");
     System.out.println("5: Change Birthdate");
     System.out.println("6: Change Gender");
-    System.out.println("7: Add Friend");
-    System.out.println("8: Show Friends");
-    System.out.println("9: Log Out");
+    System.out.println("7: Send Friend Request");
+    System.out.println("8: Show Friend Requests");
+    System.out.println("9: Accept Friend Request");
+    System.out.println("10: Show Friends");
+    System.out.println("11: Log Out");
 
     return sc.nextInt();
   }
@@ -295,31 +302,61 @@ public class GeocachingPOO {
     else user.setGender(false);
   }
 
-  /** Auxiliary function to add a user as friend */
-  private static void addFriend () {
+  /* -------------------- Code for Friends -------------------- */
+
+  /** Auxiliary function to send a friend request */
+  private static void sendFriendRequest () {
     Scanner sc = new Scanner(System.in);
     User u;
 
-    u = userbase.getUserInfo(sc.nextLine().replaceAll("[\n\r]", ""));
-    if (u != null) {
-      user.addFriend(u);
-      System.out.println("Friend Added");
-    } else {
-      System.out.println("No User with such e-mail");
-    }
+    /* Get user e-mail */
+    System.out.print("Friend e-mail: ");
+    String mail = sc.nextLine().replaceAll("[\n\r]", "");
 
+    userbase.sendFriendRequest(user.getId(), mail);
+  }
+
+  /** Auxiliary function to show friend requests */
+  private static void showRequests () {
+    ArrayList<Double> requests = user.getFriendRequests();
+    User u;
+
+    if (requests.size() == 0)
+      System.out.println("There are no friend requests.");
+    else {
+      /* Iterate over friend requests */
+      for (Double id : requests) {
+        u = userbase.getUserInfo(id);
+        System.out.println(u.getName() + " - " + u.getMail());
+      }
+    }
   }
 
   /** Auxiliary function to show friends */
   private static void showFriends () {
     User u;
 
-    ArrayList<Double> list = user.getFriends();
+    ArrayList<Double> friends = user.getFriends();
 
-    for (Double id : list) {
-      u = userbase.getUserInfo(id);
-      if (u != null)
-        System.out.println(u.getName() + " - " + u.getMail());
+    if (friends.size() > 0 ) {  /* User has friends */
+      System.out.println("Friends list:");
+
+      for (Double id : friends) {
+        u = userbase.getUserInfo(id);
+        if (u != null)
+          System.out.println(u.getName() + " - " + u.getMail());
+      }
     }
+  }
+
+  /** Auxiliary function to accept friend requests */
+  private static void acceptFriendRequest () {
+    Scanner sc = new Scanner(System.in);
+    String mail;
+
+    /* Get e-mail to be accepted */
+    System.out.print("Friend e-mail: ");
+    mail = sc.nextLine().replaceAll("[\n\r]", "");
+    userbase.acceptFriendRequest(user.getId(), mail);
   }
 }

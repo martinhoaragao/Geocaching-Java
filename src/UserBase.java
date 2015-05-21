@@ -206,13 +206,17 @@ public class UserBase {
     }
 
     /** Create friend request from a given user to another
-     * @param mail Mail of the user to send the request
-     * @param id Id of the user sendind the request
+     * @param id Id of the user sending the request
+     * @param mail Mail of the user to whom the request will be sent
      */
-    public void sendFriendRequest (Double id, String mail) {
-        int user_id = this.mails.get(mail).intValue();
+    public void sendFriendRequest (Double id, String mail) throws IllegalArgumentException {
+        if (!this.exists(mail)) /* User e-mail doesn't exist */
+            throw new IllegalArgumentException("User doesn't exist.");
+        if (id < 0)             /* Invalid id */
+            throw new IllegalArgumentException("id has to be positive.");
 
-        User u = this.users.get(user_id - 1);
+        Double user_id = this.mails.get(mail);           /* Get user id */
+        User u = this.users.get(user_id.intValue() - 1); /* Get user */
 
         if (u != null)
             try { u.addFriendRequest(id); }
@@ -224,5 +228,19 @@ public class UserBase {
     /** Accept a friend request
      * Add the id of the user that accepted to the list of friends of the user
      * that sent the request
+     * @param id Id of the user that accepted the request
+     * @param mail E-mail of the user that sent the request
      */
+    public void acceptFriendRequest (Double id, String mail) throws IllegalArgumentException {
+        /* Add exceptions */
+
+        Double user_id = this.mails.get(mail);
+        User u1, u2;
+        u1 = this.users.get(id.intValue() - 1);
+        u2 = this.users.get(user_id.intValue() - 1);
+
+        u1.removeFriendRequest(user_id);  /* Remove friend request */
+        u1.addFriend(user_id);            /* Add friend */
+        u2.addFriend(id);          /* Add friend */
+    }
 }
