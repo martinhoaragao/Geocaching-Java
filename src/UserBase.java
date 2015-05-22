@@ -167,6 +167,8 @@ public class UserBase {
      * @param mail User e-mail
      */
     public User getUserInfo (String mail) {
+        if (!mails.containsKey(mail))
+            return null;
         int id = this.mails.get(mail).intValue();
         User user = this.users.get(id - 1).clone();
         user.setPass("----");

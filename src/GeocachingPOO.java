@@ -10,6 +10,8 @@
 import java.util.Scanner;
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.TreeSet;
+import java.util.Iterator;
 import java.util.GregorianCalendar;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -48,12 +50,16 @@ public class GeocachingPOO {
           case 8: showRequests(); break;
           case 9: acceptFriendRequest(); break;
           case 10: showFriends(); break;
-          case 11: user = null; break;
+          case 11: showLastActivities(); break;
+          case 12: showFriendActivities(); break;
+          case 13: user = null; break;
           default: break;
         }
       }
     }
   }
+
+  /* ----------------- MENUS ----------------- */
 
   /** Display the main menu and return the user choice */
   private static int mainMenu () {
@@ -84,10 +90,14 @@ public class GeocachingPOO {
     System.out.println("8: Show Friend Requests");
     System.out.println("9: Accept Friend Request");
     System.out.println("10: Show Friends");
-    System.out.println("11: Log Out");
+    System.out.println("11: Show Last 10 activities");
+    System.out.println("12: Show Friend Activities");
+    System.out.println("13: Log Out");
 
     return sc.nextInt();
   }
+
+  /* ------------------- REGISTER & LOGIN --------------------- */
 
   /** Auxiliary function to register new user */
   private static void register () {
@@ -171,6 +181,8 @@ public class GeocachingPOO {
 
     } while ((user == null) );
   }
+
+  /* ----------------- INFORMATION MODIFICATION --------------------*/
 
   /**
    * Auxiliary function to create GregorianCalendar bdate to constructor user
@@ -302,7 +314,7 @@ public class GeocachingPOO {
     else user.setGender(false);
   }
 
-  /* -------------------- Code for Friends -------------------- */
+  /* -------------------- FRIENDS -------------------- */
 
   /** Auxiliary function to send a friend request */
   private static void sendFriendRequest () {
@@ -358,5 +370,53 @@ public class GeocachingPOO {
     System.out.print("Friend e-mail: ");
     mail = sc.nextLine().replaceAll("[\n\r]", "");
     userbase.acceptFriendRequest(user.getId(), mail);
+  }
+
+  /* ------------------- ACTIVITIES -------------------------*/
+
+  /** Auxiliary function to display User 10 last activities */
+  private static void showLastActivities () {
+    TreeSet<Activity> ts = user.getLastActivities();
+    Iterator it;
+
+    if (ts.size() == 0)
+      System.out.println("You have no activities yet!");
+    else {
+      it = ts.iterator();
+      while (it.hasNext()) {
+        Activity act = (Activity) it.next();
+        System.out.println(act.toString());
+      }
+    }
+  }
+
+  /** Auxiliary function to display friend 10 last activities */
+  private static void showFriendActivities () {
+    ArrayList<Double> friends = user.getFriends();
+    Scanner sc = new Scanner(System.in);
+    User friend; String mail; Iterator it;
+    TreeSet<Activity> ts;
+
+    // Get friend e-mail
+    System.out.print("Friend e-mail: ");
+    mail = sc.nextLine().replaceAll("[\n\r]","");
+    friend = userbase.getUserInfo(mail);
+
+    if (friend == null)                     /* No user with the given mail */
+      System.out.println("Theres no user with the given e-mail!");
+    else if (!friends.contains(friend.getId()))  /* No friend with the give mail */
+      System.out.println("You have no friends with the given e-mail!");
+    else {
+      ts = friend.getLastActivities();
+      if (ts.size() != 0) {
+        it = ts.iterator();
+
+        while (it.hasNext()) {
+          Activity act = (Activity) it.next();
+          System.out.println(act.toString());
+        }
+      } else
+        System.out.println("Your friend has no activities yet!");
+    }
   }
 }

@@ -90,7 +90,7 @@ public class User {
         this.mail = user.getMail(); this.pass = user.getPass();
         this.name = user.getName(); this.address = user.getAddress();
         this.bdate = user.getBDate(); this.points = user.getPoints();
-        this.activities = user.getActivities();
+        this.activities = user.getLastActivities();
         this.statistics = user.getStatistics();
         this.friends = user.getFriends();
         this.id = user.getId();
@@ -148,10 +148,10 @@ public class User {
     }
 
     /**
-     * @return User activities
+     * @return TreeSet with last 10 user activities
      */
     @SuppressWarnings("unchecked")
-    public TreeSet<Activity> getActivities () {
+    public TreeSet<Activity> getLastActivities () {
       TreeSet<Activity> ts = new TreeSet<Activity>(new CacheDateComparator());
       Iterator it = activities.iterator();
       Activity aux;
@@ -344,7 +344,7 @@ public class User {
         comp = comp && (this.address.equals(aux.getAddress()));
         comp = comp && (this.bdate.equals(aux.getBDate()));
         comp = comp && (this.points == aux.getPoints());
-        comp = comp && (this.activities.equals(aux.getActivities()));
+        comp = comp && (this.activities.equals(aux.getLastActivities()));
         comp = comp && (this.statistics.equals(aux.getStatistics()));
         comp = comp && (this.friends.equals(aux.getFriends()));
         return comp;
