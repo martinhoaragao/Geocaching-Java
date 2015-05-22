@@ -25,6 +25,7 @@ public class GeocachingPOO {
     private static User user = null;           // User that is logged in
     private static UserBase userbase = null;   // User data base
     private static CacheBase cachebase = null;
+    private static Double idcache = 1.0;
 
     //Random main method/function to complete.
     public static void main(String[] args) {
@@ -723,17 +724,17 @@ public class GeocachingPOO {
 private static void createCacheUser(){
     Scanner sc = new Scanner(System.in);
     Double id;
-    System.out.println("Type de cache id. Must be different from the other id's");
+    //System.out.println("Type de cache id. Must be different from the other id's");
     //Prob. this print wont be here. Id must be updated from a global variable of current id's in this class.
-    id = sc.nextDouble();
+    //id = sc.nextDouble();
     System.out.println("Type the latitude of the cache.");
     double lat = sc.nextDouble();
     System.out.println("Type the longitude of the cache.");
     double lon = sc.nextDouble();
     Coordinates coordinates = new Coordinates(lat, lon);
-
-    Cache cache = new Cache(id, coordinates, user.getMail());
-
+    //idcache variable.
+    Cache cache = new Cache(idcache, coordinates, user.getMail());
+    idcache++;
     //cachebase.add(cache);
     //This is what is needs to be done after.
 
