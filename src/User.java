@@ -317,7 +317,7 @@ public class User {
             year = String.valueOf(bdate.get(GregorianCalendar.YEAR));
             sb.append("Birthdate: " + day + "/" + month + "/" + year + "\n");
         }
-        sb.append("Gender: " + (this.gender ? "F" : "M" + "\n"));
+        sb.append("Gender: " + (this.gender ? "F" + "\n" : "M" + "\n"));
         sb.append("Address: " + this.address.toString());
         sb.append("User id: " + this.id.intValue() + "\n");
 

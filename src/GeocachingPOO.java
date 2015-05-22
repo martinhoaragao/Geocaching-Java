@@ -47,15 +47,15 @@ public class GeocachingPOO {
             } else {    // User logged in
                 option = userMenu();
                 switch (option) {
-                    case 1: printInfo(); break;
-                
-
-                    case 7: sendFriendRequest(); break;
-                    case 8: showRequests(); break;
-                    case 9: acceptFriendRequest(); break;
-                    case 10: showFriends(); break;
-                    case 11: showLastActivities(); break;
-                    case 12: showFriendActivities(); break;
+                    //case 1: printInfo(); break;
+                    case 1: personalInfo(); break;
+                    case 2: createCacheUser(); break;
+                    case 3: friendsMenu(); break;
+                    case 4: showCaches (); break;
+                    case 5: showStatistics(); break;
+                    
+                    case 6: showLastActivities(); break;
+                    case 7: showFriendActivities(); break;
                     case 13: user = null; break;
                     default: break;
                 }
@@ -85,22 +85,86 @@ public class GeocachingPOO {
         if (requests.size() > 0)  /* There are friend requests */
             System.out.println("Friend Requests: " + requests.size());
         System.out.println("1: Personal Information");
-        
-
-
-        System.out.println("7: Send Friend Request");
-        System.out.println("8: Show Friend Requests");
-        System.out.println("9: Accept Friend Request");
-        System.out.println("10: Show Friends");
-        System.out.println("11: Show Last 10 activities");
-        System.out.println("12: Show Friend Activities");
+        System.out.println("2. Create new cache");
+        System.out.println("3: Show Friends");
+        System.out.println("4. Show Caches");
+        System.out.println("5. Show My Statistics");
+        System.out.println("6: Show Last 10 activities");
+        System.out.println("7: Show Friend Activities");
         System.out.println("13: Log Out");
 
         return sc.nextInt();
     }
 
+    /**Menu 1. Personal Info + Change Personal Info after this */
+    private static void personalInfo(){
+        printInfo();
 
+        int escolha = subpersonalInfo();
+        switch (escolha) {
+                    case 1: changePassword(); break;
+                    case 2: changeName(); break;
+                    case 3: changeAddress(); break;
+                    case 4: changeBDate(); break;
+                    case 5: changeGender(); break;
+                    case 6: printInfo(); break;
+                    
+                    default: break;
+        }
+        
 
+    }
+
+    /** SubMenu PersonalInfo */
+    private static int subpersonalInfo(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("1: Change Password");
+        System.out.println("2: Change Name");
+        System.out.println("3: Change Address");
+        System.out.println("4: Change Birthdate");
+        System.out.println("5: Change Gender");
+        System.out.println("6. Return menu");
+        
+        
+        return sc.nextInt();
+    }
+
+    private static void friendsMenu(){
+        showFriends();
+
+        int escolha = friendsMenudisplay();
+        switch (escolha) {
+                case 1: 
+                sendFriendRequest();
+                break;
+                
+                case 2: showRequests();
+
+                break;
+                
+                case 3: acceptFriendRequest();
+
+                break;
+
+                case 4: showFriends(); break;
+                
+                default: break;
+        }
+    }
+
+    private static int friendsMenudisplay(){
+        Scanner sc = new Scanner(System.in);
+       
+
+        System.out.println("1: Send Friend Request");
+        System.out.println("2: Show Friend Requests");
+        System.out.println("3: Accept Friend Request");
+
+        System.out.println("4. Return menu");
+       
+
+        return sc.nextInt();
+    }
 
     /* ------------------- REGISTER & LOGIN --------------------- */
 
@@ -189,38 +253,7 @@ public class GeocachingPOO {
 
     /* ----------------- INFORMATION MODIFICATION --------------------*/
 
-    /**Menu 1. Personal Info + Change Personal Info after this */
-    private static void personalInfo(){
-        printInfo();
-
-        int escolha = subpersonalInfo();
-        switch (escolha) {
-            case 1: changePassword(); break;
-                    case 2: changeName(); break;
-                    case 3: changeAddress(); break;
-                    case 4: changeBDate(); break;
-                    case 5: changeGender(); break;
-                    case 6: printInfo(); break;
-                    case 7: break;
-                    default: break;
-        }
-        
-
-    }
-
-    /** SubMenu PersonalInfo */
-    private static int subpersonalInfo(){
-        Scanner sc = new Scanner(System.in);
-        System.out.println("1: Change Password");
-        System.out.println("2: Change Name");
-        System.out.println("3: Change Address");
-        System.out.println("4: Change Birthdate");
-        System.out.println("5: Change Gender");
-        System.out.println("6. Return menu");
-        System.out.println("7. Exit");
-        
-        return sc.nextInt();
-    }
+    
     
     /** Auxiliary function to print user information */
     private static void printInfo () {
@@ -756,12 +789,15 @@ public class GeocachingPOO {
 private static void createCacheUser(){
     Scanner sc = new Scanner(System.in);
     Double id;
-    System.out.println("What type of cache do you want to create?");
+    System.out.println("What type of cache do you want to create? (0 to cancel)");
     System.out.println("1. Tradicional");
     System.out.println("2. Multicache");
     System.out.println("3. Microcache");
-    System.out.println("4.Mysterycache");
+    System.out.println("4. Mysterycache");
     int type = sc.nextInt();
+    if(type==0){
+        System.out.println("Canceling...");
+        return;}
     System.out.println("Type the latitude of the cache.");
     double lat = sc.nextDouble();
     System.out.println("Type the longitude of the cache.");
@@ -773,24 +809,29 @@ private static void createCacheUser(){
         case 1:
         cache = new TraditionalCache(idcache, coordinates, user.getMail());
         idcache++;
-        
+        System.out.println("Sucessfuly created cache" + cache.toString());
         break;
+
         case 2:
         cache = new MultiCache(idcache, coordinates, user.getMail());
         idcache++;
-        
+        System.out.println("Sucessfuly created cache" + cache.toString());
         break;
+
         case 3:
         idcache++;
-        
+        System.out.println("Sucessfuly created cache" + cache.toString());
         cache = new MicroCache(idcache, coordinates, user.getMail());
         
         break;
+
         case 4:
         idcache++;
         cache = new MysteryCache(idcache, coordinates, user.getMail());
         //Add puzzle
+        System.out.println("Sucessfuly created cache" + cache.toString());
         break;
+
         default:
         break;
     }
@@ -800,4 +841,14 @@ private static void createCacheUser(){
 
 }
 
+    /** Menu option 4. See Caches */
+     private static void showCaches () {
+        System.out.println(cachebase.toString());
+    }
+
+    /** Menu option 5. Show My Statustics*/
+    private static void showStatistics() {
+        System.out.println(user.getStatistics().toString());
+    }
+    
 }
