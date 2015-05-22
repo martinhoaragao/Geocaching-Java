@@ -22,7 +22,7 @@ public class Statistic
      */
     public Statistic(){
        int i;
-       stats = new ArrayList<>(12);
+       stats = new ArrayList<TreeSet<Activity>>(12);
        
        for(i=0;i<12;i++){
            stats.add(new TreeSet<Activity>(new AComparator())); 
