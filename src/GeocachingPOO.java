@@ -846,7 +846,7 @@ private static void createCacheUser(){
         System.out.println(cachebase.toString());
     }
 
-    /** Menu option 5. Show My Statustics*/
+    /** Menu option 5. Show My Statistics*/
     private static void showStatistics() {
         System.out.println(user.getStatistics().toString());
     }
