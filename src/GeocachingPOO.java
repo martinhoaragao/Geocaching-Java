@@ -53,10 +53,9 @@ public class GeocachingPOO {
                     case 3: friendsMenu(); break;
                     case 4: showCaches (); break;
                     case 5: showStatistics(); break;
-                    
                     case 6: showLastActivities(); break;
                     case 7: showFriendActivities(); break;
-                    case 13: user = null; break;
+                    case 8: user = null; break;
                     default: break;
                 }
             }
@@ -85,13 +84,13 @@ public class GeocachingPOO {
         if (requests.size() > 0)  /* There are friend requests */
             System.out.println("Friend Requests: " + requests.size());
         System.out.println("1: Personal Information");
-        System.out.println("2. Create new cache");
-        System.out.println("3: Show Friends");
-        System.out.println("4. Show Caches");
-        System.out.println("5. Show My Statistics");
+        System.out.println("2: Create new cache");
+        System.out.println("3: Friends");
+        System.out.println("4: Show Caches");
+        System.out.println("5: Show My Statistics");
         System.out.println("6: Show Last 10 activities");
         System.out.println("7: Show Friend Activities");
-        System.out.println("13: Log Out");
+        System.out.println("8: Log Out");
 
         return sc.nextInt();
     }
@@ -108,11 +107,9 @@ public class GeocachingPOO {
                     case 4: changeBDate(); break;
                     case 5: changeGender(); break;
                     case 6: printInfo(); break;
-                    
+
                     default: break;
         }
-        
-
     }
 
     /** SubMenu PersonalInfo */
@@ -123,45 +120,38 @@ public class GeocachingPOO {
         System.out.println("3: Change Address");
         System.out.println("4: Change Birthdate");
         System.out.println("5: Change Gender");
-        System.out.println("6. Return menu");
-        
-        
+        System.out.println("6: Return menu");
+
+
         return sc.nextInt();
     }
 
     private static void friendsMenu(){
-        showFriends();
+        boolean running = true;
+        int escolha;
 
-        int escolha = friendsMenudisplay();
-        switch (escolha) {
-                case 1: 
-                sendFriendRequest();
-                break;
-                
-                case 2: showRequests();
-
-                break;
-                
-                case 3: acceptFriendRequest();
-
-                break;
-
+        while (running) {
+            escolha = friendsMenudisplay();
+            switch (escolha) {
+                case 1: sendFriendRequest(); break;
+                case 2: showRequests(); break;
+                case 3: acceptFriendRequest(); break;
                 case 4: showFriends(); break;
-                
-                default: break;
+                case 5: running = false; break;
+            }
         }
+
     }
 
     private static int friendsMenudisplay(){
         Scanner sc = new Scanner(System.in);
-       
 
         System.out.println("1: Send Friend Request");
         System.out.println("2: Show Friend Requests");
         System.out.println("3: Accept Friend Request");
+        System.out.println("4: Friends List");
+        System.out.println("5: Main Menu");
 
-        System.out.println("4. Return menu");
-       
 
         return sc.nextInt();
     }
@@ -253,8 +243,8 @@ public class GeocachingPOO {
 
     /* ----------------- INFORMATION MODIFICATION --------------------*/
 
-    
-    
+
+
     /** Auxiliary function to print user information */
     private static void printInfo () {
         System.out.println(user.toString());
@@ -395,7 +385,12 @@ public class GeocachingPOO {
         System.out.print("Friend e-mail: ");
         String mail = sc.nextLine().replaceAll("[\n\r]", "");
 
-        userbase.sendFriendRequest(user.getId(), mail);
+        try {
+            userbase.sendFriendRequest(user.getId(), mail);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
     }
 
     /** Auxiliary function to show friend requests */
@@ -436,10 +431,14 @@ public class GeocachingPOO {
         Scanner sc = new Scanner(System.in);
         String mail;
 
-        /* Get e-mail to be accepted */
-        System.out.print("Friend e-mail: ");
-        mail = sc.nextLine().replaceAll("[\n\r]", "");
-        userbase.acceptFriendRequest(user.getId(), mail);
+        /* Check if there are requests */
+        if (user.getFriendRequests().size() == 0) {
+            System.out.println("You have no friend requests.");
+        } else {    /* Get e-mail to be accepted */
+            System.out.print("Friend e-mail: ");
+            mail = sc.nextLine().replaceAll("[\n\r]", "");
+            userbase.acceptFriendRequest(user.getId(), mail);
+        }
     }
 
     /* ------------------- ACTIVITIES -------------------------*/
@@ -515,14 +514,14 @@ public class GeocachingPOO {
     }
 
     /**Auxiliary funtion: Show all reports*/
+    private static void showAllReports (){
+        TreeMap<Double, ArrayList<Report>> reps = cachebase.getAllReports();
 
-    private static void showAllReports(){
-        TreeMap<Double,Report> reps = cachebase.getReportedCaches();
-
-        for(Report r : reps.values()){
-            System.out.println("| ID : " + r.getId() + "| " + "Msg: " + r.getMessage());
+        for (Double id : reps.keySet()) {
+            for (Report r : reps.get(id)) {
+                System.out.println("| ID : " + r.getId() + "| " + "Msg: " + r.getMessage());
+            }
         }
-
     }
 
     /**Menu pints */
@@ -543,7 +542,7 @@ public class GeocachingPOO {
     private static void showAllCaches(){
         double n ;
         Scanner sc = new Scanner(System.in);
-        TreeSet<Cache> caches = cachebase.getAllCaches();
+        ArrayList<Cache> caches = cachebase.getAllCaches();
 
         for(Cache c : caches){
             System.out.println("| ID : " + c.getId() + "| " + "Coords: " + c.getCoords().toString() + "Creator: " + c.getMail());
@@ -675,7 +674,6 @@ public class GeocachingPOO {
                 break;
             }
         }
-
     }
 
     /**
@@ -685,14 +683,15 @@ public class GeocachingPOO {
     private static void AdminReportsMenu(){
         double n; int u;
         Scanner sc = new Scanner(System.in);
-        TreeMap<Double,Report> reps = cachebase.getReportedCaches();
+        TreeMap<Double, ArrayList<Report>> reps = cachebase.getAllReports();
 
         System.out.println("Want to display ID's and report messages? [y/n]");
         if(!sc.nextLine().toUpperCase().contains("Y") ){
 
-            for(Report r : reps.values()){
-                System.out.println("| ID : " + r.getId() + "| " );
-                //only prints out the id's
+            for (Double id : reps.keySet()) {
+                for (Report r : reps.get(id)) {
+                    System.out.println("| ID : " + r.getId() + "| " );
+                }
             }
 
             u = menuAdminReports();
@@ -755,8 +754,10 @@ public class GeocachingPOO {
 
 
         System.out.println("Type the ID of the cache to see details: (0 to leave)");
-        if((n = sc.nextDouble()) != 0){
-            System.out.println(reps.get(n).getMessage());
+        if ((n = sc.nextDouble()) != 0) {
+            for (Report rep : reps.get(n)) {
+                System.out.println(rep.getMessage());
+            }
         }
     }
 
@@ -784,7 +785,7 @@ public class GeocachingPOO {
 /**
 *   Auxiliary function for menu option 2. Create Cache.
 *
-* 
+*
 */
 private static void createCacheUser(){
     Scanner sc = new Scanner(System.in);
@@ -822,7 +823,7 @@ private static void createCacheUser(){
         idcache++;
         System.out.println("Sucessfuly created cache" + cache.toString());
         cache = new MicroCache(idcache, coordinates, user.getMail());
-        
+
         break;
 
         case 4:
@@ -835,7 +836,7 @@ private static void createCacheUser(){
         default:
         break;
     }
-    
+
     //cachebase.add(cache);
     //This is what is needs to be done after.
 
@@ -850,5 +851,5 @@ private static void createCacheUser(){
     private static void showStatistics() {
         System.out.println(user.getStatistics().toString());
     }
-    
+
 }

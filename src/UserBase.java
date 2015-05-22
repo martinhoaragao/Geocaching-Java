@@ -233,8 +233,10 @@ public class UserBase {
      * @param id Id of the user that accepted the request
      * @param mail E-mail of the user that sent the request
      */
-    public void acceptFriendRequest (Double id, String mail) throws IllegalArgumentException {
+    public void acceptFriendRequest (Double id, String mail) throws NullPointerException {
         /* Add exceptions */
+        if (mail == null)
+            throw new NullPointerException("mail can't be null.");
 
         Double user_id = this.mails.get(mail);
         User u1, u2;
