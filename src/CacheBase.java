@@ -11,62 +11,70 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class CacheBase {
-    private TreeSet<Cache> caches;    // All the existing Caches.
-    private TreeMap<Double, Report> reported_caches;  // Reported caches
+    private ArrayList<Cache> caches;                    /* To store caches */
+    private TreeMap<Double, ArrayList<Double>> owners;  /* Map between user id and cache id */
+    private TreeMap<Double, ArrayList<Report>> reported_caches;    /* Reported caches */
 
-    /**
-     * Constructor without arguments
-     */
+    /** Unparameterized constructor */
     public CacheBase () {
-        this.caches = new TreeSet<Cache>();
-        this.reported_caches = new TreeMap<Double, Report>();
+        this.caches = new ArrayList<Cache>();
+        this.owners = new TreeMap<Double, ArrayList<Double>>();
+        this.reported_caches = new TreeMap<Double, ArrayList<Report>>();
     }
 
-    /**
-     * Constructs a UserBase with the caches present on another UserBase
+    /** Constructs a UserBase with the caches present on another UserBase
      * @param cbase CacheBase from where the caches will be copied
      */
     public CacheBase (CacheBase cbase) {
-        TreeSet<Cache> ts = cbase.getAllCaches();
-        TreeMap<Double, Report> tm = new TreeMap<Double, Report>();
-        Iterator it = ts.iterator();
-
-        while (it.hasNext())
-            this.caches.add((Cache) it.next());
-
-        this.reported_caches = cbase.getReportedCaches();
+        this();
+        this.caches = cbase.getAllCaches();
+        this.owners = cbase.getAllOwners();
+        this.reported_caches = cbase.getAllReports();
     }
 
     // Getters
 
-    /** @return TreeSet with all the caches in the CacheBase */
-    public TreeSet<Cache> getAllCaches () {
-      TreeSet<Cache> ts = new TreeSet<Cache>();
+    /** @return ArrayList with all the caches in the CacheBase */
+    public ArrayList<Cache> getAllCaches () {
+      ArrayList<Cache> ts = new ArrayList<Cache>();
       Iterator it = this.caches.iterator();
-      Cache cache;
 
       while (it.hasNext()) {
-        cache = (Cache) it.next();
+        Cache cache = (Cache) it.next();
         ts.add(cache.clone());
       }
 
       return ts;
     }
 
-    /**
-     * @return ArrayList with all the caches owned by a given e-mail
-     * @param mail Owner e-mail
-     */
-    public ArrayList<Cache> getCaches (String mail) {
-        ArrayList<Cache> result = new ArrayList<Cache>();
-        Iterator it = this.caches.iterator();
+    /** @return TreeMap with all the owners relations with caches ids */
+    @SuppressWarnings("unchecked")
+    public TreeMap<Double, ArrayList<Double>> getAllOwners () {
+        return (TreeMap<Double, ArrayList<Double>>)this.owners.clone();
+    }
 
-        while (it.hasNext()) {
-            Cache aux = (Cache) it.next();
-            if (aux.getMail().equals(mail)) result.add(aux);
+    /** @return TreeMap with all the reports */
+    @SuppressWarnings("unchecked")
+    public TreeMap<Double, ArrayList<Report>> getAllReports () {
+        return (TreeMap<Double, ArrayList<Report>>) this.reported_caches.clone();
+    }
+
+    /** Get caches given a user id
+     * @param id User id
+     */
+    public ArrayList<Cache> getCaches (Double id) {
+        ArrayList<Double> caches_ids = this.owners.get(id);
+        ArrayList<Cache> user_caches = new ArrayList<Cache>();
+
+        if (caches_ids == null)
+            return null;
+        else {
+            for (Double c_id : caches_ids) {
+                user_caches.add(caches.get(c_id.intValue() - 1));
+            }
         }
 
-        return result;
+        return user_caches;
     }
 
     /**
@@ -76,12 +84,22 @@ public class CacheBase {
         return this.caches.size();
     }
 
-    /**
-     * Add a cache to the CacheBase
-     * @arg cache Cache to be added
+    /** Add a cache to the CacheBase
+     * @param id Id of the user creating the cache
+     * @param cache Cache to be added
      */
-    public void addCache (Cache cache) {
-        this.caches.add(cache);
+    public void addCache (Double id, Cache cache) {
+        ArrayList<Double> list;
+
+        if ( (list = owners.get(id)) == null ) {
+            /* First cache created by the user */
+            list = new ArrayList<Double>();
+            list.add(cache.getId());
+            owners.put(id, list);
+        } else list.add(cache.getId());
+
+        /* !!Should check if it is replacing a cache with same id */
+        this.caches.add(cache.getId().intValue() - 1, cache);
     }
 
     /**
@@ -89,36 +107,26 @@ public class CacheBase {
      * @arg cache
      */
     public boolean exists (Cache cache) {
-        Iterator it = this.caches.iterator();
-        boolean found = false;
-
-        while (it.hasNext() && !found)
-            found = cache.equals((Cache) it.next());
-
-        return found;
+        if (cache.getId().intValue() > this.caches.size())
+            return false;
+        else return (cache.equals(caches.get(cache.getId().intValue() -1 )));
     }
 
-    /**
-     * Check it a given Cache is present in the Cache data base
-     * @arg id Cache id
+    /** Check if a given id has a cache associated
+     * @param id Cache id
      */
-    public boolean exists(double id){
-        for(Cache a: this.caches){
-            if(a.getId() == id) return true;
-        }
-        return false;
+    public boolean exists (Double id) {
+        return (this.caches.size() > id.intValue());
     }
 
-    /**
-     * Get this cache if the id is the right one
-     * @arg id The id of that Cache
+    /** Return a Cache with a given id
+     * @param id The Cache id
      */
-    public Cache getCache (double id){
-       for(Cache a : this.caches){
-           //fazer clone cache
-           if(a.getId() == id) return a;
-        }
-        return null;
+    public Cache getCache (Double id){
+        if (id.intValue() >= this.caches.size())
+            return null;
+        else
+            return this.caches.get(id.intValue() - 1);
     }
 
     // toString, equals and clone
@@ -188,10 +196,19 @@ public class CacheBase {
      * @param report The report to be added}
      */
     public void addReport (Report report) throws NullPointerException {
-      if (report == null)
-        throw new NullPointerException("report can't be null!");
+        ArrayList<Report> list = reported_caches.get(report.getId());
 
-      reported_caches.put(report.getId(), report);
+        if (report == null)
+            throw new NullPointerException("report can't be null!");
+
+        /* Add report */
+        if (list != null)
+            list.add(report);
+        else {
+            list = new ArrayList<Report>();
+            list.add(report);
+            reported_caches.put(report.getId(), list);
+        }
     }
 
     /** Delete a cache from the CacheBase, and from the reported caches
@@ -199,36 +216,17 @@ public class CacheBase {
      * @param id The Cache id
      */
     public void delCache (Double id) {
-      Iterator it = this.caches.iterator();
-      Cache cache;
-      boolean done = false;
+        Cache cache;
 
-      while (it.hasNext() && !false) {
-        cache = (Cache) it.next();
-        if (cache.getId() == id) {
-          this.caches.remove(cache);
-          done = true;
-        }
-      }
-
-      this.reported_caches.remove(id);
+        if (id.intValue() <= this.caches.size())
+            caches.add(id.intValue() - 1, null);
+        this.reported_caches.remove(id);            /* Remove cache from reports */
     }
-    
+
     /**
      * Delete a report only
      */
     public void delReport(Double id){
         this.reported_caches.remove(id);
-    }
-
-    /** @return All reported caches */
-    public TreeMap<Double, Report> getReportedCaches () {
-      TreeMap<Double, Report> tm = new TreeMap<Double, Report>();
-
-      for (Report rep : this.reported_caches.values()) {
-        tm.put(rep.getId(), rep.clone());
-      }
-
-      return tm;
     }
 }

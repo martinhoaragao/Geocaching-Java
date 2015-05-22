@@ -67,7 +67,7 @@ public abstract class Cache
     /**
      * @return ID of a Cache
      */
-    public double getId() {
+    public Double getId() {
         return this.id;
     }
 
