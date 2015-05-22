@@ -337,20 +337,19 @@ public class GeocachingPOO {
         Scanner sc = new Scanner(System.in);
         System.out.println("Are you sure you want to report this cache? [y/n]");
         if(!sc.nextLine().toUpperCase().contains("Y") ){
-            
+            //Não tem certeza de que quer reportar, logo nao introduziu y 
             return;
         }
         else{
-            System.out.println("Whats the id of the cache you want to report?");
-            double idcache = sc.nextDouble();
+            
             String email = user.getMail();
             System.out.println("Reasons why you want to report this cache: ");
             String message = sc.nextLine();
             
-            Report rep = new Report(idcache, email, message);
+            Report rep = new Report(id, email, message);
             
             cachebase.addReport(rep);
-            System.out.println("Sucessfuly reported cache with id number of" + " " + idcache);
+            System.out.println("Sucessfuly reported cache with id number of" + " " + id);
             
             
         }
@@ -359,31 +358,29 @@ public class GeocachingPOO {
     /**Auxiliary funtion: Show all reports*/
     
     private static void showAllReports(){
-        double n;
-        Scanner sc = new Scanner(System.in);
         TreeMap<Double,Report> reps = cachebase.getReportedCaches();
         
-        System.out.println("Want to display ID's and report messages? [y/n]");
-        if(!sc.nextLine().toUpperCase().contains("Y") ){
-            for(Report r : reps.values()){
-            System.out.println("| ID : " + r.getId() + "| " );
-            }
-        }
-        else{
-            for(Report r : reps.values()){
+        for(Report r : reps.values()){
             System.out.println("| ID : " + r.getId() + "| " + "Msg: " + r.getMessage());
             }
-        }
-        System.out.println("Type the ID of the cache to see details: (0 to leave)");
-        if((n = sc.nextDouble()) != 0){
-            System.out.println(reps.get(n).getMessage());
-        }
-        
-        
+            
     }
     
+    /**Menu pints */
+    public static int CacheMenuaux(){
+                    Scanner sc = new Scanner(System.in);
+                    System.out.println("1. Report one cache ");
+                    System.out.println("2. See treasures of a cache");
+                    System.out.println("3. Show registry book of a cache");
+                    System.out.println("4. Show other details of a cache");
+                    System.out.println("5. Leave cache menu");
+                    System.out.println("0. Show all caches + menu");
+                    return sc.nextInt();
+    }
     
-    /**Auxiliary function: Show all caches */
+    /**Auxiliary function: Show all caches + menu 
+     * Menu Option: Shows all caches to * report one already, * Show details   ** Report this cache ** return to show all caches 
+     */
     private static void showAllCaches(){
         double n ;
         Scanner sc = new Scanner(System.in);
@@ -393,13 +390,35 @@ public class GeocachingPOO {
                 System.out.println("| ID : " + c.getId() + "| " + "Coords: " + c.getCoords().toString() + "Creator: " + c.getMail());
        }
        
-       System.out.println("Menu: \n 1. Show treasures; \n 2. Show registry book. \n 3. Show details");
-       int o = sc.nextInt();
+       System.out.println("-------------------------");
+       System.out.println("Cache Menu");
+       System.out.println("-------------------------");
+       
+       CacheMenuaux();
+       int o = CacheMenuaux();
        while(o!=0){
            
            switch (o) {
-                    case 1: 
-                    System.out.println("Type id. (0 to leave)");
+                    case 0:
+                    for(Cache c : caches){
+                        System.out.println("| ID : " + c.getId() + "| " + "Coords: " + c.getCoords().toString() + "Creator: " + c.getMail());
+                    }
+                    
+                    CacheMenuaux();
+                    o = sc.nextInt();
+                    
+                    case 1:
+                    System.out.println("Type cache id to report");
+                    double u = sc.nextDouble();
+                    UserReportCache(u);
+                     System.out.println("Type 0 to return to Cache menu");
+                     if(sc.nextInt() == 0){
+                        o = CacheMenuaux();
+                     }
+                    break;
+                    
+                    case 2: 
+                    System.out.println("Type cache id to see all the treasures. (0 to leave)");
                     n = sc.nextDouble();
                     if(n == 0) break;
                     else{
@@ -416,12 +435,19 @@ public class GeocachingPOO {
                             }
                         }
                     }
-                    o = sc.nextInt();
+                    //Nao sei se fará sentido chamar o menu aqui outra vez... se tiver mts treasures, talvez?
+                    //User ve os treasures todos e depois vê o menu outra vez para poder fazer outras coisas.. ? 
+                    
+                    System.out.println("Type 0 to return to Cache menu");
+                    if(sc.nextInt() == 0){
+                        o = CacheMenuaux();
+                    }
+                    
                     break;
                     
                     
-                    case 2: 
-                    System.out.println("Type the id of the cache to see more details. (0 to leave)");
+                    case 3: 
+                    System.out.println("Type the cache id to see registry book. (0 to leave)");
                     n = sc.nextDouble();
                     if(n == 0) break;
                     else{
@@ -438,11 +464,17 @@ public class GeocachingPOO {
                             }
                         }
                     }
-                    o = sc.nextInt();
+                    
+                    //
+                    System.out.println("Type 0 to return to Cache menu");
+                    if(sc.nextInt() == 0){
+                        o = CacheMenuaux();
+                    }
+                    //
                     break;
                     
                     
-                    case 3: 
+                    case 4: 
                     System.out.println("Type the id of the cache to see more details. (0 to leave)");
                     n = sc.nextDouble();
                     if(n == 0) break;
@@ -459,8 +491,28 @@ public class GeocachingPOO {
                                 System.out.println("There isn't such cache with that id. Sorry.");
                             }
                         }
+                        
+                        System.out.println("Report this cache? [y/n]");
+                        if(!sc.nextLine().toUpperCase().contains("Y")){
+                            break;
+                        }
+                        else{
+                            UserReportCache(n);
+                        }
+                        
+                        
+                        
                     }
-                    o = sc.nextInt();
+                    //
+                    System.out.println("Type 0 to return to Cache menu");
+                    if(sc.nextInt() == 0){
+                        o = CacheMenuaux();
+                    }
+                    //
+                    break;
+                    
+                    case 5: 
+                    System.out.println("Leaving...");
                     break;
                     
                     default: 
@@ -470,11 +522,108 @@ public class GeocachingPOO {
        
     }
     
+  
+    /**
+     * Auxiliary function: Menu Option for Admin: Show all reported caches to perform menu options shown in the menuAdminReports()
+     */
     
+    private static void AdminReportsMenu(){
+        double n; int u;
+        Scanner sc = new Scanner(System.in);
+        TreeMap<Double,Report> reps = cachebase.getReportedCaches();
+        
+        System.out.println("Want to display ID's and report messages? [y/n]");
+        if(!sc.nextLine().toUpperCase().contains("Y") ){
+            
+            for(Report r : reps.values()){
+            System.out.println("| ID : " + r.getId() + "| " );
+            //only prints out the id's
+            }
+            
+            u = menuAdminReports();
+        }
+        else{
+            showAllReports(); //shows id and message
+            
+            u = menuAdminReports();
+            
+        }
+        
+        while(u != 4){ //4 is the menu option to leave
+        
+            switch (u){
+                 case 1: 
+                 System.out.println("Type the cache id to delete");
+                 n = sc.nextDouble();
+                 cachebase.delCache(n);
+                 
+                 System.out.println("Type 0 to return to Admin Reports Menu");
+                 if(u==0)
+                 u = menuAdminReports();
+                 break;
+                 
+                 
+                 case 2:
+                 System.out.println("Type the report id to delete");
+                 n = sc.nextDouble();
+                  cachebase.delReport(n);
+                 
+                 System.out.println("Type 0 to return to Admin Reports Menu");
+                 if(u==0)
+                 u = menuAdminReports();
+                 break;
+                 
+                 case 3:
+                 
+                 System.out.println("Type 0 to return to Admin Reports Menu");
+                 if(u==0)
+                 u = menuAdminReports();
+                 break;
+                 
+                 default: 
+                 break;
+            }
+            
+            /*
+             *  * 3. Show details of a cache.
+         * (Sub-Menu)
+           * 3.1 Delete this cache.
+             * 3.2 Detele this report and maintain this cache.
+               * 3.3 Return to show all reported caches 
+               * 
+               * 
+               * faltam estes menus mas nao acho que sejam mesmo necessários...
+               * ele vê os ids e as mensagens, para que quer saber de quem as fez ou que?
+               * é-lhe igual... 
+               * e iso de mostrar mais detalhes do report só ia acrescentar ao email.
+             */
+        }
+        
+        
+        
+        System.out.println("Type the ID of the cache to see details: (0 to leave)");
+        if((n = sc.nextDouble()) != 0){
+            System.out.println(reps.get(n).getMessage());
+        }
+    }
     
-    
-    /**Auxiliary function: Menu Option: Shows all caches to 1. report one already, 2: Show details   2.1. Report this cache 2.2 return to show all caches */
-
-    /**Auxiliary function: Menu Option for Admin: Show all reported caches to 1. Delete one cache 2. Delete one report  3. Show details of a cache   3.1 Delete this cache  3.2Detele this report and maintain this cache 3.3Return to show all reported caches  */
-
+    /**
+     * Aux menu prints
+     * 1. Delete one cache.
+     * 2. Delete one report.
+     * 3. Show details of a cache.
+     * (Sub-Menu)
+     * 3.1 Delete this cache.
+     * 3.2 Detele this report and maintain this cache.
+     * 3.3 Return to show all reported caches 
+     */
+    private static int menuAdminReports(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("----------");
+        System.out.println("1. Approve report and delete cache");
+        System.out.println("2. Delete report and mantain cache");
+        System.out.println("3. Show details of a report");
+        System.out.println("4. Leave");
+        return sc.nextInt();
+    }
 }
