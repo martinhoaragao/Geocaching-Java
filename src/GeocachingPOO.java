@@ -27,6 +27,7 @@ public class GeocachingPOO {
     private static CacheBase cachebase = null;
     private static Double idcache = 1.0;
     private static Cache cache = null;
+
     //Random main method/function to complete.
     public static void main(String[] args) {
         boolean running = true;     // Set the program as running
@@ -200,7 +201,7 @@ public class GeocachingPOO {
                     case 4: changeBDate(); break;
                     case 5: changeGender(); break;
                     case 6: printInfo(); break;
-                    case 7: return; break;
+                    case 7: break;
                     default: break;
         }
         
@@ -217,8 +218,10 @@ public class GeocachingPOO {
         System.out.println("5: Change Gender");
         System.out.println("6. Return menu");
         System.out.println("7. Exit");
-
+        
+        return sc.nextInt();
     }
+    
     /** Auxiliary function to print user information */
     private static void printInfo () {
         System.out.println(user.toString());
@@ -753,17 +756,45 @@ public class GeocachingPOO {
 private static void createCacheUser(){
     Scanner sc = new Scanner(System.in);
     Double id;
-    //System.out.println("Type de cache id. Must be different from the other id's");
-    //Prob. this print wont be here. Id must be updated from a global variable of current id's in this class.
-    //id = sc.nextDouble();
+    System.out.println("What type of cache do you want to create?");
+    System.out.println("1. Tradicional");
+    System.out.println("2. Multicache");
+    System.out.println("3. Microcache");
+    System.out.println("4.Mysterycache");
+    int type = sc.nextInt();
     System.out.println("Type the latitude of the cache.");
     double lat = sc.nextDouble();
     System.out.println("Type the longitude of the cache.");
     double lon = sc.nextDouble();
     Coordinates coordinates = new Coordinates(lat, lon);
     //idcache variable.
-    cache = new Cache(idcache, coordinates.clone(), user.getMail());
-    idcache++;
+
+    switch(type){
+        case 1:
+        cache = new TraditionalCache(idcache, coordinates, user.getMail());
+        idcache++;
+        
+        break;
+        case 2:
+        cache = new MultiCache(idcache, coordinates, user.getMail());
+        idcache++;
+        
+        break;
+        case 3:
+        idcache++;
+        
+        cache = new MicroCache(idcache, coordinates, user.getMail());
+        
+        break;
+        case 4:
+        idcache++;
+        cache = new MysteryCache(idcache, coordinates, user.getMail());
+        //Add puzzle
+        break;
+        default:
+        break;
+    }
+    
     //cachebase.add(cache);
     //This is what is needs to be done after.
 
