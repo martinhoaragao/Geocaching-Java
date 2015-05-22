@@ -213,6 +213,13 @@ public class CacheBase {
 
       this.reported_caches.remove(id);
     }
+    
+    /**
+     * Delete a report only
+     */
+    public void delReport(Double id){
+        this.reported_caches.remove(id);
+    }
 
     /** @return All reported caches */
     public TreeMap<Double, Report> getReportedCaches () {
