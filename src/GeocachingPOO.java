@@ -713,4 +713,30 @@ public class GeocachingPOO {
         System.out.println("4. Leave");
         return sc.nextInt();
     }
+
+
+/**
+*   Auxiliary function for menu option 2. Create Cache.
+*
+* 
+*/
+private static void createCacheUser(){
+    Scanner sc = new Scanner(System.in);
+    Double id;
+    System.out.println("Type de cache id. Must be different from the other id's");
+    //Prob. this print wont be here. Id must be updated from a global variable of current id's in this class.
+    id = sc.nextDouble();
+    System.out.println("Type the latitude of the cache.");
+    double lat = sc.nextDouble();
+    System.out.println("Type the longitude of the cache.");
+    double lon = sc.nextDouble();
+    Coordinates coordinates = new Coordinates(lat, lon);
+
+    Cache cache = new Cache(id, coordinates, user.getMail());
+
+    //cachebase.add(cache);
+    //This is what is needs to be done after.
+
+}
+
 }
