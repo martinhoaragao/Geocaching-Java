@@ -26,7 +26,7 @@ public class GeocachingPOO {
     private static UserBase userbase = null;   // User data base
     private static CacheBase cachebase = null;
     private static Double idcache = 1.0;
-
+    private static Cache cache = null;
     //Random main method/function to complete.
     public static void main(String[] args) {
         boolean running = true;     // Set the program as running
@@ -47,11 +47,8 @@ public class GeocachingPOO {
                 option = userMenu();
                 switch (option) {
                     case 1: printInfo(); break;
-                    case 2: changePassword(); break;
-                    case 3: changeName(); break;
-                    case 4: changeAddress(); break;
-                    case 5: changeBDate(); break;
-                    case 6: changeGender(); break;
+                
+
                     case 7: sendFriendRequest(); break;
                     case 8: showRequests(); break;
                     case 9: acceptFriendRequest(); break;
@@ -87,11 +84,9 @@ public class GeocachingPOO {
         if (requests.size() > 0)  /* There are friend requests */
             System.out.println("Friend Requests: " + requests.size());
         System.out.println("1: Personal Information");
-        System.out.println("2: Change Password");
-        System.out.println("3: Change Name");
-        System.out.println("4: Change Address");
-        System.out.println("5: Change Birthdate");
-        System.out.println("6: Change Gender");
+        
+
+
         System.out.println("7: Send Friend Request");
         System.out.println("8: Show Friend Requests");
         System.out.println("9: Accept Friend Request");
@@ -102,6 +97,9 @@ public class GeocachingPOO {
 
         return sc.nextInt();
     }
+
+
+
 
     /* ------------------- REGISTER & LOGIN --------------------- */
 
@@ -190,43 +188,37 @@ public class GeocachingPOO {
 
     /* ----------------- INFORMATION MODIFICATION --------------------*/
 
-    /**
-     * Auxiliary function to create GregorianCalendar bdate to constructor user
-     * With prints
-     */
-    private static GregorianCalendar typebdate(){
-        boolean aux = true;
-        String bbdate;
-        GregorianCalendar bbbdate;
-        String[] bdate_fields;
-        int d,m,y,yy;
-        Scanner sc = new Scanner(System.in);
-        do{
-            System.out.print("Birthdate (Day/Month/Year): ");
-            bbdate = sc.nextLine();
-            bdate_fields = bbdate.split("/");
-            d = Integer.parseInt(bdate_fields[0]);
-            m = Integer.parseInt(bdate_fields[1]);
-            y = Integer.parseInt(bdate_fields[2]);
-            GregorianCalendar Calendar  = new GregorianCalendar();
-            yy = Calendar.get(Calendar.YEAR); //returns the current year yay.
+    /**Menu 1. Personal Info + Change Personal Info after this */
+    private static void personalInfo(){
+        printInfo();
 
-            if(d <=0 || d >31 ) System.out.println("Day invalid!");
-            else if(m <= 0 || m >12) System.out.println("Month invalid!");
-            else if(y <=0 || y > yy) System.out.println("Year invalid!");
-            else if( (y%4 != 0 && m == 2 && d>28) || (m == 4 && d > 30) || (m == 6 && d > 30) || (m == 9 && d > 30) || (m == 11 && d > 30)   )
-                System.out.println("Date invalid!");
+        int escolha = subpersonalInfo();
+        switch (escolha) {
+            case 1: changePassword(); break;
+                    case 2: changeName(); break;
+                    case 3: changeAddress(); break;
+                    case 4: changeBDate(); break;
+                    case 5: changeGender(); break;
+                    case 6: printInfo(); break;
+                    case 7: return; break;
+                    default: break;
+        }
+        
 
-            else {
-                aux = false;
-                bbbdate = new GregorianCalendar(y,m,d);
-                return bbbdate;
-            }
-            //when numm == 0 everything is ok.
-        }while( aux );
-        return null;
     }
 
+    /** SubMenu PersonalInfo */
+    private static int subpersonalInfo(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("1: Change Password");
+        System.out.println("2: Change Name");
+        System.out.println("3: Change Address");
+        System.out.println("4: Change Birthdate");
+        System.out.println("5: Change Gender");
+        System.out.println("6. Return menu");
+        System.out.println("7. Exit");
+
+    }
     /** Auxiliary function to print user information */
     private static void printInfo () {
         System.out.println(user.toString());
@@ -318,6 +310,43 @@ public class GeocachingPOO {
             user.setGender(true);
         else user.setGender(false);
     }
+    /**
+     * Auxiliary function to create GregorianCalendar bdate to constructor user
+     * With prints
+     */
+    private static GregorianCalendar typebdate(){
+        boolean aux = true;
+        String bbdate;
+        GregorianCalendar bbbdate;
+        String[] bdate_fields;
+        int d,m,y,yy;
+        Scanner sc = new Scanner(System.in);
+        do{
+            System.out.print("Birthdate (Day/Month/Year): ");
+            bbdate = sc.nextLine();
+            bdate_fields = bbdate.split("/");
+            d = Integer.parseInt(bdate_fields[0]);
+            m = Integer.parseInt(bdate_fields[1]);
+            y = Integer.parseInt(bdate_fields[2]);
+            GregorianCalendar Calendar  = new GregorianCalendar();
+            yy = Calendar.get(Calendar.YEAR); //returns the current year yay.
+
+            if(d <=0 || d >31 ) System.out.println("Day invalid!");
+            else if(m <= 0 || m >12) System.out.println("Month invalid!");
+            else if(y <=0 || y > yy) System.out.println("Year invalid!");
+            else if( (y%4 != 0 && m == 2 && d>28) || (m == 4 && d > 30) || (m == 6 && d > 30) || (m == 9 && d > 30) || (m == 11 && d > 30)   )
+                System.out.println("Date invalid!");
+
+            else {
+                aux = false;
+                bbbdate = new GregorianCalendar(y,m,d);
+                return bbbdate;
+            }
+            //when numm == 0 everything is ok.
+        }while( aux );
+        return null;
+    }
+
 
     /* -------------------- FRIENDS -------------------- */
 
@@ -733,7 +762,7 @@ private static void createCacheUser(){
     double lon = sc.nextDouble();
     Coordinates coordinates = new Coordinates(lat, lon);
     //idcache variable.
-    Cache cache = new Cache(idcache, coordinates, user.getMail());
+    cache = new Cache(idcache, coordinates.clone(), user.getMail());
     idcache++;
     //cachebase.add(cache);
     //This is what is needs to be done after.
