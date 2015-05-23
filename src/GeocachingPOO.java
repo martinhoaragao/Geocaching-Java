@@ -56,7 +56,8 @@ public class GeocachingPOO {
                     case 6: showLastActivities(); break;
                     case 7: showFriendActivities(); break;
                     case 8: showUserCaches(); break;
-                    case 9: user = null; break;
+                    case 9: addActivity(); break;
+                    case 10: user = null; break;
                     default: break;
                 }
             }
@@ -92,7 +93,8 @@ public class GeocachingPOO {
         System.out.println("6: Show Last 10 activities");
         System.out.println("7: Show Friend Activities");
         System.out.println("8: Show My Caches");
-        System.out.println("9: Log Out");
+        System.out.println("9: Add Activity");
+        System.out.println("10: Log Out");
 
         return sc.nextInt();
     }
@@ -484,6 +486,35 @@ public class GeocachingPOO {
                 }
             } else
                 System.out.println("Your friend has no activities yet!");
+        }
+    }
+
+    /** Auxiliary function to add a new Activity */
+    private static void addActivity () {
+        Scanner sc = new Scanner(System.in);
+        Activity act = new Activity();  /* Activity to be added */
+        Cache cache;                    /* Activity cache */
+        GregorianCalendar date;         /* Activity date */
+        Double cache_id, kms;           /* Cache id and kilometers */
+
+        /* Get the activity date */
+        /* TODO: Change typebdate() to different function */
+        System.out.print("Date: "); date = typebdate();
+        /* Get the cache id */
+        System.out.print("Cache id: "); cache_id = sc.nextDouble();
+        /* Get the kilometeres covered */
+        System.out.print("Kilometeres: "); kms = sc.nextDouble();
+        /* Retrieve cache from the cachebase */
+        try {
+            cache = cachebase.getCache(cache_id);
+            act.setCache(cache); act.setKms(kms);
+            act.setDate(date);
+            /* TODO: Update to cache.getPoints() */
+            act.setPoints(10);
+            user.addActivity(act);
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
         }
     }
 

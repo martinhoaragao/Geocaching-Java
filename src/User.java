@@ -399,7 +399,7 @@ public class User {
         }
     }
 
-    // Code for Friends
+    /* -------------------------------- FRIENDS -----------------------------*/
 
     /** Add a User id to the friends request
      * @param id The user id
@@ -446,6 +446,8 @@ public class User {
         return (ArrayList<Double>) this.friend_requests.clone();
     }
 
+    /* ---------------------------- ACTIVITIES --------------------------- */
+
     /** Add an Activity to the activities queue
      * @param act Activity to be added
      */
@@ -455,12 +457,14 @@ public class User {
       if (act == null)
         throw new NullPointerException("act can't be null!");
 
-      // Remove head if there are already 10 activities
+      /* Remove head if there are already 10 activities */
       if (this.activities.size() == 10)
-        try { aux = this.activities.first(); }
-        catch (Exception e) { aux = null; }
+        try {
+            aux = this.activities.first();
+        } catch (Exception e) { aux = null; }
       if (aux != null) this.activities.remove(aux);
 
       this.activities.add(act);
+      this.points += act.getPoints();
     }
 }

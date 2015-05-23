@@ -9,8 +9,8 @@ import java.util.GregorianCalendar;
 public class Activity {
     private GregorianCalendar date; // Acitivity date
     private Cache cache;            // Cache found on this activity
-    private double kms;             // Kilometers covered
-    private int points;             //Each activity gives points to the User.
+    private Double kms;             // Kilometers covered
+    private int points;             // Each activity gives points to the User.
 
     /**
      * Constructor with arguments
@@ -27,7 +27,7 @@ public class Activity {
     public Activity () {
         this.date = new GregorianCalendar();
         this.cache = null;
-        this.kms = 0;
+        this.kms = 0.0;
     }
 
     /**
@@ -40,9 +40,9 @@ public class Activity {
         this.date = (GregorianCalendar) date.clone();
         this.cache = cache;
         this.kms = kms;
-        
+
     }
-    
+
     /**
      * Constructs an Activity using another Activity as reference
      * @arg act Activity to use as reference
@@ -53,8 +53,8 @@ public class Activity {
         this.kms = act.getKms();
         this.points = act.points;
     }
-    
-    
+
+
     // Getters
 
     /**
@@ -63,14 +63,14 @@ public class Activity {
     public GregorianCalendar getDate () {
         return (GregorianCalendar) this.date.clone();
     }
-    
+
     /**
      * @return the month of the activity
      */
     public int getMonth(){
         return this.date.get(GregorianCalendar.MONTH);
     }
-    
+
     /**
      * @return Cache found in this activity
      */
@@ -84,8 +84,10 @@ public class Activity {
     public double getKms () {
         return this.kms;
     }
-    
-    public int getpoints(){return this.points;}
+
+    public int getPoints () {
+        return this.points;
+    }
 
     // Setters
 
@@ -97,6 +99,12 @@ public class Activity {
      */
     public void setDate (int day, int month, int year) {
         this.date = new GregorianCalendar(year, month, day);
+    }
+
+    /** Set the date of the activity
+     * @param date GregorianCalendar date */
+    public void setDate (GregorianCalendar date) {
+        this.date = (GregorianCalendar) date.clone();
     }
 
     /**
@@ -114,11 +122,11 @@ public class Activity {
     public void setKms (double kms) {
         this.kms = kms;
     }
-    
-    public void setpoints(int points){
+
+    public void setPoints (int points){
         this.points = points;
     }
-    
+
     // toString, equals and clone
 
     /**
@@ -138,7 +146,7 @@ public class Activity {
         sb.append("Cache found on " + day + "/" + month + "/" + year + "\n");
         sb.append(this.kms + " kilometers covered!");
         sb.append("Cache localization: " + latitude + "," + longitude + "\n");
-        sb.append(" Total points accumulated: " + points);
+        sb.append(" Total points accumulated: " + this.points);
         return sb.toString();
     }
 

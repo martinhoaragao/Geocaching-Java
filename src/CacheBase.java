@@ -122,9 +122,9 @@ public class CacheBase {
     /** Return a Cache with a given id
      * @param id The Cache id
      */
-    public Cache getCache (Double id){
-        if (id.intValue() >= this.caches.size())
-            return null;
+    public Cache getCache (Double id) throws IllegalArgumentException {
+        if (id.intValue() > this.caches.size())
+            throw new IllegalArgumentException("No cache with the given id!");
         else
             return this.caches.get(id.intValue() - 1);
     }
