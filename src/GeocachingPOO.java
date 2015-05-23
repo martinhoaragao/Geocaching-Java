@@ -51,11 +51,12 @@ public class GeocachingPOO {
                     case 1: personalInfo(); break;
                     case 2: createCacheUser(); break;
                     case 3: friendsMenu(); break;
-                    case 4: showCaches (); break;
+                    case 4: showCaches(); break;
                     case 5: showStatistics(); break;
                     case 6: showLastActivities(); break;
                     case 7: showFriendActivities(); break;
-                    case 8: user = null; break;
+                    case 8: showUserCaches(); break;
+                    case 9: user = null; break;
                     default: break;
                 }
             }
@@ -90,7 +91,8 @@ public class GeocachingPOO {
         System.out.println("5: Show My Statistics");
         System.out.println("6: Show Last 10 activities");
         System.out.println("7: Show Friend Activities");
-        System.out.println("8: Log Out");
+        System.out.println("8: Show My Caches");
+        System.out.println("9: Log Out");
 
         return sc.nextInt();
     }
@@ -101,14 +103,14 @@ public class GeocachingPOO {
 
         int escolha = subpersonalInfo();
         switch (escolha) {
-                    case 1: changePassword(); break;
-                    case 2: changeName(); break;
-                    case 3: changeAddress(); break;
-                    case 4: changeBDate(); break;
-                    case 5: changeGender(); break;
-                    case 6: printInfo(); break;
+            case 1: changePassword(); break;
+            case 2: changeName(); break;
+            case 3: changeAddress(); break;
+            case 4: changeBDate(); break;
+            case 5: changeGender(); break;
+            case 6: printInfo(); break;
 
-                    default: break;
+            default: break;
         }
     }
 
@@ -121,7 +123,6 @@ public class GeocachingPOO {
         System.out.println("4: Change Birthdate");
         System.out.println("5: Change Gender");
         System.out.println("6: Return menu");
-
 
         return sc.nextInt();
     }
@@ -151,7 +152,6 @@ public class GeocachingPOO {
         System.out.println("3: Accept Friend Request");
         System.out.println("4: Friends List");
         System.out.println("5: Main Menu");
-
 
         return sc.nextInt();
     }
@@ -242,7 +242,6 @@ public class GeocachingPOO {
     }
 
     /* ----------------- INFORMATION MODIFICATION --------------------*/
-
 
 
     /** Auxiliary function to print user information */
@@ -336,6 +335,7 @@ public class GeocachingPOO {
             user.setGender(true);
         else user.setGender(false);
     }
+
     /**
      * Auxiliary function to create GregorianCalendar bdate to constructor user
      * With prints
@@ -373,9 +373,7 @@ public class GeocachingPOO {
         return null;
     }
 
-
     /* -------------------- FRIENDS -------------------- */
-
     /** Auxiliary function to send a friend request */
     private static void sendFriendRequest () {
         Scanner sc = new Scanner(System.in);
@@ -489,26 +487,28 @@ public class GeocachingPOO {
         }
     }
 
-        /**
-         * Auxiliary function to report a cache
-         * @param double id The cache id to be reported
-         */
-        private static void UserReportCache(double id) {
-            Scanner sc = new Scanner(System.in);
-            System.out.println("Are you sure you want to report this cache? [y/n]");
-            if(!sc.nextLine().toUpperCase().contains("Y") ){
-                //Não tem certeza de que quer reportar, logo nao introduziu y
-                return;
-            } else {
+    /* ------------------- CACHES ----------------------------*/
 
-                String email = user.getMail();
-                System.out.println("Reasons why you want to report this cache: ");
-                String message = sc.nextLine();
+    /**
+     * Auxiliary function to report a cache
+     * @param double id The cache id to be reported
+     */
+    private static void UserReportCache(double id) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Are you sure you want to report this cache? [y/n]");
+        if(!sc.nextLine().toUpperCase().contains("Y") ){
+            //Não tem certeza de que quer reportar, logo nao introduziu y
+            return;
+        } else {
 
-                Report rep = new Report(id, email, message);
+            String email = user.getMail();
+            System.out.println("Reasons why you want to report this cache: ");
+            String message = sc.nextLine();
 
-                cachebase.addReport(rep);
-                System.out.println("Sucessfuly reported cache with id number of" + " " + id);
+            Report rep = new Report(id, email, message);
+
+            cachebase.addReport(rep);
+            System.out.println("Sucessfuly reported cache with id number of" + " " + id);
 
         }
     }
@@ -545,7 +545,7 @@ public class GeocachingPOO {
         ArrayList<Cache> caches = cachebase.getAllCaches();
 
         for(Cache c : caches){
-            System.out.println("| ID : " + c.getId() + "| " + "Coords: " + c.getCoords().toString() + "Creator: " + c.getMail());
+            System.out.println(c.toString());
         }
 
         System.out.println("-------------------------");
@@ -656,7 +656,6 @@ public class GeocachingPOO {
                         UserReportCache(n);
                     }
 
-
                 }
                 //
                 System.out.println("Type 0 to return to Cache menu");
@@ -752,7 +751,6 @@ public class GeocachingPOO {
              */
         }
 
-
         System.out.println("Type the ID of the cache to see details: (0 to leave)");
         if ((n = sc.nextDouble()) != 0) {
             for (Report rep : reps.get(n)) {
@@ -781,75 +779,87 @@ public class GeocachingPOO {
         return sc.nextInt();
     }
 
+    /**
+     *   Auxiliary function for menu option 2. Create Cache.
+     *
+     *
+     */
+    private static void createCacheUser(){
+        Scanner sc = new Scanner(System.in);
+        Double id;
+        System.out.println("What type of cache do you want to create? (0 to cancel)");
+        System.out.println("1: Tradicional");
+        System.out.println("2: Multicache");
+        System.out.println("3: Microcache");
+        System.out.println("4: Mysterycache");
+        int type = sc.nextInt();
+        if (type==0) {
+            System.out.println("Canceling...");
+            return;
+        }
+        System.out.println("Type the latitude of the cache.");
+        double lat = sc.nextDouble();
+        System.out.println("Type the longitude of the cache.");
+        double lon = sc.nextDouble();
+        Coordinates coordinates = new Coordinates(lat, lon);
+        //idcache variable.
 
-/**
-*   Auxiliary function for menu option 2. Create Cache.
-*
-*
-*/
-private static void createCacheUser(){
-    Scanner sc = new Scanner(System.in);
-    Double id;
-    System.out.println("What type of cache do you want to create? (0 to cancel)");
-    System.out.println("1. Tradicional");
-    System.out.println("2. Multicache");
-    System.out.println("3. Microcache");
-    System.out.println("4. Mysterycache");
-    int type = sc.nextInt();
-    if(type==0){
-        System.out.println("Canceling...");
-        return;}
-    System.out.println("Type the latitude of the cache.");
-    double lat = sc.nextDouble();
-    System.out.println("Type the longitude of the cache.");
-    double lon = sc.nextDouble();
-    Coordinates coordinates = new Coordinates(lat, lon);
-    //idcache variable.
+        switch(type){
+            case 1:
+            cache = new TraditionalCache(idcache, coordinates, user.getMail());
+            idcache++;
+            System.out.println("Sucessfuly created cache" + cache.toString());
+            break;
 
-    switch(type){
-        case 1:
-        cache = new TraditionalCache(idcache, coordinates, user.getMail());
-        idcache++;
-        System.out.println("Sucessfuly created cache" + cache.toString());
-        break;
+            case 2:
+            cache = new MultiCache(idcache, coordinates, user.getMail());
+            idcache++;
+            System.out.println("Sucessfuly created cache" + cache.toString());
+            break;
 
-        case 2:
-        cache = new MultiCache(idcache, coordinates, user.getMail());
-        idcache++;
-        System.out.println("Sucessfuly created cache" + cache.toString());
-        break;
+            case 3:
+            cache = new MicroCache(idcache, coordinates, user.getMail());
+            idcache++;
+            System.out.println("Sucessfuly created cache" + cache.toString());
+            break;
 
-        case 3:
-        idcache++;
-        System.out.println("Sucessfuly created cache" + cache.toString());
-        cache = new MicroCache(idcache, coordinates, user.getMail());
+            case 4:
+            cache = new MysteryCache(idcache, coordinates, user.getMail());
+            idcache++;
 
-        break;
+            //Add puzzle
+            System.out.println("Sucessfuly created cache" + cache.toString());
+            break;
 
-        case 4:
-        idcache++;
-        cache = new MysteryCache(idcache, coordinates, user.getMail());
-        //Add puzzle
-        System.out.println("Sucessfuly created cache" + cache.toString());
-        break;
-
-        default:
-        break;
+            default:
+            break;
+        }
+        cachebase.addCache(user.getId(), cache);
     }
-
-    //cachebase.add(cache);
-    //This is what is needs to be done after.
-
-}
 
     /** Menu option 4. See Caches */
-     private static void showCaches () {
-        System.out.println(cachebase.toString());
+    private static void showCaches () {
+        ArrayList<Cache> caches = cachebase.getAllCaches();
+
+        for (Cache c : caches)
+            System.out.println(c.toString());
     }
+
+    /** Auxiliary function to show the logged in user caches */
+    private static void showUserCaches () {
+        ArrayList<Cache> caches = cachebase.getCaches(user.getId());
+
+        if (caches != null) {
+            for (Cache c : caches)
+                System.out.println(c.toString());
+        } else
+            System.out.println("You have not created any Cache!");
+    }
+
+    /* ----------------------- STATISTICS -----------------*/
 
     /** Menu option 5. Show My Statistics*/
     private static void showStatistics() {
         System.out.println(user.getStatistics().toString());
     }
-
 }

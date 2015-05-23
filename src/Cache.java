@@ -11,9 +11,8 @@ import java.util.ArrayList;
  *
  *  @version 08/05/2015
  */
-public abstract class Cache
-{
-    private double id;                  //Cache identifier
+public abstract class Cache {
+    private Double id;                  //Cache identifier
     private Coordinates coords;          // Cache coordinates
     private String mail;                // Cache owner mail
     private ArrayList<String> registry;  // registration of the cache / Record book / Registry
@@ -26,7 +25,7 @@ public abstract class Cache
      * Construtor without arguments
      */
     public Cache () {
-       this.id = 0;
+       this.id = 0.0;
        this.coords = new Coordinates();
        this.mail = "";
        this.registry = new ArrayList<String>();
@@ -166,9 +165,9 @@ public abstract class Cache
      */
     public String toString () {
         StringBuilder sb = new StringBuilder();
-        sb.append("ID: " + this.id + "\n");
+        sb.append("Id: " + this.id.intValue() + " | ");
         sb.append(this.coords.toString());
-        sb.append("Email: " + this.mail + "\n");
+        sb.append(" , created by: " + this.mail + "\n");
 
         return sb.toString();
     }
