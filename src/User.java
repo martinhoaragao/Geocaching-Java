@@ -478,4 +478,6 @@ public class User {
       
      
     }
+    
+    //TODO  ADICIONAR ESTATISTICA ACTIVIDADE AO ANO TAMBÉM
 }

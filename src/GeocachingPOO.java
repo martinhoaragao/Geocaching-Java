@@ -889,7 +889,7 @@ public class GeocachingPOO {
     }
 
     /* ----------------------- STATISTICS -----------------*/
-
+    //TODO  statistics year falta 
     /** Menu option 5. Show My Statistics*/
     private static void showStatistics() {
         Scanner sc = new Scanner(System.in);

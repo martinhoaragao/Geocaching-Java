@@ -71,7 +71,8 @@ public class StatisticYear
      * Methods
      */
     
- // COMEÇAR AQUI
+ // COMEÇAR AQUI  
+ //TODO
     /**
      * Add an Activity in the Statistic.
      * @param Activity a.
