@@ -75,6 +75,12 @@ public class User {
         this.id = id;
         this.address = new Address();
         this.bdate = (GregorianCalendar) bdate.clone();
+        
+        this.points = 0;
+        this.activities = new TreeSet<Activity>(new CacheDateComparator());
+        this.statistics = new Statistic();
+        this.friends = new ArrayList<Double>();
+        this.friend_requests = new ArrayList<Double>();
     }
 
     /**
@@ -449,6 +455,7 @@ public class User {
     /* ---------------------------- ACTIVITIES --------------------------- */
 
     /** Add an Activity to the activities queue
+     * and automaticaly to the statistics
      * @param act Activity to be added
      */
     public void addActivity (Activity act) throws NullPointerException {
@@ -466,6 +473,9 @@ public class User {
 
       this.activities.add(act);
       this.points += act.getPoints();
+      
       this.statistics.addAct(act);
+      
+      System.out.println(this.statistics.toString());
     }
 }

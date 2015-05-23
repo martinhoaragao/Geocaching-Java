@@ -10,13 +10,15 @@ import java.util.GregorianCalendar;
 import java.util.Arrays;
 import java.util.TreeSet;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Statistic
 {
     //Could I declare private int month and then TreeSet<month, a> , for instace?
     //my opinion is no, but what do you think?
-    private ArrayList < TreeSet<Activity>>  stats; // Visited Caches for each month. Comparable by date.
-
+    private ArrayList< TreeSet<Activity>>  stats; // Visited Caches for each month. Comparable by date.
+    
+    
     /**
      * Constructor without arguments
      */
@@ -33,16 +35,36 @@ public class Statistic
      * Copy Constructor (preserving encapsulation)
      *
      */
-    public Statistic(Statistic stt){
+    public Statistic(Statistic stt){ //MUDAR
+        this.stats = stt.getStats();
+    }
+    
+    /**
+     * Method to get the list
+     */
+    public ArrayList< TreeSet<Activity>> getStats(){
+        ArrayList<TreeSet<Activity>> aux = new ArrayList<>();
         int i;
-        for(i=0; i<12; i++){
-            this.stats.add(new TreeSet<Activity>());
-            for(Activity a : stats.get(i)){
-                this.stats.get(i).add(a);
-            }
+        for( TreeSet<Activity> este : this.stats ){
+            aux.add(cloneTreeSet(este));
+        }
+        return aux;
+    }
+    
+    /**
+     * Method to clone the set
+     */
+    public TreeSet<Activity> cloneTreeSet( TreeSet<Activity> ts){
+        TreeSet<Activity> novo = new TreeSet<>(new AComparator());
+        Iterator<Activity> it = ts.iterator();
+        
+        while(it.hasNext()){
+            novo.add(it.next());
         }
         
+        return novo;
     }
+    
 
     /**
      * Methods
@@ -53,7 +75,7 @@ public class Statistic
      */
     public void addAct(Activity a){
         int month = a.getMonth();
-        this.stats.get(month-1).add(a);
+        this.stats.get(month-1).add(a.clone());
     }
     
     /**

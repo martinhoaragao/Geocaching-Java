@@ -893,4 +893,9 @@ public class GeocachingPOO {
     private static void showStatistics() {
         System.out.println(user.getStatistics().toString());
     }
+    
+    /** Aux Function for us to clean the terminal when we call it */
+    private final static void clean(){
+       System.out.print('\u000C');
+    }
 }
