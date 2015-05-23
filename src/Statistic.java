@@ -218,7 +218,7 @@ public class Statistic
     public int getSumPointsM(int month){
         int sum=0;
         for(Activity a : this.stats.get(month-1)){
-            sum+=a.getpoints();
+            sum+=a.getPoints();
         }
         return sum;
     }

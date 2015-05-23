@@ -466,5 +466,6 @@ public class User {
 
       this.activities.add(act);
       this.points += act.getPoints();
+      this.statistics.addAct(act);
     }
 }

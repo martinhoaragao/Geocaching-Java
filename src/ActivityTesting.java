@@ -75,9 +75,9 @@ public class ActivityTesting
         
         activity4.setDate(24, 6, 2009);
         assertEquals(6, activity4.getMonth());
-        activity4.setpoints(44);
+        /*activity4.setpoints(44);
         assertEquals(44, activity4.getpoints());
-        
+        */
         activity4.setCache(traditio1);
         
     }

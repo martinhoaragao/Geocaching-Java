@@ -66,53 +66,7 @@ public class StatsTest
 
     
 
-    @Test
-    public void test2()
-    {
-        java.util.GregorianCalendar gregoria1 = new java.util.GregorianCalendar(2015, 8, 15);
-        java.util.GregorianCalendar gregoria2 = new java.util.GregorianCalendar(2015, 8, 30);
-        java.util.GregorianCalendar gregoria3 = new java.util.GregorianCalendar(2015, 9, 6);
-        MultiCache multiCac1 = new MultiCache();
-        TraditionalCache traditio1 = new TraditionalCache();
-        MysteryCache mysteryC1 = new MysteryCache();
-        Activity activity1 = new Activity(gregoria1, multiCac1, 100);
-        Activity activity2 = new Activity(gregoria2, mysteryC1, 200);
-        Activity activity3 = new Activity(gregoria3, traditio1, 150);
-        Activity activity4 = new Activity(gregoria3, mysteryC1, 30);
-        assertEquals(0, activity1.getpoints());
-        activity1.setpoints(5);
-        activity2.setpoints(5);
-        activity3.setpoints(2);
-        activity4.setpoints(4);
-        Statistic statisti1 = new Statistic();
-        statisti1.addAct(activity1);
-        statisti1.addAct(activity2);
-        statisti1.addAct(activity3);
-        statisti1.addAct(activity4);
-        assertEquals(5, statisti1.getCMonth());
-        assertEquals(2, statisti1.getSumAM(8));
-        statisti1.getSumAM(9);
-        activity4.setCache(traditio1);
-        statisti1.addAct(activity4);
-        statisti1.getSumAM(9);
-        MysteryCache mysteryC2 = new MysteryCache(mysteryC1);
-        mysteryC2.setId(444);
-        activity4.setCache(mysteryC2);
-        statisti1.addAct(activity4);
-        statisti1.getSumAM(9);
-        activity4.setDate(7, 9, 2015);
-        statisti1.addAct(activity4);
-        statisti1.getSumAM(9);
-        assertEquals(4, statisti1.getinfoNumberCaches());
-        assertEquals(6, statisti1.getSumPointsM(9));
-        assertEquals(10, statisti1.getSumPointsM(8));
-        assertEquals(300, statisti1.getSumkmsM(8), 0.1);
-        assertEquals(180, statisti1.getSumkmsM(9), 0.1);
-        assertEquals(4, statisti1.getinfoNumberCaches());
-        statisti1.getinfoNumberCaches();
-        statisti1.getTreeSet(9);
-        statisti1.getinfoNumberCaches();
-    }
+    
 
     @Test
     public void test3()
@@ -127,10 +81,10 @@ public class StatsTest
         Activity activity2 = new Activity(gregoria2, mysteryC1, 200);
         Activity activity3 = new Activity(gregoria3, traditio1, 150);
         Activity activity4 = new Activity(gregoria3, mysteryC1, 30);
-        activity1.setpoints(5);
-        activity2.setpoints(4);
-        activity3.setpoints(2);
-        activity4.setpoints(4);
+        activity1.setPoints(5);
+        activity2.setPoints(4);
+        activity3.setPoints(2);
+        activity4.setPoints(4);
         Statistic statisti1 = new Statistic();
         statisti1.addAct(activity1);
         statisti1.addAct(activity2);
