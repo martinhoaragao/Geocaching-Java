@@ -78,18 +78,7 @@ public class Statistic
         this.stats.get(month-1).add(a.clone());
     }
     
-    /**
-     * Activity Comparator
-     */
-    class AComparator implements Comparator<Activity>{
-        public int compare(Activity a, Activity b){
-            int m = (a.getDate().compareTo(b.getDate()));
-            if(m==0) return -1;
-            else return m;
-            //if(num < 0) return -1;
-            //if(num >=0) return 1;
-        }
-    }
+    
 
     /**
      * Removes an Activity in the array of TreeSet<Activity>.

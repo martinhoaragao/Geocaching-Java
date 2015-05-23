@@ -476,6 +476,6 @@ public class User {
       
       this.statistics.addAct(act);
       
-      System.out.println(this.statistics.toString());
+     
     }
 }

@@ -51,7 +51,7 @@ public class GeocachingPOO {
                     case 1: personalInfo(); break;
                     case 2: createCacheUser(); break;
                     case 3: friendsMenu(); break;
-                    case 4: showCaches(); break;
+                    case 4: showAllCaches(); break;
                     case 5: showStatistics(); break;
                     case 6: showLastActivities(); break;
                     case 7: showFriendActivities(); break;
@@ -698,6 +698,7 @@ public class GeocachingPOO {
 
                 case 5:
                 System.out.println("Leaving...");
+                o=0;
                 break;
 
                 default:
@@ -891,6 +892,10 @@ public class GeocachingPOO {
 
     /** Menu option 5. Show My Statistics*/
     private static void showStatistics() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("My total points: " + user.getPoints());
+        System.out.println("1. See my Month Statistics");
+        if (sc.nextInt()==1)
         System.out.println(user.getStatistics().toString());
     }
     
