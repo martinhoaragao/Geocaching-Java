@@ -70,6 +70,13 @@ public class Activity {
     public int getMonth(){
         return this.date.get(GregorianCalendar.MONTH);
     }
+    
+    /**
+     * @return the year of the activity
+     */
+     public int getYear(){
+        return this.date.get(GregorianCalendar.YEAR);
+    }
 
     /**
      * @return Cache found in this activity
