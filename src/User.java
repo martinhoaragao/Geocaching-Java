@@ -75,7 +75,7 @@ public class User {
         this.id = id;
         this.address = new Address();
         this.bdate = (GregorianCalendar) bdate.clone();
-        
+
         this.points = 0;
         this.activities = new TreeSet<Activity>(new CacheDateComparator());
         this.statistics = new Statistic();
@@ -400,7 +400,7 @@ public class User {
                 sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
 
             return sb.toString();
-        } catch (NoSuchAlgorithmException e){   // Unable to ecnrypt password
+        } catch (NoSuchAlgorithmException e){   // Unable to encrypt password
             return pass;
         }
     }
@@ -473,11 +473,11 @@ public class User {
 
       this.activities.add(act);
       this.points += act.getPoints();
-      
+
       this.statistics.addAct(act);
-      
-     
+
+
     }
-    
+
     //TODO  ADICIONAR ESTATISTICA ACTIVIDADE AO ANO TAMBÉM
 }
