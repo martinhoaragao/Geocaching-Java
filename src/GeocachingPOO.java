@@ -71,7 +71,7 @@ public class GeocachingPOO {
     private static int mainMenu () {
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("\u001b[2J" + "\u001b[H");
+        clean();
         System.out.println("1: Register");
         System.out.println("2: Login");
         System.out.println("3: Exit");
@@ -84,7 +84,7 @@ public class GeocachingPOO {
         Scanner sc = new Scanner(System.in);
         ArrayList<Double> requests = user.getFriendRequests();
 
-        System.out.print("\u001b[2J" + "\u001b[H");
+        clean();
         System.out.println("Logged in as: " + user.getName() + " | " + user.getPoints() + " points");
         if (requests.size() > 0)  /* There are friend requests */
             System.out.println("Friend Requests: " + requests.size());
@@ -121,7 +121,7 @@ public class GeocachingPOO {
     private static int subpersonalInfo(){
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("\u001b[2J" + "\u001b[H");
+        clean();
         printInfo();
         System.out.println("1: Change Password");
         System.out.println("2: Change Name");
@@ -152,7 +152,7 @@ public class GeocachingPOO {
     private static int friendsMenudisplay(){
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("\u001b[2J" + "\u001b[H");
+        clean();
         System.out.println("1: Send Friend Request");
         System.out.println("2: Show Friend Requests");
         System.out.println("3: Accept Friend Request");
@@ -178,8 +178,7 @@ public class GeocachingPOO {
         int i=0; //Tries for the user. After 3rd try, menu to register closes. (Avoiding infinite loop).
         int d,m,y,yy;
 
-        System.out.print("\u001b[2J" + "\u001b[H");
-
+        clean();
         do {
 
             if (i == 3) { System.out.println("Invalid e-mail!"); return; }
@@ -238,7 +237,7 @@ public class GeocachingPOO {
         String mail, pass;
         int i = 0;
 
-        System.out.print("\u001b[2J" + "\u001b[H");
+        clean();
         do {
             i++;
             System.out.print("E-mail: ");
@@ -277,7 +276,7 @@ public class GeocachingPOO {
         Scanner sc = new Scanner(System.in);
         int i = 0; //3 trys to change password each time
 
-        System.out.print("\u001b[2J" + "\u001b[H");
+        clean();
 
         // Give user 3 tries to insert current password
         do {
@@ -320,7 +319,7 @@ public class GeocachingPOO {
     private static void changeName () {
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("\u001b[2J" + "\u001b[H");
+        clean();
         System.out.print("Name: ");
         try {
             user.setName(sc.nextLine().replaceAll("[\n\r]", ""));
@@ -338,7 +337,7 @@ public class GeocachingPOO {
         Scanner sc = new Scanner(System.in);
         String city, country;
 
-        System.out.print("\u001b[2J" + "\u001b[H");
+        clean();
         System.out.print("City: ");
         city = sc.nextLine().replaceAll("[\n\r]", "");
         System.out.print("Country: ");
@@ -357,7 +356,7 @@ public class GeocachingPOO {
 
     /** Auxiliary function to change User birthdate */
     private static void changeBDate () {
-        System.out.print("\u001b[2J" + "\u001b[H");
+        clean();
         GregorianCalendar bb = typebdate();
         if (bb != null) {
             user.setBDate(bb);
@@ -372,7 +371,7 @@ public class GeocachingPOO {
     private static void changeGender () {
         Scanner sc = new Scanner(System.in);
 
-        System.out.print("\u001b[2J" + "\u001b[H");
+        clean();
         System.out.print("Gender (g for girl/b for boy): ");
         if (sc.nextLine().replaceAll("[\n\r]", "").equals("g"))
             user.setGender(true);
@@ -432,10 +431,11 @@ public class GeocachingPOO {
 
         try {
             userbase.sendFriendRequest(user.getId(), mail);
+            System.out.println("Friend Request Sent!");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
+        if (c != null) c.readLine();
     }
 
     /** Auxiliary function to show friend requests */
@@ -452,6 +452,7 @@ public class GeocachingPOO {
                 System.out.println(u.getName() + " - " + u.getMail());
             }
         }
+        if (c != null) c.readLine();
     }
 
     /** Auxiliary function to show friends */
@@ -469,6 +470,8 @@ public class GeocachingPOO {
                     System.out.println(u.getName() + " - " + u.getMail());
             }
         }
+        else System.out.println("You have not added friends yet.");
+        if (c != null) c.readLine();
     }
 
     /** Auxiliary function to accept friend requests */
@@ -483,7 +486,9 @@ public class GeocachingPOO {
             System.out.print("Friend e-mail: ");
             mail = sc.nextLine().replaceAll("[\n\r]", "");
             userbase.acceptFriendRequest(user.getId(), mail);
+            System.out.println("Friend request accepted!");
         }
+        if (c != null) c.readLine();
     }
 
     /* ------------------- ACTIVITIES -------------------------*/
@@ -493,6 +498,7 @@ public class GeocachingPOO {
         TreeSet<Activity> ts = user.getLastActivities();
         Iterator it;
 
+        clean();
         if (ts.size() == 0)
             System.out.println("You have no activities yet!");
         else {
@@ -502,6 +508,7 @@ public class GeocachingPOO {
                 System.out.println(act.toString());
             }
         }
+        if (c != null) c.readLine();
     }
 
     /** Auxiliary function to display friend 10 last activities */
@@ -543,6 +550,7 @@ public class GeocachingPOO {
         Double cache_id, kms;           /* Cache id and kilometers */
 
         /* Get the activity date */
+        clean();
         /* TODO: Change typebdate() to different function */
         System.out.print("Date: "); date = typebdate();
         /* Get the cache id */
@@ -557,10 +565,12 @@ public class GeocachingPOO {
             /* TODO: Update to cache.getPoints() */
             act.setPoints(10);
             user.addActivity(act);
+            System.out.println("Activity sucessfully added!");
         }
         catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        if (c != null) c.readLine();
     }
 
     /* ------------------- CACHES ----------------------------*/
@@ -868,12 +878,15 @@ public class GeocachingPOO {
     private static void createCacheUser(){
         Scanner sc = new Scanner(System.in);
         Double id;
+
+        clean();
         System.out.println("What type of cache do you want to create? (0 to cancel)");
         System.out.println("1: Tradicional");
         System.out.println("2: Multicache");
         System.out.println("3: Microcache");
         System.out.println("4: Mysterycache");
         int type = sc.nextInt();
+
         if (type==0) {
             System.out.println("Canceling...");
             return;
@@ -906,7 +919,7 @@ public class GeocachingPOO {
             idcache++;
 
             /* TODO: Add puzzle cache */
-            System.out.println("Sucessfuly created cache" + cache.toString());
+            System.out.println("Sucessfuly created cache!\n" + cache.toString());
             break;
 
             default:
@@ -919,6 +932,7 @@ public class GeocachingPOO {
         catch (Exception e) {
             System.out.println(e.getMessage());
         }
+        if (c != null) c.readLine();
     }
 
     /** Menu option 4. See Caches */
@@ -933,11 +947,14 @@ public class GeocachingPOO {
     private static void showUserCaches () {
         ArrayList<Cache> caches = cachebase.getCaches(user.getId());
 
+        clean();
         if (caches != null) {
             for (Cache c : caches)
                 System.out.println(c.toString());
-        } else
-            System.out.println("You have not created any Cache!");
+        }
+        else System.out.println("You have not created any Cache!");
+
+        if (c != null) c.readLine();
     }
 
     /* ----------------------- STATISTICS -----------------*/
@@ -953,6 +970,6 @@ public class GeocachingPOO {
 
     /** Aux Function for us to clean the terminal when we call it */
     private final static void clean(){
-       System.out.print('\u000C');
+       System.out.print("\u001b[2J" + "\u001b[H");
     }
 }
