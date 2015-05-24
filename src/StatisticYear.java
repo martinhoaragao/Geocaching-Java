@@ -68,6 +68,7 @@ public class StatisticYear
        
        Statistic aux = this.statsyear.get(year); //devolve-me estatistica deste ano
        if(aux==null) aux = new Statistic();
+       aux.setYearStatsMonth(year);
       boolean inseriu =  aux.addAct(a); //Adiciona nova à estatistica deste ano.
        //A outra class Statistic trata de a inserir no mÊs correto.
        //Ela lá já faz clone.
