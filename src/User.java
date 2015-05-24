@@ -23,7 +23,7 @@ public class User {
     private int points;               // User points
     private Double id;                   // User Id
 
-    private TreeSet<Activity> activities;       // Last 10 User activities
+    private TreeSet<Activity> activities;       // User Activities
     private Statistic statistics;               // User statistics
     private ArrayList<Double> friends;          // User friends
     private ArrayList<Double> friend_requests;  // Friend Requests
@@ -75,7 +75,7 @@ public class User {
         this.id = id;
         this.address = new Address();
         this.bdate = (GregorianCalendar) bdate.clone();
-        
+
         this.points = 0;
         this.activities = new TreeSet<Activity>(new CacheDateComparator());
         this.statistics = new Statistic();
@@ -96,7 +96,7 @@ public class User {
         this.mail = user.getMail(); this.pass = user.getPass();
         this.name = user.getName(); this.address = user.getAddress();
         this.bdate = user.getBDate(); this.points = user.getPoints();
-        this.activities = user.getLastActivities();
+        this.activities = user.getActivities();
         this.statistics = user.getStatistics();
         this.friends = user.getFriends();
         this.id = user.getId();
@@ -153,11 +153,9 @@ public class User {
         return this.points;
     }
 
-    /**
-     * @return TreeSet with last 10 user activities
-     */
+    /** @return TreeSet with the user activities */
     @SuppressWarnings("unchecked")
-    public TreeSet<Activity> getLastActivities () {
+    public TreeSet<Activity> getActivities () {
       TreeSet<Activity> ts = new TreeSet<Activity>(new CacheDateComparator());
       Iterator it = activities.iterator();
       Activity aux;
@@ -167,6 +165,19 @@ public class User {
         ts.add(aux.clone());
       }
       return ts;
+    }
+
+    /** @return ArrayList with the last 10 activities if the user has that many */
+    public ArrayList<Activity> getLastActivities () {
+        ArrayList<Activity> acts = new ArrayList<Activity>(10);
+        Iterator it = this.activities.descendingIterator();
+
+        while (it.hasNext() && (acts.size() != 10)) {
+            Activity act = (Activity) it.next();
+            acts.add(act.clone());
+        }
+
+        return acts;
     }
 
     /**
@@ -350,7 +361,7 @@ public class User {
         comp = comp && (this.address.equals(aux.getAddress()));
         comp = comp && (this.bdate.equals(aux.getBDate()));
         comp = comp && (this.points == aux.getPoints());
-        comp = comp && (this.activities.equals(aux.getLastActivities()));
+        comp = comp && (this.activities.equals(aux.getActivities()));
         comp = comp && (this.statistics.equals(aux.getStatistics()));
         comp = comp && (this.friends.equals(aux.getFriends()));
         return comp;
@@ -454,8 +465,9 @@ public class User {
 
     /* ---------------------------- ACTIVITIES --------------------------- */
 
-    /** Add an Activity to the activities queue
-     * and automaticaly to the statistics
+    /** Add an Activity to the activities TreeSet and update the Statistics for the
+     * activity year and month
+     * TODO: Update Statistics when inserting
      * @param act Activity to be added
      */
     public void addActivity (Activity act) throws NullPointerException {
@@ -464,20 +476,11 @@ public class User {
       if (act == null)
         throw new NullPointerException("act can't be null!");
 
-      /* Remove head if there are already 10 activities */
-      if (this.activities.size() == 10)
-        try {
-            aux = this.activities.first();
-        } catch (Exception e) { aux = null; }
-      if (aux != null) this.activities.remove(aux);
-
       this.activities.add(act);
       this.points += act.getPoints();
-      
+
       this.statistics.addAct(act);
-      
-     
     }
-    
+
     //TODO  ADICIONAR ESTATISTICA ACTIVIDADE AO ANO TAMBÉM
 }
