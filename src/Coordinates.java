@@ -4,7 +4,7 @@
  * @version 11/05/2015
  */
 
-public class Coordinates {
+public class Coordinates implements Comparable<Coordinates> {
     private double longitude;
     private double latitude;
 
@@ -102,5 +102,15 @@ public class Coordinates {
 
         Coordinates a = (Coordinates) cc;
         return ( a.latitude == this.latitude && a.longitude == this.longitude);
+    }
+
+    /* Method only created to be able to use the TreeMap<Coordinates, Double> in CacheBase */
+    @Override
+    public int compareTo (Coordinates coords) {
+        if ((latitude == coords.getLat()) && (longitude == coords.getLon()))
+            return 0;
+        else if (latitude < coords.getLat())
+            return -1;
+        else return 1;
     }
 }

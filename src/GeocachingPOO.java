@@ -840,33 +840,36 @@ public class GeocachingPOO {
             case 1:
             cache = new TraditionalCache(idcache, coordinates, user.getMail());
             idcache++;
-            System.out.println("Sucessfuly created cache" + cache.toString());
             break;
 
             case 2:
             cache = new MultiCache(idcache, coordinates, user.getMail());
             idcache++;
-            System.out.println("Sucessfuly created cache" + cache.toString());
             break;
 
             case 3:
             cache = new MicroCache(idcache, coordinates, user.getMail());
             idcache++;
-            System.out.println("Sucessfuly created cache" + cache.toString());
             break;
 
             case 4:
             cache = new MysteryCache(idcache, coordinates, user.getMail());
             idcache++;
 
-            //Add puzzle
+            /* TODO: Add puzzle cache */
             System.out.println("Sucessfuly created cache" + cache.toString());
             break;
 
             default:
             break;
         }
-        cachebase.addCache(user.getId(), cache);
+        try {
+            cachebase.addCache(user.getId(), cache);
+            System.out.println("Sucessfuly created cache" + cache.toString());
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /** Menu option 4. See Caches */

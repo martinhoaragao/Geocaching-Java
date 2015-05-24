@@ -14,12 +14,14 @@ public class CacheBase {
     private ArrayList<Cache> caches;                    /* To store caches */
     private TreeMap<Double, ArrayList<Double>> owners;  /* Map between user id and cache id */
     private TreeMap<Double, ArrayList<Report>> reported_caches;    /* Reported caches */
+    private TreeMap<Coordinates, Double> coords; /* Map between coordinates and caches ids */
 
     /** Unparameterized constructor */
     public CacheBase () {
         this.caches = new ArrayList<Cache>();
         this.owners = new TreeMap<Double, ArrayList<Double>>();
         this.reported_caches = new TreeMap<Double, ArrayList<Report>>();
+        this.coords = new TreeMap<Coordinates, Double>();
     }
 
     /** Constructs a UserBase with the caches present on another UserBase
@@ -30,6 +32,7 @@ public class CacheBase {
         this.caches = cbase.getAllCaches();
         this.owners = cbase.getAllOwners();
         this.reported_caches = cbase.getAllReports();
+        this.coords = cbase.getCoords();
     }
 
     // Getters
@@ -57,6 +60,13 @@ public class CacheBase {
     @SuppressWarnings("unchecked")
     public TreeMap<Double, ArrayList<Report>> getAllReports () {
         return (TreeMap<Double, ArrayList<Report>>) this.reported_caches.clone();
+    }
+
+    /** @return TreeMap with all the Coordinates used */
+    @SuppressWarnings("unchecked")
+    public TreeMap<Coordinates, Double> getCoords () {
+        /* TODO: Clone the coordinates */
+        return (TreeMap<Coordinates, Double>) this.coords.clone();
     }
 
     /** Get caches given a user id
@@ -88,14 +98,20 @@ public class CacheBase {
      * @param id Id of the user creating the cache
      * @param cache Cache to be added
      */
-    public void addCache (Double id, Cache cache) {
+    public void addCache (Double id, Cache cache) throws IllegalStateException {
         ArrayList<Double> list;
+        Coordinates cache_coords = cache.getCoords();
+
+        /* Make sure there is no cache in the argument cache location */
+        if ( this.coords.get(cache_coords) != null)
+            throw new IllegalStateException("There is already a cache in that location.");
 
         if ( (list = owners.get(id)) == null ) {
             /* First cache created by the user */
             list = new ArrayList<Double>();
             list.add(cache.getId());
             owners.put(id, list);
+            coords.put(cache_coords, id);
         } else list.add(cache.getId());
 
         /* !!Should check if it is replacing a cache with same id */
