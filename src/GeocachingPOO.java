@@ -627,8 +627,7 @@ public class GeocachingPOO {
         System.out.println("-------------------------");
         System.out.println("Cache Menu");
         System.out.println("-------------------------");
-        
-        
+
         int o = CacheMenuaux();
         while(o!=0){
 
@@ -637,7 +636,6 @@ public class GeocachingPOO {
                 for(Cache c : caches){
                     System.out.println("| ID : " + c.getId() + "| " + "Coords: " + c.getCoords().toString() + "Creator: " + c.getMail());
                 }
-                
 
                 CacheMenuaux();
                 o = sc.nextInt();
