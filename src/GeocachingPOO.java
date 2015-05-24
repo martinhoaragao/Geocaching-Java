@@ -1050,7 +1050,7 @@ public class GeocachingPOO {
             idcache++;
 
             /* TODO: Add puzzle cache */
-            System.out.println("Sucessfully created cache!\n" + cache.toString());
+            System.out.println("Successfully created cache!\n" + cache.toString());
             break;
 
             default:
