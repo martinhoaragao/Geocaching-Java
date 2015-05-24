@@ -17,7 +17,7 @@ public class Statistic
     //Could I declare private int month and then TreeSet<month, a> , for instace?
     //my opinion is no, but what do you think?
     private ArrayList< TreeSet<Activity>>  stats; // Visited Caches for each month. Comparable by date.
-    
+    private int year; //Year of this statistics.
     
     /**
      * Constructor without arguments
@@ -29,6 +29,7 @@ public class Statistic
        for(i=0;i<12;i++){
            stats.add(new TreeSet<Activity>(new AComparator())); 
        }
+       this.year = 2015;
     }
 
     /**
@@ -37,6 +38,7 @@ public class Statistic
      */
     public Statistic(Statistic stt){ //MUDAR
         this.stats = stt.getStats();
+        this.year = stt.getYearStatsMonth();
     }
     
     /**
@@ -69,13 +71,30 @@ public class Statistic
     /**
      * Methods
      */
+    
+    /**
+     * Get the year
+     */
+    public int getYearStatsMonth(){
+        return this.year;
+    }
+    
     /**
      * Add an Activity in the Statistic.
      * @param Activity a.
      */
-    public void addAct(Activity a){
+    public boolean addAct(Activity a){  //returns a boolean if it was inserted or not.
+        //Negative testing: if i want to add activity of year 2005 in stats of year 2006, should return false.
+        //expecting negative tests to elaborate ways of communication with user.
+        //In geocaching if result == false, print the message.
+        int year = a.getYear();
+        
+        if(year == this.year){
         int month = a.getMonth();
         this.stats.get(month-1).add(a.clone());
+        return true;
+        }
+        else return false;
     }
     
     
