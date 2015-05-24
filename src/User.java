@@ -15,7 +15,6 @@ public abstract class User {
     private String name;              // User name
     private Double id;                // User Id
 
-
     /**
      * Constructor without arguments
      */
@@ -236,5 +235,4 @@ public abstract class User {
             return pass;
         }
     }
-
 }
