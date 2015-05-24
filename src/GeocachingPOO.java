@@ -56,8 +56,10 @@ public class GeocachingPOO {
                 switch (option) {
                     case 1: AdminReportsMenu(); break;
                     case 2: listUsers(); break;
-                    case 3: createAdmin(); break;
-                    case 4: showAllCaches(); break;
+                    case 3: showAllCaches(); break;
+                    case 4: deleteUser(); break;
+                    case 5: createAdmin(); break;
+                    case 6: deleteAdmin(); break;
                     case 10: admin = null; break;
                     default: break;
                 }
@@ -101,10 +103,13 @@ public class GeocachingPOO {
         Scanner sc = new Scanner(System.in);
 
         System.out.println("\nLogged in as ADMIN: " + admin.getName() + " | " + admin.getPermi() + " power level");
+        System.out.println("-------------------------");
         System.out.println("1: Report Menu");
         System.out.println("2: List Users and Admins");
-        System.out.println("3: Create new admin");
-        System.out.println("4: Show Caches");
+        System.out.println("3: Show Caches");
+        System.out.println("4: Delete user");
+        System.out.println("5: Create new admin");
+        System.out.println("6: Delete admin");
         System.out.println("10: Log Out");
 
         return sc.nextInt();
@@ -116,6 +121,7 @@ public class GeocachingPOO {
         ArrayList<Double> requests = user.getFriendRequests();
 
         System.out.println("Logged in as: " + user.getName() + " | " + user.getPoints() + " points");
+        System.out.println("-------------------------");
         if (requests.size() > 0)  /* There are friend requests */
             System.out.println("Friend Requests: " + requests.size());
         System.out.println("1: Personal Information");
@@ -246,7 +252,7 @@ public class GeocachingPOO {
             userbase.addUser(newuser);
             id = id + 1.0;
             newuser = null;
-            System.out.println("User sucessfuly created!");
+            System.out.println("User sucessfully created!");
         }
     }
 
@@ -575,7 +581,7 @@ public class GeocachingPOO {
             Report rep = new Report(id, email, message);
 
             cachebase.addReport(rep);
-            System.out.println("Sucessfuly reported cache with id number of" + " " + id);
+            System.out.println("sucessfully reported cache with id number of" + " " + id);
 
         }
     }
@@ -755,7 +761,7 @@ public class GeocachingPOO {
         MailValidator mv = new MailValidator();
 
         if (admin.getPermi() < 2) {
-            System.out.println("You lack permission! Contact a superior admin such as: ");
+            System.out.println("You lack permission! Contact a superior admin.");
             return;
         }
 
@@ -784,25 +790,60 @@ public class GeocachingPOO {
         newuser.setPass(sc.nextLine().replaceAll("[\n\r]",""));
 
         // Get permissions
-        System.out.println("Permissions\n\n0:\nAble to see Reports\nAble to invalidate Caches\n");
-        System.out.println("1:\n All of 0's abilities\nAble to create events");
-        System.out.println("2:\n All of 1's abilities\nAble to create new admins");
+        System.out.println("\n<--Permissions-->\n\n0:\nAble to see Reports\nAble to invalidate Caches\n");
+        System.out.println("1:\nAll of 0's abilities\nAble to create events\n");
+        System.out.println("2:\nAll of 1's abilities\nAble to create new admins\n Able to remove admins");
         newuser.setPermi(sc.nextInt());
 
         newuser.setId(idAdmin);
         userbase.addAdmin(newuser);
         idAdmin = idAdmin + 1.0;
         newuser = null;
-        System.out.println("Admin sucessfuly created!");
+        System.out.println("Admin sucessfully created!");
     }
 
     /*
      * Delete an admin
      */
     private static void deleteAdmin () {
+        if (admin.getPermi() < 2) {
+            System.out.println("You lack permission! Contact a superior admin.");
+            return;
+        }
 
+        Scanner sc = new Scanner(System.in);
+        System.out.println("To delete an Admin type his email: ");
 
+        try {
+            userbase.removeAdmin(sc.nextLine().replaceAll("[\n\r]",""));
+            System.out.println("Sucessfully deleted admin");
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
+
+    /*
+     * Delete user
+     */
+    private static void deleteUser () {
+        if (admin.getPermi() < 1) {
+            System.out.println("You lack permission! Contact a superior admin.");
+            return;
+        }
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println("To delete a User type his email: ");
+
+        try {
+            userbase.removeUser(sc.nextLine().replaceAll("[\n\r]",""));
+            System.out.println("Sucessfully delete user");
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     private static void listUsers () {
         System.out.println (userbase.toString());
     }
@@ -957,7 +998,7 @@ public class GeocachingPOO {
             idcache++;
 
             /* TODO: Add puzzle cache */
-            System.out.println("Sucessfuly created cache" + cache.toString());
+            System.out.println("sucessfully created cache" + cache.toString());
             break;
 
             default:
@@ -965,7 +1006,7 @@ public class GeocachingPOO {
         }
         try {
             cachebase.addCache(user.getId(), cache);
-            System.out.println("Sucessfuly created cache" + cache.toString());
+            System.out.println("sucessfully created cache" + cache.toString());
         }
         catch (Exception e) {
             System.out.println(e.getMessage());

@@ -182,6 +182,8 @@ public class UserBase {
     public String toString () {
         StringBuilder sb = new StringBuilder();
 
+        sb.append("\nCurrent DataBase\n");
+
         sb.append(this.admins.size() + " Admins.\n");
         for(Admin admin : this.admins)
             sb.append(admin.getName() + " - Email: " + admin.getMail()  + " - Power: " + admin.getPermi() + "\n");
@@ -282,7 +284,9 @@ public class UserBase {
      * Remove an admin from the data base
      * @param mail String to be removed
      */
-    public void removeAdmin (String mail) {
+    public void removeAdmin (String mail) throws IllegalArgumentException {
+        if (!this.adminExists(mail)) /* Admin e-mail doesn't exist */
+            throw new IllegalArgumentException("Admin doesn't exist.");
         this.admins.remove(adminMails.get(mail).intValue() - 1);
         this.adminMails.remove(mail);
     }
@@ -291,7 +295,9 @@ public class UserBase {
      * Remove an user from the data base
      * @param mail String to be removed
      */
-    public void removeUser (String mail) {
+    public void removeUser (String mail) throws IllegalArgumentException {
+        if (!this.userExists(mail)) /* User e-mail doesn't exist */
+            throw new IllegalArgumentException("User doesn't exist.");
         this.users.remove(userMails.get(mail).intValue() - 1);
         this.userMails.remove(mail);
     }
