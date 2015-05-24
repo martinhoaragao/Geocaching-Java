@@ -495,18 +495,15 @@ public class GeocachingPOO {
 
     /** Auxiliary function to display User 10 last activities */
     private static void showLastActivities () {
-        TreeSet<Activity> ts = user.getLastActivities();
+        ArrayList<Activity> acts = user.getLastActivities();
         Iterator it;
 
         clean();
-        if (ts.size() == 0)
+        if (acts.size() == 0)
             System.out.println("You have no activities yet!");
         else {
-            it = ts.descendingIterator();
-            while (it.hasNext()) {
-                Activity act = (Activity) it.next();
+            for (Activity act : acts)
                 System.out.println(act.toString());
-            }
         }
         if (c != null) c.readLine();
     }
@@ -516,7 +513,7 @@ public class GeocachingPOO {
         ArrayList<Double> friends = user.getFriends();
         Scanner sc = new Scanner(System.in);
         User friend; String mail; Iterator it;
-        TreeSet<Activity> ts;
+        ArrayList<Activity> acts;
 
         // Get friend e-mail
         System.out.print("Friend e-mail: ");
@@ -528,14 +525,10 @@ public class GeocachingPOO {
         else if (!friends.contains(friend.getId()))  /* No friend with the give mail */
             System.out.println("You have no friends with the given e-mail!");
         else {
-            ts = friend.getLastActivities();
-            if (ts.size() != 0) {
-                it = ts.iterator();
-
-                while (it.hasNext()) {
-                    Activity act = (Activity) it.next();
-                    System.out.println(act.toString());
-                }
+            acts = friend.getLastActivities();
+            if (acts.size() != 0) {
+               for (Activity act : acts)
+                System.out.println(act.toString());
             } else
                 System.out.println("Your friend has no activities yet!");
         }
@@ -561,9 +554,8 @@ public class GeocachingPOO {
         try {
             cache = cachebase.getCache(cache_id);
             act.setCache(cache); act.setKms(kms);
-            act.setDate(date);
+            act.setDate(date); act.setPoints(20);
             /* TODO: Update to cache.getPoints() */
-            act.setPoints(10);
             user.addActivity(act);
             System.out.println("Activity sucessfully added!");
         }
