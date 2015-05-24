@@ -61,7 +61,10 @@ public class GeocachingPOO {
                     case 4: deleteUser(); break;
                     case 5: createAdmin(); break;
                     case 6: deleteAdmin(); break;
+<<<<<<< HEAD
 
+=======
+>>>>>>> Add details to Admin menu
                     case 10: admin = null; break;
                     default: break;
                 }
@@ -1051,6 +1054,7 @@ public class GeocachingPOO {
 
             /* TODO: Add puzzle cache */
             System.out.println("Successfully created cache!\n" + cache.toString());
+
             break;
 
             default:
