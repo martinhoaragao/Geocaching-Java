@@ -27,6 +27,7 @@ public class GeocachingPOO {
     private static CacheBase cachebase = null;
     private static Double idcache = 1.0;
     private static Cache cache = null;
+    private static Console c = System.console();
 
     //Random main method/function to complete.
     public static void main(String[] args) {
@@ -70,6 +71,7 @@ public class GeocachingPOO {
     private static int mainMenu () {
         Scanner sc = new Scanner(System.in);
 
+        System.out.print("\u001b[2J" + "\u001b[H");
         System.out.println("1: Register");
         System.out.println("2: Login");
         System.out.println("3: Exit");
@@ -82,6 +84,7 @@ public class GeocachingPOO {
         Scanner sc = new Scanner(System.in);
         ArrayList<Double> requests = user.getFriendRequests();
 
+        System.out.print("\u001b[2J" + "\u001b[H");
         System.out.println("Logged in as: " + user.getName() + " | " + user.getPoints() + " points");
         if (requests.size() > 0)  /* There are friend requests */
             System.out.println("Friend Requests: " + requests.size());
@@ -101,8 +104,6 @@ public class GeocachingPOO {
 
     /**Menu 1. Personal Info + Change Personal Info after this */
     private static void personalInfo(){
-        printInfo();
-
         int escolha = subpersonalInfo();
         switch (escolha) {
             case 1: changePassword(); break;
@@ -119,6 +120,9 @@ public class GeocachingPOO {
     /** SubMenu PersonalInfo */
     private static int subpersonalInfo(){
         Scanner sc = new Scanner(System.in);
+
+        System.out.print("\u001b[2J" + "\u001b[H");
+        printInfo();
         System.out.println("1: Change Password");
         System.out.println("2: Change Name");
         System.out.println("3: Change Address");
@@ -143,12 +147,12 @@ public class GeocachingPOO {
                 case 5: running = false; break;
             }
         }
-
     }
 
     private static int friendsMenudisplay(){
         Scanner sc = new Scanner(System.in);
 
+        System.out.print("\u001b[2J" + "\u001b[H");
         System.out.println("1: Send Friend Request");
         System.out.println("2: Show Friend Requests");
         System.out.println("3: Accept Friend Request");
@@ -173,9 +177,12 @@ public class GeocachingPOO {
         boolean aux = true, gender;
         int i=0; //Tries for the user. After 3rd try, menu to register closes. (Avoiding infinite loop).
         int d,m,y,yy;
+
+        System.out.print("\u001b[2J" + "\u001b[H");
+
         do {
 
-            if(i==3){ System.out.println("Invalid e-mail!"); return; }
+            if (i == 3) { System.out.println("Invalid e-mail!"); return; }
             System.out.print("E-mail: ");
             mail = sc.nextLine().replaceAll("[\n\r]","");
             aux = mv.validate(mail);
@@ -193,8 +200,13 @@ public class GeocachingPOO {
         newuser.setName(sc.nextLine().replaceAll("[\n\r]", ""));
 
         // Get user password
-        System.out.print("Pass: ");
-        newuser.setPass(sc.nextLine().replaceAll("[\n\r]",""));
+        if (c != null) {
+            pass = new String(c.readPassword("Pass: "));
+            newuser.setPass(pass);
+        } else {
+            System.out.print("Pass: ");
+            newuser.setPass(sc.nextLine().replaceAll("[\n\r]",""));
+        }
 
         //New code for the bdate approval
         GregorianCalendar bbbdate = typebdate();
@@ -215,6 +227,9 @@ public class GeocachingPOO {
             newuser = null;
             System.out.println("User sucessfuly created!");
         }
+
+        if (c != null)
+            c.readLine();
     }
 
     /** Auxiliary login function */
@@ -223,12 +238,17 @@ public class GeocachingPOO {
         String mail, pass;
         int i = 0;
 
+        System.out.print("\u001b[2J" + "\u001b[H");
         do {
             i++;
             System.out.print("E-mail: ");
             mail = sc.nextLine().replaceAll("[\n\r]","");
-            System.out.print("Password: ");
-            pass = sc.nextLine().replaceAll("[\n\r]","");
+            if (c != null)
+                pass = new String(c.readPassword("Password: "));
+            else {
+                System.out.print("Password: ");
+                pass = sc.nextLine().replaceAll("[\n\r]","");
+            }
 
             user = userbase.getUser(mail, pass);
 
@@ -257,32 +277,42 @@ public class GeocachingPOO {
         Scanner sc = new Scanner(System.in);
         int i = 0; //3 trys to change password each time
 
-        System.out.print("Current Password: ");
-        currentpass = sc.nextLine().replaceAll("[\n\r]","");
+        System.out.print("\u001b[2J" + "\u001b[H");
 
         // Give user 3 tries to insert current password
-        while(i<3 && !user.confirmPass(currentpass)) {
-
-            if(i==2){
+        do {
+            if (i == 2){
                 System.out.println(" Passwords don't match! ");
                 return;
             }
-            i++;
-            System.out.println("Incorrect! Type Current Password: ");
-            currentpass = sc.nextLine().replaceAll("[\n\r]","");
-        }
+
+            if (c != null)
+                currentpass = new String(c.readPassword("Current Password: "));
+            else {
+                System.out.print("Current Password: ");
+                currentpass = sc.nextLine().replaceAll("[\n\r]","");
+            }
+            i++ ;
+        } while(i<3 && !user.confirmPass(currentpass));
 
         //If User sucessfully types current password, he may change it
-        if(user.confirmPass(currentpass)){
-            System.out.print("Type new password: ");
-            newpass = sc.nextLine().replaceAll("[\n\r]","");
+        if (user.confirmPass(currentpass)) {
+            if (c != null)
+                newpass = new String(c.readPassword("New Password: "));
+            else {
+                System.out.print("New Password: ");
+                newpass = sc.nextLine().replaceAll("[\n\r]","");
+            }
 
             try {
                 userbase.getUser(user.getMail(),currentpass).setPass(newpass);
+                System.out.println("Sucessfuly changed password!");
             } catch (Exception e) {
                 System.out.println("Error! Unable to change password!");
             }
-
+            if (c != null)
+                c.readLine();
+            personalInfo();
         }
     }
 
@@ -290,13 +320,17 @@ public class GeocachingPOO {
     private static void changeName () {
         Scanner sc = new Scanner(System.in);
 
+        System.out.print("\u001b[2J" + "\u001b[H");
         System.out.print("Name: ");
         try {
             user.setName(sc.nextLine().replaceAll("[\n\r]", ""));
+            System.out.println("Name changed sucessfully!");
         } catch (Exception e) {
             System.out.println("Error! Unable to change name!");
         }
-
+        if (c != null)
+            c.readLine();
+        personalInfo();
     }
 
     /** Auxiliary function to change User Address */
@@ -304,38 +338,49 @@ public class GeocachingPOO {
         Scanner sc = new Scanner(System.in);
         String city, country;
 
+        System.out.print("\u001b[2J" + "\u001b[H");
         System.out.print("City: ");
         city = sc.nextLine().replaceAll("[\n\r]", "");
         System.out.print("Country: ");
         country = sc.nextLine().replaceAll("[\n\r]", "");
 
-        try { user.setAddress(city, country); }
+        try {
+            user.setAddress(city, country);
+            System.out.println("Sucessfuly changed Address.");
+        }
         catch (Exception e) {
             System.out.println("Error! Unable to change Address!");
         }
+        if (c != null) c.readLine();
+        personalInfo();
     }
 
     /** Auxiliary function to change User birthdate */
     private static void changeBDate () {
+        System.out.print("\u001b[2J" + "\u001b[H");
         GregorianCalendar bb = typebdate();
-        if(bb!=null) user.setBDate(bb);
-        /*Scanner sc = new Scanner(System.in);
-        String[] bdate;
-        System.out.print("Birthdate (Day/Month/Year): ");
+        if (bb != null) {
+            user.setBDate(bb);
+            System.out.println("Sucessfuly changed birthdate!");
+        }
 
-        user.setBDate(sc.nextLine().replaceAll("[\n\r]", ""));
-         */
-
+        if (c != null) c.readLine();
+        personalInfo();
     }
 
     /** Auxiliary function to change User gender */
     private static void changeGender () {
         Scanner sc = new Scanner(System.in);
 
+        System.out.print("\u001b[2J" + "\u001b[H");
         System.out.print("Gender (g for girl/b for boy): ");
         if (sc.nextLine().replaceAll("[\n\r]", "").equals("g"))
             user.setGender(true);
         else user.setGender(false);
+        System.out.println("Sucessfuly changed gender.");
+
+        if (c != null) c.readLine();
+        personalInfo();
     }
 
     /**
