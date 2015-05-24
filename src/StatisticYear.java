@@ -15,7 +15,7 @@ public class StatisticYear
 {
     //Could I declare private int month and then TreeSet<month, a> , for instace?
     //my opinion is no, but what do you think?
-    private TreeMap<Integer, TreeSet<Activity>>  statsyear; // Visited Caches for each month. Comparable by date.
+    private TreeMap<Integer, Statistic>  statsyear; // Visited Caches for each month. Comparable by date.
     
     
     /**
@@ -23,7 +23,7 @@ public class StatisticYear
      */
     public StatisticYear(){
        int i;
-       statsyear = new TreeMap<Integer,TreeSet<Activity>>();
+       statsyear = new TreeMap<Integer,Statistic>();
        
     }
 
@@ -40,47 +40,50 @@ public class StatisticYear
     /**
      * Method to get the map?
      */
-    public TreeMap< Integer, TreeSet<Activity>> getStatsyear(){
-        TreeMap<Integer, TreeSet<Activity>> aux = new TreeMap<>();
-        
-        for( TreeSet<Activity> este : this.statsyear.values() ){
-           
-            aux.put( este.first().getYear(),cloneTreeSet(este));
+    public TreeMap< Integer, Statistic > getStatsyear(){
+        TreeMap<Integer,  Statistic> aux = new TreeMap<>();
+        int year;
+        for(Statistic stats : this.statsyear.values()){
+            year = stats.getYearStatsMonth();
+            /*firstKey()  Returns the first (lowest) key currently in this map. */
+            aux.put(year, stats.clone());
         }
         return aux;
     }
 
     
-    
-    /**
-     * Method to clone the set
-     */
-    public TreeSet<Activity> cloneTreeSet( TreeSet<Activity> ts){
-        TreeSet<Activity> novo = new TreeSet<>(new AComparator());
-        Iterator<Activity> it = ts.iterator();
-        
-        while(it.hasNext()){
-            novo.add(it.next());
-        }
-        
-        return novo;
-    }
-    
-
     /**
      * Methods
      */
     
- // COMEÇAR AQUI  
- //TODO
     /**
-     * Add an Activity in the Statistic.
+     * Add an Activity in the StatisticYear.
      * @param Activity a.
      */
-  /*  public void addActY(Activity a){
+    public boolean addActY(Activity a){
+       int month = a.getMonth();
+       int year = a.getYear();
        
+       //o map substitui, portanto, ele atualiza com os novos e adiciona
+       
+       Statistic aux = this.statsyear.get(year); //devolve-me estatistica deste ano
+       if(aux==null) aux = new Statistic();
+      boolean inseriu =  aux.addAct(a); //Adiciona nova à estatistica deste ano.
+       //A outra class Statistic trata de a inserir no mÊs correto.
+       //Ela lá já faz clone.
+       
+       if(inseriu){
+       this.statsyear.put(year, aux); //Ao fazer isto substitui com o novo adicionado.
+       //O anterior apenas adiciona, este susbtitui com o aux que supostamente vai ter mais 1 atividade que a antiga.
+       return true;
+      }
+       else{
+           System.out.println("Não inseriu... nao é o ano correto!");
+           //Isto é o que deve ter no geocaching. Nao apagar, só quando se meter no geocaching é que se apaga aqui.
+           return false;
+        }
     }
-    */
+    
     
 
     /**
