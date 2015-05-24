@@ -1,3 +1,4 @@
+import Exceptions.*;
 /**
  * A puzzle to solve by the user, when looking for a "MisteryCache".
  *
@@ -74,8 +75,13 @@ public class Puzzle {
      *
      * @arg n Number ratting.
      */
-    public void setStar(int n){
+    public void setStar(int n) throws PuzzleStarEx{
+        if(n<=0 || n >=11) //star only of range 1-10
+        {
+            throw new PuzzleStarEx("Star rating only of range 1-10.");
+        }
         this.star = n;
+        //else exception handler... send message to user (do this by an exception)
     }
 
     //Getters and Shows
@@ -138,13 +144,19 @@ public class Puzzle {
      *
      * (String q, String a, Coordinates l)
      */
-
+    //TODO - dá erro se nao tiver o catch, mas acho que nao faz sentido meter aqui catch do erro porque eu vou mete estrela 7 e já sei qual o range.... 
     public Puzzle pNumber0(){
         Coordinates c = new Coordinates(35,40);
         Puzzle a = new Puzzle(" It is Transcendental and irrational. \n We learn it since pre-school... \n We may confuse it with food \n which makes us look like a fool. ", "PI", c);
 
-
-        a.setStar(7);
+        try{
+        a.setStar(11);
+        }
+        catch(Exception e){
+            System.out.println("Only add star rage 1-10");
+        }
+        
+        
         return a;
     }
 
@@ -152,7 +164,12 @@ public class Puzzle {
         Coordinates o = new Coordinates(20, 15);
         //twenty _ fifteen
         Puzzle a = new Puzzle(" t ve 3 ~ t j   ,  1 & 1 t 3 3 ~ " ,"(twenty,fifteen)",o);
-        a.setStar(3);
+        
+       try { a.setStar(3); }
+       catch(Exception e){
+          System.out.println("Only add star rage 1-10");
+        }
+        
         return a;
     }
 
