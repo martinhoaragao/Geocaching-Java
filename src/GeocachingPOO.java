@@ -451,7 +451,7 @@ public class GeocachingPOO {
         if (ts.size() == 0)
             System.out.println("You have no activities yet!");
         else {
-            it = ts.iterator();
+            it = ts.descendingIterator();
             while (it.hasNext()) {
                 Activity act = (Activity) it.next();
                 System.out.println(act.toString());
@@ -889,7 +889,7 @@ public class GeocachingPOO {
     }
 
     /* ----------------------- STATISTICS -----------------*/
-    //TODO  statistics year falta 
+    //TODO  statistics year falta
     /** Menu option 5. Show My Statistics*/
     private static void showStatistics() {
         Scanner sc = new Scanner(System.in);
@@ -898,7 +898,7 @@ public class GeocachingPOO {
         if (sc.nextInt()==1)
         System.out.println(user.getStatistics().toString());
     }
-    
+
     /** Aux Function for us to clean the terminal when we call it */
     private final static void clean(){
        System.out.print('\u000C');
