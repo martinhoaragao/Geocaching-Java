@@ -675,10 +675,6 @@ public class GeocachingPOO {
         System.out.println("Cache Menu");
         System.out.println("-------------------------");
 
-<<<<<<< HEAD
-=======
-
->>>>>>> Modify 'src/User.java' to save all the activities the user registers, Update 'src/GeocachingPOO.java' due to User changes
         int o = CacheMenuaux();
         while(o!=0){
 
@@ -687,10 +683,6 @@ public class GeocachingPOO {
                 for(Cache c : caches){
                     System.out.println("| ID : " + c.getId() + "| " + "Coords: " + c.getCoords().toString() + "Creator: " + c.getMail());
                 }
-<<<<<<< HEAD
-=======
-
->>>>>>> Modify 'src/User.java' to save all the activities the user registers, Update 'src/GeocachingPOO.java' due to User changes
 
                 CacheMenuaux();
                 o = sc.nextInt();
