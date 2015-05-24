@@ -80,6 +80,13 @@ public class Statistic
     }
     
     /**
+     * Set the year. IMPORTANT!
+     */
+    public void setYearStatsMonth(int year){
+        this.year = year;
+    }
+    
+    /**
      * Add an Activity in the Statistic.
      * @param Activity a.
      */

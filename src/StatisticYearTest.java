@@ -72,9 +72,22 @@ public class StatisticYearTest
         activity2.setDate(4, 3, 2015);
         StatisticYear statisti1 = new StatisticYear();
         assertEquals(true, statisti1.addActY(activity2));
-        assertEquals(false, statisti1.addActY(activity1));
+        assertEquals(true, statisti1.addActY(activity1));
+    }
+
+    @Test
+    public void test4agoraadicionatodos()
+    {
+        StatisticYear statisti1 = new StatisticYear();
+        activity2.setDate(24, 8, 2015);
+        assertEquals(8, activity1.getMonth());
+        assertEquals(2005, activity1.getYear());
+        assertEquals(true, statisti1.addActY(activity1));
+        assertEquals(true, statisti1.addActY(activity2));
+        assertNotNull(statisti1.getStatsyear());
     }
 }
+
 
 
 
