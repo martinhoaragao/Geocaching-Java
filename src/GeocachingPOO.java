@@ -617,6 +617,9 @@ public class GeocachingPOO {
         Scanner sc = new Scanner(System.in);
         ArrayList<Cache> caches = cachebase.getAllCaches();
 
+        if(caches.size() == 0){ System.out.println("There are no caches. Sorry");
+        return;
+        }
         for(Cache c : caches){
             System.out.println(c.toString());
         }
@@ -624,8 +627,8 @@ public class GeocachingPOO {
         System.out.println("-------------------------");
         System.out.println("Cache Menu");
         System.out.println("-------------------------");
-
-        CacheMenuaux();
+        
+        
         int o = CacheMenuaux();
         while(o!=0){
 
@@ -634,6 +637,7 @@ public class GeocachingPOO {
                 for(Cache c : caches){
                     System.out.println("| ID : " + c.getId() + "| " + "Coords: " + c.getCoords().toString() + "Creator: " + c.getMail());
                 }
+                
 
                 CacheMenuaux();
                 o = sc.nextInt();
