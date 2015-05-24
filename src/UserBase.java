@@ -235,7 +235,7 @@ public class UserBase {
      * @param id User Id
      */
     public NormalUser getUserInfo (Double id) {
-        User user = this.users.get(id.intValue() - 1);
+        NormalUser user = this.users.get(id.intValue() - 1);
 
         if (user != null) {
             user = user.clone();
@@ -253,7 +253,7 @@ public class UserBase {
         if (!userMails.containsKey(mail))
             return null;
         int id = this.userMails.get(mail).intValue();
-        User user = this.users.get(id - 1).clone();
+        NormalUser user = this.users.get(id - 1).clone();
         user.setPass("----");
         return user;
     }

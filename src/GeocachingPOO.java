@@ -21,8 +21,10 @@ import java.util.TreeSet;
 import java.util.Iterator;
 
 public class GeocachingPOO {
-    private static Double id = 1.0;             // User Id
-    private static NormalUser user = null;           // User that is logged in
+    private static Double id = 1.0;            // User ID
+    private static NormalUser user = null;     // User that is logged in
+    private static Double idAdmin = 1.0;     // Admin ID
+    private static Admin admin = null;     // Admin that is logged in
     private static UserBase userbase = null;   // User data base
     private static CacheBase cachebase = null;
     private static Double idcache = 1.0;
@@ -34,14 +36,27 @@ public class GeocachingPOO {
         int option = 0;
         userbase = new UserBase();  // Create new user base
         cachebase = new CacheBase();
+        admin = new Admin ("grupoajm@gmail.com", "Alpha", "AdminAdmin", 1.0, 1);
+        userbase.addAdmin(admin);
+        admin = null;
+
 
         while (running) {
-            if (user == null) { // No user logged in
+            if (user == null && admin == null) { // No user logged in
                 option = mainMenu();
                 switch (option) {
                     case 1: register(); break;
-                    case 2: login(); break;
-                    case 3: running = false; break;
+                    case 2: login(""); break;
+                    case 3: login("admin"); break;
+                    case 4: running = false; break;
+                    default: break;
+                }
+            } else if (admin != null) {
+                option = adminMenu();
+                switch (option) {
+                    case 1: AdminReportsMenu(); break;
+                    case 4: showAllCaches(); break;
+                    case 10: admin = null; break;
                     default: break;
                 }
             } else {    // User logged in
@@ -72,7 +87,21 @@ public class GeocachingPOO {
 
         System.out.println("1: Register");
         System.out.println("2: Login");
-        System.out.println("3: Exit");
+        System.out.println("3: Admin");
+        System.out.println("4: Exit");
+
+        return sc.nextInt();
+    }
+
+    /** Auxiliary function to display admin menu */
+    private static int adminMenu () {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Logged in as ADMIN: " + admin.getName() + " | " + admin.getPermi() + " power level");
+        System.out.println("1: Personal Information");
+        System.out.println("2: Create new cache");
+        System.out.println("4: Show Caches");
+        System.out.println("10: Log Out");
 
         return sc.nextInt();
     }
@@ -218,7 +247,7 @@ public class GeocachingPOO {
     }
 
     /** Auxiliary login function */
-    private static void login () {
+    private static void login (String type) {
         Scanner sc = new Scanner(System.in);
         String mail, pass;
         int i = 0;
@@ -230,17 +259,20 @@ public class GeocachingPOO {
             System.out.print("Password: ");
             pass = sc.nextLine().replaceAll("[\n\r]","");
 
-            user = userbase.getUser(mail, pass);
+            if (type.equals("admin"))
+                admin = userbase.getAdmin (mail, pass);
+            else
+                user = userbase.getUser(mail, pass);
 
-            if(user == null && i==3){
+            if(user == null && admin == null && i==3){
                 System.out.println("E-mail or password were incorrect.");
                 return;
             }
-            if(user == null ){
+            if(user == null && admin == null){
                 System.out.println("E-mail or password incorrect. Please try again.");
             }
 
-        } while ((user == null) );
+        } while ((user == null && admin == null) );
     }
 
     /* ----------------- INFORMATION MODIFICATION --------------------*/
