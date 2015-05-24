@@ -587,8 +587,8 @@ public class GeocachingPOO {
 
             cachebase.addReport(rep);
             System.out.println("Sucessfuly reported cache with id number of" + " " + id);
-
         }
+        if (c != null) c.readLine();
     }
 
     /**Auxiliary funtion: Show all reports*/
@@ -605,12 +605,14 @@ public class GeocachingPOO {
     /**Menu pints */
     public static int CacheMenuaux(){
         Scanner sc = new Scanner(System.in);
+
+        clean();
         System.out.println("1. Report one cache ");
         System.out.println("2. See treasures of a cache");
         System.out.println("3. Show registry book of a cache");
         System.out.println("4. Show other details of a cache");
-        System.out.println("5. Leave cache menu");
-        System.out.println("0. Show all caches + menu");
+        System.out.println("5: Show all caches");
+        System.out.println("6. Leave cache menu");
         return sc.nextInt();
     }
 
@@ -621,40 +623,21 @@ public class GeocachingPOO {
         double n ;
         Scanner sc = new Scanner(System.in);
         ArrayList<Cache> caches = cachebase.getAllCaches();
+        boolean running = true;
+        int o;
 
-        if(caches.size() == 0){ System.out.println("There are no caches. Sorry");
-        return;
-        }
-        for(Cache c : caches){
-            System.out.println(c.toString());
-        }
-
+        clean();
         System.out.println("-------------------------");
         System.out.println("Cache Menu");
         System.out.println("-------------------------");
 
-
-        int o = CacheMenuaux();
-        while(o!=0){
-
+        while ( running ) {
+            o = CacheMenuaux();
             switch (o) {
-                case 0:
-                for(Cache c : caches){
-                    System.out.println("| ID : " + c.getId() + "| " + "Coords: " + c.getCoords().toString() + "Creator: " + c.getMail());
-                }
-
-
-                CacheMenuaux();
-                o = sc.nextInt();
-
                 case 1:
                 System.out.println("Type cache id to report");
                 double u = sc.nextDouble();
                 UserReportCache(u);
-                System.out.println("Type 0 to return to Cache menu");
-                if(sc.nextInt() == 0){
-                    o = CacheMenuaux();
-                }
                 break;
 
                 case 2:
@@ -748,14 +731,19 @@ public class GeocachingPOO {
                 break;
 
                 case 5:
-                System.out.println("Leaving...");
-                o=0;
+                showCaches();
+                break;
+
+                case 6:
+                running = false;
                 break;
 
                 default:
                 break;
             }
         }
+
+        if (c != null) c.readLine();
     }
 
     /**
@@ -867,7 +855,7 @@ public class GeocachingPOO {
      *
      *
      */
-    private static void createCacheUser(){
+    private static void createCacheUser () {
         Scanner sc = new Scanner(System.in);
         Double id;
 
@@ -931,8 +919,11 @@ public class GeocachingPOO {
     private static void showCaches () {
         ArrayList<Cache> caches = cachebase.getAllCaches();
 
+        clean();
         for (Cache c : caches)
             System.out.println(c.toString());
+
+        if (c != null) c.readLine();
     }
 
     /** Auxiliary function to show the logged in user caches */
