@@ -630,6 +630,7 @@ public class GeocachingPOO {
             System.out.println("sucessfully reported cache with id number of" + " " + id);
 
         }
+        if (c != null) c.readLine();
     }
 
     /**Auxiliary funtion: Show all reports*/
@@ -646,6 +647,8 @@ public class GeocachingPOO {
     /**Menu pints */
     public static int CacheMenuaux(){
         Scanner sc = new Scanner(System.in);
+
+        clean();
         System.out.println("1. Report one cache ");
         System.out.println("2. See treasures of a cache");
         System.out.println("3. Show registry book of a cache");
@@ -662,32 +665,25 @@ public class GeocachingPOO {
         double n ; int o;
         Scanner sc = new Scanner(System.in);
         ArrayList<Cache> caches = cachebase.getAllCaches();
+        boolean running = true;
+        int o;
 
-        if(caches.size() == 0){ System.out.println("There are no caches. Sorry");
-        return;
-        }
-        for(Cache c : caches){
-            System.out.println(c.toString());
-        }
-
+        clean();
         System.out.println("-------------------------");
         System.out.println("Cache Menu");
         System.out.println("-------------------------");
 
-        
         //int o = CacheMenuaux();
         o = CacheMenuaux();
         while(o!=0){
-            
+
             switch (o) {
-                
                 case 1:
                 System.out.println("Type cache id to report");
                 double u = sc.nextDouble();
                 UserReportCache(u);
-                
+
                     o = CacheMenuaux();
-                
                 break;
 
                 case 2:
@@ -711,9 +707,9 @@ public class GeocachingPOO {
                 //Nao sei se fará sentido chamar o menu aqui outra vez... se tiver mts treasures, talvez?
                 //User ve os treasures todos e depois vê o menu outra vez para poder fazer outras coisas.. ?
 
-                
+
                     o = CacheMenuaux();
-                
+
 
                 break;
 
@@ -737,9 +733,9 @@ public class GeocachingPOO {
                 }
 
                 //
-                
+
                     o = CacheMenuaux();
-                
+
                 //
                 break;
 
@@ -761,7 +757,7 @@ public class GeocachingPOO {
                             System.out.println("There isn't such cache with that id. Sorry.");
                         }
                     }
-                    
+
                     System.out.println("0: to return to Cache menu");
                     System.out.println("1. Report this cache? ");
                     if(sc.nextInt() == 1) o = 1;
@@ -773,25 +769,30 @@ public class GeocachingPOO {
                 break;
 
                 case 5:
-                System.out.println("Leaving...");
-                o=0;
+                showCaches();
                 break;
-                
+
+                case 6:
+                running = false;
+                break;
+
                 case 6:
                 for(Cache c : caches){
                     System.out.println("| ID : " + c.getId() + "| " + "Coords: " + c.getCoords().toString() + "Creator: " + c.getMail());
                 }
 
-                
-                 o = CacheMenuaux();
-                
-                
 
-                
+                 o = CacheMenuaux();
+
+
+
+
                 default:
                 break;
             }
         }
+
+        if (c != null) c.readLine();
     }
 
 
@@ -1002,7 +1003,7 @@ public class GeocachingPOO {
      *
      *
      */
-    private static void createCacheUser(){
+    private static void createCacheUser () {
         Scanner sc = new Scanner(System.in);
         Double id;
 
@@ -1067,8 +1068,11 @@ public class GeocachingPOO {
     private static void showCaches () {
         ArrayList<Cache> caches = cachebase.getAllCaches();
 
+        clean();
         for (Cache c : caches)
             System.out.println(c.toString());
+
+        if (c != null) c.readLine();
     }
 
     /** Auxiliary function to show the logged in user caches */
