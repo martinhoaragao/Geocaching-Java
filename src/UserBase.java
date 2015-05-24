@@ -234,7 +234,7 @@ public class UserBase {
      * Create a clone of the user and eliminate the password
      * @param id User Id
      */
-    public User getUserInfo (Double id) {
+    public NormalUser getUserInfo (Double id) {
         User user = this.users.get(id.intValue() - 1);
 
         if (user != null) {
@@ -249,7 +249,7 @@ public class UserBase {
      * Create a clone of the user and eliminate the password
      * @param mail User e-mail
      */
-    public User getUserInfo (String mail) {
+    public NormalUser getUserInfo (String mail) {
         if (!userMails.containsKey(mail))
             return null;
         int id = this.userMails.get(mail).intValue();

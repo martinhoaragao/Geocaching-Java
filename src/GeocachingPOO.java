@@ -22,7 +22,7 @@ import java.util.Iterator;
 
 public class GeocachingPOO {
     private static Double id = 1.0;             // User Id
-    private static User user = null;           // User that is logged in
+    private static NormalUser user = null;           // User that is logged in
     private static UserBase userbase = null;   // User data base
     private static CacheBase cachebase = null;
     private static Double idcache = 1.0;
@@ -167,7 +167,7 @@ public class GeocachingPOO {
         String[] bdate_fields;
         String bbdate;
         GregorianCalendar bdate = null;
-        User newuser = new User();
+        NormalUser newuser = new NormalUser();
         int bdate_return;
         MailValidator mv = new MailValidator();
         boolean aux = true, gender;
@@ -183,7 +183,7 @@ public class GeocachingPOO {
             i++;
         } while (!aux);
 
-        if (userbase.exists(mail)) {    // E-maill already in use
+        if (userbase.userExists(mail)) {    // E-mail already in use
             System.out.println("E-mail already in use.");
             return;
         } else newuser.setMail(mail);
@@ -463,7 +463,7 @@ public class GeocachingPOO {
     private static void showFriendActivities () {
         ArrayList<Double> friends = user.getFriends();
         Scanner sc = new Scanner(System.in);
-        User friend; String mail; Iterator it;
+        NormalUser friend; String mail; Iterator it;
         TreeSet<Activity> ts;
 
         // Get friend e-mail
