@@ -61,6 +61,7 @@ public class GeocachingPOO {
                     case 4: deleteUser(); break;
                     case 5: createAdmin(); break;
                     case 6: deleteAdmin(); break;
+
                     case 10: admin = null; break;
                     default: break;
                 }
@@ -98,7 +99,6 @@ public class GeocachingPOO {
 
         return sc.nextInt();
     }
-
 
     /** Auxiliary function to display admin menu */
     private static int adminMenu () {
