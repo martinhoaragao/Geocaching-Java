@@ -184,7 +184,7 @@ public class UserBase {
 
         sb.append(this.admins.size() + " Admins.\n");
         for(Admin admin : this.admins)
-            sb.append(admin.getName() + " - Power: " + admin.getPermi() + "\n");
+            sb.append(admin.getName() + " - Email: " + admin.getMail()  + " - Power: " + admin.getPermi() + "\n");
 
         sb.append(this.users.size() + " Users.\n");
         Iterator it = this.users.iterator();
@@ -261,15 +261,13 @@ public class UserBase {
     // Other methods
 
     /**
-     * Add a user to the data base
-     * @param user User to be added
+     * Add an admin to the data base
+     * @param admin Admin to be added
      */
     public void addAdmin (Admin admin) {
         this.admins.add(admin);
         this.adminMails.put(admin.getMail(), admin.getId());
     }
-
-
 
     /**
      * Add a user to the data base
@@ -278,6 +276,24 @@ public class UserBase {
     public void addUser (NormalUser user) {
         this.users.add(user);
         this.userMails.put(user.getMail(), user.getId());
+    }
+
+    /**
+     * Remove an admin from the data base
+     * @param mail String to be removed
+     */
+    public void removeAdmin (String mail) {
+        this.admins.remove(adminMails.get(mail).intValue() - 1);
+        this.adminMails.remove(mail);
+    }
+
+    /**
+     * Remove an user from the data base
+     * @param mail String to be removed
+     */
+    public void removeUser (String mail) {
+        this.users.remove(userMails.get(mail).intValue() - 1);
+        this.userMails.remove(mail);
     }
 
     /**

@@ -23,7 +23,7 @@ import java.util.Iterator;
 public class GeocachingPOO {
     private static Double id = 1.0;            // User ID
     private static NormalUser user = null;     // User that is logged in
-    private static Double idAdmin = 1.0;     // Admin ID
+    private static Double idAdmin = 2.0;     // Admin ID
     private static Admin admin = null;     // Admin that is logged in
     private static UserBase userbase = null;   // User data base
     private static CacheBase cachebase = null;
@@ -36,7 +36,7 @@ public class GeocachingPOO {
         int option = 0;
         userbase = new UserBase();  // Create new user base
         cachebase = new CacheBase();
-        admin = new Admin ("grupoajm@gmail.com", "Alpha", "AdminAdmin", 1.0, 1);
+        admin = new Admin ("grupoajm@gmail.com", "Alpha", "AdminAdmin", 1.0, 2);
         userbase.addAdmin(admin);
         admin = null;
 
@@ -55,6 +55,8 @@ public class GeocachingPOO {
                 option = adminMenu();
                 switch (option) {
                     case 1: AdminReportsMenu(); break;
+                    case 2: listUsers(); break;
+                    case 3: createAdmin(); break;
                     case 4: showAllCaches(); break;
                     case 10: admin = null; break;
                     default: break;
@@ -93,13 +95,15 @@ public class GeocachingPOO {
         return sc.nextInt();
     }
 
+
     /** Auxiliary function to display admin menu */
     private static int adminMenu () {
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("Logged in as ADMIN: " + admin.getName() + " | " + admin.getPermi() + " power level");
-        System.out.println("1: Personal Information");
-        System.out.println("2: Create new cache");
+        System.out.println("\nLogged in as ADMIN: " + admin.getName() + " | " + admin.getPermi() + " power level");
+        System.out.println("1: Report Menu");
+        System.out.println("2: List Users and Admins");
+        System.out.println("3: Create new admin");
         System.out.println("4: Show Caches");
         System.out.println("10: Log Out");
 
@@ -739,11 +743,75 @@ public class GeocachingPOO {
         }
     }
 
+
+    /*
+     + Create new Admin
+     */
+    private static void createAdmin () {
+        Scanner sc = new Scanner(System.in);
+        String name, pass, mail = "";
+        Admin newuser = new Admin();
+        boolean aux = false;
+        MailValidator mv = new MailValidator();
+
+        if (admin.getPermi() < 2) {
+            System.out.println("You lack permission! Contact a superior admin such as: ");
+            return;
+        }
+
+        for (int i = 0; !aux && i<3; i++){
+
+            System.out.print("E-mail: ");
+                mail = sc.nextLine().replaceAll("[\n\r]","");
+                aux = mv.validate(mail);
+            if (!aux) {
+                System.out.println("Invalid e-mail! Please try a valid one.");
+            } else if (userbase.adminExists(mail)) {    // E-mail already in use
+                System.out.println("E-mail already in use.");
+                aux = false;
+            } else {
+                newuser.setMail(mail);
+                aux = true;
+            }
+        }
+
+        // Get admin name
+        System.out.print("Name: ");
+        newuser.setName(sc.nextLine().replaceAll("[\n\r]", ""));
+
+        // Get admin password
+        System.out.print("Pass: ");
+        newuser.setPass(sc.nextLine().replaceAll("[\n\r]",""));
+
+        // Get permissions
+        System.out.println("Permissions\n\n0:\nAble to see Reports\nAble to invalidate Caches\n");
+        System.out.println("1:\n All of 0's abilities\nAble to create events");
+        System.out.println("2:\n All of 1's abilities\nAble to create new admins");
+        newuser.setPermi(sc.nextInt());
+
+        newuser.setId(idAdmin);
+        userbase.addAdmin(newuser);
+        idAdmin = idAdmin + 1.0;
+        newuser = null;
+        System.out.println("Admin sucessfuly created!");
+    }
+
+    /*
+     * Delete an admin
+     */
+    private static void deleteAdmin () {
+
+
+    }
+    private static void listUsers () {
+        System.out.println (userbase.toString());
+    }
+
     /**
      * Auxiliary function: Menu Option for Admin: Show all reported caches to perform menu options shown in the menuAdminReports()
      */
 
-    private static void AdminReportsMenu(){
+    private static void AdminReportsMenu () {
         double n; int u;
         Scanner sc = new Scanner(System.in);
         TreeMap<Double, ArrayList<Report>> reps = cachebase.getAllReports();
