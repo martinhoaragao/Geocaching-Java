@@ -57,9 +57,9 @@ public class StatsTest
         statisti1.addAct(activity3);
         assertEquals(300, statisti1.getSumkmsM(8), 0.1);
         assertEquals(5, statisti1.getCMonth());
-        assertEquals(1, statisti1.getSumAM(9));
-        assertEquals(2, statisti1.getSumAM(8));
-        assertEquals(0, statisti1.getSumAM(10));
+        assertEquals(1, statisti1.getTotalCachesMonth(9));
+        assertEquals(2, statisti1.getTotalCachesMonth(8));
+        assertEquals(0, statisti1.getTotalCachesMonth(10));
         statisti1.getTreeSet(9);
         assertNotNull(statisti1.getinfoNCaches());
     }
@@ -90,7 +90,7 @@ public class StatsTest
         statisti1.addAct(activity2);
         statisti1.addAct(activity3);
         statisti1.addAct(activity4);
-        assertEquals(4, statisti1.getSumTotalCaches());
+        assertEquals(4, statisti1.getTotalCaches());
         //assertEquals(15, statisti1.getSumPoints());
         assertEquals(480, statisti1.getSumKms(), 0.1);
         statisti1.getinfoNCaches();
@@ -104,10 +104,10 @@ public class StatsTest
         activity4.getMonth();
         statisti1.getTreeSet(8);
         statisti1.getTreeSet(6);
-        statisti1.getSumTotalCaches();
+        statisti1.getTotalCaches();
         //assertEquals(6, statisti1.getSumPointsM(6));
         //assertEquals(9, statisti1.getSumPointsM(8));
-        assertEquals(2, statisti1.getSumAM(6));
+        assertEquals(2, statisti1.getTotalCachesMonth(6));
         statisti1.getCMonth();
     }
 }
