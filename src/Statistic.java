@@ -306,10 +306,10 @@ public class Statistic
      * Method that sums all Caches.
      * @return int Total of caches of this User's Statistic.
      */
-    public int getSumTotalCaches(){
+    public int getTotalCaches(){
         int i,r=0;
         for(i=0;i<12;i++){
-            r+=getSumAM(i+1);
+            r+=getTotalCachesMonth(i+1);
         }
         return r;
     }
@@ -317,7 +317,7 @@ public class Statistic
     /**
      * Method that sums all activities / caches of a given month.
      */
-    public int getSumAM(int month){
+    public int getTotalCachesMonth(int month){
         int sum=0;
         for(Activity a : this.stats.get(month-1)){
             sum++;
@@ -361,7 +361,7 @@ public class Statistic
         int i;
         for(i=0;i<12;i++){
             sb.append("Month: " + (i+1));
-            sb.append(" #Caches: " + this.getSumAM(i+1) + ".");
+            sb.append(" #Caches: " + this.getTotalCachesMonth(i+1) + ".");
             sb.append("\n");
             sb.append(" #Points: " + this.getSumPointsM(i+1)+ ".");
             sb.append("\n");
@@ -371,7 +371,7 @@ public class Statistic
             
         }
         sb.append(this.getinfoNCaches());
-        System.out.println(sb.toString());
+        
         return sb.toString();
     }
 }

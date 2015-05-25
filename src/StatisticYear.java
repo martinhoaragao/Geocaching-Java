@@ -58,6 +58,8 @@ public class StatisticYear
     /**
      * Add an Activity in the StatisticYear.
      * @param Activity a.
+     * TODO verificar que nao precida de fazer put depois de inserir ... ? 
+     * tirar o boolean e mete exception...
      */
     public boolean addActY(Activity a){
        int month = a.getMonth();
@@ -243,6 +245,7 @@ public class StatisticYear
 
     /**
      * Removes a Cache given the id
+     * TODO  tenho duvida nisto agora... manteinho o put ou tiro?
      */
     public boolean removeCacheY(double id){
       boolean removeu = false;
@@ -303,32 +306,32 @@ public class StatisticYear
         double r=0;
        for(Statistic stats : this.statsyear.values()){
            r+=stats.getSumKms();
+           //This calls the method created in the Statistic.
         }
         return r;
     }
 
     /**
-     * Method that sums all Caches.
+     * Method that sums all Caches / Activities.
      * @return int Total of caches of this User's Statistic.
      */
-    /*public int getSumTotalCaches(){
-        int i,r=0;
-        for(i=0;i<12;i++){
-            r+=getSumAM(i+1);
+    public int getSumTotalCachesAY(){
+        int r=0;
+        for(Statistic stats : this.statsyear.values()){
+            r+=stats.getTotalCaches();
         }
         return r;
     }
-    */
+    
     /**
-     * Method that sums all activities / caches of a given month.
+     * Method that sums all activities / caches of a given year.
+     * 
+     * @param year
      */
- /*   public int getSumAM(int month){
-        int sum=0;
-        for(Activity a : this.stats.get(month-1)){
-            sum++;
-        }
-        return sum;
-    }*/
+    public int getActivitiesY(int year){
+        Statistic stats = this.statsyear.get(year);
+        return stats.getTotalCaches();
+    }
     /**
      * Clone,toString and equals
      */
@@ -343,42 +346,46 @@ public class StatisticYear
      * Compare this Statistic to another to check if they are equal
      * @arg sa Statistic to use for comparison
      */
-   /* public boolean equals(Object sa){
+    public boolean equals(Object o){
         int i;
-        if (this == sa) return true;
-        if(sa.getClass() != this.getClass()) return false;
+        if (this == o) return true;
+        if(o.getClass() != this.getClass()) return false;
         
-        Statistic a = (Statistic) sa;
-        for(i=0;i<12;i++){
-            if(a.stats.get(i).size() != this.stats.get(i).size()) return false;
-            for(Activity ac : a.stats.get(i)){
-                if(!this.stats.get(i).contains(ac)) return false;
-            }
+        StatisticYear a = (StatisticYear) o;
+        if(a.statsyear.size() != this.statsyear.size()) return false;
+        
+        
+        
+        for ( Statistic stats : a.statsyear.values() ){
+            if(!this.statsyear.containsValue(stats)) return false;
         }
+        
+        //TODO verificar que duas sao iguais
         return true;
     }
-*/
+
     /**
      * Convert the info of this Statistic into a string
      */
- /*   public String toString(){
+    public String toString(){
         StringBuilder sb = new StringBuilder();
-        int i;
-        for(i=0;i<12;i++){
-            sb.append("Month: " + (i+1));
-            sb.append(" #Caches: " + this.getSumAM(i+1) + ".");
+        
+        for(Statistic stats : this.statsyear.values()){
+            int year = stats.getYearStatsMonth();
+            sb.append("Year: " + year);
+            sb.append(" #Caches: " + this.getActivitiesY(year) + ".");
             sb.append("\n");
-            sb.append(" #Points: " + this.getSumPointsM(i+1)+ ".");
+            sb.append(" #Points: " + this.getSumPointsY(year)+ ".");
             sb.append("\n");
-            sb.append(" #Kms travelled: " + this.getSumkmsM(i+1) + ".");
+            sb.append(" #Kms travelled: " + this.getSumkmsY(year) + ".");
             sb.append("\n");
             
             
         }
-        sb.append(this.getinfoNumberCaches());
+        sb.append(this.getinfoNumberCachesY());
         System.out.println(sb.toString());
         return sb.toString();
     }
-   */ 
+   
     
 }

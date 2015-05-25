@@ -114,7 +114,13 @@ public class StatisticYearTest
         assertEquals(true, statisti1.addActY(activity2));
         assertNotNull(statisti1.getinfoNumberCachesY());
     }
+
+    @Test
+    public void test5()
+    {
+    }
 }
+
 
 
 
