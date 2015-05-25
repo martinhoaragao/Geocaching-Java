@@ -68,7 +68,7 @@ public class NormalUser extends User {
         super(user);
 
         this.bdate = user.getBDate(); this.points = user.getPoints();
-        this.activities = user.getLastActivities();
+        this.activities = user.getActivities();
         this.statistics = user.getStatistics();
         this.friends = user.getFriends();
     }
@@ -103,11 +103,9 @@ public class NormalUser extends User {
         return this.points;
     }
 
-    /**
-     * @return TreeSet with last 10 user activities
-     */
+    /** @return TreeSet with the user activities */
     @SuppressWarnings("unchecked")
-    public TreeSet<Activity> getLastActivities () {
+    public TreeSet<Activity> getActivities () {
       TreeSet<Activity> ts = new TreeSet<Activity>(new CacheDateComparator());
       Iterator it = activities.iterator();
       Activity aux;
@@ -117,6 +115,19 @@ public class NormalUser extends User {
         ts.add(aux.clone());
       }
       return ts;
+    }
+
+    /** @return ArrayList with the last 10 activities if the user has that many */
+    public ArrayList<Activity> getLastActivities () {
+        ArrayList<Activity> acts = new ArrayList<Activity>(10);
+        Iterator it = this.activities.descendingIterator();
+
+        while (it.hasNext() && (acts.size() != 10)) {
+            Activity act = (Activity) it.next();
+            acts.add(act.clone());
+        }
+
+        return acts;
     }
 
     /**
