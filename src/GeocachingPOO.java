@@ -31,6 +31,21 @@ public class GeocachingPOO {
     private static Cache cache = null;
     private static Console c = System.console();
 
+    /** Unparameterized Constructor */
+    public GeocachingPOO () {
+        this.id = 1.0;
+        this.idAdmin = 2.0;
+        this.userbase = new UserBase();
+        this.cachebase = new CacheBase();
+        this.admin = new Admin("grupoajm@gmail.com", "Alpha", "AdminAdmin", 1.0, 2);
+        this.userbase.addAdmin(admin);
+        this.cachebase = new CacheBase();
+        this.idcache = 1.0;
+        this.user = null;
+        this.admin = null;
+        this.cache = null;
+    }
+/*
     //Random main method/function to complete.
     public static void main(String[] args) {
         boolean running = true;     // Set the program as running
@@ -82,63 +97,9 @@ public class GeocachingPOO {
                 }
             }
         }
-    }
+    }*/
 
     /* ----------------- MENUS ----------------- */
-
-    /** Display the main menu and return the user choice */
-    private static int mainMenu () {
-        Scanner sc = new Scanner(System.in);
-
-        clean();
-        System.out.println("1: Register");
-        System.out.println("2: Login");
-        System.out.println("3: Admin");
-        System.out.println("4: Exit");
-
-        return sc.nextInt();
-    }
-
-    /** Auxiliary function to display admin menu */
-    private static int adminMenu () {
-        Scanner sc = new Scanner(System.in);
-
-        System.out.println("\nLogged in as ADMIN: " + admin.getName() + " | " + admin.getPermi() + " power level");
-        System.out.println("-------------------------");
-        System.out.println("1: Report Menu");
-        System.out.println("2: List Users and Admins");
-        System.out.println("3: Show Caches");
-        System.out.println("4: Delete user");
-        System.out.println("5: Create new admin");
-        System.out.println("6: Delete admin");
-        System.out.println("10: Log Out");
-
-        return sc.nextInt();
-    }
-
-    /** Auxiliary function to display user menu */
-    private static int userMenu () {
-        Scanner sc = new Scanner(System.in);
-        ArrayList<Double> requests = user.getFriendRequests();
-
-        clean();
-        System.out.println("Logged in as: " + user.getName() + " | " + user.getPoints() + " points");
-        System.out.println("-------------------------");
-        if (requests.size() > 0)  /* There are friend requests */
-            System.out.println("Friend Requests: " + requests.size());
-        System.out.println("1: Personal Information");
-        System.out.println("2: Create new cache");
-        System.out.println("3: Friends");
-        System.out.println("4: Show Caches");
-        System.out.println("5: Show My Statistics");
-        System.out.println("6: Show Last 10 activities");
-        System.out.println("7: Show Friend Activities");
-        System.out.println("8: Show My Caches");
-        System.out.println("9: Add Activity");
-        System.out.println("10: Log Out");
-
-        return sc.nextInt();
-    }
 
     /**Menu 1. Personal Info + Change Personal Info after this */
     private static void personalInfo(){
@@ -159,7 +120,6 @@ public class GeocachingPOO {
     private static int subpersonalInfo(){
         Scanner sc = new Scanner(System.in);
 
-        clean();
         printInfo();
         System.out.println("1: Change Password");
         System.out.println("2: Change Name");
@@ -173,10 +133,9 @@ public class GeocachingPOO {
 
     private static void friendsMenu(){
         boolean running = true;
-        int escolha;
+        int escolha = 5;
 
         while (running) {
-            escolha = friendsMenudisplay();
             switch (escolha) {
                 case 1: sendFriendRequest(); break;
                 case 2: showRequests(); break;
@@ -187,120 +146,25 @@ public class GeocachingPOO {
         }
     }
 
-    private static int friendsMenudisplay(){
-        Scanner sc = new Scanner(System.in);
-
-        clean();
-        System.out.println("1: Send Friend Request");
-        System.out.println("2: Show Friend Requests");
-        System.out.println("3: Accept Friend Request");
-        System.out.println("4: Friends List");
-        System.out.println("5: Main Menu");
-
-        return sc.nextInt();
-    }
-
     /* ------------------- REGISTER & LOGIN --------------------- */
 
-    /** Auxiliary function to register new user */
-    private static void register () {
-        Scanner sc = new Scanner(System.in);
-        String name, pass, country, city, mail = "";
-        String[] bdate_fields;
-        String bbdate;
-        GregorianCalendar bdate = null;
-        NormalUser newuser = new NormalUser();
-        int bdate_return;
-        MailValidator mv = new MailValidator();
-        boolean aux = true, gender;
-        int i=0; //Tries for the user. After 3rd try, menu to register closes. (Avoiding infinite loop).
-        int d,m,y,yy;
-
-        clean();
-        do {
-
-            if (i == 3) { System.out.println("Invalid e-mail!"); return; }
-            System.out.print("E-mail: ");
-            mail = sc.nextLine().replaceAll("[\n\r]","");
-            aux = mv.validate(mail);
-            if (!aux) System.out.println("Invalid e-mail! Please try a valid one.");
-            i++;
-        } while (!aux);
-
-        if (userbase.userExists(mail)) {    // E-mail already in use
-            System.out.println("E-mail already in use.");
-            return;
-        } else newuser.setMail(mail);
-
-        // Get user name
-        System.out.print("Name: ");
-        newuser.setName(sc.nextLine().replaceAll("[\n\r]", ""));
-
-        // Get user password
-        if (c != null) {
-            pass = new String(c.readPassword("Pass: "));
-            newuser.setPass(pass);
-        } else {
-            System.out.print("Pass: ");
-            newuser.setPass(sc.nextLine().replaceAll("[\n\r]",""));
-        }
-
-        //New code for the bdate approval
-        GregorianCalendar bbbdate = typebdate();
-        if(bbbdate != null){
-            System.out.print("Country: ");
-            country = sc.nextLine().replaceAll("[\n\r]","");
-            System.out.print("City: ");
-            city = sc.nextLine().replaceAll("[\n\r]","");
-            System.out.print("Gender (g for girl, b for boy): ");
-            if (sc.nextLine().replaceAll("[\n\r]","").equals("g"))
-                newuser.setGender(true);
-            else newuser.setGender(false);
-
-            newuser.setAddress(city, country);
-            newuser.setId(id);
-            userbase.addUser(newuser);
-            id = id + 1.0;
-            newuser = null;
-            System.out.println("User sucessfully created!");
-        }
-
-        if (c != null)
-            c.readLine();
+    /** Add a user to the user base
+     * @param u User to be added
+     */
+    public void register (NormalUser u) throws EmailAlreadyInUseException, IdAlreadyAssignedException {
+        userbase.addUser(u);
     }
 
-    /** Auxiliary login function */
-    private static void login (String type) {
-        Scanner sc = new Scanner(System.in);
-        String mail, pass;
-        int i = 0;
-
-        clean();
-        do {
-            i++;
-            System.out.print("E-mail: ");
-            mail = sc.nextLine().replaceAll("[\n\r]","");
-            if (c != null)
-                pass = new String(c.readPassword("Password: "));
-            else {
-                System.out.print("Password: ");
-                pass = sc.nextLine().replaceAll("[\n\r]","");
-            }
-
-            if (type.equals("admin"))
-                admin = userbase.getAdmin (mail, pass);
-            else
-                user = userbase.getUser(mail, pass);
-
-            if(user == null && admin == null && i==3){
-                System.out.println("E-mail or password were incorrect.");
-                return;
-            }
-            if(user == null && admin == null){
-                System.out.println("E-mail or password incorrect. Please try again.");
-            }
-
-        } while ((user == null && admin == null) );
+    /** Retrieve a user from the UserBase if login suceeded
+     * @param mail User e-mail
+     * @param pass User password
+     * @param type User type, Normaluser or admin
+     */
+    private static User login (String mail, String pass, String type) {
+        if (type.equals("admin"))
+            return userbase.getAdmin(mail, pass);
+        else
+            return userbase.getUser(mail, pass);
     }
 
     /* ----------------- INFORMATION MODIFICATION --------------------*/
@@ -317,7 +181,6 @@ public class GeocachingPOO {
         Scanner sc = new Scanner(System.in);
         int i = 0; //3 trys to change password each time
 
-        clean();
 
         // Give user 3 tries to insert current password
         do {
@@ -360,7 +223,6 @@ public class GeocachingPOO {
     private static void changeName () {
         Scanner sc = new Scanner(System.in);
 
-        clean();
         System.out.print("Name: ");
         try {
             user.setName(sc.nextLine().replaceAll("[\n\r]", ""));
@@ -378,7 +240,6 @@ public class GeocachingPOO {
         Scanner sc = new Scanner(System.in);
         String city, country;
 
-        clean();
         System.out.print("City: ");
         city = sc.nextLine().replaceAll("[\n\r]", "");
         System.out.print("Country: ");
@@ -397,7 +258,6 @@ public class GeocachingPOO {
 
     /** Auxiliary function to change User birthdate */
     private static void changeBDate () {
-        clean();
         GregorianCalendar bb = typebdate();
         if (bb != null) {
             user.setBDate(bb);
@@ -412,7 +272,6 @@ public class GeocachingPOO {
     private static void changeGender () {
         Scanner sc = new Scanner(System.in);
 
-        clean();
         System.out.print("Gender (g for girl/b for boy): ");
         if (sc.nextLine().replaceAll("[\n\r]", "").equals("g"))
             user.setGender(true);
@@ -428,36 +287,36 @@ public class GeocachingPOO {
      * With prints
      */
     private static GregorianCalendar typebdate(){
-        boolean aux = true;
-        String bbdate;
-        GregorianCalendar bbbdate;
-        String[] bdate_fields;
-        int d,m,y,yy;
-        Scanner sc = new Scanner(System.in);
-        do{
-            System.out.print("Birthdate (Day/Month/Year): ");
-            bbdate = sc.nextLine();
-            bdate_fields = bbdate.split("/");
-            d = Integer.parseInt(bdate_fields[0]);
-            m = Integer.parseInt(bdate_fields[1]);
-            y = Integer.parseInt(bdate_fields[2]);
-            GregorianCalendar Calendar  = new GregorianCalendar();
-            yy = Calendar.get(Calendar.YEAR); //returns the current year yay.
+      boolean aux = true;
+      String bbdate;
+      GregorianCalendar bbbdate;
+      String[] bdate_fields;
+      int d,m,y,yy;
+      Scanner sc = new Scanner(System.in);
+      do {
+        System.out.print("Birthdate (Day/Month/Year): ");
+        bbdate = sc.nextLine();
+        bdate_fields = bbdate.split("/");
+        d = Integer.parseInt(bdate_fields[0]);
+        m = Integer.parseInt(bdate_fields[1]);
+        y = Integer.parseInt(bdate_fields[2]);
+        GregorianCalendar Calendar  = new GregorianCalendar();
+        yy = Calendar.get(Calendar.YEAR); //returns the current year yay.
 
-            if(d <=0 || d >31 ) System.out.println("Day invalid!");
-            else if(m <= 0 || m >12) System.out.println("Month invalid!");
-            else if(y <=0 || y > yy) System.out.println("Year invalid!");
-            else if( (y%4 != 0 && m == 2 && d>28) || (m == 4 && d > 30) || (m == 6 && d > 30) || (m == 9 && d > 30) || (m == 11 && d > 30)   )
-                System.out.println("Date invalid!");
+        if(d <=0 || d >31 ) System.out.println("Day invalid!");
+        else if(m <= 0 || m >12) System.out.println("Month invalid!");
+        else if(y <=0 || y > yy) System.out.println("Year invalid!");
+        else if( (y%4 != 0 && m == 2 && d>28) || (m == 4 && d > 30) || (m == 6 && d > 30) || (m == 9 && d > 30) || (m == 11 && d > 30)   )
+        System.out.println("Date invalid!");
 
-            else {
-                aux = false;
-                bbbdate = new GregorianCalendar(y,m,d);
-                return bbbdate;
-            }
-            //when numm == 0 everything is ok.
-        }while( aux );
-        return null;
+        else {
+          aux = false;
+          bbbdate = new GregorianCalendar(y,m,d);
+          return bbbdate;
+        }
+        //when numm == 0 everything is ok.
+      } while ( aux );
+      return null;
     }
 
     /* -------------------- FRIENDS -------------------- */
@@ -539,7 +398,6 @@ public class GeocachingPOO {
         ArrayList<Activity> acts = user.getLastActivities();
         Iterator it;
 
-        clean();
         if (acts.size() == 0)
             System.out.println("You have no activities yet!");
         else {
@@ -584,7 +442,6 @@ public class GeocachingPOO {
         Double cache_id, kms;           /* Cache id and kilometers */
 
         /* Get the activity date */
-        clean();
         /* TODO: Change typebdate() to different function */
         System.out.print("Date: "); date = typebdate();
         /* Get the cache id */
@@ -648,7 +505,6 @@ public class GeocachingPOO {
     public static int CacheMenuaux(){
         Scanner sc = new Scanner(System.in);
 
-        clean();
         System.out.println("1. Report one cache ");
         System.out.println("2. See treasures of a cache");
         System.out.println("3. Show registry book of a cache");
@@ -661,14 +517,13 @@ public class GeocachingPOO {
     /**Auxiliary function: Show all caches + menu
      * Menu Option: Shows all caches to * report one already, * Show details   ** Report this cache ** return to show all caches
      */
-    private static void showAllCaches(){
-        double n ; int o;
+    /*private static void showAllCaches(){
+        double n ;
         Scanner sc = new Scanner(System.in);
         ArrayList<Cache> caches = cachebase.getAllCaches();
         boolean running = true;
         int o;
 
-        clean();
         System.out.println("-------------------------");
         System.out.println("Cache Menu");
         System.out.println("-------------------------");
@@ -776,12 +631,6 @@ public class GeocachingPOO {
                 running = false;
                 break;
 
-                case 6:
-                for(Cache c : caches){
-                    System.out.println("| ID : " + c.getId() + "| " + "Coords: " + c.getCoords().toString() + "Creator: " + c.getMail());
-                }
-
-
                  o = CacheMenuaux();
 
 
@@ -793,7 +642,7 @@ public class GeocachingPOO {
         }
 
         if (c != null) c.readLine();
-    }
+    }*/
 
 
     /*
@@ -1007,7 +856,6 @@ public class GeocachingPOO {
         Scanner sc = new Scanner(System.in);
         Double id;
 
-        clean();
         System.out.println("What type of cache do you want to create? (0 to cancel)");
         System.out.println("1: Tradicional");
         System.out.println("2: Multicache");
@@ -1068,7 +916,6 @@ public class GeocachingPOO {
     private static void showCaches () {
         ArrayList<Cache> caches = cachebase.getAllCaches();
 
-        clean();
         for (Cache c : caches)
             System.out.println(c.toString());
 
@@ -1079,7 +926,6 @@ public class GeocachingPOO {
     private static void showUserCaches () {
         ArrayList<Cache> caches = cachebase.getCaches(user.getId());
 
-        clean();
         if (caches != null) {
             for (Cache c : caches)
                 System.out.println(c.toString());
@@ -1100,8 +946,9 @@ public class GeocachingPOO {
         System.out.println(user.getStatistics().toString());
     }
 
-    /** Aux Function for us to clean the terminal when we call it */
-    private final static void clean(){
-       System.out.print("\u001b[2J" + "\u001b[H");
+    /** @return Current User id */
+    public Double getCurrentUserId () {
+        return this.id;
     }
+
 }

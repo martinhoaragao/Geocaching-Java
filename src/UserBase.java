@@ -275,9 +275,15 @@ public class UserBase {
      * Add a user to the data base
      * @param user User to be added
      */
-    public void addUser (NormalUser user) {
-        this.users.add(user);
-        this.userMails.put(user.getMail(), user.getId());
+    public void addUser (NormalUser user) throws EmailAlreadyInUseException, IdAlreadyAssignedException {
+        if (userExists(user.getMail()))
+            throw new EmailAlreadyInUseException(user.getMail() + " is already in use.");
+        else if (userExists(user.getId()))
+            throw new IdAlreadyAssignedException(user.getId() + " is already assigned.");
+        else {
+            this.users.add(user);
+            this.userMails.put(user.getMail(), user.getId());
+        }
     }
 
     /**
@@ -342,6 +348,12 @@ public class UserBase {
             return (this.users.get(id - 1).equals(user));
         else
             return false;
+    }
+
+    public boolean userExists (Double id) {
+        if (id <= this.users.size())
+            return (this.users.get(id.intValue() - 1) != null);
+        else return false;
     }
 
     /** Create friend request from a given user to another
