@@ -651,7 +651,7 @@ public class GeocachingPOO {
         System.out.println("3. Show registry book of a cache");
         System.out.println("4. Show other details of a cache");
         System.out.println("5. Leave cache menu");
-        System.out.println("0. Show all caches + menu");
+        System.out.println("6. Show all caches again");
         return sc.nextInt();
     }
 
@@ -659,7 +659,7 @@ public class GeocachingPOO {
      * Menu Option: Shows all caches to * report one already, * Show details   ** Report this cache ** return to show all caches
      */
     private static void showAllCaches(){
-        double n ;
+        double n ; int o;
         Scanner sc = new Scanner(System.in);
         ArrayList<Cache> caches = cachebase.getAllCaches();
 
@@ -674,27 +674,20 @@ public class GeocachingPOO {
         System.out.println("Cache Menu");
         System.out.println("-------------------------");
 
-        int o = CacheMenuaux();
+        
+        //int o = CacheMenuaux();
+        o = CacheMenuaux();
         while(o!=0){
-
+            
             switch (o) {
-                case 0:
-                for(Cache c : caches){
-                    System.out.println("| ID : " + c.getId() + "| " + "Coords: " + c.getCoords().toString() + "Creator: " + c.getMail());
-                }
-
-
-                CacheMenuaux();
-                o = sc.nextInt();
-
+                
                 case 1:
                 System.out.println("Type cache id to report");
                 double u = sc.nextDouble();
                 UserReportCache(u);
-                System.out.println("Type 0 to return to Cache menu");
-                if(sc.nextInt() == 0){
+                
                     o = CacheMenuaux();
-                }
+                
                 break;
 
                 case 2:
@@ -718,10 +711,9 @@ public class GeocachingPOO {
                 //Nao sei se fará sentido chamar o menu aqui outra vez... se tiver mts treasures, talvez?
                 //User ve os treasures todos e depois vê o menu outra vez para poder fazer outras coisas.. ?
 
-                System.out.println("Type 0 to return to Cache menu");
-                if(sc.nextInt() == 0){
+                
                     o = CacheMenuaux();
-                }
+                
 
                 break;
 
@@ -745,17 +737,17 @@ public class GeocachingPOO {
                 }
 
                 //
-                System.out.println("Type 0 to return to Cache menu");
-                if(sc.nextInt() == 0){
+                
                     o = CacheMenuaux();
-                }
+                
                 //
                 break;
 
                 case 4:
                 System.out.println("Type the id of the cache to see more details. (0 to leave)");
                 n = sc.nextDouble();
-                if(n == 0) break;
+                if(n == 0){ o=0; break;
+                }
                 else{
                     Iterator it = caches.iterator();
                     Cache cache;
@@ -769,29 +761,33 @@ public class GeocachingPOO {
                             System.out.println("There isn't such cache with that id. Sorry.");
                         }
                     }
-
-                    System.out.println("Report this cache? [y/n]");
-                    if(!sc.nextLine().toUpperCase().contains("Y")){
-                        break;
-                    }
+                    
+                    System.out.println("0: to return to Cache menu");
+                    System.out.println("1. Report this cache? ");
+                    if(sc.nextInt() == 1) o = 1;
                     else{
-                        UserReportCache(n);
+                        o=CacheMenuaux();
                     }
 
                 }
-                //
-                System.out.println("Type 0 to return to Cache menu");
-                if(sc.nextInt() == 0){
-                    o = CacheMenuaux();
-                }
-                //
                 break;
 
                 case 5:
                 System.out.println("Leaving...");
                 o=0;
                 break;
+                
+                case 6:
+                for(Cache c : caches){
+                    System.out.println("| ID : " + c.getId() + "| " + "Coords: " + c.getCoords().toString() + "Creator: " + c.getMail());
+                }
 
+                
+                 o = CacheMenuaux();
+                
+                
+
+                
                 default:
                 break;
             }

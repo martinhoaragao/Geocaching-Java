@@ -43,7 +43,7 @@ public class StatisticYearTest
         microCac1 = new MicroCache();
         microCac1.setCoordinates(400, 400);
         activity2 = new Activity(gregoria1, microCac1, 20);
-        user1 = new User("das@gmail.com", "99", "DASD", 9.0, ano2005);
+        user1 = new NormalUser("das@gmail.com", "99", "DASD", 9.0, ano2005);
     }
 
     /**
@@ -56,11 +56,12 @@ public class StatisticYearTest
     {
     }
 
-    @Test
+    @Test //Erro no addActivity mas ele ta no NormalUser...
     public void testeYearMonth()
     {
-        user1.addActivity(activity1);
-        user1.addActivity(activity2);
+        user1 = new NormalUser("das@gmail.com", "99", "DASD", 9.0, ano2005);
+        //user1.addActivity(activity1);
+        //user1.addActivity(activity2);
         StatisticYear statisti1 = new StatisticYear();
     }
 
@@ -86,7 +87,24 @@ public class StatisticYearTest
         assertEquals(true, statisti1.addActY(activity2));
         assertNotNull(statisti1.getStatsyear());
     }
+
+    @Test
+    public void test4()
+    {
+        user1.addActivity(activity1);
+        user1.addActivity(activity2);
+        user1.getPoints();
+        assertNull(user1.getStatistics());
+        activity1.setDate(3, 4, 2000);
+        user1.addActivity(activity1);
+        assertNotNull(user1.getStatistics());
+        assertNotNull(user1.getLastActivities());
+        assertNotNull(user1.getActivities());
+        activity1.getMonth();
+        assertEquals(2000, activity1.getYear());
+    }
 }
+
 
 
 
