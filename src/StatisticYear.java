@@ -11,6 +11,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Iterator;
 
+
 public class StatisticYear
 {
     //Could I declare private int month and then TreeSet<month, a> , for instace?
@@ -51,11 +52,9 @@ public class StatisticYear
         return aux;
     }
 
-    
     /**
      * Methods
      */
-    
     /**
      * Add an Activity in the StatisticYear.
      * @param Activity a.
@@ -86,33 +85,70 @@ public class StatisticYear
     }
     
     
-
     /**
-     * Removes an Activity in the array of TreeSet<Activity>.
+     * Removes an Activity
      * 
      * @param Activity a.
      */
-  /*  public void removeActY(Activity a){
+    public void removeActY(Activity a){
+        int year = a.getYear();
+        int month = a.getMonth();
+        
+        if( !this.statsyear.containsKey(year) )
+            return; //Nao existe o ano neste map logo nao existe esta atividade no map
+        else{
+            Statistic stats = this.statsyear.get(year); 
+            //Dá me as estatisticas no mÊs desse ano.
+            //É impossivel ser null agora pois já passou pelo teste acima.
+            stats.removeAct(a); //Remove da estatistica desse ano
+            //Atualiza este no map, logo subtitui o antigo por este novo onde já foi removida esta atividade. Correto?
+            this.statsyear.put(year, stats);
+        }
+    
+    }
 
-        
-    }
-*/
     /**
-     * Get the Set of Activities by a given month.
-     * @param int m month.
+     * Get the Statistic of Activities by a given year.
+     * @param int year.
      */
-  /*  public TreeSet<Activity> getTreeSetY(int m){
-        
+    public Statistic getStatistic(int year){
+        return this.statsyear.get(year);
     }
-*/
+    
+    /**
+     * Get the Set of ativities done in a year.
+     * 
+     * This method addes them in a new set.
+     */
+    public TreeSet<Activity> getSetOfYear(){
+        TreeSet<Activity> novo = new TreeSet<>();
+        TreeSet<Activity> aux;
+        for(Statistic stats : this.statsyear.values()){
+            //Para todas as estatisticas que foram mapeadas dado um ano
+            for(int i=0; i<12; i++){ //Para todos os meses.
+                TreeSet<Activity> este = stats.getStats().get(i);
+                //Estou no mês 0, 1, ..... 11
+                //Para cada set do mês que está nessa estatistica desse ano
+                 novo.addAll(este); 
+                 //Adiciona as atividades todas do set para este em vez de add uma a uma.
+            }
+           }
+        return novo;
+        }
+
     /**
      * Get a Set of Activities that has a given type of Cache.
      * 
      * @param String with information of how many caches of different type user has.
      */
- /*   public String getinfoNumberCachesY(){
+    public String getinfoNumberCachesY(){
         StringBuilder sb = new StringBuilder();
         int micro=0, multi=0, trad=0, mystery=0, virtual = 0, event = 0,i;
+        
+        for(Statistic stats : this.statsyear.values()){
+            int[] caches = stats.getNumberCaches();
+        }
+        
         for(i=0;i<12;i++){
             for(Activity a : this.stats.get(i)){
                 if (a.getCache() instanceof MicroCache) micro++;
@@ -134,7 +170,7 @@ public class StatisticYear
         System.out.println(sb.toString());
         return sb.toString();
     }
-*/
+
    /**
     * Returns the current month.
     * @return current month.

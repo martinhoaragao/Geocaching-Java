@@ -61,7 +61,7 @@ public class Statistic
         Iterator<Activity> it = ts.iterator();
         
         while(it.hasNext()){
-            novo.add(it.next());
+            novo.add(it.next().clone());
         }
         
         return novo;
@@ -131,31 +131,47 @@ public class Statistic
         return novo;
     }
 
+    
+    
     /**
-     * Get a Set of Activities that has a given type of Cache.
-     * 
-     * @param String with information of how many caches of different type user has.
+     * Returns in an auxiliary array.
+     * New version.
      */
-    public String getinfoNumberCaches(){
-        StringBuilder sb = new StringBuilder();
+    public int[] getNumberCaches(){
+        int[] caches = new int[4];
         int micro=0, multi=0, trad=0, mystery=0, virtual = 0, event = 0,i;
-        for(i=0;i<12;i++){
+         for(i=0;i<12;i++){
             for(Activity a : this.stats.get(i)){
-                if (a.getCache() instanceof MicroCache) micro++;
-                if(a.getCache() instanceof MultiCache) multi++;
-                if(a.getCache() instanceof TraditionalCache) trad++;
-                if(a.getCache() instanceof MysteryCache) mystery++;
+                if (a.getCache() instanceof MicroCache) caches[0]++; //micro++;
+                if(a.getCache() instanceof MultiCache) caches[1]++; //multi++;
+                if(a.getCache() instanceof TraditionalCache) caches[2]++; //trad++;
+                if(a.getCache() instanceof MysteryCache) caches[3]++;//mystery++;
                 //if(a.getCache() instanceof Virtual) virtual++;
                 //if(a.getCache() instanceof Event) event++;
             }
         }
-        sb.append("Micro :"); sb.append(Integer.toString(micro) + ".");
+        return caches;
+    }
+    
+    /**
+     * Presents as a string the previous data. In replace of the getinfoNumberCaches().
+     * Test before deleting the getinfoNumberCaches() and mantain this two methods in replace.
+     * (Done. Foto no Trello)
+     * 
+     * 
+     * @param String with information of how many caches of different type user has.
+     */
+    public String getinfoNCaches(){
+        int[] caches = getNumberCaches();
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append("Micro :"); sb.append(Integer.toString(caches[0]) + ".");
         sb.append("\n");
-        sb.append("Multi :"); sb.append(Integer.toString(multi)+ ".");
+        sb.append("Multi :"); sb.append(Integer.toString(caches[1])+ ".");
         sb.append("\n");
-        sb.append("Tradicional :"); sb.append(Integer.toString(trad)+ ".");
+        sb.append("Tradicional :"); sb.append(Integer.toString(caches[2])+ ".");
         sb.append("\n");
-        sb.append("Mystery :"); sb.append(Integer.toString(mystery)+ ".");
+        sb.append("Mystery :"); sb.append(Integer.toString(caches[3])+ ".");
         sb.append("\n");
         System.out.println(sb.toString());
         return sb.toString();
@@ -352,7 +368,7 @@ public class Statistic
             
             
         }
-        sb.append(this.getinfoNumberCaches());
+        sb.append(this.getinfoNCaches());
         System.out.println(sb.toString());
         return sb.toString();
     }
