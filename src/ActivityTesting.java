@@ -47,15 +47,15 @@ public class ActivityTesting
         Coordinates CordLocal = new Coordinates(20, 30);
         TraditionalCache traditio1 = new TraditionalCache(1, CordLocal, "jess@gmail.com");
         MicroCache microCac1 = new MicroCache(2, CordLocal, "jess@gmail.com");
-        Activity activity1 = new Activity(gregoria1, traditio1, 300);
-        Activity activity2 = new Activity(gregoria1, microCac1, 500);
+        Activity activity1 = new Activity(gregoria1, traditio1, 300, 10);
+        Activity activity2 = new Activity(gregoria1, microCac1, 500, 10);
         activity1.getMonth();
         java.util.GregorianCalendar gregoria2 = activity2.getDate();
         
         assertEquals(false, activity1.equals(activity2));
         Activity activity3 = new Activity(activity1);
         assertEquals(true, activity3.equals(activity1));
-        Activity iguala1 = new Activity(gregoria1, traditio1, 300);
+        Activity iguala1 = new Activity(gregoria1, traditio1, 300, 10);
         assertEquals(true, iguala1.equals(activity1));
         
         assertNotNull(activity1.toString());
@@ -69,7 +69,7 @@ public class ActivityTesting
         
         activity1.setDate(30, 1, 2005);
         
-        Activity activity4 = new Activity(gregoria1, microCac1, 300);
+        Activity activity4 = new Activity(gregoria1, microCac1, 300,10);
         assertEquals(4, activity4.getMonth());
         activity4.setDate(25, 4, 2005);
         

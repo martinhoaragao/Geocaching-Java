@@ -39,10 +39,10 @@ public class StatisticYearTest
         ano2005 = new java.util.GregorianCalendar(2005, 8, 25);
         gregoria1 = new java.util.GregorianCalendar(2008, 8, 25);
         traditio1 = new TraditionalCache();
-        activity1 = new Activity(ano2005, traditio1, 200);
+        activity1 = new Activity(ano2005, traditio1, 200, 10);
         microCac1 = new MicroCache();
         microCac1.setCoordinates(400, 400);
-        activity2 = new Activity(gregoria1, microCac1, 20);
+        activity2 = new Activity(gregoria1, microCac1, 20, 10);
         user1 = new NormalUser("das@gmail.com", "99", "DASD", 9.0, ano2005);
     }
 

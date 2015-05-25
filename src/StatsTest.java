@@ -48,9 +48,9 @@ public class StatsTest
         java.util.GregorianCalendar gregoria3 = new java.util.GregorianCalendar(2015, 9, 6);
         Coordinates coordina1 = new Coordinates(20, 10);
         MicroCache microCac1 = new MicroCache(2, coordina1, "jess@hotmail.com");
-        Activity activity1 = new Activity(gregoria1, microCac1, 100);
-        Activity activity2 = new Activity(gregoria2, microCac1, 200);
-        Activity activity3 = new Activity(gregoria3, microCac1, 300);
+        Activity activity1 = new Activity(gregoria1, microCac1, 100, 10);
+        Activity activity2 = new Activity(gregoria2, microCac1, 200, 10);
+        Activity activity3 = new Activity(gregoria3, microCac1, 300, 10);
         Statistic statisti1 = new Statistic();
         statisti1.addAct(activity1);
         statisti1.addAct(activity2);
@@ -77,10 +77,10 @@ public class StatsTest
         MultiCache multiCac1 = new MultiCache();
         TraditionalCache traditio1 = new TraditionalCache();
         MysteryCache mysteryC1 = new MysteryCache();
-        Activity activity1 = new Activity(gregoria1, multiCac1, 100);
-        Activity activity2 = new Activity(gregoria2, mysteryC1, 200);
-        Activity activity3 = new Activity(gregoria3, traditio1, 150);
-        Activity activity4 = new Activity(gregoria3, mysteryC1, 30);
+        Activity activity1 = new Activity(gregoria1, multiCac1, 100, 10);
+        Activity activity2 = new Activity(gregoria2, mysteryC1, 200, 4);
+        Activity activity3 = new Activity(gregoria3, traditio1, 150, 4);
+        Activity activity4 = new Activity(gregoria3, mysteryC1, 30, 3);
         activity1.setPoints(5);
         activity2.setPoints(4);
         activity3.setPoints(2);
