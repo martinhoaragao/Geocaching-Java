@@ -11,8 +11,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class UserBase {
-    private ArrayList<User> users;          /* Array to store users */
-    private TreeMap<String, Double> mails;  /* Map between mails and ids */
+    private ArrayList<Admin> admins;          /* Array to store admins */
+    private ArrayList<NormalUser> users;          /* Array to store users */
+    private TreeMap<String, Double> userMails;  /* Map between mails and ids */
+    private TreeMap<String, Double> adminMails;  /* Map between mails and ids */
+
 
     // Constructors
 
@@ -20,8 +23,11 @@ public class UserBase {
      * Constructor without arguments
      */
     public UserBase () {
-        this.users = new ArrayList<User>();
-        this.mails = new TreeMap<String, Double>(new MailComparator());
+        this.admins = new ArrayList<Admin>();
+        this.users = new ArrayList<NormalUser>();
+        this.adminMails = new TreeMap<String, Double>(new MailComparator());
+        this.userMails = new TreeMap<String, Double>(new MailComparator());
+
     }
 
     /**
@@ -29,27 +35,63 @@ public class UserBase {
      * @param userbase UserBase from where Users will be fetched
      */
     public UserBase (UserBase userbase) {
+        this.admins = userbase.getAdmins();
         this.users = userbase.getUsers();
-        this.mails = userbase.getMails();
+        this.adminMails = userbase.getAdminMails();
+        this.userMails = userbase.getUserMails();
+
     }
 
     // Getters
 
+    /** Function to be used only by the user base to get an admin
+     * @param id Admin id
+     */
+    private Admin getAdmin (Double id) {
+        if (id < this.admins.size())
+            return this.admins.get(id.intValue() - 1);
+        else
+            return null;
+    }
+
+    /** Function to be used only by the user base to get an admin
+     * @param mail Admin mail
+     */
+    private Admin getAdmin (String mail) {
+        return this.admins.get(this.adminMails.get(mail).intValue() - 1);
+    }
+
+    /**
+     * Returns the admin with the specified username if passwords match
+     * @param name Admin username
+     * @param pass Admin password
+     */
+    public Admin getAdmin (String mail, String pass) {
+        /* Get the user id */
+        Double id = this.adminMails.get(mail);
+
+        if (id != null) {
+            Admin admin = this.admins.get(id.intValue() - 1);
+            if (admin.confirmPass(pass)) return admin;
+        }
+        return null;
+    }
+
     /** Function to be used only by the user base to get a user
      * @param id User id
      */
-    private User getUser (Double id) {
+    private NormalUser getUser (Double id) {
         if (id < users.size())
             return users.get(id.intValue() - 1);
         else
             return null;
     }
 
-    /** Function to be used inly by the user base to get a user
+    /** Function to be used only by the user base to get a user
      * @param mail User e-mail
      */
-    private User getUser (String mail) {
-        return this.users.get(this.mails.get(mail).intValue() - 1);
+    private NormalUser getUser (String mail) {
+        return this.users.get(this.userMails.get(mail).intValue() - 1);
     }
 
     /**
@@ -57,15 +99,22 @@ public class UserBase {
      * @param mail User mail
      * @param pass User password
      */
-    public User getUser (String mail, String pass) {
+    public NormalUser getUser (String mail, String pass) {
         /* Get the user id */
-        Double id = this.mails.get(mail);
+        Double id = this.userMails.get(mail);
 
         if (id != null) {
-            User user = this.users.get(id.intValue() - 1);
+            NormalUser user = this.users.get(id.intValue() - 1);
             if (user.confirmPass(pass)) return user;
         }
         return null;
+    }
+
+    /**
+     * @return Number of admins in the user data base
+     */
+    public int getNumOfAdmins () {
+        return this.admins.size();
     }
 
     /**
@@ -76,27 +125,51 @@ public class UserBase {
     }
 
     /**
-     * @return TreeSet with all the users in the UserBase
+     * @return ArrayList with all the admins in the UserBase
      */
     @SuppressWarnings("unchecked")
-    public ArrayList<User> getUsers () {
-        ArrayList<User> list = new ArrayList<User>();
-        Iterator it = users.iterator();
+    public ArrayList<Admin> getAdmins () {
+        ArrayList<Admin> list = new ArrayList<Admin>();
 
-        for (User user : this.users) {
+        for (Admin admin : this.admins) {
+            list.add(admin.clone());
+        }
+
+        return list;
+    }
+
+    /**
+     * @return ArrayList with all the users in the UserBase
+     */
+    @SuppressWarnings("unchecked")
+    public ArrayList<NormalUser> getUsers () {
+        ArrayList<NormalUser> list = new ArrayList<NormalUser>();
+
+        for (NormalUser user : this.users) {
             list.add(user.clone());
         }
 
         return list;
     }
 
-    /** @return TreeMap with the mapping between e-mails and ids */
+    /** @return TreeMap with the mapping between admin's usernames and ids */
     @SuppressWarnings("unchecked")
-    public TreeMap<String, Double> getMails () {
+    public TreeMap<String, Double> getAdminMails () {
         TreeMap<String, Double> tm = new TreeMap<String, Double>();
 
-        for (String mail : mails.keySet())
-            tm.put(mail, mails.get(mail));
+        for (String mail : adminMails.keySet())
+            tm.put(mail, adminMails.get(mail));
+
+        return tm;
+    }
+
+    /** @return TreeMap with the mapping between e-mails and ids */
+    @SuppressWarnings("unchecked")
+    public TreeMap<String, Double> getUserMails () {
+        TreeMap<String, Double> tm = new TreeMap<String, Double>();
+
+        for (String mail : userMails.keySet())
+            tm.put(mail, userMails.get(mail));
 
         return tm;
     }
@@ -108,10 +181,15 @@ public class UserBase {
      */
     public String toString () {
         StringBuilder sb = new StringBuilder();
-        Iterator it = this.users.iterator();
+
+        sb.append("\nCurrent DataBase\n");
+
+        sb.append(this.admins.size() + " Admins.\n");
+        for(Admin admin : this.admins)
+            sb.append(admin.getName() + " - Email: " + admin.getMail()  + " - Power: " + admin.getPermi() + "\n");
 
         sb.append(this.users.size() + " Users.\n");
-
+        Iterator it = this.users.iterator();
         while (it.hasNext()) {
           User u = (User) it.next();
           sb.append(u.getName() + " - " + u.getMail() + "\n");
@@ -132,10 +210,17 @@ public class UserBase {
 
         UserBase aux = (UserBase) ubase;
         boolean result;
+
+        /* Compare number of admins */
+        result = (this.admins.size() == aux.getNumOfAdmins());
+        /* Compare all admins */
+        for (Admin admin : aux.getAdmins())
+            result = result && (this.getAdmin(admin.getId()).equals(admin));
+
         /* Compare number of users */
         result = (this.users.size() == aux.getNumOfUsers());
         /* Compare all users */
-        for (User user : aux.getUsers())
+        for (NormalUser user : aux.getUsers())
             result = result && (this.getUser(user.getId()).equals(user));
         return result;
     }
@@ -151,8 +236,8 @@ public class UserBase {
      * Create a clone of the user and eliminate the password
      * @param id User Id
      */
-    public User getUserInfo (Double id) {
-        User user = this.users.get(id.intValue() - 1);
+    public NormalUser getUserInfo (Double id) {
+        NormalUser user = this.users.get(id.intValue() - 1);
 
         if (user != null) {
             user = user.clone();
@@ -166,11 +251,11 @@ public class UserBase {
      * Create a clone of the user and eliminate the password
      * @param mail User e-mail
      */
-    public User getUserInfo (String mail) {
-        if (!mails.containsKey(mail))
+    public NormalUser getUserInfo (String mail) {
+        if (!userMails.containsKey(mail))
             return null;
-        int id = this.mails.get(mail).intValue();
-        User user = this.users.get(id - 1).clone();
+        int id = this.userMails.get(mail).intValue();
+        NormalUser user = this.users.get(id - 1).clone();
         user.setPass("----");
         return user;
     }
@@ -178,27 +263,79 @@ public class UserBase {
     // Other methods
 
     /**
+     * Add an admin to the data base
+     * @param admin Admin to be added
+     */
+    public void addAdmin (Admin admin) {
+        this.admins.add(admin);
+        this.adminMails.put(admin.getMail(), admin.getId());
+    }
+
+    /**
      * Add a user to the data base
      * @param user User to be added
      */
-    public void addUser (User user) {
+    public void addUser (NormalUser user) {
         this.users.add(user);
-        this.mails.put(user.getMail(), user.getId());
+        this.userMails.put(user.getMail(), user.getId());
+    }
+
+    /**
+     * Remove an admin from the data base
+     * @param mail String to be removed
+     */
+    public void removeAdmin (String mail) throws IllegalArgumentException {
+        if (!this.adminExists(mail)) /* Admin e-mail doesn't exist */
+            throw new IllegalArgumentException("Admin doesn't exist.");
+        this.admins.remove(adminMails.get(mail).intValue() - 1);
+        this.adminMails.remove(mail);
+    }
+
+    /**
+     * Remove an user from the data base
+     * @param mail String to be removed
+     */
+    public void removeUser (String mail) throws IllegalArgumentException {
+        if (!this.userExists(mail)) /* User e-mail doesn't exist */
+            throw new IllegalArgumentException("User doesn't exist.");
+        this.users.remove(userMails.get(mail).intValue() - 1);
+        this.userMails.remove(mail);
+    }
+
+    /**
+     * Check if a given e-mail already has an admin associated
+     * @param mail E-mail to check if it's already in use
+     */
+    public boolean adminExists (String mail) {
+        return (this.adminMails.get(mail) != null);
     }
 
     /**
      * Check if a given e-mail already has a user associated
      * @param mail E-mail to check if it's already in use
      */
-    public boolean exists (String mail) {
-        return (this.mails.get(mail) != null);
+    public boolean userExists (String mail) {
+        return (this.userMails.get(mail) != null);
+    }
+
+    /**
+     * Check if a given Admin is in the UserBase
+     * @param admin Admin to be found in the UserBase
+     */
+    public boolean userExists (Admin admin) {
+        int id = admin.getId().intValue();
+
+        if (id < this.admins.size())
+            return (this.admins.get(id - 1).equals(admin));
+        else
+            return false;
     }
 
     /**
      * Check if a given User is in the UserBase
      * @param user User to be found in the UserBase
      */
-    public boolean exists (User user) {
+    public boolean userExists (NormalUser user) {
         int id = user.getId().intValue();
 
         if (id < this.users.size())
@@ -212,13 +349,13 @@ public class UserBase {
      * @param mail Mail of the user to whom the request will be sent
      */
     public void sendFriendRequest (Double id, String mail) throws IllegalArgumentException {
-        if (!this.exists(mail)) /* User e-mail doesn't exist */
+        if (!this.userExists(mail)) /* User e-mail doesn't exist */
             throw new IllegalArgumentException("User doesn't exist.");
         if (id < 0)             /* Invalid id */
             throw new IllegalArgumentException("id has to be positive.");
 
-        Double user_id = this.mails.get(mail);           /* Get user id */
-        User u = this.users.get(user_id.intValue() - 1); /* Get user */
+        Double user_id = this.userMails.get(mail);           /* Get user id */
+        NormalUser u = this.users.get(user_id.intValue() - 1); /* Get user */
 
         if (u != null)
             try { u.addFriendRequest(id); }
@@ -238,8 +375,8 @@ public class UserBase {
         if (mail == null)
             throw new NullPointerException("mail can't be null.");
 
-        Double user_id = this.mails.get(mail);
-        User u1, u2;
+        Double user_id = this.userMails.get(mail);
+        NormalUser u1, u2;
         u1 = this.users.get(id.intValue() - 1);
         u2 = this.users.get(user_id.intValue() - 1);
 

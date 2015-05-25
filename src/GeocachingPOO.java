@@ -21,8 +21,10 @@ import java.util.TreeSet;
 import java.util.Iterator;
 
 public class GeocachingPOO {
-    private static Double id = 1.0;             // User Id
-    private static User user = null;           // User that is logged in
+    private static Double id = 1.0;            // User ID
+    private static NormalUser user = null;     // User that is logged in
+    private static Double idAdmin = 2.0;     // Admin ID
+    private static Admin admin = null;     // Admin that is logged in
     private static UserBase userbase = null;   // User data base
     private static CacheBase cachebase = null;
     private static Double idcache = 1.0;
@@ -35,14 +37,31 @@ public class GeocachingPOO {
         int option = 0;
         userbase = new UserBase();  // Create new user base
         cachebase = new CacheBase();
+        admin = new Admin ("grupoajm@gmail.com", "Alpha", "AdminAdmin", 1.0, 2);
+        userbase.addAdmin(admin);
+        admin = null;
+
 
         while (running) {
-            if (user == null) { // No user logged in
+            if (user == null && admin == null) { // No user logged in
                 option = mainMenu();
                 switch (option) {
                     case 1: register(); break;
-                    case 2: login(); break;
-                    case 3: running = false; break;
+                    case 2: login(""); break;
+                    case 3: login("admin"); break;
+                    case 4: running = false; break;
+                    default: break;
+                }
+            } else if (admin != null) {
+                option = adminMenu();
+                switch (option) {
+                    case 1: AdminReportsMenu(); break;
+                    case 2: listUsers(); break;
+                    case 3: showAllCaches(); break;
+                    case 4: deleteUser(); break;
+                    case 5: createAdmin(); break;
+                    case 6: deleteAdmin(); break;
+                    case 10: admin = null; break;
                     default: break;
                 }
             } else {    // User logged in
@@ -74,7 +93,25 @@ public class GeocachingPOO {
         clean();
         System.out.println("1: Register");
         System.out.println("2: Login");
-        System.out.println("3: Exit");
+        System.out.println("3: Admin");
+        System.out.println("4: Exit");
+
+        return sc.nextInt();
+    }
+
+    /** Auxiliary function to display admin menu */
+    private static int adminMenu () {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("\nLogged in as ADMIN: " + admin.getName() + " | " + admin.getPermi() + " power level");
+        System.out.println("-------------------------");
+        System.out.println("1: Report Menu");
+        System.out.println("2: List Users and Admins");
+        System.out.println("3: Show Caches");
+        System.out.println("4: Delete user");
+        System.out.println("5: Create new admin");
+        System.out.println("6: Delete admin");
+        System.out.println("10: Log Out");
 
         return sc.nextInt();
     }
@@ -86,6 +123,7 @@ public class GeocachingPOO {
 
         clean();
         System.out.println("Logged in as: " + user.getName() + " | " + user.getPoints() + " points");
+        System.out.println("-------------------------");
         if (requests.size() > 0)  /* There are friend requests */
             System.out.println("Friend Requests: " + requests.size());
         System.out.println("1: Personal Information");
@@ -171,7 +209,7 @@ public class GeocachingPOO {
         String[] bdate_fields;
         String bbdate;
         GregorianCalendar bdate = null;
-        User newuser = new User();
+        NormalUser newuser = new NormalUser();
         int bdate_return;
         MailValidator mv = new MailValidator();
         boolean aux = true, gender;
@@ -189,7 +227,7 @@ public class GeocachingPOO {
             i++;
         } while (!aux);
 
-        if (userbase.exists(mail)) {    // E-maill already in use
+        if (userbase.userExists(mail)) {    // E-mail already in use
             System.out.println("E-mail already in use.");
             return;
         } else newuser.setMail(mail);
@@ -224,7 +262,7 @@ public class GeocachingPOO {
             userbase.addUser(newuser);
             id = id + 1.0;
             newuser = null;
-            System.out.println("User sucessfuly created!");
+            System.out.println("User sucessfully created!");
         }
 
         if (c != null)
@@ -232,7 +270,7 @@ public class GeocachingPOO {
     }
 
     /** Auxiliary login function */
-    private static void login () {
+    private static void login (String type) {
         Scanner sc = new Scanner(System.in);
         String mail, pass;
         int i = 0;
@@ -249,17 +287,20 @@ public class GeocachingPOO {
                 pass = sc.nextLine().replaceAll("[\n\r]","");
             }
 
-            user = userbase.getUser(mail, pass);
+            if (type.equals("admin"))
+                admin = userbase.getAdmin (mail, pass);
+            else
+                user = userbase.getUser(mail, pass);
 
-            if(user == null && i==3){
+            if(user == null && admin == null && i==3){
                 System.out.println("E-mail or password were incorrect.");
                 return;
             }
-            if(user == null ){
+            if(user == null && admin == null){
                 System.out.println("E-mail or password incorrect. Please try again.");
             }
 
-        } while ((user == null) );
+        } while ((user == null && admin == null) );
     }
 
     /* ----------------- INFORMATION MODIFICATION --------------------*/
@@ -512,7 +553,7 @@ public class GeocachingPOO {
     private static void showFriendActivities () {
         ArrayList<Double> friends = user.getFriends();
         Scanner sc = new Scanner(System.in);
-        User friend; String mail; Iterator it;
+        NormalUser friend; String mail; Iterator it;
         ArrayList<Activity> acts;
 
         // Get friend e-mail
@@ -586,7 +627,7 @@ public class GeocachingPOO {
             Report rep = new Report(id, email, message);
 
             cachebase.addReport(rep);
-            System.out.println("Sucessfuly reported cache with id number of" + " " + id);
+            System.out.println("sucessfully reported cache with id number of" + " " + id);
 
         }
     }
@@ -632,7 +673,6 @@ public class GeocachingPOO {
         System.out.println("-------------------------");
         System.out.println("Cache Menu");
         System.out.println("-------------------------");
-
 
         int o = CacheMenuaux();
         while(o!=0){
@@ -758,11 +798,110 @@ public class GeocachingPOO {
         }
     }
 
+
+    /*
+     + Create new Admin
+     */
+    private static void createAdmin () {
+        Scanner sc = new Scanner(System.in);
+        String name, pass, mail = "";
+        Admin newuser = new Admin();
+        boolean aux = false;
+        MailValidator mv = new MailValidator();
+
+        if (admin.getPermi() < 2) {
+            System.out.println("You lack permission! Contact a superior admin.");
+            return;
+        }
+
+        for (int i = 0; !aux && i<3; i++){
+
+            System.out.print("E-mail: ");
+                mail = sc.nextLine().replaceAll("[\n\r]","");
+                aux = mv.validate(mail);
+            if (!aux) {
+                System.out.println("Invalid e-mail! Please try a valid one.");
+            } else if (userbase.adminExists(mail)) {    // E-mail already in use
+                System.out.println("E-mail already in use.");
+                aux = false;
+            } else {
+                newuser.setMail(mail);
+                aux = true;
+            }
+        }
+
+        // Get admin name
+        System.out.print("Name: ");
+        newuser.setName(sc.nextLine().replaceAll("[\n\r]", ""));
+
+        // Get admin password
+        System.out.print("Pass: ");
+        newuser.setPass(sc.nextLine().replaceAll("[\n\r]",""));
+
+        // Get permissions
+        System.out.println("\n<--Permissions-->\n\n0:\nAble to see Reports\nAble to invalidate Caches\n");
+        System.out.println("1:\nAll of 0's abilities\nAble to create events\n");
+        System.out.println("2:\nAll of 1's abilities\nAble to create new admins\n Able to remove admins");
+        newuser.setPermi(sc.nextInt());
+
+        newuser.setId(idAdmin);
+        userbase.addAdmin(newuser);
+        idAdmin = idAdmin + 1.0;
+        newuser = null;
+        System.out.println("Admin sucessfully created!");
+    }
+
+    /*
+     * Delete an admin
+     */
+    private static void deleteAdmin () {
+        if (admin.getPermi() < 2) {
+            System.out.println("You lack permission! Contact a superior admin.");
+            return;
+        }
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println("To delete an Admin type his email: ");
+
+        try {
+            userbase.removeAdmin(sc.nextLine().replaceAll("[\n\r]",""));
+            System.out.println("Sucessfully deleted admin");
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    /*
+     * Delete user
+     */
+    private static void deleteUser () {
+        if (admin.getPermi() < 1) {
+            System.out.println("You lack permission! Contact a superior admin.");
+            return;
+        }
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println("To delete a User type his email: ");
+
+        try {
+            userbase.removeUser(sc.nextLine().replaceAll("[\n\r]",""));
+            System.out.println("Sucessfully delete user");
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private static void listUsers () {
+        System.out.println (userbase.toString());
+    }
+
     /**
      * Auxiliary function: Menu Option for Admin: Show all reported caches to perform menu options shown in the menuAdminReports()
      */
 
-    private static void AdminReportsMenu(){
+    private static void AdminReportsMenu () {
         double n; int u;
         Scanner sc = new Scanner(System.in);
         TreeMap<Double, ArrayList<Report>> reps = cachebase.getAllReports();
@@ -911,7 +1050,8 @@ public class GeocachingPOO {
             idcache++;
 
             /* TODO: Add puzzle cache */
-            System.out.println("Sucessfuly created cache!\n" + cache.toString());
+            System.out.println("Successfully created cache!\n" + cache.toString());
+
             break;
 
             default:
@@ -919,7 +1059,7 @@ public class GeocachingPOO {
         }
         try {
             cachebase.addCache(user.getId(), cache);
-            System.out.println("Sucessfuly created cache" + cache.toString());
+            System.out.println("sucessfully created cache" + cache.toString());
         }
         catch (Exception e) {
             System.out.println(e.getMessage());

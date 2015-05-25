@@ -5,42 +5,24 @@
  * @version 08/05/2015
  */
 
-import java.util.TreeMap;
-import java.util.TreeSet;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class User {
+public abstract class User {
     private String mail;              // User mail
     private String pass;              // User Password
     private String name;              // User name
-    private boolean gender;           // User gender
-    private Address address;          // User Address
-    private GregorianCalendar bdate;  // User birthdate
-    private int points;               // User points
-    private Double id;                   // User Id
-
-    private TreeSet<Activity> activities;       // User Activities
-    private Statistic statistics;               // User statistics
-    private ArrayList<Double> friends;          // User friends
-    private ArrayList<Double> friend_requests;  // Friend Requests
+    private Double id;                // User Id
 
     /**
      * Constructor without arguments
      */
     public User () {
-        this.mail = ""; this.pass = ""; this.name = "";
-        this.gender = true;
-        this.address = new Address("New York","USA");
-        this.bdate = new GregorianCalendar();
-        this.points = 0; this.id = 0.0;
-        this.activities = new TreeSet<Activity>(new CacheDateComparator());
-        this.statistics = new Statistic();
-        this.friends = new ArrayList<Double>();
-        this.friend_requests = new ArrayList<Double>();
+        this.mail = "";
+        this.pass = "";
+        this.name = "";
+        this.id = 0.0;
     }
 
     /**
@@ -49,9 +31,8 @@ public class User {
      * @param pass  User password
      * @param name  User name
      * @param id    User id
-     * @param bdate User birthdate
      */
-    public User (String mail, String pass, String name, Double id, GregorianCalendar bdate) throws NullPointerException, IllegalStateException {
+    public User (String mail, String pass, String name, Double id) throws NullPointerException, IllegalStateException {
         this();
 
         if (mail == null)
@@ -73,14 +54,6 @@ public class User {
         this.name = name;
 
         this.id = id;
-        this.address = new Address();
-        this.bdate = (GregorianCalendar) bdate.clone();
-
-        this.points = 0;
-        this.activities = new TreeSet<Activity>(new CacheDateComparator());
-        this.statistics = new Statistic();
-        this.friends = new ArrayList<Double>();
-        this.friend_requests = new ArrayList<Double>();
     }
 
     /**
@@ -94,11 +67,7 @@ public class User {
             throw new NullPointerException("user can't be null!");
 
         this.mail = user.getMail(); this.pass = user.getPass();
-        this.name = user.getName(); this.address = user.getAddress();
-        this.bdate = user.getBDate(); this.points = user.getPoints();
-        this.activities = user.getActivities();
-        this.statistics = user.getStatistics();
-        this.friends = user.getFriends();
+        this.name = user.getName();
         this.id = user.getId();
     }
 
@@ -126,68 +95,6 @@ public class User {
     }
 
     /**
-     * @return User gender
-     */
-    public boolean getGender () {
-        return this.gender;
-    }
-
-    /**
-     * @return User Address
-     */
-    public Address getAddress () {
-        return this.address.clone();
-    }
-
-    /**
-     * @return User birthdate
-     */
-    public GregorianCalendar getBDate () {
-        return (GregorianCalendar) this.bdate.clone();
-    }
-
-    /**
-     * @return User points
-     */
-    public Integer getPoints () {
-        return this.points;
-    }
-
-    /** @return TreeSet with the user activities */
-    @SuppressWarnings("unchecked")
-    public TreeSet<Activity> getActivities () {
-      TreeSet<Activity> ts = new TreeSet<Activity>(new CacheDateComparator());
-      Iterator it = activities.iterator();
-      Activity aux;
-
-      while (it.hasNext()) {
-        aux = (Activity) it.next();
-        ts.add(aux.clone());
-      }
-      return ts;
-    }
-
-    /** @return ArrayList with the last 10 activities if the user has that many */
-    public ArrayList<Activity> getLastActivities () {
-        ArrayList<Activity> acts = new ArrayList<Activity>(10);
-        Iterator it = this.activities.descendingIterator();
-
-        while (it.hasNext() && (acts.size() != 10)) {
-            Activity act = (Activity) it.next();
-            acts.add(act.clone());
-        }
-
-        return acts;
-    }
-
-    /**
-     * @return User statistics
-     */
-    public Statistic getStatistics () {
-        return this.statistics.clone();
-    }
-
-    /**
      * @return The user Id
      */
     public Double getId () {
@@ -197,7 +104,8 @@ public class User {
     //Setters
 
     /**
-     * Chanches the User name
+     * Changes the User name
+     * @param name String username
      */
     public void setName (String name) throws NullPointerException, IllegalStateException {
         if (name == null)
@@ -205,13 +113,6 @@ public class User {
         if (name.trim() == "")
             throw new IllegalStateException("name can't be empty");
         this.name = name;
-    }
-
-    /**
-     * Change the gender
-     */
-    public void setGender (boolean gender) {
-        this.gender = gender;
     }
 
     /**
@@ -228,24 +129,6 @@ public class User {
     }
 
     /**
-     * Change the adress
-     */
-    public void setAddress (String city, String country) throws NullPointerException, IllegalStateException {
-
-        // Exceptions
-        if (city == null)
-            throw new NullPointerException("city can't be null!");
-        if (city.trim() == "")
-            throw new IllegalStateException("city can't be empty!");
-        if (country == null)
-            throw new NullPointerException("country can't be null!");
-        if (country.trim() == "")
-            throw new IllegalStateException("country can't be empty!");
-
-        this.address = new Address(city, country);
-    }
-
-    /**
      * Change user e-mail
      * @param mail E-mail to be saved
      */
@@ -256,52 +139,6 @@ public class User {
             throw new IllegalStateException("mail can't be empty!");
 
         this.mail = mail;
-    }
-
-    /**
-     * Change the user birthdate
-     * @param date Date formated as 'DD/MM/YY'
-     * @return 0 if valid date, 1 if invalid day, 2 if invalid month, 3 if invalid year
-     */
-    public int setBDate (String date) throws NullPointerException, IllegalStateException {
-        String[] parts;
-        int return_value = 0;
-
-        // Exceptions
-        if (date == null)
-            throw new NullPointerException("date can't be null!");
-        if (date.trim() == "")
-            throw new IllegalStateException("date can't be empty!");
-
-        parts = date.split("/");
-
-        if (parts.length != 3)
-            throw new IllegalStateException("date is in wrong format!");
-
-        int d = Integer.parseInt(parts[0]);
-        int m = Integer.parseInt(parts[1]);
-        int y = Integer.parseInt(parts[2]);
-
-        this.bdate = new GregorianCalendar(y,m,d);
-
-        if (d != this.bdate.get(GregorianCalendar.DAY_OF_MONTH))
-            return_value = 1;
-        else if (m != this.bdate.get(GregorianCalendar.MONTH))
-            return_value = 2;
-        else if  (y != this.bdate.get(GregorianCalendar.YEAR))
-            return_value = 3;
-
-        return return_value;
-    }
-
-    /**
-     * Change the user birthdate
-     * @param date Date formated as GregorianCalendar
-     */
-    public void setBDate(GregorianCalendar date) {
-        //"03/05/1994"
-        GregorianCalendar bbb = (GregorianCalendar) date.clone();
-        this.bdate = bbb;
     }
 
     /**
@@ -328,14 +165,6 @@ public class User {
 
         sb.append("Mail: " + this.mail + "\n");
         sb.append("Name: " + this.name + "\n");
-        if (bdate != null) {
-            day = String.valueOf(bdate.get(GregorianCalendar.DAY_OF_MONTH));
-            month = String.valueOf(bdate.get(GregorianCalendar.MONTH));
-            year = String.valueOf(bdate.get(GregorianCalendar.YEAR));
-            sb.append("Birthdate: " + day + "/" + month + "/" + year + "\n");
-        }
-        sb.append("Gender: " + (this.gender ? "F" + "\n" : "M" + "\n"));
-        sb.append("Address: " + this.address.toString());
         sb.append("User id: " + this.id.intValue() + "\n");
 
         return sb.toString();
@@ -356,23 +185,14 @@ public class User {
         User aux = (User) user;
         boolean comp = this.mail.equals(aux.getMail());
         comp = comp && (this.pass.equals(aux.getPass()));
-        comp = comp && (this.name.equals(aux.getName()));
-        comp = comp && (this.gender == (aux.getGender()));
-        comp = comp && (this.address.equals(aux.getAddress()));
-        comp = comp && (this.bdate.equals(aux.getBDate()));
-        comp = comp && (this.points == aux.getPoints());
-        comp = comp && (this.activities.equals(aux.getActivities()));
-        comp = comp && (this.statistics.equals(aux.getStatistics()));
-        comp = comp && (this.friends.equals(aux.getFriends()));
         return comp;
     }
 
     /**
-     * Create a clone of this object
+     *  Create a clone of User, to be overridden.
      */
-    public User clone () {
-        return new User(this);
-    }
+    public abstract User clone();
+
 
     // Other methods
 
@@ -411,76 +231,8 @@ public class User {
                 sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
 
             return sb.toString();
-        } catch (NoSuchAlgorithmException e){   // Unable to ecnrypt password
+        } catch (NoSuchAlgorithmException e){   // Unable to encrypt password
             return pass;
         }
     }
-
-    /* -------------------------------- FRIENDS -----------------------------*/
-
-    /** Add a User id to the friends request
-     * @param id The user id
-     */
-    public void addFriendRequest (Double id) throws IllegalArgumentException {
-      if (id < 0)
-        throw new IllegalArgumentException("id has to be positive!");
-
-      this.friend_requests.add(id);
-    }
-
-    /** Remove User id from the friends request
-     * @param id Id to be removed
-     */
-    public void removeFriendRequest (Double id) throws IllegalArgumentException {
-        if (id < 0) /* Invalid id */
-            throw new IllegalArgumentException("id has to be positive.");
-
-        this.friend_requests.remove(id);
-    }
-
-    /**
-     * Add a user as a friend
-     * @param id User to be added id
-     */
-    public void addFriend (Double id) throws IllegalArgumentException {
-        if (id < 0) /* Invalid id */
-            throw new IllegalArgumentException("id has to be positive.");
-
-        this.friends.add(id);
-    }
-
-    /**
-     * @return User friends list
-     */
-    @SuppressWarnings("unchecked")
-    public ArrayList<Double> getFriends () {
-        return (ArrayList<Double>) this.friends.clone();
-    }
-
-    /** @return Friend Requests list */
-    @SuppressWarnings("unchecked")
-    public ArrayList<Double> getFriendRequests () {
-        return (ArrayList<Double>) this.friend_requests.clone();
-    }
-
-    /* ---------------------------- ACTIVITIES --------------------------- */
-
-    /** Add an Activity to the activities TreeSet and update the Statistics for the
-     * activity year and month
-     * TODO: Update Statistics when inserting
-     * @param act Activity to be added
-     */
-    public void addActivity (Activity act) throws NullPointerException {
-      Activity aux = null;
-
-      if (act == null)
-        throw new NullPointerException("act can't be null!");
-
-      this.activities.add(act);
-      this.points += act.getPoints();
-
-      this.statistics.addAct(act);
-    }
-
-    //TODO  ADICIONAR ESTATISTICA ACTIVIDADE AO ANO TAMBÉM
 }
