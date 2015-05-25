@@ -242,14 +242,16 @@ public class Statistic
     /**
      * Removes a Cache given the id
      */
-    public void removeCache(double id){
+    public boolean removeCache(double id){
         int i;
         for(i=0;i<12;i++){
             for(Activity a : this.stats.get(i)){
                 if(a.getCache().getId() == id) 
                 this.stats.get(i).remove(id);
+                return true;
             }
         }
+        return false;
     }
     
     /**

@@ -135,37 +135,42 @@ public class StatisticYear
            }
         return novo;
         }
-
+        
     /**
-     * Get a Set of Activities that has a given type of Cache.
-     * 
+     * Returns in an auxiliary array.
+     * New version
+     */    
+    public int[] getNCachesArray(){
+        int[] caches = new int[4];
+        int micro=0, multi=0, trad=0, mystery=0, virtual = 0, event = 0;
+        
+        for(Statistic stats : this.statsyear.values()){
+            int[] cachesaux = stats.getNumberCaches();
+            micro += cachesaux[0]; multi +=cachesaux[1]; 
+            trad+= cachesaux[2]; mystery += cachesaux[3];
+            
+        }
+        caches[0] = micro;
+        caches[1] = multi;
+        caches[2] = trad;
+        caches[3] = mystery;
+        return caches;
+    }
+    
+    /**
      * @param String with information of how many caches of different type user has.
      */
     public String getinfoNumberCachesY(){
+        int[] caches = getNCachesArray();
         StringBuilder sb = new StringBuilder();
-        int micro=0, multi=0, trad=0, mystery=0, virtual = 0, event = 0,i;
         
-        for(Statistic stats : this.statsyear.values()){
-            int[] caches = stats.getNumberCaches();
-        }
-        
-        for(i=0;i<12;i++){
-            for(Activity a : this.stats.get(i)){
-                if (a.getCache() instanceof MicroCache) micro++;
-                if(a.getCache() instanceof MultiCache) multi++;
-                if(a.getCache() instanceof TraditionalCache) trad++;
-                if(a.getCache() instanceof MysteryCache) mystery++;
-                //if(a.getCache() instanceof Virtual) virtual++;
-                //if(a.getCache() instanceof Event) event++;
-            }
-        }
-        sb.append("Micro :"); sb.append(Integer.toString(micro) + ".");
+        sb.append("Micro :"); sb.append(Integer.toString(caches[0]) + ".");
         sb.append("\n");
-        sb.append("Multi :"); sb.append(Integer.toString(multi)+ ".");
+        sb.append("Multi :"); sb.append(Integer.toString(caches[1])+ ".");
         sb.append("\n");
-        sb.append("Tradicional :"); sb.append(Integer.toString(trad)+ ".");
+        sb.append("Tradicional :"); sb.append(Integer.toString(caches[2])+ ".");
         sb.append("\n");
-        sb.append("Mystery :"); sb.append(Integer.toString(mystery)+ ".");
+        sb.append("Mystery :"); sb.append(Integer.toString(caches[3])+ ".");
         sb.append("\n");
         System.out.println(sb.toString());
         return sb.toString();
@@ -174,6 +179,8 @@ public class StatisticYear
    /**
     * Returns the current month.
     * @return current month.
+    * 
+    * TEM NA STATISTIC.. NAO VEJO QUAL UTILIDADE DE TER AQUI 
     */
   /* public int getCMonthY(){
     GregorianCalendar gc = new GregorianCalendar();
@@ -186,6 +193,9 @@ public class StatisticYear
      * 
      * @return String with information. 
      * (Just for testing times).
+     * 
+     * TA NO STATISTIC MAS NEM NO STATISTIC É PRECISO PORQUE ISTO
+     * TA NO USER CERTO?
      */
   /*  public String get10LastAYear(){
         int number = 0; boolean acabou = false;
@@ -222,88 +232,93 @@ public class StatisticYear
     /**
      * Find a cache with a given id
      */
-/*    public Cache getCacheidYear(double id){
-        int i;
-        for(i=0;i<12;i++){
-            for(Activity a : this.stats.get(i)){
-                if(a.getCache().getId() == id) 
-                return a.getCache();
-            }
+    public Cache getCacheidYear(double id){
+        Cache x = null;
+        for(Statistic stats : this.statsyear.values()){
+            x = stats.getCacheid(id);
+            if(x != null) return x;
         }
-        return null;
+        return x;
     }
-*/
+
     /**
      * Removes a Cache given the id
      */
- /*   public void removeCacheY(double id){
-        int i;
-        for(i=0;i<12;i++){
-            for(Activity a : this.stats.get(i)){
-                if(a.getCache().getId() == id) 
-                this.stats.get(i).remove(id);
+    public boolean removeCacheY(double id){
+      boolean removeu = false;
+      for(Statistic stats : this.statsyear.values()){
+           removeu = stats.removeCache(id);
+           if(removeu){
+               statsyear.put(stats.getYearStatsMonth(), stats);
+               //Se removeu atualiza o map com ela removida.
+               //Ou seja, mapeia o Statistic que tem a cache removida.
+               //Nestas estatisticas, chamar Cache ou Atividade assumimos que diz respeito à mesma coisa.
+               return true;
             }
-        }
+      }
+      return removeu;
     }
-  */  
+   
     /**
      * Method that sums all points.
      * @return points : Total of points of this User's Statistic.
      */
- /*   public int getSumPointsY(){
-        int i,r=0;
-        for(i=0;i<12;i++){
-            r+=getSumPointsM(i+1);
+    public int getSumPointsY(){
+       int r=0;
+       for(Statistic stats : this.statsyear.values()){
+           r+=stats.getSumPoints();
         }
         return r;
     }
-  */  
+    
     /**
      * Method that sums all points of a given year.
-     * @return int Sum of points.
+     * @return int year Sum of points.
      */
-  /*  public int getSumPointsY(int month){
+    public int getSumPointsY(int year){
         int sum=0;
-        
-    }
-  */  
-    //Começar a tratar tudo , nao mudei assinaturas a partir daqui agora
-    /**
-     * Method that sums all kilometers of a given year.
-     * @return double Total kms of a month.
-     */
-  /*  public double getSumkmsM(int month){
-        double sum=0;
-        for(Activity a : this.stats.get(month-1)){
-            sum+=a.getKms();
-        }
+        Statistic stats = this.statsyear.get(year);
+        sum+=stats.getSumPoints();
         return sum;
     }
-  */  
+    
+    /**
+     * Method that sums all kilometers of a given year.
+     * @return double Total kms of a year.
+     */
+     public double getSumkmsY(int year){
+        double sum=0;
+        
+        Statistic stats = this.statsyear.get(year);
+        sum+=stats.getSumKms();
+        
+        return sum;
+    }
+  
     /**
      * Method that sums all kms.
      * @return int kms : Total of kms of this User's Statistic.
      */
- /*   public double getSumKms(){
-        int i; double r=0;
-        for(i=0;i<12;i++){
-            r+=getSumkmsM(i+1);
+    public double getSumKms(){
+        double r=0;
+       for(Statistic stats : this.statsyear.values()){
+           r+=stats.getSumKms();
         }
         return r;
     }
-   */ 
+
     /**
      * Method that sums all Caches.
      * @return int Total of caches of this User's Statistic.
      */
-  /*  public int getSumTotalCaches(){
+    /*public int getSumTotalCaches(){
         int i,r=0;
         for(i=0;i<12;i++){
             r+=getSumAM(i+1);
         }
         return r;
     }
-  */  
+    */
     /**
      * Method that sums all activities / caches of a given month.
      */

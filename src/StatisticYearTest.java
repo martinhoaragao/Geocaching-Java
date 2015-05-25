@@ -88,11 +88,11 @@ public class StatisticYearTest
         assertNotNull(statisti1.getStatsyear());
     }
 
-    @Test
+    /*@Test
     public void test4()
     {
-        user1.addActivity(activity1);
-        user1.addActivity(activity2);
+        //user1.addActivity(activity1);
+        //user1.addActivity(activity2);
         user1.getPoints();
         assertNull(user1.getStatistics());
         activity1.setDate(3, 4, 2000);
@@ -102,8 +102,20 @@ public class StatisticYearTest
         assertNotNull(user1.getActivities());
         activity1.getMonth();
         assertEquals(2000, activity1.getYear());
+    }*/
+
+    @Test
+    public void test4()
+    {
+        activity1.setDate(3, 8, 2010);
+        activity2.setDate(4, 7, 2015);
+        StatisticYear statisti1 = new StatisticYear();
+        assertEquals(true, statisti1.addActY(activity1));
+        assertEquals(true, statisti1.addActY(activity2));
+        assertNotNull(statisti1.getinfoNumberCachesY());
     }
 }
+
 
 
 

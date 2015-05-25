@@ -61,7 +61,7 @@ public class StatsTest
         assertEquals(2, statisti1.getSumAM(8));
         assertEquals(0, statisti1.getSumAM(10));
         statisti1.getTreeSet(9);
-        assertNotNull(statisti1.getinfoNumberCaches());
+        assertNotNull(statisti1.getinfoNCaches());
     }
 
     
@@ -93,9 +93,9 @@ public class StatsTest
         assertEquals(4, statisti1.getSumTotalCaches());
         //assertEquals(15, statisti1.getSumPoints());
         assertEquals(480, statisti1.getSumKms(), 0.1);
-        statisti1.getinfoNumberCaches();
+        statisti1.getinfoNCaches();
         statisti1.toString();
-        statisti1.getinfoNumberCaches();
+        statisti1.getinfoNCaches();
         statisti1.getTreeSet(9);
         assertEquals(180, statisti1.getSumkmsM(6), 0.1);
         assertEquals(0, statisti1.getSumkmsM(7), 0.1);

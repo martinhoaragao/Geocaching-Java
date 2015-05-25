@@ -39,4 +39,10 @@ public class StatisticTest
     public void tearDown()
     {
     }
+
+    @Test
+    public void testegetingonumberCaches()
+    {
+    }
 }
+
