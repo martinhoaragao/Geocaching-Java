@@ -36,7 +36,7 @@ public class Main {
         userMenu();
 
         switch (sc.nextInt()) {
-          case 1:   printUserInfo(); break;
+          case 1:   infoMenu(); break;
           case 10:  logged = false; break;
           default: break;
         }
@@ -69,6 +69,33 @@ public class Main {
     System.out.println("8: Show My Caches");
     System.out.println("9: Add Activity");
     System.out.println("10: Log Out");
+  }
+
+  /** Auxiliary function to display and control the Information Menu */
+  private static void infoMenu () {
+    Scanner sc = new Scanner(System.in);
+    boolean done = false;
+
+    while (!done) {
+      clean();
+      System.out.println(gc.getUserInfo());
+      System.out.println("1: Change Password");
+      System.out.println("2: Change Name");
+      System.out.println("3: Change Address");
+      System.out.println("4: Change Birthdate");
+      System.out.println("5: Change Gender");
+      System.out.println("6: Return menu");
+
+      switch (sc.nextInt()) {
+        case 1: changePassword(); break;
+        case 2: changeName();     break;
+        case 3: changeAddress();  break;
+        case 4: changeBDate();    break;
+        case 5: changeGender();   break;
+        case 6: done = true;      break;
+        default: break;
+      }
+    }
   }
 
   /** Auxiliary function to display Admin Menu */
@@ -186,16 +213,118 @@ public class Main {
     }
   }
 
-  /* ---------------- SEPARATOR --------------------------------*/
+  /* --------------------------- USER INFOS ------------------------*/
 
-  /** Auxiliary function to display user information */
-  private static void printUserInfo () {
-    String info = gc.getUserInfo();
+  /** Auxiliary function to change user password */
+  private static void changePassword() {
+    String currentpass = null, newpass = null;
+    Scanner sc = new Scanner(System.in);
+    int tries = 0;
 
     clean();
-    System.out.println(info);
+    /* Give User 3 tries to input the current password */
+    do {
+      if (tries == 2) {
+        System.out.println(" Passwords don't match! ");
+      } else {
+        /* Get User current password */
+        if (console != null)
+          currentpass = new String(console.readPassword("Current Password: "));
+        else {
+          System.out.print("Current Password: ");
+          currentpass = sc.nextLine().replaceAll("[\n\r]","");
+        }
+      }
+      tries ++;
+    } while ((tries < 3) && !gc.confirmPass(currentpass));
+
+    /* Change user password */
+    if (tries != 3) {
+      if (console != null)
+        newpass = new String(console.readPassword("New Password: "));
+      else {
+        System.out.print("New Password: ");
+        newpass = sc.nextLine().replaceAll("[\n\r]","");
+      }
+
+      try {
+        gc.changePassword(currentpass, newpass);
+        System.out.println("Sucessfuly changed password!");
+      } catch (Exception e) {
+        System.out.println("Error! Unable to change password!");
+      }
+      if (console != null) console.readLine();
+    }
+  }
+
+  /** Auxiliary function to change User name */
+  private static void changeName () {
+    Scanner sc = new Scanner(System.in);
+
+    clean();
+    System.out.print("New Name: ");
+    try {
+      gc.changeName(sc.nextLine().replaceAll("[\n\r]", ""));
+      System.out.println("Name changed sucessfully!");
+    } catch (Exception e) {
+      System.out.println("Unable to change name: " + e.getMessage());
+    }
     if (console != null) console.readLine();
   }
+
+  /** Auxiliary function to change User Address */
+  private static void changeAddress () {
+    Scanner sc = new Scanner(System.in);
+    Address add;
+    String city, country;
+
+    clean();
+    System.out.print("City: ");
+    city = sc.nextLine().replaceAll("[\n\r]", "");
+    System.out.print("Country: ");
+    country = sc.nextLine().replaceAll("[\n\r]", "");
+    add = new Address(city, country);
+
+    try {
+      gc.changeAddress(add);
+      System.out.println("Sucessfuly changed Address.");
+    } catch (Exception e) {
+      System.out.println("Error! Unable to change Address!");
+    }
+    if (console != null) console.readLine();
+  }
+
+  /** Auxiliary function to change User birthdate */
+  private static void changeBDate () {
+    clean();
+    GregorianCalendar bb = typebdate();
+    try {
+      gc.changeBDate(bb);
+      System.out.println("Successfully changed birthdate.");
+    }
+    catch (Exception e) {
+      System.out.println("Unable to change birthdate: " + e.getMessage());
+    }
+  }
+
+  /** Auxiliary function to change User gender */
+  private static void changeGender () {
+    Scanner sc = new Scanner(System.in);
+    boolean gender;
+
+    clean();
+    System.out.print("Gender (F: Female | M: Male): ");
+    gender = sc.nextLine().replaceAll("[\n\r]","").equals("F");
+    try {
+      gc.changeGender(gender);
+      System.out.println("Successfully change gender.");
+    } catch (Exception e) {
+      System.out.println("Unable to change gender: " + e.getMessage());
+    }
+    if (console != null) console.readLine();
+  }
+
+  /* ---------------- SEPARATOR --------------------------------*/
 
   /**
    * Auxiliary function to create GregorianCalendar bdate to constructor user
@@ -222,7 +351,7 @@ public class Main {
       else if(m <= 0 || m >12) System.out.println("Month invalid!");
       else if(y <=0 || y > yy) System.out.println("Year invalid!");
       else if( (y%4 != 0 && m == 2 && d>28) || (m == 4 && d > 30) || (m == 6 && d > 30) || (m == 9 && d > 30) || (m == 11 && d > 30)   )
-      System.out.println("Date invalid!");
+        System.out.println("Date invalid!");
 
       else {
         aux = false;

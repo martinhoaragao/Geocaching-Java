@@ -140,9 +140,8 @@ public class NormalUser extends User {
     //Setters
 
 
-    /**
-     * Change the gender
-     */
+    /** Change User gender
+     *  @param true for female, false for male */
     public void setGender (boolean gender) {
         this.gender = gender;
     }
@@ -163,6 +162,14 @@ public class NormalUser extends User {
             throw new IllegalStateException("country can't be empty!");
 
         this.address = new Address(city, country);
+    }
+
+    /** Change user Address
+     *  @param address The new Address */
+    public void setAddress (Address address) throws NullPointerException {
+        if (address == null)
+            throw new NullPointerException("address can't be null.");
+        else this.address = address;
     }
 
 
@@ -206,8 +213,9 @@ public class NormalUser extends User {
      * Change the user birthdate
      * @param date Date formated as GregorianCalendar
      */
-    public void setBDate(GregorianCalendar date) {
-        //"03/05/1994"
+    public void setBDate(GregorianCalendar date) throws NullPointerException {
+        if (date == null)
+          throw new NullPointerException("date can't be null.");
         GregorianCalendar bbb = (GregorianCalendar) date.clone();
         this.bdate = bbb;
     }

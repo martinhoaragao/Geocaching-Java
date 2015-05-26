@@ -105,12 +105,6 @@ public class GeocachingPOO {
     private static void personalInfo(){
         int escolha = subpersonalInfo();
         switch (escolha) {
-            case 1: changePassword(); break;
-            case 2: changeName(); break;
-            case 3: changeAddress(); break;
-            case 4: changeBDate(); break;
-            case 5: changeGender(); break;
-            case 6: printInfo(); break;
 
             default: break;
         }
@@ -178,116 +172,55 @@ public class GeocachingPOO {
         else return user.toString();
     }
 
+    /** Compare given password with the password of the current
+     *  logged in user
+     *  @param pass Password to be compared
+     *  @return true if the password matches, false otherwise */
+    public boolean confirmPass (String pass) {
+        return user.confirmPass(pass);
+    }
+
+    /** Change logged in User Password
+     *  @arg currentpass    The Current Password
+     *  @arg newpass        New password
+     */
+    public void changePassword (String currentpass, String newpass) throws IllegalArgumentException, NullPointerException {
+        if ((currentpass == null) || (newpass == null))
+            throw new NullPointerException("Arguments can't be null!");
+
+        if (this.confirmPass(currentpass))
+            user.setPass(newpass);
+        else
+            throw new IllegalArgumentException("Current Password is wrong.");
+    }
+
+    /** Change logged in User Name
+     *  @param name New name for the user */
+    public static void changeName (String name) throws NullPointerException, IllegalStateException {
+        user.setName(name);
+    }
+
+    /** Change logged in User Adrress
+     *  @param address The new Address */
+    public static void changeAddress (Address address) throws NullPointerException {
+        user.setAddress(address);
+    }
+
+    /** Change logged in User Birthdate
+     *  @param bdate GregorianCalendar Object with the new bdate */
+    public static void changeBDate (GregorianCalendar bdate) {
+        user.setBDate(bdate);
+    }
+
+    /** Change logged in User gender
+     *  @param gender true for female, false for male */
+    public static void changeGender (boolean gender) {
+        user.setGender(gender);
+    }
+
     /** Auxiliary function to print user information */
     private static void printInfo () {
         System.out.println(user.toString());
-    }
-
-    /** Auxiliary function to change user password */
-    private static void changePassword() {
-        String currentpass, newpass;
-        Scanner sc = new Scanner(System.in);
-        int i = 0; //3 trys to change password each time
-
-
-        // Give user 3 tries to insert current password
-        do {
-            if (i == 2){
-                System.out.println(" Passwords don't match! ");
-                return;
-            }
-
-            if (c != null)
-                currentpass = new String(c.readPassword("Current Password: "));
-            else {
-                System.out.print("Current Password: ");
-                currentpass = sc.nextLine().replaceAll("[\n\r]","");
-            }
-            i++ ;
-        } while(i<3 && !user.confirmPass(currentpass));
-
-        //If User sucessfully types current password, he may change it
-        if (user.confirmPass(currentpass)) {
-            if (c != null)
-                newpass = new String(c.readPassword("New Password: "));
-            else {
-                System.out.print("New Password: ");
-                newpass = sc.nextLine().replaceAll("[\n\r]","");
-            }
-
-            try {
-                userbase.getUser(user.getMail(),currentpass).setPass(newpass);
-                System.out.println("Sucessfuly changed password!");
-            } catch (Exception e) {
-                System.out.println("Error! Unable to change password!");
-            }
-            if (c != null)
-                c.readLine();
-            personalInfo();
-        }
-    }
-
-    /** Auxiliary function to change User name */
-    private static void changeName () {
-        Scanner sc = new Scanner(System.in);
-
-        System.out.print("Name: ");
-        try {
-            user.setName(sc.nextLine().replaceAll("[\n\r]", ""));
-            System.out.println("Name changed sucessfully!");
-        } catch (Exception e) {
-            System.out.println("Error! Unable to change name!");
-        }
-        if (c != null)
-            c.readLine();
-        personalInfo();
-    }
-
-    /** Auxiliary function to change User Address */
-    private static void changeAddress () {
-        Scanner sc = new Scanner(System.in);
-        String city, country;
-
-        System.out.print("City: ");
-        city = sc.nextLine().replaceAll("[\n\r]", "");
-        System.out.print("Country: ");
-        country = sc.nextLine().replaceAll("[\n\r]", "");
-
-        try {
-            user.setAddress(city, country);
-            System.out.println("Sucessfuly changed Address.");
-        }
-        catch (Exception e) {
-            System.out.println("Error! Unable to change Address!");
-        }
-        if (c != null) c.readLine();
-        personalInfo();
-    }
-
-    /** Auxiliary function to change User birthdate */
-    private static void changeBDate () {
-        GregorianCalendar bb = typebdate();
-        if (bb != null) {
-            user.setBDate(bb);
-            System.out.println("Sucessfuly changed birthdate!");
-        }
-
-        if (c != null) c.readLine();
-        personalInfo();
-    }
-
-    /** Auxiliary function to change User gender */
-    private static void changeGender () {
-        Scanner sc = new Scanner(System.in);
-
-        System.out.print("Gender (g for girl/b for boy): ");
-        if (sc.nextLine().replaceAll("[\n\r]", "").equals("g"))
-            user.setGender(true);
-        else user.setGender(false);
-        System.out.println("Sucessfuly changed gender.");
-
-        if (c != null) c.readLine();
-        personalInfo();
     }
 
     /**
