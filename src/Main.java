@@ -7,6 +7,7 @@
 
 import java.util.Scanner;
 import java.util.GregorianCalendar;
+import java.util.ArrayList;
 import java.io.Console;
 
 public class Main {
@@ -36,8 +37,10 @@ public class Main {
         userMenu();
 
         switch (sc.nextInt()) {
-          case 1:   infoMenu(); break;
-          case 10:  logged = false; break;
+          case 1: infoMenu();           break;
+          case 2: createCache();        break;
+          case 4: displayUserCaches();  break;
+          case 10:  logged = false;     break;
           default: break;
         }
       }
@@ -324,7 +327,56 @@ public class Main {
     if (console != null) console.readLine();
   }
 
-  /* ---------------- SEPARATOR --------------------------------*/
+  /* ----------------------- CACHES ----------------------------*/
+
+  /** Auxiliary function to create a new Cache */
+  private static void createCache () {
+    Scanner sc = new Scanner(System.in);
+    Double id, lat, lon;
+    Coordinates coords = null;
+    int type;
+
+    clean();
+    System.out.println("What type of cache do you want to create? (0 to cancel)");
+    System.out.println("1: Tradicional");
+    System.out.println("2: Multicache");
+    System.out.println("3: Microcache");
+    System.out.println("4: Mysterycache");
+
+    if ((type = sc.nextInt()) == 0) {
+      System.out.println("Canceling...");
+    } else {
+      System.out.print("Latitude: ");
+      lat = sc.nextDouble();
+      System.out.print("Longitude: ");
+      lon = sc.nextDouble();
+      coords = new Coordinates(lat, lon);
+    }
+
+    try {
+      gc.createCache(type, coords);
+      System.out.println("sucessfully created cache!");
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+    }
+    if (console != null) console.readLine();
+  }
+
+  /** Auxiliary function to display user created caches */
+  private static void displayUserCaches() {
+    ArrayList<Cache> caches = gc.getUserCaches();
+
+    clean();
+    if (caches != null)
+      for (Cache c : caches)
+        System.out.println(c.toString());
+    else
+      System.out.println("You have not created any caches yet.");
+
+    if (console != null) console.readLine();
+  }
+
+/* ---------------- SEPARATOR --------------------------------*/
 
   /**
    * Auxiliary function to create GregorianCalendar bdate to constructor user

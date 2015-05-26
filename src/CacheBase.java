@@ -98,13 +98,15 @@ public class CacheBase {
      * @param id Id of the user creating the cache
      * @param cache Cache to be added
      */
-    public void addCache (Double id, Cache cache) throws IllegalStateException {
+    public void addCache (Double id, Cache cache) throws IllegalStateException, NullPointerException {
         ArrayList<Double> list;
         Coordinates cache_coords = cache.getCoords();
 
         /* Make sure there is no cache in the argument cache location */
         if ( this.coords.get(cache_coords) != null)
             throw new IllegalStateException("There is already a cache in that location.");
+        if (cache == null)
+          throw new NullPointerException("cache can't be null.");
 
         if ( (list = owners.get(id)) == null ) {
             /* First cache created by the user */

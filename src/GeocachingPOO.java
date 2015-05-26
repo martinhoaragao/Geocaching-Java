@@ -788,69 +788,27 @@ public class GeocachingPOO {
         return sc.nextInt();
     }
 
-    /**
-     *   Auxiliary function for menu option 2. Create Cache.
-     *
-     *
-     */
-    private static void createCacheUser () {
-        Scanner sc = new Scanner(System.in);
-        Double id;
+    /** Create a new cache associated to the currently logged in User
+     *  @param type Cache type. 1: Traditional, 2: MultiCache, 3: MicroCache, 4: MysteryCache
+     *  @param coord The cache coordinates */
+    public static void createCache (int type, Coordinates coord) throws IllegalStateException, NullPointerException, IllegalArgumentException {
+        Cache cache;
 
-        System.out.println("What type of cache do you want to create? (0 to cancel)");
-        System.out.println("1: Tradicional");
-        System.out.println("2: Multicache");
-        System.out.println("3: Microcache");
-        System.out.println("4: Mysterycache");
-        int type = sc.nextInt();
-
-        if (type==0) {
-            System.out.println("Canceling...");
-            return;
-        }
-        System.out.println("Type the latitude of the cache.");
-        double lat = sc.nextDouble();
-        System.out.println("Type the longitude of the cache.");
-        double lon = sc.nextDouble();
-        Coordinates coordinates = new Coordinates(lat, lon);
-        //idcache variable.
-
-        switch(type){
-            case 1:
-            cache = new TraditionalCache(idcache, coordinates, user.getMail());
-            idcache++;
-            break;
-
-            case 2:
-            cache = new MultiCache(idcache, coordinates, user.getMail());
-            idcache++;
-            break;
-
-            case 3:
-            cache = new MicroCache(idcache, coordinates, user.getMail());
-            idcache++;
-            break;
-
-            case 4:
-            cache = new MysteryCache(idcache, coordinates, user.getMail());
-            idcache++;
-
-            /* TODO: Add puzzle cache */
-            System.out.println("Successfully created cache!\n" + cache.toString());
-
-            break;
-
+        switch (type) {
+            case 1: cache = new TraditionalCache(idcache, coord, user.getMail());   break;
+            case 2: cache = new MultiCache(idcache, coord, user.getMail());         break;
+            case 3: cache = new MicroCache(idcache, coord, user.getMail());         break;
+            case 4: cache = new MysteryCache(idcache, coord, user.getMail());       break;
             default:
-            break;
+                throw new IllegalArgumentException("type must be between 1 and 4.");
         }
+
         try {
             cachebase.addCache(user.getId(), cache);
-            System.out.println("sucessfully created cache" + cache.toString());
+            idcache++;
+        } catch (Exception e) {
+            throw e;
         }
-        catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        if (c != null) c.readLine();
     }
 
     /** Menu option 4. See Caches */
@@ -864,16 +822,11 @@ public class GeocachingPOO {
     }
 
     /** Auxiliary function to show the logged in user caches */
-    private static void showUserCaches () {
+    public ArrayList<Cache> getUserCaches () {
         ArrayList<Cache> caches = cachebase.getCaches(user.getId());
 
-        if (caches != null) {
-            for (Cache c : caches)
-                System.out.println(c.toString());
-        }
-        else System.out.println("You have not created any Cache!");
-
-        if (c != null) c.readLine();
+        if (caches != null) return caches;
+        else return null;
     }
 
     /* ----------------------- STATISTICS -----------------*/
