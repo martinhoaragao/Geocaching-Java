@@ -46,6 +46,11 @@ public class GeocachingPOO {
         this.cache = null;
     }
 
+    /** Logout the User from the application */
+    public void logout () {
+        this.user = null;
+    }
+
     /*//Random main method/function to complete.
     public static void main(String[] args) {
         boolean running = true;     // Set the program as running
@@ -123,21 +128,6 @@ public class GeocachingPOO {
         System.out.println("6: Return menu");
 
         return sc.nextInt();
-    }
-
-    private static void friendsMenu(){
-        boolean running = true;
-        int escolha = 5;
-
-        while (running) {
-            switch (escolha) {
-                case 1: sendFriendRequest(); break;
-                case 2: showRequests(); break;
-                case 3: acceptFriendRequest(); break;
-                case 4: showFriends(); break;
-                case 5: running = false; break;
-            }
-        }
     }
 
     /* ------------------- REGISTER & LOGIN --------------------- */
@@ -261,75 +251,51 @@ public class GeocachingPOO {
     }
 
     /* -------------------- FRIENDS -------------------- */
-    /** Auxiliary function to send a friend request */
-    private static void sendFriendRequest () {
-        Scanner sc = new Scanner(System.in);
-        User u;
-
-        /* Get user e-mail */
-        System.out.print("Friend e-mail: ");
-        String mail = sc.nextLine().replaceAll("[\n\r]", "");
-
-        try {
-            userbase.sendFriendRequest(user.getId(), mail);
-            System.out.println("Friend Request Sent!");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        if (c != null) c.readLine();
+    /** Send a friend request to a given user
+     *  @param mail User mail to send the request */
+    public void sendFriendRequest (String mail) {
+        userbase.sendFriendRequest(user.getId(), mail);
     }
 
     /** Auxiliary function to show friend requests */
-    private static void showRequests () {
+    public String getFriendRequests () {
         ArrayList<Double> requests = user.getFriendRequests();
-        User u;
+        StringBuilder sb = new StringBuilder();
 
         if (requests.size() == 0)
-            System.out.println("There are no friend requests.");
+            return null;
         else {
             /* Iterate over friend requests */
             for (Double id : requests) {
-                u = userbase.getUserInfo(id);
-                System.out.println(u.getName() + " - " + u.getMail());
+                User u = userbase.getUserInfo(id);
+                sb.append(u.getName() + " - " + u.getMail());
             }
+            return sb.toString();
         }
-        if (c != null) c.readLine();
     }
 
     /** Auxiliary function to show friends */
-    private static void showFriends () {
+    public String getFriends () {
         User u;
-
         ArrayList<Double> friends = user.getFriends();
+        StringBuilder sb = new StringBuilder();
 
-        if (friends.size() > 0 ) {  /* User has friends */
-            System.out.println("Friends list:");
-
+        if (friends.size() == 0)
+            sb.append("You have no friends yet.");
+        else {
             for (Double id : friends) {
                 u = userbase.getUserInfo(id);
                 if (u != null)
-                    System.out.println(u.getName() + " - " + u.getMail());
+                    sb.append(u.getName() + " - " + u.getMail());
             }
         }
-        else System.out.println("You have not added friends yet.");
-        if (c != null) c.readLine();
+        return sb.toString();
     }
 
-    /** Auxiliary function to accept friend requests */
-    private static void acceptFriendRequest () {
-        Scanner sc = new Scanner(System.in);
-        String mail;
-
-        /* Check if there are requests */
-        if (user.getFriendRequests().size() == 0) {
-            System.out.println("You have no friend requests.");
-        } else {    /* Get e-mail to be accepted */
-            System.out.print("Friend e-mail: ");
-            mail = sc.nextLine().replaceAll("[\n\r]", "");
-            userbase.acceptFriendRequest(user.getId(), mail);
-            System.out.println("Friend request accepted!");
-        }
-        if (c != null) c.readLine();
+    /** Accept friend request
+     *  @param mail User that sent the request */
+    public static void acceptFriendRequest (String mail) throws NullPointerException, IllegalArgumentException {
+        userbase.acceptFriendRequest(user.getId(), mail);
     }
 
     /* ------------------- ACTIVITIES -------------------------*/

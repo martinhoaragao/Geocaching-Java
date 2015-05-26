@@ -37,10 +37,11 @@ public class Main {
         userMenu();
 
         switch (sc.nextInt()) {
-          case 1: infoMenu();           break;
-          case 2: createCache();        break;
-          case 4: displayUserCaches();  break;
-          case 10:  logged = false;     break;
+          case 1: infoMenu();                   break;
+          case 2: createCache();                break;
+          case 3: friendsMenu();                break;
+          case 8: displayUserCaches();          break;
+          case 10: gc.logout(); logged = false; break;
           default: break;
         }
       }
@@ -115,12 +116,26 @@ public class Main {
 
   /** Auxiliary function to display Friends Menu */
   private static void friendsMenu () {
-    clean();
-    System.out.println("1: Send Friend Request");
-    System.out.println("2: Show Friend Requests");
-    System.out.println("3: Accept Friend Request");
-    System.out.println("4: Friends List");
-    System.out.println("5: Main Menu");
+    Scanner sc = new Scanner(System.in);
+    boolean done = false;
+
+    while (!done) {
+      clean();
+      System.out.println("1: Send Friend Request");
+      System.out.println("2: Show Friend Requests");
+      System.out.println("3: Accept Friend Request");
+      System.out.println("4: Friends List");
+      System.out.println("5: Main Menu");
+
+      switch (sc.nextInt()) {
+        case 1: sendRequest();    break;
+        case 2: showRequests();   break;
+        case 3: acceptRequest();  break;
+        case 4: showFriends();    break;
+        case 5: done = true;      break;
+        default: break;
+      }
+    }
   }
 
   /* ----------------------- REGISTER & LOGIN ----------------------*/
@@ -373,6 +388,59 @@ public class Main {
     else
       System.out.println("You have not created any caches yet.");
 
+    if (console != null) console.readLine();
+  }
+
+  /* ------------------------- FRIENDS -------------------------*/
+
+  /** Auxiliary function to send friend request */
+  private static void sendRequest () {
+    Scanner sc = new Scanner(System.in);
+
+    clean();
+    System.out.print("Friend e-mail: ");
+    try {
+      gc.sendFriendRequest(sc.nextLine());
+      System.out.println("Friend Request sent.");
+    } catch (Exception e) {
+      System.out.println("Unable to send friend request: " + e.getMessage());
+    }
+
+    if (console != null) console.readLine();
+  }
+
+  /** Auxiliary function to show friend requests */
+  private static void showRequests () {
+    String requests = gc.getFriendRequests();
+
+    clean();
+    if (requests == null)
+      System.out.println("You have no friend requests.");
+    else
+      System.out.println(requests);
+
+    if (console != null) console.readLine();
+  }
+
+  /** Auxiliary function to accept friend requests */
+  private static void acceptRequest () {
+    Scanner sc = new Scanner(System.in);
+
+    clean();
+    System.out.print("User e-mail: ");
+    try {
+      gc.acceptFriendRequest(sc.nextLine().replaceAll("[\n\r]",""));
+      System.out.println("Friend sucessfully added.");
+    } catch (Exception e) {
+      System.out.println("Error: " + e.getMessage());
+    }
+    if (console != null) console.readLine();
+  }
+
+  /** Auxiliary function to display list of friends */
+  private static void showFriends () {
+    clean();
+    System.out.println(gc.getFriends());
     if (console != null) console.readLine();
   }
 

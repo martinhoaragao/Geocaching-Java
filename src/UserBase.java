@@ -384,18 +384,19 @@ public class UserBase {
      * @param id Id of the user that accepted the request
      * @param mail E-mail of the user that sent the request
      */
-    public void acceptFriendRequest (Double id, String mail) throws NullPointerException {
+    public void acceptFriendRequest (Double id, String mail) throws NullPointerException, IllegalArgumentException {
+        NormalUser u1, u2;
+        u1 = this.users.get(id.intValue() - 1);
+        u2 = this.users.get(this.userMails.get(mail).intValue() - 1);
+
         /* Add exceptions */
         if (mail == null)
             throw new NullPointerException("mail can't be null.");
+        if (!u1.getFriendRequests().contains(u2.getId()))
+            throw new IllegalArgumentException("No friend request from this user.");
 
-        Double user_id = this.userMails.get(mail);
-        NormalUser u1, u2;
-        u1 = this.users.get(id.intValue() - 1);
-        u2 = this.users.get(user_id.intValue() - 1);
-
-        u1.removeFriendRequest(user_id);  /* Remove friend request */
-        u1.addFriend(user_id);            /* Add friend */
-        u2.addFriend(id);          /* Add friend */
+        u1.removeFriendRequest(u2.getId());    /* Remove friend request */
+        u1.addFriend(u2.getId());              /* Add friend */
+        u2.addFriend(id);                   /* Add friend */
     }
 }
