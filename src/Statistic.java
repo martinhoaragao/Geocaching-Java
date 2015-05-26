@@ -111,10 +111,16 @@ public class Statistic
      * 
      * @param Activity a.
      */
-    public void removeAct(Activity a){
+    public boolean removeAct(Activity a){
 
         int month = a.getMonth();
+        
+        if( this.stats.get(month-1).contains(a)){
+            
         this.stats.get(month-1).remove(a);
+        return true;
+       }
+        else return false;
     }
 
     /**
