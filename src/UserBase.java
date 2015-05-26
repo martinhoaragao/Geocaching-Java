@@ -99,15 +99,17 @@ public class UserBase {
      * @param mail User mail
      * @param pass User password
      */
-    public NormalUser getUser (String mail, String pass) {
+    public NormalUser getUser (String mail, String pass) throws WrongPasswordException {
         /* Get the user id */
         Double id = this.userMails.get(mail);
 
         if (id != null) {
             NormalUser user = this.users.get(id.intValue() - 1);
             if (user.confirmPass(pass)) return user;
-        }
-        return null;
+            else
+                throw new WrongPasswordException("Wrong Password!");
+        } else
+        throw new IllegalArgumentException(mail + " has no user associated.");
     }
 
     /**

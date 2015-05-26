@@ -21,14 +21,14 @@ import java.util.TreeSet;
 import java.util.Iterator;
 
 public class GeocachingPOO {
-    private static Double id = 1.0;            // User ID
-    private static NormalUser user = null;     // User that is logged in
-    private static Double idAdmin = 2.0;     // Admin ID
-    private static Admin admin = null;     // Admin that is logged in
-    private static UserBase userbase = null;   // User data base
-    private static CacheBase cachebase = null;
-    private static Double idcache = 1.0;
-    private static Cache cache = null;
+    private static Double id;            // User ID
+    private static NormalUser user;     // User that is logged in
+    private static Double idAdmin;     // Admin ID
+    private static Admin admin;     // Admin that is logged in
+    private static UserBase userbase;   // User data base
+    private static CacheBase cachebase;
+    private static Double idcache;
+    private static Cache cache;
     private static Console c = System.console();
 
     /** Unparameterized Constructor */
@@ -45,8 +45,8 @@ public class GeocachingPOO {
         this.admin = null;
         this.cache = null;
     }
-/*
-    //Random main method/function to complete.
+
+    /*//Random main method/function to complete.
     public static void main(String[] args) {
         boolean running = true;     // Set the program as running
         int option = 0;
@@ -153,6 +153,7 @@ public class GeocachingPOO {
      */
     public void register (NormalUser u) throws EmailAlreadyInUseException, IdAlreadyAssignedException {
         userbase.addUser(u);
+        this.id++;
     }
 
     /** Retrieve a user from the UserBase if login suceeded
@@ -160,15 +161,22 @@ public class GeocachingPOO {
      * @param pass User password
      * @param type User type, Normaluser or admin
      */
-    private static User login (String mail, String pass, String type) {
+    public static void login (String mail, String pass, String type) throws WrongPasswordException, IllegalArgumentException {
         if (type.equals("admin"))
-            return userbase.getAdmin(mail, pass);
+            admin = userbase.getAdmin(mail, pass);
         else
-            return userbase.getUser(mail, pass);
+            user = userbase.getUser(mail, pass);
     }
 
     /* ----------------- INFORMATION MODIFICATION --------------------*/
 
+
+    /** @return User toString() result if a user is logged in */
+    public String getUserInfo () throws IllegalStateException {
+        if (user == null)
+            throw new IllegalStateException("No user is logged in.");
+        else return user.toString();
+    }
 
     /** Auxiliary function to print user information */
     private static void printInfo () {

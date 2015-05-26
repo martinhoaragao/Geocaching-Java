@@ -27,7 +27,7 @@ public class Main {
 
         switch (sc.nextInt()) {
           case 1: register(); break;
-          case 2: break;
+          case 2: login("user"); break;
           case 3: break;
           case 4: running = false; break;
           default: break;
@@ -36,7 +36,9 @@ public class Main {
         userMenu();
 
         switch (sc.nextInt()) {
-
+          case 1:   printUserInfo(); break;
+          case 10:  logged = false; break;
+          default: break;
         }
       }
     }
@@ -118,6 +120,7 @@ public class Main {
       if (!aux) System.out.println("Invalid e-mail! Please try a valid one.");
       i++;
     } while (!aux);
+    newuser.setMail(mail);
 
       // Get user name
     System.out.print("Name: ");
@@ -146,6 +149,7 @@ public class Main {
 
       newuser.setAddress(city, country);
       newuser.setId(gc.getCurrentUserId());
+      newuser.setBDate(bbbdate);
       try {
         gc.register(newuser);
         System.out.println("User successfully created!");
@@ -154,6 +158,43 @@ public class Main {
 
     if (console != null)
       console.readLine();
+  }
+
+  /** Auxiliary function to login
+   * @param type User type
+   */
+  private static void login (String type) {
+    String mail, pass;
+    Scanner sc = new Scanner(System.in);
+
+    clean();
+    System.out.print("E-mail: ");
+    mail = sc.nextLine().replaceAll("[\n\r]", "");
+    if (console != null)
+      pass = new String(console.readPassword("Password:"));
+    else {
+      System.out.print("Password: ");
+      pass = sc.nextLine().replaceAll("[\n\r]", "");
+    }
+
+    try {
+      gc.login(mail, pass, type);
+      logged = true;
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+      if (console != null) console.readLine();
+    }
+  }
+
+  /* ---------------- SEPARATOR --------------------------------*/
+
+  /** Auxiliary function to display user information */
+  private static void printUserInfo () {
+    String info = gc.getUserInfo();
+
+    clean();
+    System.out.println(info);
+    if (console != null) console.readLine();
   }
 
   /**
