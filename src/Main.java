@@ -40,7 +40,10 @@ public class Main {
           case 1: infoMenu();                   break;
           case 2: createCache();                break;
           case 3: friendsMenu();                break;
+          case 4: displayAllCaches();           break;
+          case 6: displayLastActivities();      break;
           case 8: displayUserCaches();          break;
+          case 9: createActivity();             break;
           case 10: gc.logout(); logged = false; break;
           default: break;
         }
@@ -391,6 +394,19 @@ public class Main {
     if (console != null) console.readLine();
   }
 
+  /** Auxiliary function to display all caches */
+  private static void displayAllCaches () {
+    ArrayList<Cache> caches = gc.getAllCaches();
+
+    clean();
+    if (caches.size() == 0)
+      System.out.println("There are no cachtes.");
+    else
+      for (Cache c : caches)
+        System.out.println(c.toString());
+    if (console != null) console.readLine();
+  }
+
   /* ------------------------- FRIENDS -------------------------*/
 
   /** Auxiliary function to send friend request */
@@ -441,6 +457,45 @@ public class Main {
   private static void showFriends () {
     clean();
     System.out.println(gc.getFriends());
+    if (console != null) console.readLine();
+  }
+
+  /* ------------------------- ACTIVITIES -----------------------*/
+
+  /** Auxiliary function to create a new Activity */
+  private static void createActivity () {
+    Scanner sc = new Scanner(System.in);
+    Activity act = new Activity();
+    GregorianCalendar date;
+    Double id;
+
+    clean();
+    System.out.print("Date: "); act.setDate(typebdate());
+    System.out.print("Cache id: "); id = sc.nextDouble();
+    System.out.print("Kilomteres covered: "); act.setKms(sc.nextDouble());
+    /* TODO: Change the way points are added */
+    act.setPoints(20);
+
+    try {
+      gc.addActivity(act, id);
+      System.out.println("Successfully added activity!");
+    } catch (Exception e) {
+      System.out.println("Error: " + e.getMessage());
+    }
+    if (console != null) console.readLine();
+  }
+
+  /** Auxiliary function to display user 10 last activitites */
+  private static void displayLastActivities () {
+    ArrayList<Activity> acts = gc.getLastActivities();
+
+    clean();
+    if (acts.size() == 0)
+      System.out.println("You have no activitites yet.");
+    else {
+      for (Activity a : acts)
+        System.out.println(a.toString());
+    }
     if (console != null) console.readLine();
   }
 

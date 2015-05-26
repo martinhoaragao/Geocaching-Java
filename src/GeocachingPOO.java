@@ -300,18 +300,9 @@ public class GeocachingPOO {
 
     /* ------------------- ACTIVITIES -------------------------*/
 
-    /** Auxiliary function to display User 10 last activities */
-    private static void showLastActivities () {
-        ArrayList<Activity> acts = user.getLastActivities();
-        Iterator it;
-
-        if (acts.size() == 0)
-            System.out.println("You have no activities yet!");
-        else {
-            for (Activity act : acts)
-                System.out.println(act.toString());
-        }
-        if (c != null) c.readLine();
+    /** @return ArrayList with user 10 last activities */
+    public ArrayList<Activity> getLastActivities () {
+        return user.getLastActivities();
     }
 
     /** Auxiliary function to display friend 10 last activities */
@@ -340,34 +331,18 @@ public class GeocachingPOO {
         }
     }
 
-    /** Auxiliary function to add a new Activity */
-    private static void addActivity () {
-        Scanner sc = new Scanner(System.in);
-        Activity act = new Activity();  /* Activity to be added */
-        Cache cache;                    /* Activity cache */
-        GregorianCalendar date;         /* Activity date */
-        Double cache_id, kms;           /* Cache id and kilometers */
+    /** Add a activity to the currently logged in user
+     *  @param act  Activity to be added
+     *  @param id   Id of the found cache */
+    public void addActivity (Activity act, Double id) throws IllegalArgumentException, NullPointerException {
+        Cache cache = cachebase.getCache(id);
 
-        /* Get the activity date */
-        /* TODO: Change typebdate() to different function */
-        System.out.print("Date: "); date = typebdate();
-        /* Get the cache id */
-        System.out.print("Cache id: "); cache_id = sc.nextDouble();
-        /* Get the kilometeres covered */
-        System.out.print("Kilometeres: "); kms = sc.nextDouble();
-        /* Retrieve cache from the cachebase */
-        try {
-            cache = cachebase.getCache(cache_id);
-            act.setCache(cache); act.setKms(kms);
-            act.setDate(date); act.setPoints(20);
-            /* TODO: Update to cache.getPoints() */
+        if (cache == null)
+            throw new IllegalArgumentException("No cache with the given id.");
+        else {
+            act.setCache(cache);
             user.addActivity(act);
-            System.out.println("Activity sucessfully added!");
         }
-        catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        if (c != null) c.readLine();
     }
 
     /* ------------------- CACHES ----------------------------*/
@@ -421,135 +396,10 @@ public class GeocachingPOO {
         return sc.nextInt();
     }
 
-    /**Auxiliary function: Show all caches + menu
-     * Menu Option: Shows all caches to * report one already, * Show details   ** Report this cache ** return to show all caches
-     */
-    /*private static void showAllCaches(){
-        double n ;
-        Scanner sc = new Scanner(System.in);
-        ArrayList<Cache> caches = cachebase.getAllCaches();
-        boolean running = true;
-        int o;
-
-        System.out.println("-------------------------");
-        System.out.println("Cache Menu");
-        System.out.println("-------------------------");
-
-        //int o = CacheMenuaux();
-        o = CacheMenuaux();
-        while(o!=0){
-
-            switch (o) {
-                case 1:
-                System.out.println("Type cache id to report");
-                double u = sc.nextDouble();
-                UserReportCache(u);
-
-                    o = CacheMenuaux();
-                break;
-
-                case 2:
-                System.out.println("Type cache id to see all the treasures. (0 to leave)");
-                n = sc.nextDouble();
-                if(n == 0) break;
-                else{
-                    Iterator it = caches.iterator();
-                    Cache cache;
-                    while(it.hasNext()){
-                        cache = (Cache) it.next();
-                        if(cache.getId() == n){
-                            ArrayList<Treasure> treasures = cache.getTreasure();
-                            for(Treasure t : treasures) System.out.println(t.toString());
-                        }
-                        else{
-                            System.out.println("There isn't such cache with that id. Sorry.");
-                        }
-                    }
-                }
-                //Nao sei se fará sentido chamar o menu aqui outra vez... se tiver mts treasures, talvez?
-                //User ve os treasures todos e depois vê o menu outra vez para poder fazer outras coisas.. ?
-
-
-                    o = CacheMenuaux();
-
-
-                break;
-
-                case 3:
-                System.out.println("Type the cache id to see registry book. (0 to leave)");
-                n = sc.nextDouble();
-                if(n == 0) break;
-                else{
-                    Iterator it = caches.iterator();
-                    Cache cache;
-                    while(it.hasNext()){
-                        cache = (Cache) it.next();
-                        if(cache.getId() == n){
-                            ArrayList<String> regs = cache.getRegistry();
-                            for(String s : regs) System.out.println(s);
-                        }
-                        else{
-                            System.out.println("There isn't such cache with that id. Sorry.");
-                        }
-                    }
-                }
-
-                //
-
-                    o = CacheMenuaux();
-
-                //
-                break;
-
-                case 4:
-                System.out.println("Type the id of the cache to see more details. (0 to leave)");
-                n = sc.nextDouble();
-                if(n == 0){ o=0; break;
-                }
-                else{
-                    Iterator it = caches.iterator();
-                    Cache cache;
-                    while(it.hasNext()){
-                        cache = (Cache) it.next();
-                        if(cache.getId() == n){
-                            ArrayList<String> info = cache.getInfo();
-                            for(String s : info) System.out.println(s);
-                        }
-                        else{
-                            System.out.println("There isn't such cache with that id. Sorry.");
-                        }
-                    }
-
-                    System.out.println("0: to return to Cache menu");
-                    System.out.println("1. Report this cache? ");
-                    if(sc.nextInt() == 1) o = 1;
-                    else{
-                        o=CacheMenuaux();
-                    }
-
-                }
-                break;
-
-                case 5:
-                showCaches();
-                break;
-
-                case 6:
-                running = false;
-                break;
-
-                 o = CacheMenuaux();
-
-
-
-
-                default:
-                break;
-            }
-        }
-
-        if (c != null) c.readLine();
-    }*/
+    /** @return ArrayList with clone of all of the caches */
+    public ArrayList<Cache> getAllCaches () {
+        return cachebase.getAllCaches();
+    }
 
 
     /*
