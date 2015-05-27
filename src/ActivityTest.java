@@ -126,6 +126,24 @@ public class ActivityTest
         activity1.setDate(gregoria2);
         
     }
+
+    @Test
+    public void testequals()
+    {
+        TraditionalCache traditio1 = new TraditionalCache();
+        Activity activity1 = new Activity(gregoria1, traditio1, 100, 10);
+        Activity activity2 = new Activity(activity1);
+        assertEquals(true, activity1.equals(activity2));
+        activity1.setDate(gregoria2);
+        activity1.getCache();
+        assertEquals(false, activity1.equals(activity2));
+        activity2.getMonth();
+        activity1.getMonth();
+    }
+
+    
 }
+
+
 
 

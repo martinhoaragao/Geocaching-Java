@@ -97,5 +97,39 @@ public class StatisticTest
         stats.removeAct(activity3);
         stats.getinfoNCaches();
     }
+
+    @Test
+    public void testSeRemove()
+    {
+        stats.getinfoNCaches();
+        activity2.getMonth();
+        stats.addAct(activity2);
+        activity2.getYear();
+        stats.setYearStatsMonth(2014);
+        assertEquals(2014, activity2.getYear());
+        assertEquals(true, stats.addAct(activity2));
+        stats.getinfoNCaches();
+        stats.removeAct(activity2);
+    }
+
+    @Test
+    public void testRemove()
+    {
+        java.util.GregorianCalendar ano2015 = new java.util.GregorianCalendar(2015, 8, 25);
+        MultiCache multiCac1 = new MultiCache();
+        Activity activity4 = new Activity(ano2015, multiCac1, 100, 10);
+        Statistic statisti1 = new Statistic();
+        assertNotNull(statisti1.getinfoNCaches());
+        assertNotNull(statisti1.getinfoNCaches());
+        assertEquals(0, statisti1.getTotalCaches());
+        assertEquals(true, statisti1.addAct(activity4));
+        assertEquals(1, statisti1.getTotalCaches());
+        assertNotNull(statisti1.getinfoNCaches());
+        assertEquals(true, statisti1.removeAct(activity4));
+        statisti1.getinfoNCaches();
+        assertEquals(0, statisti1.getTotalCaches());
+    }
 }
+
+
 

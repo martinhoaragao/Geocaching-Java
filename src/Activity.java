@@ -170,8 +170,9 @@ public class Activity {
         Activity aux = (Activity) act;
         boolean comp = (this.kms == aux.getKms());
         comp = comp && (this.cache.equals(aux.getCache()));
-        // Test this because of GregorianCalendar equals
-        comp = comp && (this.date.equals(aux.getDate()));
+        
+        comp = comp && (this.getPoints() == aux.getPoints());
+        comp = comp && (this.getDate().compareTo(aux.getDate())==0);
         return comp;
     }
 
