@@ -27,7 +27,6 @@ public class UserBase {
         this.users = new ArrayList<NormalUser>();
         this.adminMails = new TreeMap<String, Double>(new MailComparator());
         this.userMails = new TreeMap<String, Double>(new MailComparator());
-
     }
 
     /**
@@ -66,15 +65,16 @@ public class UserBase {
      * @param name Admin username
      * @param pass Admin password
      */
-    public Admin getAdmin (String mail, String pass) {
-        /* Get the user id */
+    public Admin getAdmin (String mail, String pass) throws IllegalArgumentException, WrongPasswordException {
         Double id = this.adminMails.get(mail);
 
         if (id != null) {
-            Admin admin = this.admins.get(id.intValue() - 1);
-            if (admin.confirmPass(pass)) return admin;
-        }
-        return null;
+            Admin ad = this.admins.get(id.intValue() - 1);
+            if (ad.confirmPass(pass)) return ad;
+            else
+                throw new WrongPasswordException("Wrong password!");
+        } else
+            throw new IllegalArgumentException("No Admin with the given mail.");
     }
 
     /** Function to be used only by the user base to get a user
@@ -136,7 +136,6 @@ public class UserBase {
         for (Admin admin : this.admins) {
             list.add(admin.clone());
         }
-
         return list;
     }
 
@@ -266,11 +265,16 @@ public class UserBase {
 
     /**
      * Add an admin to the data base
-     * @param admin Admin to be added
+     * @param adm Admin to be added
      */
-    public void addAdmin (Admin admin) {
-        this.admins.add(admin);
-        this.adminMails.put(admin.getMail(), admin.getId());
+    public void addAdmin (Admin adm) throws IllegalArgumentException, NullPointerException {
+        Double id = this.adminMails.get(adm.getMail());
+        if (id != null)
+            throw new IllegalArgumentException("This e-mail is already taken.");
+        if (adm == null)
+            throw new NullPointerException("adm can't be null");
+        this.admins.add(adm.getId().intValue() - 1, adm);
+        this.adminMails.put(adm.getMail(), adm.getId());
     }
 
     /**
@@ -288,10 +292,8 @@ public class UserBase {
         }
     }
 
-    /**
-     * Remove an admin from the data base
-     * @param mail String to be removed
-     */
+    /** Remove an admin from the data base
+     *  @param mail String to be removed */
     public void removeAdmin (String mail) throws IllegalArgumentException {
         if (!this.adminExists(mail)) /* Admin e-mail doesn't exist */
             throw new IllegalArgumentException("Admin doesn't exist.");

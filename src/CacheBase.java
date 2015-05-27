@@ -59,7 +59,15 @@ public class CacheBase {
     /** @return TreeMap with all the reports */
     @SuppressWarnings("unchecked")
     public TreeMap<Double, ArrayList<Report>> getAllReports () {
-        return (TreeMap<Double, ArrayList<Report>>) this.reported_caches.clone();
+      TreeMap<Double, ArrayList<Report>> tm = new TreeMap<Double, ArrayList<Report>>();
+
+      for (Double id : this.reported_caches.keySet()) {
+        tm.put(id, new ArrayList<Report>());
+        for (Report rep : this.reported_caches.get(id)) {
+          tm.get(id).add(rep.clone());
+        }
+      }
+      return tm;
     }
 
     /** @return TreeMap with all the Coordinates used */

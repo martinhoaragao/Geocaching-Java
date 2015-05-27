@@ -8,12 +8,14 @@
 import java.util.Scanner;
 import java.util.GregorianCalendar;
 import java.util.ArrayList;
+import java.util.TreeMap;
 import java.io.Console;
 
 public class Main {
   private static Console console = System.console();
   private static GeocachingPOO gc;
-  private static boolean logged;      /* Control if a user is logged in */
+  private static boolean user_logged;       /* Control if a user is logged in */
+  private static boolean admin_looged;      /* Control if a admin is logged in */
 
   public static void main (String args[]) {
     Scanner sc = new Scanner(System.in);
@@ -23,28 +25,41 @@ public class Main {
     gc = new GeocachingPOO();
 
     while (running) {
-      if (!logged) {  /* No user logged in */
+      if (!user_logged && !admin_looged) {  /* No user or admin logged in */
         mainMenu();
 
         switch (sc.nextInt()) {
-          case 1: register(); break;
-          case 2: login("user"); break;
-          case 3: break;
-          case 4: running = false; break;
+          case 1: register();       break;
+          case 2: login(false);     break;
+          case 3: login(true);      break;
+          case 4: running = false;  break;
           default: break;
         }
-      }else {    /* User logged in */
+      } else if (user_logged) {             /* User logged in */
         userMenu();
 
         switch (sc.nextInt()) {
-          case 1: infoMenu();                   break;
-          case 2: createCache();                break;
-          case 3: friendsMenu();                break;
-          case 4: displayAllCaches();           break;
-          case 6: displayLastActivities();      break;
-          case 8: displayUserCaches();          break;
-          case 9: createActivity();             break;
-          case 10: gc.logout(); logged = false; break;
+          case 1: infoMenu();               break;
+          case 2: cachesMenu();             break;
+          case 3: friendsMenu();            break;
+          case 4: displayAllCaches();       break;
+          case 6: displayLastActivities();  break;
+          case 8: displayUserCaches();      break;
+          case 9: createActivity();         break;
+          case 10: logout();                break;
+          default: break;
+        }
+      } else {                              /* Admin logged in */
+        adminMenu();
+
+        switch (sc.nextInt()) {
+          case 1: displayReports();     break;
+          case 2: displayUsersAdmins(); break;
+          case 3: displayAllCaches();   break;
+          case 4: deleteUser();         break;
+          case 5: createAdmin();        break;
+          case 6: deleteAdmin();        break;
+          case 7: logout();             break;
           default: break;
         }
       }
@@ -67,7 +82,7 @@ public class Main {
   private static void userMenu () {
     clean();
     System.out.println("1: Personal Information");
-    System.out.println("2: Create new cache");
+    System.out.println("2: Caches Menu");
     System.out.println("3: Friends");
     System.out.println("4: Show Caches");
     System.out.println("5: Show My Statistics");
@@ -114,7 +129,7 @@ public class Main {
     System.out.println("4: Delete user");
     System.out.println("5: Create new admin");
     System.out.println("6: Delete admin");
-    System.out.println("10: Log Out");
+    System.out.println("7: Log Out");
   }
 
   /** Auxiliary function to display Friends Menu */
@@ -136,6 +151,29 @@ public class Main {
         case 3: acceptRequest();  break;
         case 4: showFriends();    break;
         case 5: done = true;      break;
+        default: break;
+      }
+    }
+  }
+
+  /** Auxiliary function to display and control the Cache Menu */
+  private static void cachesMenu () {
+    Scanner sc = new Scanner(System.in);
+    boolean done = false;
+
+    while (!done) {
+      clean();
+      System.out.println("1: Create a cache");
+      System.out.println("2: Report one cache ");
+      System.out.println("3: See treasures of a cache");
+      System.out.println("4: Show registry book of a cache");
+      System.out.println("5: Show other details of a cache");
+      System.out.println("6: Leave cache menu");
+
+      switch (sc.nextInt()) {
+        case 1: createCache();  break;
+        case 2: reportCache();  break;
+        case 6: done = true;    break;
         default: break;
       }
     }
@@ -209,9 +247,9 @@ public class Main {
   }
 
   /** Auxiliary function to login
-   * @param type User type
+   * @param type true if logging is as Admin, false if logging in as User
    */
-  private static void login (String type) {
+  private static void login (boolean type) {
     String mail, pass;
     Scanner sc = new Scanner(System.in);
 
@@ -227,11 +265,19 @@ public class Main {
 
     try {
       gc.login(mail, pass, type);
-      logged = true;
+      if (type) admin_looged = true;
+      else user_logged = true;
     } catch (Exception e) {
-      System.out.println(e.getMessage());
+      System.out.println("Error: " + e.getMessage());
       if (console != null) console.readLine();
     }
+  }
+
+  /** Auxiliary function to logout from Geocaching */
+  private static void logout () {
+    gc.logout();
+    if (user_logged)  user_logged = false;
+    if (admin_looged) admin_looged = false;
   }
 
   /* --------------------------- USER INFOS ------------------------*/
@@ -380,6 +426,30 @@ public class Main {
     if (console != null) console.readLine();
   }
 
+  /** Auxiliary function to repoort a cache */
+  private static void reportCache () {
+    Scanner sc = new Scanner(System.in);
+    String message = ""; Double id;
+    Report rep;
+
+    clean();
+    System.out.print("Cache id: ");
+    id = sc.nextDouble();
+    while (message.trim().equals("")) {
+      System.out.print("Why are you reporting this cache: ");
+      message = sc.nextLine();
+    }
+    rep = new Report();
+    rep.setId(id); rep.setMessage(message);
+    try {
+      gc.reportCache(rep);
+      System.out.println("Successfully reported cache!");
+    } catch (Exception e) {
+      System.out.println("Error: " + e.getMessage());
+    }
+    if (console != null) console.readLine();
+  }
+
   /** Auxiliary function to display user created caches */
   private static void displayUserCaches() {
     ArrayList<Cache> caches = gc.getUserCaches();
@@ -388,22 +458,37 @@ public class Main {
     if (caches != null)
       for (Cache c : caches)
         System.out.println(c.toString());
-    else
-      System.out.println("You have not created any caches yet.");
+      else
+        System.out.println("You have not created any caches yet.");
 
-    if (console != null) console.readLine();
+      if (console != null) console.readLine();
   }
 
   /** Auxiliary function to display all caches */
   private static void displayAllCaches () {
-    ArrayList<Cache> caches = gc.getAllCaches();
+      ArrayList<Cache> caches = gc.getAllCaches();
+
+      clean();
+      if (caches.size() == 0)
+        System.out.println("There are no caches.");
+      else
+        for (Cache c : caches)
+          System.out.println(c.toString());
+        if (console != null) console.readLine();
+  }
+
+  /** Auxiliary function to display all Reports */
+  private static void displayReports () {
+    TreeMap <Double, ArrayList<Report>> tm = gc.getAllReports();
 
     clean();
-    if (caches.size() == 0)
-      System.out.println("There are no cachtes.");
-    else
-      for (Cache c : caches)
-        System.out.println(c.toString());
+    if (tm.size() == 0) {
+      System.out.println("There are no reports.");
+    } else {
+      for (Double id : tm.keySet())
+        for (Report rep : tm.get(id))
+          System.out.println(rep.toString());
+    }
     if (console != null) console.readLine();
   }
 
@@ -411,95 +496,205 @@ public class Main {
 
   /** Auxiliary function to send friend request */
   private static void sendRequest () {
-    Scanner sc = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
 
-    clean();
-    System.out.print("Friend e-mail: ");
-    try {
-      gc.sendFriendRequest(sc.nextLine());
-      System.out.println("Friend Request sent.");
-    } catch (Exception e) {
-      System.out.println("Unable to send friend request: " + e.getMessage());
-    }
+        clean();
+        System.out.print("Friend e-mail: ");
+        try {
+          gc.sendFriendRequest(sc.nextLine());
+          System.out.println("Friend Request sent.");
+        } catch (Exception e) {
+          System.out.println("Unable to send friend request: " + e.getMessage());
+        }
 
-    if (console != null) console.readLine();
+        if (console != null) console.readLine();
   }
 
   /** Auxiliary function to show friend requests */
   private static void showRequests () {
-    String requests = gc.getFriendRequests();
+        String requests = gc.getFriendRequests();
 
-    clean();
-    if (requests == null)
-      System.out.println("You have no friend requests.");
-    else
-      System.out.println(requests);
+        clean();
+        if (requests == null)
+          System.out.println("You have no friend requests.");
+        else
+          System.out.println(requests);
 
-    if (console != null) console.readLine();
+        if (console != null) console.readLine();
   }
 
   /** Auxiliary function to accept friend requests */
   private static void acceptRequest () {
-    Scanner sc = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
 
-    clean();
-    System.out.print("User e-mail: ");
-    try {
-      gc.acceptFriendRequest(sc.nextLine().replaceAll("[\n\r]",""));
-      System.out.println("Friend sucessfully added.");
-    } catch (Exception e) {
-      System.out.println("Error: " + e.getMessage());
-    }
-    if (console != null) console.readLine();
+        clean();
+        System.out.print("User e-mail: ");
+        try {
+          gc.acceptFriendRequest(sc.nextLine().replaceAll("[\n\r]",""));
+          System.out.println("Friend sucessfully added.");
+        } catch (Exception e) {
+          System.out.println("Error: " + e.getMessage());
+        }
+        if (console != null) console.readLine();
   }
 
   /** Auxiliary function to display list of friends */
   private static void showFriends () {
-    clean();
-    System.out.println(gc.getFriends());
-    if (console != null) console.readLine();
+        clean();
+        System.out.println(gc.getFriends());
+        if (console != null) console.readLine();
   }
 
   /* ------------------------- ACTIVITIES -----------------------*/
 
   /** Auxiliary function to create a new Activity */
   private static void createActivity () {
-    Scanner sc = new Scanner(System.in);
-    Activity act = new Activity();
-    GregorianCalendar date;
-    Double id;
+        Scanner sc = new Scanner(System.in);
+        Activity act = new Activity();
+        GregorianCalendar date;
+        Double id;
+
+        clean();
+        System.out.print("Date: "); act.setDate(typebdate());
+        System.out.print("Cache id: "); id = sc.nextDouble();
+        System.out.print("Kilomteres covered: "); act.setKms(sc.nextDouble());
+        /* TODO: Change the way points are added */
+        act.setPoints(20);
+
+        try {
+          gc.addActivity(act, id);
+          System.out.println("Successfully added activity!");
+        } catch (Exception e) {
+          System.out.println("Error: " + e.getMessage());
+        }
+        if (console != null) console.readLine();
+  }
+
+  /** Auxiliary function to display user 10 last activitites */
+  private static void displayLastActivities () {
+        ArrayList<Activity> acts = gc.getLastActivities();
+
+        clean();
+        if (acts.size() == 0)
+          System.out.println("You have no activitites yet.");
+        else {
+          for (Activity a : acts)
+            System.out.println(a.toString());
+        }
+        if (console != null) console.readLine();
+  }
+
+  /* -------------------- ADMIN --------------------------------*/
+
+  /** Auxiliary function to display all Users and All admins */
+  private static void displayUsersAdmins () {
+    ArrayList<Admin> admins = gc.getAdmins();
+    ArrayList<NormalUser> users = gc.getUsers();
 
     clean();
-    System.out.print("Date: "); act.setDate(typebdate());
-    System.out.print("Cache id: "); id = sc.nextDouble();
-    System.out.print("Kilomteres covered: "); act.setKms(sc.nextDouble());
-    /* TODO: Change the way points are added */
-    act.setPoints(20);
+    if (users.size() == 0) System.out.println("There are no users.");
+    else {
+      System.out.println("--- USERS ---");
+      for (NormalUser u : users)
+        System.out.println(u.toString());
+    }
+
+    if (admins.size() == 0) System.out.println("There are no admins");
+    else {
+      System.out.println("--- ADMINS ---");
+      for (Admin ad : admins)
+        System.out.println(ad.toString());
+    }
+    if (console != null) console.readLine();
+  }
+
+  /** Auxiliary function to delete an User */
+  private static void deleteUser () {
+    Scanner sc = new Scanner(System.in);
+
+    clean();
+    System.out.print("User e-mail: ");
+    try {
+      gc.deleteUser(sc.nextLine().replaceAll("[\n\r]",""));
+      System.out.println("User successfully deleted.");
+    } catch (Exception e) {
+      System.out.println("Erro: " + e.getMessage());
+    }
+    if (console != null) console.readLine();
+  }
+
+  /** Auxiliary function to create an Admin */
+  private static void createAdmin () {
+    Scanner sc = new Scanner(System.in);
+    String name, pass, mail = "";
+    Admin new_admin = new Admin();
+    boolean valid_mail = false;
+    MailValidator mv = new MailValidator();
+
+    clean();
+    /* Get Admin mail */
+    for (int i = 0; !valid_mail && i<3; i++){
+      System.out.print("E-mail: ");
+      mail = sc.nextLine().replaceAll("[\n\r]","");
+      valid_mail = mv.validate(mail);
+      if (!valid_mail) {
+        System.out.println("Invalid e-mail! Please try a valid one.");
+        valid_mail = false;
+      } else {
+        new_admin.setMail(mail);
+        valid_mail = true;
+      }
+    }
+
+    if (valid_mail) {
+      /* Get Admin name */
+      System.out.print("Name: ");
+      new_admin.setName(sc.nextLine().replaceAll("[\n\r]",""));
+
+      /* Get Admin password */
+      if (console != null)
+        new_admin.setPass(new String(console.readPassword("Password: ")));
+      else {
+        System.out.print("Password: ");
+        new_admin.setPass(sc.nextLine().replaceAll("[\n\r]",""));
+      }
+
+      /* Get Admin permissions */
+      System.out.println("\n<--Permissions-->\n\n0:\nAble to see Reports\nAble to invalidate Caches\n");
+      System.out.println("1:\nAll of 0's abilities\nAble to create events\n");
+      System.out.println("2:\nAll of 1's abilities\nAble to create new admins\n Able to remove admins");
+      new_admin.setPermi(sc.nextInt());
+
+      try {
+        gc.createAdmin(new_admin);
+        System.out.println("Successfully created new Admin");
+      } catch (Exception e) {
+        System.out.println("Error: " + e.getMessage());
+      }
+    } else System.out.println("Invalid e-mail.");
+
+
+    if (console != null) console.readLine();
+  }
+
+  /** Auxiliary function to delete an Admin */
+  private static void deleteAdmin () {
+    Scanner sc = new Scanner(System.in);
+    String mail;
+
+    System.out.print("Admin e-mail: ");
+    mail = sc.nextLine().replaceAll("[\n\r]","");
 
     try {
-      gc.addActivity(act, id);
-      System.out.println("Successfully added activity!");
+      gc.deleteAdmin(mail);
+      System.out.println("Successfully deleted admin.");
     } catch (Exception e) {
       System.out.println("Error: " + e.getMessage());
     }
     if (console != null) console.readLine();
   }
 
-  /** Auxiliary function to display user 10 last activitites */
-  private static void displayLastActivities () {
-    ArrayList<Activity> acts = gc.getLastActivities();
-
-    clean();
-    if (acts.size() == 0)
-      System.out.println("You have no activitites yet.");
-    else {
-      for (Activity a : acts)
-        System.out.println(a.toString());
-    }
-    if (console != null) console.readLine();
-  }
-
-/* ---------------- SEPARATOR --------------------------------*/
+  /* ---------------------------- SEPARATOR -----------------------*/
 
   /**
    * Auxiliary function to create GregorianCalendar bdate to constructor user

@@ -67,10 +67,12 @@ public class NormalUser extends User {
     public NormalUser (NormalUser user) throws NullPointerException {
         super(user);
 
-        this.bdate = user.getBDate(); this.points = user.getPoints();
+        this.bdate = user.getBDate();
+        this.points = user.getPoints();
         this.activities = user.getActivities();
         this.statistics = user.getStatistics();
         this.friends = user.getFriends();
+        this.address = user.getAddress();
     }
 
     // Getters

@@ -35,74 +35,21 @@ public class GeocachingPOO {
     public GeocachingPOO () {
         this.id = 1.0;
         this.idAdmin = 2.0;
+        this.idcache = 1.0;
         this.userbase = new UserBase();
         this.cachebase = new CacheBase();
-        this.admin = new Admin("grupoajm@gmail.com", "Alpha", "AdminAdmin", 1.0, 2);
-        this.userbase.addAdmin(admin);
-        this.cachebase = new CacheBase();
-        this.idcache = 1.0;
         this.user = null;
         this.admin = null;
         this.cache = null;
+        Admin ad = new Admin("grupoajm@gmail.com", "Alhpa", "AdminAdmin", 1.0, 2);
+        this.userbase.addAdmin(ad);
     }
 
     /** Logout the User from the application */
     public void logout () {
         this.user = null;
+        this.admin = null;
     }
-
-    /*//Random main method/function to complete.
-    public static void main(String[] args) {
-        boolean running = true;     // Set the program as running
-        int option = 0;
-        userbase = new UserBase();  // Create new user base
-        cachebase = new CacheBase();
-        admin = new Admin ("grupoajm@gmail.com", "Alpha", "AdminAdmin", 1.0, 2);
-        userbase.addAdmin(admin);
-        admin = null;
-
-
-        while (running) {
-            if (user == null && admin == null) { // No user logged in
-                option = mainMenu();
-                switch (option) {
-                    case 1: register(); break;
-                    case 2: login(""); break;
-                    case 3: login("admin"); break;
-                    case 4: running = false; break;
-                    default: break;
-                }
-            } else if (admin != null) {
-                option = adminMenu();
-                switch (option) {
-                    case 1: AdminReportsMenu(); break;
-                    case 2: listUsers(); break;
-                    case 3: showAllCaches(); break;
-                    case 4: deleteUser(); break;
-                    case 5: createAdmin(); break;
-                    case 6: deleteAdmin(); break;
-                    case 10: admin = null; break;
-                    default: break;
-                }
-            } else {    // User logged in
-                option = userMenu();
-                switch (option) {
-                    //case 1: printInfo(); break;
-                    case 1: personalInfo(); break;
-                    case 2: createCacheUser(); break;
-                    case 3: friendsMenu(); break;
-                    case 4: showAllCaches(); break;
-                    case 5: showStatistics(); break;
-                    case 6: showLastActivities(); break;
-                    case 7: showFriendActivities(); break;
-                    case 8: showUserCaches(); break;
-                    case 9: addActivity(); break;
-                    case 10: user = null; break;
-                    default: break;
-                }
-            }
-        }
-    }*/
 
     /* ----------------- MENUS ----------------- */
 
@@ -143,17 +90,29 @@ public class GeocachingPOO {
     /** Retrieve a user from the UserBase if login suceeded
      * @param mail User e-mail
      * @param pass User password
-     * @param type User type, Normaluser or admin
+     * @param type true if logging in as Admin, false if logging in as User
      */
-    public static void login (String mail, String pass, String type) throws WrongPasswordException, IllegalArgumentException {
-        if (type.equals("admin"))
+    public static void login (String mail, String pass, boolean type) throws WrongPasswordException, IllegalArgumentException {
+        if (mail.trim().equals(""))
+            throw new IllegalArgumentException("mail can't be null!");
+
+        if (type == true)   /* Logging in as Admin */
             admin = userbase.getAdmin(mail, pass);
-        else
+        else                /* Logging in as User */
             user = userbase.getUser(mail, pass);
     }
 
     /* ----------------- INFORMATION MODIFICATION --------------------*/
 
+    /** @return ArrayList with all the users */
+    public ArrayList<NormalUser> getUsers () {
+        return userbase.getUsers();
+    }
+
+    /** @return ArrayList with all the admins */
+    public ArrayList<Admin> getAdmins () {
+        return userbase.getAdmins();
+    }
 
     /** @return User toString() result if a user is logged in */
     public String getUserInfo () throws IllegalStateException {
@@ -347,40 +306,16 @@ public class GeocachingPOO {
 
     /* ------------------- CACHES ----------------------------*/
 
-    /**
-     * Auxiliary function to report a cache
-     * @param double id The cache id to be reported
-     */
-    private static void UserReportCache(double id) {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Are you sure you want to report this cache? [y/n]");
-        if(!sc.nextLine().toUpperCase().contains("Y") ){
-            //Não tem certeza de que quer reportar, logo nao introduziu y
-            return;
-        } else {
-
-            String email = user.getMail();
-            System.out.println("Reasons why you want to report this cache: ");
-            String message = sc.nextLine();
-
-            Report rep = new Report(id, email, message);
-
-            cachebase.addReport(rep);
-            System.out.println("sucessfully reported cache with id number of" + " " + id);
-
-        }
-        if (c != null) c.readLine();
+    /** Report a cache
+     *  @param rep The report to be added */
+    public void reportCache (Report rep) throws NullPointerException {
+        rep.setMail(user.getMail());
+        cachebase.addReport(rep);
     }
 
-    /**Auxiliary funtion: Show all reports*/
-    private static void showAllReports (){
-        TreeMap<Double, ArrayList<Report>> reps = cachebase.getAllReports();
-
-        for (Double id : reps.keySet()) {
-            for (Report r : reps.get(id)) {
-                System.out.println("| ID : " + r.getId() + "| " + "Msg: " + r.getMessage());
-            }
-        }
+    /** Get all reports from the CacheBase */
+    public TreeMap<Double, ArrayList<Report>> getAllReports (){
+        return cachebase.getAllReports();
     }
 
     /**Menu pints */
@@ -401,99 +336,36 @@ public class GeocachingPOO {
         return cachebase.getAllCaches();
     }
 
+    /* ------------------------- ADMINS ------------------------*
 
-    /*
-     + Create new Admin
-     */
-    private static void createAdmin () {
-        Scanner sc = new Scanner(System.in);
-        String name, pass, mail = "";
-        Admin newuser = new Admin();
-        boolean aux = false;
-        MailValidator mv = new MailValidator();
 
-        if (admin.getPermi() < 2) {
-            System.out.println("You lack permission! Contact a superior admin.");
-            return;
-        }
+    /** Create a new Admin if the logged in admin has permissions to do so
+     *  @param new_admin Admin to be added */
+    public void createAdmin (Admin new_admin) throws IllegalStateException, IllegalArgumentException, NullPointerException {
+        if (new_admin == null)
+            throw new NullPointerException("new_admin can't be null");
 
-        for (int i = 0; !aux && i<3; i++){
-
-            System.out.print("E-mail: ");
-                mail = sc.nextLine().replaceAll("[\n\r]","");
-                aux = mv.validate(mail);
-            if (!aux) {
-                System.out.println("Invalid e-mail! Please try a valid one.");
-            } else if (userbase.adminExists(mail)) {    // E-mail already in use
-                System.out.println("E-mail already in use.");
-                aux = false;
-            } else {
-                newuser.setMail(mail);
-                aux = true;
-            }
-        }
-
-        // Get admin name
-        System.out.print("Name: ");
-        newuser.setName(sc.nextLine().replaceAll("[\n\r]", ""));
-
-        // Get admin password
-        System.out.print("Pass: ");
-        newuser.setPass(sc.nextLine().replaceAll("[\n\r]",""));
-
-        // Get permissions
-        System.out.println("\n<--Permissions-->\n\n0:\nAble to see Reports\nAble to invalidate Caches\n");
-        System.out.println("1:\nAll of 0's abilities\nAble to create events\n");
-        System.out.println("2:\nAll of 1's abilities\nAble to create new admins\n Able to remove admins");
-        newuser.setPermi(sc.nextInt());
-
-        newuser.setId(idAdmin);
-        userbase.addAdmin(newuser);
-        idAdmin = idAdmin + 1.0;
-        newuser = null;
-        System.out.println("Admin sucessfully created!");
+        new_admin.setId(idAdmin);
+        userbase.addAdmin(new_admin);
+        idAdmin++;
     }
 
-    /*
-     * Delete an admin
-     */
-    private static void deleteAdmin () {
-        if (admin.getPermi() < 2) {
-            System.out.println("You lack permission! Contact a superior admin.");
-            return;
-        }
+    /** Delete an admin if the logged in user has permissions
+     *  @param mail Mail of the admin to be deleted */
+    public void deleteAdmin (String mail) throws IllegalStateException {
+        if (this.admin.getPermi() != 2)
+            throw new IllegalStateException("You have no permissions.");
 
-        Scanner sc = new Scanner(System.in);
-        System.out.println("To delete an Admin type his email: ");
-
-        try {
-            userbase.removeAdmin(sc.nextLine().replaceAll("[\n\r]",""));
-            System.out.println("Sucessfully deleted admin");
-        }
-        catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        userbase.removeAdmin(mail);
     }
 
-    /*
-     * Delete user
-     */
-    private static void deleteUser () {
-        if (admin.getPermi() < 1) {
-            System.out.println("You lack permission! Contact a superior admin.");
-            return;
-        }
+    /** Delete user given it's e-mail
+     *  @param mail User e-mail */
+    public void deleteUser (String mail) throws IllegalStateException, IllegalArgumentException {
+        if (admin.getPermi() < 1)
+            throw new IllegalStateException("You lack permission.");
 
-        Scanner sc = new Scanner(System.in);
-        System.out.println("To delete a User type his email: ");
-
-        try {
-            userbase.removeUser(sc.nextLine().replaceAll("[\n\r]",""));
-            System.out.println("Sucessfully delete user");
-        }
-        catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        userbase.removeUser(mail);
     }
 
     private static void listUsers () {
@@ -504,7 +376,7 @@ public class GeocachingPOO {
      * Auxiliary function: Menu Option for Admin: Show all reported caches to perform menu options shown in the menuAdminReports()
      */
 
-    private static void AdminReportsMenu () {
+    /*private static void AdminReportsMenu () {
         double n; int u;
         Scanner sc = new Scanner(System.in);
         TreeMap<Double, ArrayList<Report>> reps = cachebase.getAllReports();
@@ -574,7 +446,7 @@ public class GeocachingPOO {
              * é-lhe igual...
              * e iso de mostrar mais detalhes do report só ia acrescentar ao email.
              */
-        }
+        /*}
 
         System.out.println("Type the ID of the cache to see details: (0 to leave)");
         if ((n = sc.nextDouble()) != 0) {
@@ -582,7 +454,7 @@ public class GeocachingPOO {
                 System.out.println(rep.getMessage());
             }
         }
-    }
+    }  */
 
     /**
      * Aux menu prints
