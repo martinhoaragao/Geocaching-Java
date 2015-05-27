@@ -3,6 +3,7 @@ import java.io.Serializable;
 
 public class AComparator implements Comparator<Activity>, Serializable{
         public int compare(Activity a, Activity b){
+            if(a.equals(b)) return 0;
             int m = (a.getDate().compareTo(b.getDate()));
             if(m==0) return -1;
             else return m;
