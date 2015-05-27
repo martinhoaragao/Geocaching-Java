@@ -28,6 +28,7 @@ public class Activity {
         this.date = new GregorianCalendar();
         this.cache = null;
         this.kms = 0.0;
+        this.points = 0;
     }
 
     /**
@@ -36,11 +37,11 @@ public class Activity {
      * @arg cache The cache that was found
      * @arg kms Kilometers covered to find the cache
      */
-    public Activity (GregorianCalendar date, Cache cache, double kms) {
+    public Activity (GregorianCalendar date, Cache cache, double kms, int points) {
         this.date = (GregorianCalendar) date.clone();
         this.cache = cache;
         this.kms = kms;
-
+        this.points = points;
     }
 
     /**
@@ -169,8 +170,9 @@ public class Activity {
         Activity aux = (Activity) act;
         boolean comp = (this.kms == aux.getKms());
         comp = comp && (this.cache.equals(aux.getCache()));
-        // Test this because of GregorianCalendar equals
-        comp = comp && (this.date.equals(aux.getDate()));
+        
+        comp = comp && (this.getPoints() == aux.getPoints());
+        comp = comp && (this.getDate().compareTo(aux.getDate())==0);
         return comp;
     }
 
@@ -178,6 +180,6 @@ public class Activity {
      * Create a clone of this object
      */
     public Activity clone () {
-        return new Activity(date, cache, kms);
+        return new Activity(date, cache, kms, points);
     }
 }

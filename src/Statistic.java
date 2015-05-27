@@ -111,12 +111,10 @@ public class Statistic
      * 
      * @param Activity a.
      */
-    public void removeAct(Activity a){
-
-        int month = a.getMonth();
-        this.stats.get(month-1).remove(a);
-    }
-
+    public boolean removeAct(Activity a){
+       int month = a.getMonth();
+       return this.stats.get(month-1).remove(a);
+   }
     /**
      * Get the Set of Activities by a given month.
      * @param int m month.
@@ -242,14 +240,16 @@ public class Statistic
     /**
      * Removes a Cache given the id
      */
-    public void removeCache(double id){
+    public boolean removeCache(double id){
         int i;
         for(i=0;i<12;i++){
             for(Activity a : this.stats.get(i)){
                 if(a.getCache().getId() == id) 
                 this.stats.get(i).remove(id);
+                return true;
             }
         }
+        return false;
     }
     
     /**
@@ -304,10 +304,10 @@ public class Statistic
      * Method that sums all Caches.
      * @return int Total of caches of this User's Statistic.
      */
-    public int getSumTotalCaches(){
+    public int getTotalCaches(){
         int i,r=0;
         for(i=0;i<12;i++){
-            r+=getSumAM(i+1);
+            r+=getTotalCachesMonth(i+1);
         }
         return r;
     }
@@ -315,7 +315,7 @@ public class Statistic
     /**
      * Method that sums all activities / caches of a given month.
      */
-    public int getSumAM(int month){
+    public int getTotalCachesMonth(int month){
         int sum=0;
         for(Activity a : this.stats.get(month-1)){
             sum++;
@@ -359,7 +359,7 @@ public class Statistic
         int i;
         for(i=0;i<12;i++){
             sb.append("Month: " + (i+1));
-            sb.append(" #Caches: " + this.getSumAM(i+1) + ".");
+            sb.append(" #Caches: " + this.getTotalCachesMonth(i+1) + ".");
             sb.append("\n");
             sb.append(" #Points: " + this.getSumPointsM(i+1)+ ".");
             sb.append("\n");
@@ -369,7 +369,7 @@ public class Statistic
             
         }
         sb.append(this.getinfoNCaches());
-        System.out.println(sb.toString());
+        
         return sb.toString();
     }
 }
