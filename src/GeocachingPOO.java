@@ -659,6 +659,7 @@ public class GeocachingPOO {
         
         if(sc.nextInt()==2){
             //Do stuff
+            
         }
         
     }
