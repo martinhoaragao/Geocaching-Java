@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Iterator;
-
+import Exceptions.*;
 
 public class StatisticYear
 {
@@ -61,7 +61,7 @@ public class StatisticYear
      * TODO verificar que nao precida de fazer put depois de inserir ... ? 
      * tirar o boolean e mete exception...
      */
-    public boolean addActY(Activity a){
+    public void addActY(Activity a) throws NotAddedActivityYearIncorrectException{
        int month = a.getMonth();
        int year = a.getYear();
        
@@ -70,20 +70,9 @@ public class StatisticYear
        Statistic aux = this.statsyear.get(year); //devolve-me estatistica deste ano
        if(aux==null) aux = new Statistic();
        aux.setYearStatsMonth(year);
-      boolean inseriu =  aux.addAct(a); //Adiciona nova à estatistica deste ano.
-       //A outra class Statistic trata de a inserir no mÊs correto.
-       //Ela lá já faz clone.
        
-       if(inseriu){
-       this.statsyear.put(year, aux); //Ao fazer isto substitui com o novo adicionado.
-       //O anterior apenas adiciona, este susbtitui com o aux que supostamente vai ter mais 1 atividade que a antiga.
-       return true;
-      }
-       else{
-           System.out.println("Não inseriu... nao é o ano correto!");
-           //Isto é o que deve ter no geocaching. Nao apagar, só quando se meter no geocaching é que se apaga aqui.
-           return false;
-        }
+       aux.addAct(a);
+       //Nao precisa de fazer put porque ele já atualiza logo, tem o get emcima.
     }
     
     

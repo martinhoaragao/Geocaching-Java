@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.TreeSet;
 import java.util.ArrayList;
 import java.util.Iterator;
+import Exceptions.*;
 
 public class Statistic
 {
@@ -90,7 +91,7 @@ public class Statistic
      * Add an Activity in the Statistic.
      * @param Activity a.
      */
-    public boolean addAct(Activity a){  //returns a boolean if it was inserted or not.
+    public void addAct(Activity a) throws NotAddedActivityYearIncorrectException{  //returns a boolean if it was inserted or not.
         //Negative testing: if i want to add activity of year 2005 in stats of year 2006, should return false.
         //expecting negative tests to elaborate ways of communication with user.
         //In geocaching if result == false, print the message.
@@ -99,9 +100,10 @@ public class Statistic
         if(year == this.year){
         int month = a.getMonth();
         this.stats.get(month-1).add(a.clone());
-        return true;
+        
         }
-        else return false;
+        else throw new NotAddedActivityYearIncorrectException("Didn't insert. The year is incorrect!");
+        
     }
     
     

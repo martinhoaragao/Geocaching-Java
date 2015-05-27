@@ -12,6 +12,7 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import Exceptions.*;
 
 public class NormalUser extends User {
     private boolean gender;           // User gender
@@ -20,7 +21,7 @@ public class NormalUser extends User {
     private int points;               // User points
 
     private TreeSet<Activity> activities;       // Last 10 User activities
-    private Statistic statistics;               // User statistics
+    private StatisticYear statistics;               // User statistics
     private ArrayList<Double> friends;          // User friends
     private ArrayList<Double> friend_requests;  // Friend Requests
 
@@ -34,7 +35,7 @@ public class NormalUser extends User {
         this.bdate = new GregorianCalendar();
         this.points = 0;
         this.activities = new TreeSet<Activity>(new CacheDateComparator());
-        this.statistics = new Statistic();
+        this.statistics = new StatisticYear();
         this.friends = new ArrayList<Double>();
         this.friend_requests = new ArrayList<Double>();
     }
@@ -55,7 +56,7 @@ public class NormalUser extends User {
 
         this.points = 0;
         this.activities = new TreeSet<Activity>(new CacheDateComparator());
-        this.statistics = new Statistic();
+        this.statistics = new StatisticYear();
         this.friends = new ArrayList<Double>();
         this.friend_requests = new ArrayList<Double>();
     }
@@ -135,7 +136,7 @@ public class NormalUser extends User {
     /**
      * @return User statistics
      */
-    public Statistic getStatistics () {
+    public StatisticYear getStatistics () {
         return this.statistics.clone();
     }
 
@@ -321,7 +322,7 @@ public class NormalUser extends User {
      * and automaticaly to the statistics
      * @param act Activity to be added
      */
-    public void addActivity (Activity act) throws NullPointerException {
+    public void addActivity (Activity act) throws NullPointerException,NotAddedActivityYearIncorrectException {
       Activity aux = null;
 
       if (act == null)
@@ -337,7 +338,7 @@ public class NormalUser extends User {
       this.activities.add(act);
       this.points += act.getPoints();
 
-      this.statistics.addAct(act);
+      this.statistics.addActY(act);
 
 
     }
