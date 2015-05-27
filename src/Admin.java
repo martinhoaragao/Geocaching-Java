@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class Admin extends User{
+public class Admin extends User {
     private Integer permi;            // Permission level (0 - lowest or >0)
 
     /**
@@ -44,7 +44,7 @@ public class Admin extends User{
      * @param user User from which the information will be fetched
      */
     public Admin (Admin admin) throws NullPointerException {
-        super();
+        super(admin);
         this.permi = admin.getPermi();
     }
 
