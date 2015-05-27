@@ -145,7 +145,7 @@ public class GeocachingPOO {
      * @param pass User password
      * @param type User type, Normaluser or admin
      */
-    public static void login (String mail, String pass, String type) throws WrongPasswordException, IllegalArgumentException {
+    public void login (String mail, String pass, String type) throws WrongPasswordException, IllegalArgumentException {
         if (type.equals("admin"))
             admin = userbase.getAdmin(mail, pass);
         else
@@ -306,7 +306,7 @@ public class GeocachingPOO {
     }
 
     /** Auxiliary function to display friend 10 last activities */
-    private static void showFriendActivities () {
+    public void showFriendActivities () {
         ArrayList<Double> friends = user.getFriends();
         Scanner sc = new Scanner(System.in);
         NormalUser friend; String mail; Iterator it;
@@ -648,12 +648,19 @@ public class GeocachingPOO {
     /* ----------------------- STATISTICS -----------------*/
     //TODO  statistics year falta
     /** Menu option 5. Show My Statistics*/
-    private static void showStatistics() {
+    public void showStatistics() {
+        
         Scanner sc = new Scanner(System.in);
         System.out.println("My total points: " + user.getPoints());
         System.out.println("1. See my Month Statistics");
+        System.out.println("2. See Statistics of a given year");
         if (sc.nextInt()==1)
         System.out.println(user.getStatistics().toString());
+        
+        if(sc.nextInt()==2){
+            //Do stuff
+        }
+        
     }
 
     /** @return Current User id */
