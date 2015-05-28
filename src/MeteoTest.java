@@ -73,5 +73,12 @@ public class MeteoTest
         Meteo meteo3 = new Meteo(23, 3);
         assertEquals(10, meteo3.calcPoints());
     }
+
+    @Test
+    public void testMeteoProbability()
+    {
+        Meteo meteo4 = new Meteo();
+    }
 }
+
 
