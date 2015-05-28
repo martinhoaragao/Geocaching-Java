@@ -5,7 +5,9 @@
  *  @version 11/05/2015
  */
 
-public class MicroCache extends Cache
+import java.io.Serializable;
+
+public class MicroCache extends Cache implements Serializable
 {
     // Constructors
 

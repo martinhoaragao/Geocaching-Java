@@ -12,9 +12,10 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.io.Serializable;
 import Exceptions.*;
 
-public class NormalUser extends User {
+public class NormalUser extends User implements Serializable {
     private boolean gender;           // User gender
     private Address address;          // User Address
     private GregorianCalendar bdate;  // User birthdate

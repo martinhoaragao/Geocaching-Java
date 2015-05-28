@@ -11,8 +11,9 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.io.Serializable;
 
-public class Admin extends User {
+public class Admin extends User implements Serializable {
     private Integer permi;            // Permission level (0 - lowest or >0)
 
     /**

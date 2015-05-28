@@ -10,8 +10,13 @@ import java.util.GregorianCalendar;
 import java.util.ArrayList;
 import java.util.TreeMap;
 import java.io.Console;
+import java.io.FileOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.io.Serializable;
 
-public class Main {
+public class Main implements Serializable {
   private static Console console = System.console();
   private static GeocachingPOO gc;
   private static boolean user_logged;       /* Control if a user is logged in */
@@ -32,7 +37,10 @@ public class Main {
           case 1: register();       break;
           case 2: login(false);     break;
           case 3: login(true);      break;
-          case 4: running = false;  break;
+          case 4: saveState();      break;
+          case 5: loadState();      break;
+          case 6: running = false;  break;
+          case 7: System.out.println(gc.getCurrentUserId()); break;
           default: break;
         }
       } else if (user_logged) {             /* User logged in */
@@ -75,7 +83,9 @@ public class Main {
     System.out.println("1: Register");
     System.out.println("2: Login");
     System.out.println("3: Admin");
-    System.out.println("4: Exit");
+    System.out.println("4: Save Application State");
+    System.out.println("5: Load Application State");
+    System.out.println("6: Exit");
   }
 
   /** Auxiliary function to display the User Menu */
@@ -736,5 +746,34 @@ public class Main {
   /** Auxiliary Function for us to clean the terminal when we call it */
   private final static void clean(){
     if (console != null) System.out.print("\u001b[2J" + "\u001b[H");
+  }
+
+  /*--------------------- APPLICATION STATE -----------------------*/
+
+  /** Save the program state to a file name 'geocaching' */
+  private static void saveState () {
+    try {
+      FileOutputStream fos = new FileOutputStream("geocaching");
+      ObjectOutputStream oos = new ObjectOutputStream(fos);
+      oos.writeObject(gc);
+      oos.close();
+      System.out.println("Guardado!");
+      if (console != null) console.readLine();
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+    }
+  }
+
+  private static void loadState () {
+    try {
+      FileInputStream fis = new FileInputStream("geocaching");
+      ObjectInputStream ois = new ObjectInputStream(fis);
+      gc = (GeocachingPOO) ois.readObject();
+      ois.close();
+      System.out.println("Successfully loaded state.");
+      if (console != null) console.readLine();
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+    }
   }
 }

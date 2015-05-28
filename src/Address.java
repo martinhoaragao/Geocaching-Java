@@ -4,7 +4,9 @@
  * @version 11/05/2015
  */
 
-public class Address {
+import java.io.Serializable;
+
+public class Address implements Serializable {
     private String city;
     private String country;
 
@@ -21,7 +23,7 @@ public class Address {
 
         this.city = city; this.country = country;
     }
-    
+
     /**
      * Empty Constructor
      */
@@ -29,7 +31,7 @@ public class Address {
         this.country = "Portugal";
         this.city="Braga";
     }
-    
+
     /**
      * Copy Constructor
      */
@@ -37,7 +39,7 @@ public class Address {
         this.country = a.country;
         this.city = a.city;
     }
-    
+
     // Getters
 
     /**
@@ -81,8 +83,8 @@ public class Address {
 
         this.country = country;
     }
-    
-    
+
+
     /**
      * Compare this Address to another to check if they are equal
      * @arg ad Address to use for comparison
@@ -90,12 +92,12 @@ public class Address {
     public boolean equals(Address ad){
         if(this == ad) return true;
         if(this.getClass() != ad.getClass()) return false;
-        
+
         Address aux = (Address) ad;
         return aux.getCity().equals(this.getCity()) && aux.getCountry().equals(this.getCountry());
     }
-    
-    
+
+
     /**
      * Return Address info as String
      */

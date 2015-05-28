@@ -1,7 +1,8 @@
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.io.Serializable;
 
-public class MailValidator {
+public class MailValidator implements Serializable {
     private static Pattern pattern;
     private static Matcher matcher;
 

@@ -9,8 +9,9 @@ import java.util.TreeSet;
 import java.util.TreeMap;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.io.Serializable;
 
-public class CacheBase {
+public class CacheBase implements Serializable {
     private ArrayList<Cache> caches;                    /* To store caches */
     private TreeMap<Double, ArrayList<Double>> owners;  /* Map between user id and cache id */
     private TreeMap<Double, ArrayList<Report>> reported_caches;    /* Reported caches */

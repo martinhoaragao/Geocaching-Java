@@ -7,8 +7,9 @@
  */
 
 import java.util.ArrayList;
+import java.io.Serializable;
 
-public class MultiCache extends Cache
+public class MultiCache extends Cache implements Serializable
 {
     private ArrayList<Coordinates> locals;
     private int stage; //Indicates the local where

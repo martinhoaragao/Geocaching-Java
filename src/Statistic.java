@@ -11,24 +11,25 @@ import java.util.Arrays;
 import java.util.TreeSet;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.io.Serializable;
 import Exceptions.*;
 
-public class Statistic
+public class Statistic implements Serializable
 {
     //Could I declare private int month and then TreeSet<month, a> , for instace?
     //my opinion is no, but what do you think?
     private ArrayList< TreeSet<Activity>>  stats; // Visited Caches for each month. Comparable by date.
     private int year; //Year of this statistics.
-    
+
     /**
      * Constructor without arguments
      */
     public Statistic(){
        int i;
        stats = new ArrayList<TreeSet<Activity>>(12);
-       
+
        for(i=0;i<12;i++){
-           stats.add(new TreeSet<Activity>(new AComparator())); 
+           stats.add(new TreeSet<Activity>(new AComparator()));
        }
        this.year = 2015;
     }
@@ -41,7 +42,7 @@ public class Statistic
         this.stats = stt.getStats();
         this.year = stt.getYearStatsMonth();
     }
-    
+
     /**
      * Method to get the list
      */
@@ -53,40 +54,40 @@ public class Statistic
         }
         return aux;
     }
-    
+
     /**
      * Method to clone the set
      */
     public TreeSet<Activity> cloneTreeSet( TreeSet<Activity> ts){
         TreeSet<Activity> novo = new TreeSet<>(new AComparator());
         Iterator<Activity> it = ts.iterator();
-        
+
         while(it.hasNext()){
             novo.add(it.next().clone());
         }
-        
+
         return novo;
     }
-    
+
 
     /**
      * Methods
      */
-    
+
     /**
      * Get the year
      */
     public int getYearStatsMonth(){
         return this.year;
     }
-    
+
     /**
      * Set the year. IMPORTANT!
      */
     public void setYearStatsMonth(int year){
         this.year = year;
     }
-    
+
     /**
      * Add an Activity in the Statistic.
      * @param Activity a.
@@ -96,21 +97,21 @@ public class Statistic
         //expecting negative tests to elaborate ways of communication with user.
         //In geocaching if result == false, print the message.
         int year = a.getYear();
-        
+
         if(year == this.year){
         int month = a.getMonth();
         this.stats.get(month-1).add(a.clone());
-        
+
         }
         else throw new NotAddedActivityYearIncorrectException("Didn't insert. The year is incorrect!");
-        
+
     }
-    
-    
+
+
 
     /**
      * Removes an Activity in the array of TreeSet<Activity>.
-     * 
+     *
      * @param Activity a.
      */
     public boolean removeAct(Activity a){
@@ -131,8 +132,8 @@ public class Statistic
         return novo;
     }
 
-    
-    
+
+
     /**
      * Returns in an auxiliary array.
      * New version.
@@ -152,19 +153,19 @@ public class Statistic
         }
         return caches;
     }
-    
+
     /**
      * Presents as a string the previous data. In replace of the getinfoNumberCaches().
      * Test before deleting the getinfoNumberCaches() and mantain this two methods in replace.
      * (Done. Foto no Trello)
-     * 
-     * 
+     *
+     *
      * @param String with information of how many caches of different type user has.
      */
     public String getinfoNCaches(){
         int[] caches = getNumberCaches();
         StringBuilder sb = new StringBuilder();
-        
+
         sb.append("Micro :"); sb.append(Integer.toString(caches[0]) + ".");
         sb.append("\n");
         sb.append("Multi :"); sb.append(Integer.toString(caches[1])+ ".");
@@ -189,8 +190,8 @@ public class Statistic
 
     /**
      * Returns a List of the last 10 activities.
-     * 
-     * @return String with information. 
+     *
+     * @return String with information.
      * (Just for testing times).
      */
     public String get10LastA(){
@@ -199,12 +200,12 @@ public class Statistic
         int meses = 0;
         StringBuilder sb = new StringBuilder();
         while(number < 10 || !acabou){
-            
+
             while(this.stats.get(mesatual).size() == 0){
                 if(mesatual == 0) mesatual = 11; else mesatual--;
                 meses++;
             } //Encontrou no array set que tem conteudo.
-            
+
             for(Activity a : this.stats.get(mesatual)){
             sb.append(Integer.toString(number+1) + "º: ");
             sb.append(a.toString() + ".\n" );
@@ -218,7 +219,7 @@ public class Statistic
                 else mesatual--;
                 meses++;
             } //Procura um set nao vazio no mês anterior a este para completar as 10.
-            
+
             if(meses >=11) acabou = true;
             //call activity.toString();
         }
@@ -232,7 +233,7 @@ public class Statistic
         int i;
         for(i=0;i<12;i++){
             for(Activity a : this.stats.get(i)){
-                if(a.getCache().getId() == id) 
+                if(a.getCache().getId() == id)
                 return a.getCache();
             }
         }
@@ -246,14 +247,14 @@ public class Statistic
         int i;
         for(i=0;i<12;i++){
             for(Activity a : this.stats.get(i)){
-                if(a.getCache().getId() == id) 
+                if(a.getCache().getId() == id)
                 this.stats.get(i).remove(id);
                 return true;
             }
         }
         return false;
     }
-    
+
     /**
      * Method that sums all points.
      * @return points : Total of points of this User's Statistic.
@@ -265,7 +266,7 @@ public class Statistic
         }
         return r;
     }
-    
+
     /**
      * Method that sums all points of a given month.
      * @return int Sum of points.
@@ -277,7 +278,7 @@ public class Statistic
         }
         return sum;
     }
-    
+
     /**
      * Method that sums all kilometers of a given month.
      * @return double Total kms of a month.
@@ -289,7 +290,7 @@ public class Statistic
         }
         return sum;
     }
-    
+
     /**
      * Method that sums all kms.
      * @return int kms : Total of kms of this User's Statistic.
@@ -301,7 +302,7 @@ public class Statistic
         }
         return r;
     }
-    
+
     /**
      * Method that sums all Caches.
      * @return int Total of caches of this User's Statistic.
@@ -313,7 +314,7 @@ public class Statistic
         }
         return r;
     }
-    
+
     /**
      * Method that sums all activities / caches of a given month.
      */
@@ -342,7 +343,7 @@ public class Statistic
         int i;
         if (this == sa) return true;
         if(sa.getClass() != this.getClass()) return false;
-        
+
         Statistic a = (Statistic) sa;
         for(i=0;i<12;i++){
             if(a.stats.get(i).size() != this.stats.get(i).size()) return false;
@@ -367,11 +368,11 @@ public class Statistic
             sb.append("\n");
             sb.append(" #Kms travelled: " + this.getSumkmsM(i+1) + ".");
             sb.append("\n");
-            
-            
+
+
         }
         sb.append(this.getinfoNCaches());
-        
+
         return sb.toString();
     }
 }

@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.io.Serializable;
 
 /**
  * This tradicional cache I think it is only a perpective of what all the caches must contain.
@@ -8,7 +9,7 @@ import java.util.ArrayList;
  *
  *  @version 08/05/2015
  */
-public class TraditionalCache extends Cache
+public class TraditionalCache extends Cache implements Serializable
 {
 
     // Constructors

@@ -8,8 +8,9 @@
 import java.util.Iterator;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.io.Serializable;
 
-public abstract class User {
+public abstract class User implements Serializable {
     private String mail;              // User mail
     private String pass;              // User Password
     private String name;              // User name

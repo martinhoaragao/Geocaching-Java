@@ -4,7 +4,9 @@
  * @version 11/05/2015
  */
 
-public class Coordinates implements Comparable<Coordinates> {
+import java.io.Serializable;
+
+public class Coordinates implements Comparable<Coordinates>, Serializable {
     private double longitude;
     private double latitude;
 
@@ -69,38 +71,38 @@ public class Coordinates implements Comparable<Coordinates> {
         this.longitude = lon;
     }
 
-    
+
     public double getCoordinatesDist(Coordinates localuser, Coordinates localcache )
     {
        double kms = 0; //This always return in kms form.
        //Coordinates are represented in meters form, so the result will be divided by 1000.
-       
+
        if(localuser.equals(localcache)) return 0; //Same place
-       
+
        double x1, y1, x2, y2;
        x1 = localuser.getLat(); y1 = localuser.getLon();
        x2 = localcache.getLat(); y2 = localcache.getLon();
        /*
        double dif1 = Math.abs(x2-x1);
        double dif2 = Math.abs(y2-y1);
-       
+
        double value = Math.sqrt( Math.pow(dif2,2)  + Math.pow(dif1,2)  );
        kms = value/1000;
-       
+
        return kms; */
-       
+
        return getDistanceFromLatLonInKm(x1,y1,x2,y2);
-       
+
     }
-    
+
     /** Auxiliary function that given 2 latitutes and 2 longitudes, calculares the distance in kms */
-    private  double getDistanceFromLatLonInKm(double lat1,double lon1,double lat2,double lon2) 
+    private  double getDistanceFromLatLonInKm(double lat1,double lon1,double lat2,double lon2)
     {
             double R = 6371; // Radius of the earth in km
             double dLat = deg2rad(lat2-lat1);  // deg2rad below
-            double dLon = deg2rad(lon2-lon1); 
-            double a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *  Math.sin(dLon/2) * Math.sin(dLon/2); 
-            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+            double dLon = deg2rad(lon2-lon1);
+            double a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *  Math.sin(dLon/2) * Math.sin(dLon/2);
+            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
             double d = R * c; // Distance in km
             return d;
       }
@@ -108,7 +110,7 @@ public class Coordinates implements Comparable<Coordinates> {
     public double deg2rad(double deg) {
         return deg * (Math.PI/180);
     }
-    
+
     // toString, equals and clone
 
     /**

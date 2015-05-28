@@ -5,7 +5,9 @@
  *  @version 08/05/2015
  */
 
-public class MysteryCache extends Cache
+import java.io.Serializable;
+
+public class MysteryCache extends Cache implements Serializable
 {
     private Puzzle puzzle; //Solve the puzzle to find the right coordinates
     /*Implement: method solve

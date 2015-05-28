@@ -5,8 +5,9 @@
  */
 
 import java.util.GregorianCalendar;
+import java.io.Serializable;
 
-public class Activity {
+public class Activity implements Serializable {
     private GregorianCalendar date; // Acitivity date
     private Cache cache;            // Cache found on this activity
     private Double kms;             // Kilometers covered
@@ -71,7 +72,7 @@ public class Activity {
     public int getMonth(){
         return this.date.get(GregorianCalendar.MONTH);
     }
-    
+
     /**
      * @return the year of the activity
      */
@@ -170,7 +171,7 @@ public class Activity {
         Activity aux = (Activity) act;
         boolean comp = (this.kms == aux.getKms());
         comp = comp && (this.cache.equals(aux.getCache()));
-        
+
         comp = comp && (this.getPoints() == aux.getPoints());
         comp = comp && (this.getDate().compareTo(aux.getDate())==0);
         return comp;

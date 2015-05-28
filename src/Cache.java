@@ -1,5 +1,6 @@
 import java.util.GregorianCalendar;
 import java.util.ArrayList;
+import java.io.Serializable;
 
 /**
  * Super-Class for all the kinds of existing caches.
@@ -11,7 +12,7 @@ import java.util.ArrayList;
  *
  *  @version 08/05/2015
  */
-public abstract class Cache {
+public abstract class Cache implements Serializable {
     private Double id;                  //Cache identifier
     private Coordinates coords;          // Cache coordinates
     private String mail;                // Cache owner mail

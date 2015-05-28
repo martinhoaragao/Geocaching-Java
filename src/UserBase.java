@@ -9,8 +9,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.io.Serializable;
 
-public class UserBase {
+public class UserBase implements Serializable {
     private ArrayList<Admin> admins;          /* Array to store admins */
     private ArrayList<NormalUser> users;          /* Array to store users */
     private TreeMap<String, Double> userMails;  /* Map between mails and ids */

@@ -7,20 +7,23 @@
  *  @version 08/05/2015
  */
 
+import Exceptions.*;
 import java.util.Scanner;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.TreeSet;
 import java.util.Iterator;
 import java.util.GregorianCalendar;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.io.Console;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Iterator;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.io.Console;
+import java.io.Serializable;
+import java.io.IOException;
 
-public class GeocachingPOO {
+public class GeocachingPOO implements Serializable {
     private static Double id;            // User ID
     private static NormalUser user;     // User that is logged in
     private static Double idAdmin;     // Admin ID
@@ -293,7 +296,7 @@ public class GeocachingPOO {
     /** Add a activity to the currently logged in user
      *  @param act  Activity to be added
      *  @param id   Id of the found cache */
-    public void addActivity (Activity act, Double id) throws IllegalArgumentException, NullPointerException {
+    public void addActivity (Activity act, Double id) throws IllegalArgumentException, NullPointerException, NotAddedActivityYearIncorrectException {
         Cache cache = cachebase.getCache(id);
 
         if (cache == null)
@@ -532,5 +535,31 @@ public class GeocachingPOO {
     public Double getCurrentUserId () {
         return this.id;
     }
+
+    /* -------------- APPLICATION STATE ---------------------*/
+
+    private void writeObject (java.io.ObjectOutputStream stream)
+     throws IOException {
+        stream.writeObject(id);
+        stream.writeObject(user);
+        stream.writeObject(idAdmin);
+        stream.writeObject(admin);
+        stream.writeObject(userbase);
+        stream.writeObject(cachebase);
+        stream.writeObject(idcache);
+        stream.writeObject(cache);
+     }
+
+    private void readObject (java.io.ObjectInputStream stream)
+     throws IOException, ClassNotFoundException {
+        id = (Double) stream.readObject();
+        user = (NormalUser) stream.readObject();
+        idAdmin = (Double) stream.readObject();
+        admin = (Admin) stream.readObject();
+        userbase = (UserBase) stream.readObject();
+        cachebase = (CacheBase) stream.readObject();
+        idcache = (Double) stream.readObject();
+        cache = (Cache) stream.readObject();
+     }
 
 }
