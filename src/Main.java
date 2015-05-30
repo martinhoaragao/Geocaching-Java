@@ -1,3 +1,4 @@
+import Exceptions.*;
 /**
  * Class that has the main method to run Geocaching
  *

@@ -1,3 +1,4 @@
+import Exceptions.*;
 /**
  * Classe to save information of all the Users that have been created.
  *

@@ -1,3 +1,4 @@
+import Exceptions.*;
 /**
  * This class will represent the program in which a random user with an e-mail will login
  * and do all the available operations, with his account.
@@ -7,7 +8,7 @@
  *  @version 08/05/2015
  */
 
-import Exceptions.*;
+
 import java.util.Scanner;
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -47,6 +48,7 @@ public class GeocachingPOO implements Serializable {
         Admin ad = new Admin("grupoajm@gmail.com", "Alhpa", "AdminAdmin", 1.0, 2);
         this.userbase.addAdmin(ad);
     }
+    
 
     /** Logout the User from the application */
     public void logout () {
@@ -86,7 +88,10 @@ public class GeocachingPOO implements Serializable {
      * @param u User to be added
      */
     public void register (NormalUser u) throws EmailAlreadyInUseException, IdAlreadyAssignedException {
+        
+        
         userbase.addUser(u);
+        
         this.id++;
     }
 
