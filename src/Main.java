@@ -40,7 +40,6 @@ public class Main implements Serializable {
           case 4: saveState();      break;
           case 5: loadState();      break;
           case 6: running = false;  break;
-          case 7: System.out.println(gc.getCurrentUserId()); break;
           default: break;
         }
       } else if (user_logged) {             /* User logged in */
@@ -110,22 +109,27 @@ public class Main implements Serializable {
 
     while (!done) {
       clean();
-      System.out.println(gc.getUserInfo());
-      System.out.println("1: Change Password");
-      System.out.println("2: Change Name");
-      System.out.println("3: Change Address");
-      System.out.println("4: Change Birthdate");
-      System.out.println("5: Change Gender");
-      System.out.println("6: Return menu");
+      try {
+        System.out.println(gc.getUserInfo());
+        System.out.println(gc.getUserInfo());
+        System.out.println("1: Change Password");
+        System.out.println("2: Change Name");
+        System.out.println("3: Change Address");
+        System.out.println("4: Change Birthdate");
+        System.out.println("5: Change Gender");
+        System.out.println("6: Return menu");
 
-      switch (sc.nextInt()) {
-        case 1: changePassword(); break;
-        case 2: changeName();     break;
-        case 3: changeAddress();  break;
-        case 4: changeBDate();    break;
-        case 5: changeGender();   break;
-        case 6: done = true;      break;
-        default: break;
+        switch (sc.nextInt()) {
+          case 1: changePassword(); break;
+          case 2: changeName();     break;
+          case 3: changeAddress();  break;
+          case 4: changeBDate();    break;
+          case 5: changeGender();   break;
+          case 6: done = true;      break;
+          default: break;
+        }
+      }catch (Exception e) {
+          System.out.println(e.getMessage());
       }
     }
   }
@@ -297,6 +301,7 @@ public class Main implements Serializable {
     String currentpass = null, newpass = null;
     Scanner sc = new Scanner(System.in);
     int tries = 0;
+    boolean pass_confirmation = false;
 
     clean();
     /* Give User 3 tries to input the current password */
@@ -313,7 +318,12 @@ public class Main implements Serializable {
         }
       }
       tries ++;
-    } while ((tries < 3) && !gc.confirmPass(currentpass));
+      try {
+        pass_confirmation = gc.confirmPass(currentpass);
+      } catch (Exception e) {
+        System.out.println(e.getMessage());
+      }
+    } while ((tries < 3) && !pass_confirmation);
 
     /* Change user password */
     if (tries != 3) {
@@ -489,7 +499,13 @@ public class Main implements Serializable {
 
   /** Auxiliary function to display all Reports */
   private static void displayReports () {
-    TreeMap <Double, ArrayList<Report>> tm = gc.getAllReports();
+    TreeMap <Double, ArrayList<Report>> tm = null;
+    try {
+      tm = gc.getAllReports();
+    } catch (Exception e) {
+      System.out.println("There is no user logged in.");
+    }
+
 
     clean();
     if (tm.size() == 0) {
@@ -522,7 +538,12 @@ public class Main implements Serializable {
 
   /** Auxiliary function to show friend requests */
   private static void showRequests () {
-        String requests = gc.getFriendRequests();
+        String requests = null;
+        try {
+          requests = gc.getFriendRequests();
+        } catch (Exception e) {
+          System.out.println(e.getMessage());
+        }
 
         clean();
         if (requests == null)
@@ -551,7 +572,11 @@ public class Main implements Serializable {
   /** Auxiliary function to display list of friends */
   private static void showFriends () {
         clean();
-        System.out.println(gc.getFriends());
+        try {
+          System.out.println(gc.getFriends());
+        } catch (Exception e) {
+          System.out.println(e.getMessage());
+        }
         if (console != null) console.readLine();
   }
 
@@ -582,7 +607,12 @@ public class Main implements Serializable {
 
   /** Auxiliary function to display user 10 last activitites */
   private static void displayLastActivities () {
-        ArrayList<Activity> acts = gc.getLastActivities();
+        ArrayList<Activity> acts = null;
+        try {
+          gc.getLastActivities();
+        } catch (Exception e) {
+          System.out.println(e.getMessage());
+        }
 
         clean();
         if (acts.size() == 0)
