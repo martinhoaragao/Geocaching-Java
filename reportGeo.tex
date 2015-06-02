@@ -36,18 +36,41 @@ Este trabalho é sobre o conceito de Geocaching conhecido nas redes sociais: pre
 É necessário o estudo e concepção das classes necessárias, estruturas de dados, métodos respetivos, variáveis de instância e de classe necessárias, imaginar a dependência entre as classes (composição) e definir uma hierarquia (nomeadamente criando uma super classe para as Caches).
 \par
 Para além de criar classes abstratas, também é necessário guardar todos os dados relativos às Caches e aos Utilizadores para poder criar métodos eficientes relativos ao tratamento destes.
-De entre os requisitos básicos também serão implementados os Eventos, com a simulação da meteorologia e cálculo de distâncias entre caches dado duas coordenadas (coordenadas iniciais e as coordenadas da cache). Estes dois últimos pontos serão implementados também em toda a descoberta de Caches/Atividades e não somente no decorrer de Eventos. Serão uteis nomeadamente para o cálculo de pontuações.
+\par De entre os requisitos básicos também serão implementados os Eventos, com a simulação da meteorologia e cálculo de distâncias entre caches dado duas coordenadas (coordenadas iniciais e as coordenadas da cache). Estes dois últimos pontos serão implementados também em toda a descoberta de Caches/Atividades e não somente no decorrer de Eventos pois serão úteis nomeadamente para o cálculo de pontuações.
 
 \pagebreak
-Os objetivos são
 
-Está organizado 
+%Na introduçao foram ditos os objetivos. :P
 
-Metodologia utilizada
+\section{Modularização - Classes criadas}
 
+%adicionar imagem do trello final do diagrama
+
+\pagebreak
+\section{Bases de dados}
+
+\subsection{CacheBase}
+\subsection{UserBase}
+
+
+\pagebreak
+\section{Programa Principal e Main}
+\quad Na classe GeocachingPOO estão as chamadas de todos os métodos existentes em todas as classes que permitem uma interação a nivel de Objetos.
+
+\par No Main estão todos os Menus e toda a interação I/O entre o utilizador e o nosso programa.Com isto permitimos que o nosso programa possa ser implementado com outras Interfaces Gráficas, nomeadamente para a web, etc. ... 
+
+\pagebreak
+\section{Tratamento de Excepções}
+\quad Decidimos colocar todas as excepções num package chamado Exceptions para uma melhor visualização das classes e clareza no diagrama.
+Para todas as classes que implementam Excepções 
+fazemos import deste Package e passamos a excepção entre as classes \em throw. Apenas no main é que fazemos o \em catch para poder imprimir a devida mensagem de erro criada.
+
+\pagebreak
 \section{Conclusão}
 
 
+
+\pagebreak
 \section{}
 \subsection{}
 \subsubsection{}
