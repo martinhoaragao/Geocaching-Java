@@ -16,6 +16,7 @@ public class MicroCache extends Cache implements Serializable
      */
     public MicroCache () {
         super();
+        this.setTreasure(null); 
      }
 
     /**

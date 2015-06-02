@@ -18,7 +18,7 @@ public abstract class Cache implements Serializable {
     private String mail;                // Cache owner mail
     private ArrayList<String> registry;  // registration of the cache / Record book / Registry
     private ArrayList<Treasure> treasure;  // Cache treasure
-    private ArrayList<String> info;    // Cache info
+    private String info;    // Cache info
 
     // Constructors
 
@@ -28,10 +28,10 @@ public abstract class Cache implements Serializable {
     public Cache () {
        this.id = 0.0;
        this.coords = new Coordinates();
-       this.mail = "";
+       this.mail = new String();
        this.registry = new ArrayList<String>();
        this.treasure = new ArrayList<Treasure>();
-       this.info = new ArrayList<String>();
+       this.info = new String();
      }
 
     /**
@@ -46,7 +46,7 @@ public abstract class Cache implements Serializable {
         this.mail = mail;
         this.registry = new ArrayList<String>();
         this.treasure = new ArrayList<Treasure>();
-        this.info = new ArrayList<String>();
+        this.info = new String();
     }
 
     /**
@@ -111,12 +111,8 @@ public abstract class Cache implements Serializable {
     /**
      *  @return Information of a cache
      */
-    public ArrayList<String> getInfo () {
-        ArrayList<String> info = new ArrayList<String>();
-
-        for(String aux : this.info)
-            info.add(aux);
-        return info;
+    public String getInfo () {
+        return this.info;
     }
 
     // Setters
@@ -159,6 +155,27 @@ public abstract class Cache implements Serializable {
         this.registry = newRegistry;
     }
 
+    /**
+     * Set list of treasures
+     * @arg treasure, ArrayList of Treasures
+     */
+    public void setTreasure (ArrayList<Treasure> treasure) {
+        ArrayList<Treasure> newTreasure = new ArrayList<Treasure>();
+
+        for(Treasure aux : treasure)
+            newTreasure.add(aux);
+
+        this.treasure = newTreasure;
+    }
+
+    /**
+     * Set cache's information
+     * @arg info, String
+     */
+    public void setInfo (String info) {
+        this.info = info;
+    }
+
     // toString, equals, clone
 
     /**
@@ -169,6 +186,7 @@ public abstract class Cache implements Serializable {
         sb.append("Id: " + this.id.intValue() + " | ");
         sb.append(this.coords.toString());
         sb.append(" , created by: " + this.mail + "\n");
+        sb.append(" More info: " + this.info + "\n");
 
         return sb.toString();
     }
