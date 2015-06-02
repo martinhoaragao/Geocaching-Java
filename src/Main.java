@@ -113,7 +113,6 @@ public class Main implements Serializable {
       clean();
       try {
         System.out.println(gc.getUserInfo());
-        System.out.println(gc.getUserInfo());
         System.out.println("1: Change Password");
         System.out.println("2: Change Name");
         System.out.println("3: Change Address");
