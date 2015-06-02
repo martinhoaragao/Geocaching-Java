@@ -38,7 +38,8 @@ public class CacheBase implements Serializable {
 
     // Getters
 
-    /** @return ArrayList with all the caches in the CacheBase */
+    /** @return ArrayList with all the caches in the CacheBase, if
+     *  the User hasn't created any cache, the arraylist will be empty */
     public ArrayList<Cache> getAllCaches () {
       ArrayList<Cache> ts = new ArrayList<Cache>();
 

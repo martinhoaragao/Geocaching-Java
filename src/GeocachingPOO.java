@@ -23,6 +23,7 @@ import java.security.NoSuchAlgorithmException;
 import java.io.Console;
 import java.io.Serializable;
 import java.io.IOException;
+import Exceptions.*;
 
 public class GeocachingPOO implements Serializable {
     private static Double id;            // User ID
@@ -348,47 +349,28 @@ public class GeocachingPOO implements Serializable {
         return cachebase.getAllCaches();
     }
 
-    /* ------------------------- ADMINS ------------------------*
+    /** @return ArrayList with all the caches created by a given user */
+    public ArrayList<Cache> getUserCaches () {
+        ArrayList<Cache> caches = cachebase.getCaches(user.getId());
 
-
-    /** Create a new Admin if the logged in admin has permissions to do so
-     *  @param new_admin Admin to be added */
-    public void createAdmin (Admin new_admin) throws IllegalStateException, IllegalArgumentException, NullPointerException {
-        if (new_admin == null)
-            throw new NullPointerException("new_admin can't be null");
-
-        new_admin.setId(idAdmin);
-        userbase.addAdmin(new_admin);
-        idAdmin++;
+        if (caches != null) return caches;
+        else return null;
     }
 
-    /** Delete an admin if the logged in user has permissions
-     *  @param mail Mail of the admin to be deleted */
-    public void deleteAdmin (String mail) throws IllegalStateException {
-        if (this.admin.getPermi() != 2)
-            throw new IllegalStateException("You have no permissions.");
-
-        userbase.removeAdmin(mail);
-    }
-
-    /** Delete user given it's e-mail
-     *  @param mail User e-mail */
-    public void deleteUser (String mail) throws IllegalStateException, IllegalArgumentException {
-        if (admin.getPermi() < 1)
-            throw new IllegalStateException("You lack permission.");
-
-        userbase.removeUser(mail);
-    }
-
-    private static void listUsers () {
-        System.out.println (userbase.toString());
-    }
-
-    /** Create a new cache associated to the currently logged in User
+     /** Create a new cache associated to the currently logged in User
      *  @param type Cache type. 1: Traditional, 2: MultiCache, 3: MicroCache, 4: MysteryCache
      *  @param coord The cache coordinates */
-    public static void createCache (int type, Coordinates coord) throws IllegalStateException, NullPointerException, IllegalArgumentException {
+
+    /** Create a Cache
+     *  @param type The Cache type, 1 - Traditional Cache, 2 - MultiCache,
+     *  3 - MicroCache, 4 - MisteryCache
+     *  @param coord The Cache Coordinates
+     */
+    public static void createCache (int type, Coordinates coord) throws IllegalStateException, NullPointerException, IllegalArgumentException, NoUserLoggedInException {
         Cache cache;
+
+        if (user == null)
+            throw new NoUserLoggedInException("Ther is no User logged in.");
 
         switch (type) {
             case 1: cache = new TraditionalCache(idcache, coord, user.getMail());   break;
@@ -407,19 +389,55 @@ public class GeocachingPOO implements Serializable {
         }
     }
 
-    /** @return ArrayList with all the caches created by a given user */
-    public ArrayList<Cache> getUserCaches () {
-        ArrayList<Cache> caches = cachebase.getCaches(user.getId());
-
-        if (caches != null) return caches;
-        else return null;
-    }
-
-    /** Invalidate (Delete) a Cache
+    /** Invalidate (Delete) a Cache, if a User is logged in he can only delete caches
+     *  created by him, an Admin can delete any Cache
      *  @param id The cache ID
      */
-    public void invalidateCache (Double id) throws IllegalArgumentException {
-        cachebase.invalidateCache(id);
+    public void invalidateCache (Double id) throws IllegalArgumentException, NoUserLoggedInException {
+        if (user != null && admin == null)      /* Invalidate as User */
+            cachebase.invalidateCache(id, user);
+        else if (user == null && admin != null) /* Invalidate as Admin */
+            cachebase.invalidateCache(id);
+        else
+            throw new NoUserLoggedInException("There is no Admin Logged in.");
+    }
+
+    /* ------------------------- ADMIN ------------------------*
+
+
+    /** Create a new Admin if the logged in admin has permissions to do so
+     *  @param new_admin Admin to be added */
+    public void createAdmin (Admin new_admin) throws IllegalStateException, IllegalArgumentException, NullPointerException, NoAdminLoggedInException {
+        if (new_admin == null)
+            throw new NullPointerException("new_admin can't be null");
+        if (admin == null)
+            throw new NoAdminLoggedInException("There is no admin logged in.");
+
+        new_admin.setId(idAdmin);
+        userbase.addAdmin(new_admin);
+        idAdmin++;
+    }
+
+    /** Delete an admin if the logged in user has permissions
+     *  @param mail Mail of the admin to be deleted */
+    public void deleteAdmin (String mail) throws IllegalStateException, NoAdminLoggedInException {
+        if (this.admin.getPermi() != 2)
+            throw new IllegalStateException("You have no permissions.");
+        if (admin == null)
+            throw new NoAdminLoggedInException("There is no Admin logged in.");
+
+        userbase.removeAdmin(mail);
+    }
+
+    /** Delete user given it's e-mail
+     *  @param mail User e-mail */
+    public void deleteUser (String mail) throws IllegalStateException, IllegalArgumentException, NoAdminLoggedInException {
+        if (admin.getPermi() < 1)
+            throw new IllegalStateException("You lack permission.");
+        if (admin == null)
+            throw new NoAdminLoggedInException("There is no Admin Logged in.");
+
+        userbase.removeUser(mail);
     }
 
     /* ----------------------- STATISTICS -----------------*/
@@ -471,6 +489,8 @@ public class GeocachingPOO implements Serializable {
 
     /* -------------- APPLICATION STATE ---------------------*/
 
+    /** Method which defines what will be written by the
+     *  ObjectOutputStream */
     private void writeObject (java.io.ObjectOutputStream stream)
      throws IOException {
         stream.writeObject(id);
@@ -483,6 +503,8 @@ public class GeocachingPOO implements Serializable {
         stream.writeObject(cache);
      }
 
+    /** Method which defines what will be read by the
+     *  ObjectInputStream */
     private void readObject (java.io.ObjectInputStream stream)
      throws IOException, ClassNotFoundException {
         id = (Double) stream.readObject();
@@ -494,9 +516,9 @@ public class GeocachingPOO implements Serializable {
         idcache = (Double) stream.readObject();
         cache = (Cache) stream.readObject();
      }
-     
+
      /*TODO method named to "Look For Caches" */
-    
+
     /*TODO toString equals clone*/
 
 }
