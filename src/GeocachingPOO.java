@@ -447,5 +447,8 @@ public class GeocachingPOO implements Serializable {
         idcache = (Double) stream.readObject();
         cache = (Cache) stream.readObject();
      }
+     
+    
+    /*TODO toString equals clone*/
 
 }

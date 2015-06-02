@@ -16,7 +16,7 @@ public class CacheBase implements Serializable {
     private TreeMap<Double, ArrayList<Double>> owners;  /* Map between user id and cache id */
     private TreeMap<Double, ArrayList<Report>> reported_caches;    /* Reported caches */
     private TreeMap<Coordinates, Double> coords; /* Map between coordinates and caches ids */
-
+    
     /** Unparameterized constructor */
     public CacheBase () {
         this.caches = new ArrayList<Cache>();
@@ -35,7 +35,7 @@ public class CacheBase implements Serializable {
         this.reported_caches = cbase.getAllReports();
         this.coords = cbase.getCoords();
     }
-
+    
     // Getters
 
     /** @return ArrayList with all the caches in the CacheBase */
@@ -256,4 +256,16 @@ public class CacheBase implements Serializable {
     public void delReport(Double id){
         this.reported_caches.remove(id);
     }
+    
+     /**
+     * @return TreeSet with comparator implemented to Look for caches
+     * comparing the distance, given the local user coordinates.
+     * 
+     */
+    /*public TreeSet<Cache> getTreeOrderedByDistance(Coordinates ){
+        TreeSet<Cache> set = new TreeSet<>();
+            
+        
+        
+    }*/
 }

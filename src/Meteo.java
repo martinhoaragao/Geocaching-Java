@@ -9,6 +9,8 @@ import java.util.Random;
 public class Meteo{
     
     private int temperature; 
+    
+    
     private int weather;
 
     private static int limit_points = 20;
@@ -28,7 +30,9 @@ public class Meteo{
         int High = 40;
         int R;
         double probability = new Random().nextDouble();
-        /* 5% of time it prints between -10 and 0
+        /* 
+         * for instance
+         * 5% of time it prints between -10 and 0
          * 10% of time it prints between 35 and 40
          * 15% of time it prints between 30 and 40
          * 30% of time it prints between 21 and 25
