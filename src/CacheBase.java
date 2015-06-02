@@ -40,13 +40,10 @@ public class CacheBase implements Serializable {
 
     /** @return ArrayList with all the caches in the CacheBase */
     public ArrayList<Cache> getAllCaches () {
-        ArrayList<Cache> ts = new ArrayList<Cache>();
-        Iterator it = this.caches.iterator();
+      ArrayList<Cache> ts = new ArrayList<Cache>();
 
-        while (it.hasNext()) {
-            Cache cache = (Cache) it.next();
-            ts.add(cache.clone());
-        }
+      for (Cache cache : this.caches)
+        if (cache != null) ts.add(cache.clone());
 
         return ts;
     }
@@ -79,7 +76,7 @@ public class CacheBase implements Serializable {
     }
 
     /** Get caches given a user id
-     * @param id User id
+     *  @param id User id
      */
     public ArrayList<Cache> getCaches (Double id) {
         ArrayList<Double> caches_ids = this.owners.get(id);
@@ -89,10 +86,13 @@ public class CacheBase implements Serializable {
             return null;
         else {
             for (Double c_id : caches_ids) {
-                user_caches.add(caches.get(c_id.intValue() - 1));
+                Cache cache = this.caches.get(c_id.intValue() - 1);
+                if (cache != null) user_caches.add(cache);
             }
         }
 
+        /* All user caches were already deleted */
+        if (user_caches.size() == 0) return null;
         return user_caches;
     }
 
@@ -208,7 +208,6 @@ public class CacheBase implements Serializable {
         return comp;
     }
 
-    // Code to invalidate a cache
     /** Invalidate (delete) a cache if the owner wants so
      * @param id Cache Id
      * @param user Owner of the cache
@@ -217,6 +216,23 @@ public class CacheBase implements Serializable {
         if (this.getCache(id).getMail().equals(user.getMail()))
             delCache(id);
     }
+
+    /** Invalidate (delete) a cache
+     *  @param id Cache id
+     */
+    public void invalidateCache (Double id) throws IllegalArgumentException {
+      Cache cache = null;
+      if (id.intValue() > this.caches.size())
+        throw new IllegalArgumentException("No Cache with the given id.");
+      cache = this.caches.get(id.intValue() - 1);
+      if (cache == null)
+        throw new IllegalArgumentException("No Cache with the given id.");
+
+      this.caches.set(id.intValue() - 1, null);
+      this.reported_caches.remove(id.intValue());
+      this.coords.remove(cache.getCoords());
+    }
+
 
     // Code for reported caches
     /** Add a report
@@ -260,10 +276,10 @@ public class CacheBase implements Serializable {
     /**
      * This method works with the coordinates of every cache present in the arraylist of cachebase and the coordinates that the user types in everytime
      * he calls the method to "Look for caches".
-     * 
+     *
      * @return TreeMap with Caches orderer by distance from user location
      * @param receives the coordinates of a given User.
-     * 
+     *
      */
     public TreeMap<Double, ArrayList<Cache>> getTreeOrderedByDistance(Coordinates localuser, double range){
         TreeMap<Double, ArrayList<Cache>> map = new TreeMap<>();
@@ -289,24 +305,24 @@ public class CacheBase implements Serializable {
                     ArrayList<Cache> thislist = map.get(distanceaux);
                     //returns the arraylist of that distance
                     thislist.add(cachetoadd);
-                    //Not necessary to put again, because get 
-                } 
+                    //Not necessary to put again, because get
+                }
             }
         }
-        
+
             /*
              * Imprime o map
                */
           for( ArrayList<Cache> listss : map.values() ){
                 for(Cache c : listss){
-                    
+
                     System.out.println( c.getCoords().getCoordinatesDist(localuser) +c.toString());
                 }
             }
-        
+
         return map;
     }
-    
-    
-    
+
+
+
 }

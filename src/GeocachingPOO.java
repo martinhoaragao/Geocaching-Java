@@ -48,7 +48,7 @@ public class GeocachingPOO implements Serializable {
         Admin ad = new Admin("grupoajm@gmail.com", "Alhpa", "AdminAdmin", 1.0, 2);
         this.userbase.addAdmin(ad);
     }
-    
+
 
     /** Logout the User from the application */
     public void logout () {
@@ -62,10 +62,10 @@ public class GeocachingPOO implements Serializable {
      * @param u User to be added
      */
     public void register (NormalUser u) throws EmailAlreadyInUseException, IdAlreadyAssignedException {
-        
-        
+
+
         userbase.addUser(u);
-        
+
         this.id++;
     }
 
@@ -407,12 +407,19 @@ public class GeocachingPOO implements Serializable {
         }
     }
 
-    /** Auxiliary function to show the logged in user caches */
+    /** @return ArrayList with all the caches created by a given user */
     public ArrayList<Cache> getUserCaches () {
         ArrayList<Cache> caches = cachebase.getCaches(user.getId());
 
         if (caches != null) return caches;
         else return null;
+    }
+
+    /** Invalidate (Delete) a Cache
+     *  @param id The cache ID
+     */
+    public void invalidateCache (Double id) throws IllegalArgumentException {
+        cachebase.invalidateCache(id);
     }
 
     /* ----------------------- STATISTICS -----------------*/

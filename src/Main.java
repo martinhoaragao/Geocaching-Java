@@ -62,7 +62,7 @@ public class Main implements Serializable {
         adminMenu();
 
         switch (sc.nextInt()) {
-          case 1: displayReports();     break;
+          case 1: reporstMenu();        break;
           case 2: displayUsersAdmins(); break;
           case 3: displayAllCaches();   break;
           case 4: deleteUser();         break;
@@ -198,28 +198,45 @@ public class Main implements Serializable {
 
   //TODO TEST MENU STATISTIC RELATED
 
-  /** Auxiliary function to display Statistics Menu */
-  private static void mystatsMenu(){
+  /** Auxiliary function to display and control Reporsts Menu for Admin */
+  private static void reporstMenu () {
     Scanner sc = new Scanner(System.in);
     boolean done = false;
 
     while (!done) {
       clean();
-      System.out.println("1. Global Stats");
-      System.out.println("2. Mensal Stats");
-      System.out.println("3. Statistics of a given month");
-      System.out.println("4: Leave cache menu");
+
+      displayReports();
+
+      System.out.println("1: Invalidate a cache");
+      System.out.println("2: Go back to Menu");
 
       switch (sc.nextInt()) {
-        case 1: displayGlobalStats();  break;
-        case 2: displayMensalStats();  break;
-        case 3: displayaMonthStats();  break;
-        case 4: done = true;    break;
+        case 1: invalidateCache();  break;
+        case 2: done = true;        break;
         default: break;
       }
     }
+  }
 
 
+  /** Auxiliary function to display Statistics Menu */
+  private static void mystatsMenu() {
+    Scanner sc    = new Scanner(System.in);
+    boolean done  = false;
+
+    System.out.println("1. Global Stats");
+    System.out.println("2. Mensal Stats");
+    System.out.println("3. Statistics of a given month");
+    System.out.println("4: Leave cache menu");
+
+    switch (sc.nextInt()) {
+      case 1: displayGlobalStats();  break;
+      case 2: displayMensalStats();  break;
+      case 3: displayaMonthStats();  break;
+      case 4: done = true;    break;
+      default: break;
+    }
   }
 
   /* ----------------------- REGISTER & LOGIN ----------------------*/
@@ -544,7 +561,6 @@ public class Main implements Serializable {
         for (Report rep : tm.get(id))
           System.out.println(rep.toString());
     }
-    if (console != null) console.readLine();
   }
 
   /* ------------------------- FRIENDS -------------------------*/
@@ -666,7 +682,7 @@ public class Main implements Serializable {
     Scanner sc = new Scanner(System.in);
     int year = sc.nextInt();
     if(year == 0){
-      year = gc.getCurrentYear(); //returns the current year function present in normaluser and passed/available in geocaching 
+      year = gc.getCurrentYear(); //returns the current year function present in normaluser and passed/available in geocaching
     }
 
      System.out.println(gc.getSTATSGlobal(year));
@@ -678,8 +694,8 @@ public class Main implements Serializable {
       int month = sc.nextInt();
 
       int year = gc.getCurrentYear();
-      System.out.println(gc.getSTATS_Month(month));     
-  } 
+      System.out.println(gc.getSTATS_Month(month));
+  }
 
   /* -------------------- ADMIN --------------------------------*/
 
@@ -788,6 +804,25 @@ public class Main implements Serializable {
     } catch (Exception e) {
       System.out.println("Error: " + e.getMessage());
     }
+    if (console != null) console.readLine();
+  }
+
+  /** Auxiliary function to invalidate a Cache */
+  private static void invalidateCache () {
+    Scanner sc = new Scanner(System.in);
+    Double id;
+
+    clean();
+    System.out.print("Cache id: ");
+    id = sc.nextDouble();
+
+    try {
+      gc.invalidateCache(id);
+      System.out.println("Cache deleted successfully.");
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+    }
+
     if (console != null) console.readLine();
   }
 
