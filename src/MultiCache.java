@@ -11,8 +11,8 @@ import java.io.Serializable;
 
 public class MultiCache extends Cache implements Serializable
 {
-    private ArrayList<Coordinates> locals;
-    private int stage; //Indicates the local where
+    private ArrayList<Coordinates> locals; // Last coordinate has the treasure
+    private int stage; //Indicates at which position the user is
 
     // Constructors
 
