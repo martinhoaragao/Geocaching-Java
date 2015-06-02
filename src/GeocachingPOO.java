@@ -56,32 +56,6 @@ public class GeocachingPOO implements Serializable {
         this.admin = null;
     }
 
-    /* ----------------- MENUS ----------------- */
-
-    /**Menu 1. Personal Info + Change Personal Info after this */
-    private static void personalInfo(){
-        int escolha = subpersonalInfo();
-        switch (escolha) {
-
-            default: break;
-        }
-    }
-
-    /** SubMenu PersonalInfo */
-    private static int subpersonalInfo(){
-        Scanner sc = new Scanner(System.in);
-
-        printInfo();
-        System.out.println("1: Change Password");
-        System.out.println("2: Change Name");
-        System.out.println("3: Change Address");
-        System.out.println("4: Change Birthdate");
-        System.out.println("5: Change Gender");
-        System.out.println("6: Return menu");
-
-        return sc.nextInt();
-    }
-
     /* ------------------- REGISTER & LOGIN --------------------- */
 
     /** Add a user to the user base
@@ -123,9 +97,9 @@ public class GeocachingPOO implements Serializable {
     }
 
     /** @return User toString() result if a user is logged in */
-    public String getUserInfo () throws IllegalStateException {
+    public String getUserInfo () throws NoUserLoggedInException {
         if (user == null)
-            throw new IllegalStateException("No user is logged in.");
+            throw new NoUserLoggedInException("No user is logged in.");
         else return user.toString();
     }
 
@@ -133,7 +107,9 @@ public class GeocachingPOO implements Serializable {
      *  logged in user
      *  @param pass Password to be compared
      *  @return true if the password matches, false otherwise */
-    public boolean confirmPass (String pass) {
+    public boolean confirmPass (String pass) throws NoUserLoggedInException {
+        if (user == null)
+            throw new NoUserLoggedInException("No user logged in.");
         return user.confirmPass(pass);
     }
 
@@ -141,9 +117,11 @@ public class GeocachingPOO implements Serializable {
      *  @arg currentpass    The Current Password
      *  @arg newpass        New password
      */
-    public void changePassword (String currentpass, String newpass) throws IllegalArgumentException, NullPointerException {
+    public void changePassword (String currentpass, String newpass) throws IllegalArgumentException, NullPointerException, NoUserLoggedInException {
         if ((currentpass == null) || (newpass == null))
             throw new NullPointerException("Arguments can't be null!");
+        if (user == null)
+            throw new NoUserLoggedInException("No User logged in.");
 
         if (this.confirmPass(currentpass))
             user.setPass(newpass);
@@ -153,30 +131,44 @@ public class GeocachingPOO implements Serializable {
 
     /** Change logged in User Name
      *  @param name New name for the user */
-    public static void changeName (String name) throws NullPointerException, IllegalStateException {
+    public static void changeName (String name) throws NullPointerException, NoUserLoggedInException {
+        if (user == null)
+            throw new NoUserLoggedInException("No user logged in.");
+        if (name == null)
+            throw new NullPointerException("name can't be null.");
         user.setName(name);
     }
 
     /** Change logged in User Adrress
      *  @param address The new Address */
-    public static void changeAddress (Address address) throws NullPointerException {
+    public static void changeAddress (Address address) throws NullPointerException, NoUserLoggedInException {
+        if (user == null)
+            throw new NoUserLoggedInException();
         user.setAddress(address);
     }
 
     /** Change logged in User Birthdate
      *  @param bdate GregorianCalendar Object with the new bdate */
-    public static void changeBDate (GregorianCalendar bdate) {
+    public static void changeBDate (GregorianCalendar bdate) throws NullPointerException, NoUserLoggedInException {
+        if (user == null)
+            throw new NoUserLoggedInException();
+        if (bdate == null)
+            throw new NullPointerException("bdate can't be null.");
         user.setBDate(bdate);
     }
 
     /** Change logged in User gender
      *  @param gender true for female, false for male */
-    public static void changeGender (boolean gender) {
+    public static void changeGender (boolean gender) throws NoUserLoggedInException {
+        if (user == null)
+          throw new NoUserLoggedInException();
         user.setGender(gender);
     }
 
     /** Auxiliary function to print user information */
-    private static void printInfo () {
+    private static void printInfo () throws NoUserLoggedInException {
+        if (user == null)
+            throw new NullPointerException();
         System.out.println(user.toString());
     }
 
@@ -220,14 +212,21 @@ public class GeocachingPOO implements Serializable {
     /* -------------------- FRIENDS -------------------- */
     /** Send a friend request to a given user
      *  @param mail User mail to send the request */
-    public void sendFriendRequest (String mail) {
+    public void sendFriendRequest (String mail) throws NullPointerException, NoUserLoggedInException {
+        if (user == null)
+            throw new NoUserLoggedInException();
+        if (mail == null)
+            throw new NullPointerException("mail can't be null.");
         userbase.sendFriendRequest(user.getId(), mail);
     }
 
     /** Auxiliary function to show friend requests */
-    public String getFriendRequests () {
+    public String getFriendRequests () throws NoUserLoggedInException {
         ArrayList<Double> requests = user.getFriendRequests();
         StringBuilder sb = new StringBuilder();
+
+        if (user == null)
+            throw new NoUserLoggedInException();
 
         if (requests.size() == 0)
             return null;
@@ -242,10 +241,13 @@ public class GeocachingPOO implements Serializable {
     }
 
     /** Auxiliary function to show friends */
-    public String getFriends () {
+    public String getFriends () throws NoUserLoggedInException {
         User u;
         ArrayList<Double> friends = user.getFriends();
         StringBuilder sb = new StringBuilder();
+
+        if (user == null)
+            throw new NoUserLoggedInException();
 
         if (friends.size() == 0)
             sb.append("You have no friends yet.");
@@ -261,23 +263,30 @@ public class GeocachingPOO implements Serializable {
 
     /** Accept friend request
      *  @param mail User that sent the request */
-    public static void acceptFriendRequest (String mail) throws NullPointerException, IllegalArgumentException {
+    public static void acceptFriendRequest (String mail) throws NullPointerException, IllegalArgumentException, NoUserLoggedInException {
+        if (user == null)
+            throw new NoUserLoggedInException();
         userbase.acceptFriendRequest(user.getId(), mail);
     }
 
     /* ------------------- ACTIVITIES -------------------------*/
 
     /** @return ArrayList with user 10 last activities */
-    public ArrayList<Activity> getLastActivities () {
+    public ArrayList<Activity> getLastActivities () throws NoUserLoggedInException {
+        if (user == null)
+            throw new NoUserLoggedInException();
         return user.getLastActivities();
     }
 
     /** Auxiliary function to display friend 10 last activities */
-    private static void showFriendActivities () {
+    private static void showFriendActivities () throws NoUserLoggedInException {
         ArrayList<Double> friends = user.getFriends();
         Scanner sc = new Scanner(System.in);
         NormalUser friend; String mail; Iterator it;
         ArrayList<Activity> acts;
+
+        if (user == null)
+            throw new NoUserLoggedInException();
 
         // Get friend e-mail
         System.out.print("Friend e-mail: ");
@@ -301,8 +310,11 @@ public class GeocachingPOO implements Serializable {
     /** Add a activity to the currently logged in user
      *  @param act  Activity to be added
      *  @param id   Id of the found cache */
-    public void addActivity (Activity act, Double id) throws IllegalArgumentException, NullPointerException, NotAddedActivityYearIncorrectException {
+    public void addActivity (Activity act, Double id) throws IllegalArgumentException, NullPointerException, NotAddedActivityYearIncorrectException, NoUserLoggedInException {
         Cache cache = cachebase.getCache(id);
+
+        if (user == null)
+            throw new NoUserLoggedInException();
 
         if (cache == null)
             throw new IllegalArgumentException("No cache with the given id.");
@@ -316,27 +328,19 @@ public class GeocachingPOO implements Serializable {
 
     /** Report a cache
      *  @param rep The report to be added */
-    public void reportCache (Report rep) throws NullPointerException {
+    public void reportCache (Report rep) throws NullPointerException, NoUserLoggedInException {
+        if (user == null)
+            throw new NoUserLoggedInException();
         rep.setMail(user.getMail());
         cachebase.addReport(rep);
     }
 
     /** Get all reports from the CacheBase */
-    public TreeMap<Double, ArrayList<Report>> getAllReports (){
+    public TreeMap<Double, ArrayList<Report>> getAllReports () throws NoUserLoggedInException {
+        if (admin == null)
+            throw new NoUserLoggedInException("No admin logged in.");
+
         return cachebase.getAllReports();
-    }
-
-    /**Menu pints */
-    public static int CacheMenuaux(){
-        Scanner sc = new Scanner(System.in);
-
-        System.out.println("1. Report one cache ");
-        System.out.println("2. See treasures of a cache");
-        System.out.println("3. Show registry book of a cache");
-        System.out.println("4. Show other details of a cache");
-        System.out.println("5. Leave cache menu");
-        System.out.println("6. Show all caches again");
-        return sc.nextInt();
     }
 
     /** @return ArrayList with clone of all of the caches */
@@ -380,110 +384,6 @@ public class GeocachingPOO implements Serializable {
         System.out.println (userbase.toString());
     }
 
-    /**
-     * Auxiliary function: Menu Option for Admin: Show all reported caches to perform menu options shown in the menuAdminReports()
-     */
-
-    /*private static void AdminReportsMenu () {
-        double n; int u;
-        Scanner sc = new Scanner(System.in);
-        TreeMap<Double, ArrayList<Report>> reps = cachebase.getAllReports();
-
-        System.out.println("Want to display ID's and report messages? [y/n]");
-        if(!sc.nextLine().toUpperCase().contains("Y") ){
-
-            for (Double id : reps.keySet()) {
-                for (Report r : reps.get(id)) {
-                    System.out.println("| ID : " + r.getId() + "| " );
-                }
-            }
-
-            u = menuAdminReports();
-        }
-        else{
-            showAllReports(); //shows id and message
-
-            u = menuAdminReports();
-
-        }
-
-        while(u != 4){ //4 is the menu option to leave
-
-            switch (u){
-                case 1:
-                System.out.println("Type the cache id to delete");
-                n = sc.nextDouble();
-                cachebase.delCache(n);
-
-                System.out.println("Type 0 to return to Admin Reports Menu");
-                if(u==0)
-                    u = menuAdminReports();
-                break;
-
-                case 2:
-                System.out.println("Type the report id to delete");
-                n = sc.nextDouble();
-                cachebase.delReport(n);
-
-                System.out.println("Type 0 to return to Admin Reports Menu");
-                if(u==0)
-                    u = menuAdminReports();
-                break;
-
-                case 3:
-
-                System.out.println("Type 0 to return to Admin Reports Menu");
-                if(u==0)
-                    u = menuAdminReports();
-                break;
-
-                default:
-                break;
-            }
-
-            /*
-             *  * 3. Show details of a cache.
-             * (Sub-Menu)
-             * 3.1 Delete this cache.
-             * 3.2 Detele this report and maintain this cache.
-             * 3.3 Return to show all reported caches
-             *
-             *
-             * faltam estes menus mas nao acho que sejam mesmo necessários...
-             * ele vê os ids e as mensagens, para que quer saber de quem as fez ou que?
-             * é-lhe igual...
-             * e iso de mostrar mais detalhes do report só ia acrescentar ao email.
-             */
-        /*}
-
-        System.out.println("Type the ID of the cache to see details: (0 to leave)");
-        if ((n = sc.nextDouble()) != 0) {
-            for (Report rep : reps.get(n)) {
-                System.out.println(rep.getMessage());
-            }
-        }
-    }  */
-
-    /**
-     * Aux menu prints
-     * 1. Delete one cache.
-     * 2. Delete one report.
-     * 3. Show details of a cache.
-     * (Sub-Menu)
-     * 3.1 Delete this cache.
-     * 3.2 Detele this report and maintain this cache.
-     * 3.3 Return to show all reported caches
-     */
-    private static int menuAdminReports(){
-        Scanner sc = new Scanner(System.in);
-        System.out.println("----------");
-        System.out.println("1. Approve report and delete cache");
-        System.out.println("2. Delete report and mantain cache");
-        System.out.println("3. Show details of a report");
-        System.out.println("4. Leave");
-        return sc.nextInt();
-    }
-
     /** Create a new cache associated to the currently logged in User
      *  @param type Cache type. 1: Traditional, 2: MultiCache, 3: MicroCache, 4: MysteryCache
      *  @param coord The cache coordinates */
@@ -507,16 +407,6 @@ public class GeocachingPOO implements Serializable {
         }
     }
 
-    /** Menu option 4. See Caches */
-    private static void showCaches () {
-        ArrayList<Cache> caches = cachebase.getAllCaches();
-
-        for (Cache c : caches)
-            System.out.println(c.toString());
-
-        if (c != null) c.readLine();
-    }
-
     /** Auxiliary function to show the logged in user caches */
     public ArrayList<Cache> getUserCaches () {
         ArrayList<Cache> caches = cachebase.getCaches(user.getId());
@@ -526,15 +416,6 @@ public class GeocachingPOO implements Serializable {
     }
 
     /* ----------------------- STATISTICS -----------------*/
-    //TODO  statistics year falta
-    /** Menu option 5. Show My Statistics*/
-    private static void showStatistics() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("My total points: " + user.getPoints());
-        System.out.println("1. See my Month Statistics");
-        if (sc.nextInt()==1)
-        System.out.println(user.getStatistics().toString());
-    }
 
     /** @return Current User id */
     public Double getCurrentUserId () {
