@@ -119,9 +119,9 @@ public abstract class Cache implements Serializable {
 
     /**
      * Set cache ID
-     * @arg id, String cache identifier
+     * @arg id, Double cache identifier
      */
-    public void setId (double id) {
+    public void setId (Double id) {
         this.id = id;
     }
 

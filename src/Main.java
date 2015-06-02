@@ -593,7 +593,7 @@ public class Main implements Serializable {
         clean();
         System.out.print("Date: "); act.setDate(typebdate());
         System.out.print("Cache id: "); id = sc.nextDouble();
-        System.out.print("Kilomteres covered: "); act.setKms(sc.nextDouble());
+        System.out.print("Kilometeres covered: "); act.setKms(sc.nextDouble());
         /* TODO: Change the way points are added */
         act.setPoints(20);
 
