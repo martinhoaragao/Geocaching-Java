@@ -8,7 +8,7 @@ import java.util.GregorianCalendar;
 import java.io.Serializable;
 
 public class Activity implements Serializable {
-    private GregorianCalendar date; // Acitivity date
+    private GregorianCalendar date; // Activity date
     private Cache cache;            // Cache found on this activity
     private Double kms;             // Kilometers covered
     private int points;             // Each activity gives points to the User.
