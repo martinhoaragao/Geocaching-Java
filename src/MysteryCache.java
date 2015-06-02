@@ -26,13 +26,15 @@ public class MysteryCache extends Cache implements Serializable
 
     /**
      * Constructor of new MysteryCache
-     * @arg id double cache identifier
-     * @arg coord Coordinates
-     * @arg mail String e-mail of owner
+     * @param id        Cache identifier
+     * @param coord     Coordinates
+     * @param mail      String e-mail of owner
+     * @param question  Question for Puzzle
+     * @param answer    Answer for Puzzle
      */
-    public MysteryCache (double id, Coordinates coords, String mail) {
+    public MysteryCache (double id, Coordinates coords, String mail, String question, String answer) {
         super(id, coords, mail);
-        this.puzzle = new Puzzle();
+        this.puzzle = new Puzzle(question, answer, coords);
     }
 
     /**

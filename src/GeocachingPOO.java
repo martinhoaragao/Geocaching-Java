@@ -357,26 +357,29 @@ public class GeocachingPOO implements Serializable {
         else return null;
     }
 
-     /** Create a new cache associated to the currently logged in User
-     *  @param type Cache type. 1: Traditional, 2: MultiCache, 3: MicroCache, 4: MysteryCache
-     *  @param coord The cache coordinates */
-
     /** Create a Cache
      *  @param type The Cache type, 1 - Traditional Cache, 2 - MultiCache,
      *  3 - MicroCache, 4 - MisteryCache
-     *  @param coord The Cache Coordinates
+     *  @param coords ArrayList with Coordinates, only the first one will be used
+     *  except for MultiCache
+     *  @param question Question for Mystery Cache
+     *  @param answer   Answer for Mystery Cache
      */
-    public static void createCache (int type, Coordinates coord) throws IllegalStateException, NullPointerException, IllegalArgumentException, NoUserLoggedInException {
+    public static void createCache (int type, ArrayList<Coordinates> coords, String answer, String question) throws IllegalStateException, NullPointerException, IllegalArgumentException, NoUserLoggedInException {
         Cache cache;
 
         if (user == null)
             throw new NoUserLoggedInException("Ther is no User logged in.");
 
         switch (type) {
-            case 1: cache = new TraditionalCache(idcache, coord, user.getMail());   break;
-            case 2: cache = new MultiCache(idcache, coord, user.getMail());         break;
-            case 3: cache = new MicroCache(idcache, coord, user.getMail());         break;
-            case 4: cache = new MysteryCache(idcache, coord, user.getMail());       break;
+            case 1: cache = new TraditionalCache(idcache, coords.get(0), user.getMail());
+                break;
+            case 2: cache = new MultiCache(idcache, coords, user.getMail());
+                break;
+            case 3: cache = new MicroCache(idcache, coords.get(0), user.getMail());
+                break;
+            case 4: cache = new MysteryCache(idcache, coords.get(0), user.getMail(), question, answer);
+                break;
             default:
                 throw new IllegalArgumentException("type must be between 1 and 4.");
         }

@@ -27,26 +27,27 @@ public class MultiCache extends Cache implements Serializable
 
     /**
      * Constructor of new MultiCache
-     * @arg id double cache identifier
-     * @arg coord Coordinates
-     * @arg mail String e-mail of owner
+     * @param id    double cache identifier
+     * @param coord ArrayList of Coordinates
+     * @param mail  String e-mail of owner
      */
-    public MultiCache (double id, Coordinates coords, String mail) {
-        super(id, coords, mail);
-        this.locals = new ArrayList<Coordinates>();
-        this.stage = 0;
+    public MultiCache (double id, ArrayList<Coordinates> coords, String mail) {
+        super(id, coords.get(0), mail);
+        this.locals = coords;
+        this.stage  = 0;
     }
 
     /**
      * CHECK THIS, MAY BE WRONG
      * Construct a MultiCache using another MultiCache as reference
-     * @arg multiCache
+     * @param mc Multicache to clone
      */
-    public MultiCache (MultiCache multiCache) {
-        super(multiCache);
-        for (Coordinates aux : multiCache.locals)
+    public MultiCache (MultiCache mc) {
+        super(mc.getId(), mc.getCoords(), mc.getMail());
+        this.locals = new ArrayList<Coordinates>();
+        for (Coordinates aux : mc.getLocals())
             this.locals.add(aux.clone());
-        this.stage = multiCache.stage;
+        this.stage = mc.getStage();
     }
 
     // Getters

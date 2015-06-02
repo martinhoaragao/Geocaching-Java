@@ -462,34 +462,51 @@ public class Main implements Serializable {
   /** Auxiliary function to create a new Cache */
   private static void createCache () {
     Scanner sc = new Scanner(System.in);
-    Double id, lat, lon;
-    Coordinates coords = null;
-    int type;
+    Double lat, lon;                /* Latitude and Longitude */
+    ArrayList<Coordinates> coords;  /* Coordinates */
+    int type, stages;               /* Cache type and numer of stages for Muticache */
+    String question, answer;        /* For MysteryCache */
 
     clean();
+    coords = new ArrayList<Coordinates>();
+    question = answer = null;
+
     System.out.println("What type of cache do you want to create? (0 to cancel)");
     System.out.println("1: Tradicional");
     System.out.println("2: Multicache");
     System.out.println("3: Microcache");
     System.out.println("4: Mysterycache");
 
-    if ((type = sc.nextInt()) == 0) {
-      System.out.println("Canceling...");
-    } else {
-      System.out.print("Latitude: ");
-      lat = sc.nextDouble();
-      System.out.print("Longitude: ");
-      lon = sc.nextDouble();
-      coords = new Coordinates(lat, lon);
+    type = sc.nextInt();
+    if (type == 2) {                      /* MultiCache */
+      System.out.print("Number of stages: "); stages = sc.nextInt();
+      for (int i = 0; i < stages; i++) {
+        System.out.print("Latitude: ");     lat = sc.nextDouble();
+        System.out.print("Longitude: ");    lon = sc.nextDouble();
+        coords.add(new Coordinates(lat, lon));
+      }
+    } else if (type == 4) {               /* MysteryCache */
+      System.out.print("Latitude: ");   lat = sc.nextDouble();
+      System.out.print("Longitude: ");  lon = sc.nextDouble();
+      sc.nextLine().replaceAll("[\n\r]","");
+      System.out.print("Question: ");   question = sc.nextLine().replaceAll("[\n\r]","");
+      System.out.print("Answer: ");     answer = sc.nextLine().replaceAll("[\n\r]","");
+      coords.add(new Coordinates(lat, lon));
+    } else {                              /* Traditional and Micro Cache */
+      System.out.print("Latitude: ");     lat = sc.nextDouble();
+      System.out.print("Longitude: ");    lon = sc.nextDouble();
+      coords.add(new Coordinates(lat, lon));
     }
 
-    try {
-      gc.createCache(type, coords);
-      System.out.println("sucessfully created cache!");
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
+    if ((type != 0) && (type <= 4)) {
+      try {
+        gc.createCache(type, coords, question, answer);
+        System.out.println("Successfully created cache!");
+      } catch (Exception e) {
+        System.out.println(e.getMessage());
+      }
+      if (console != null) console.readLine();
     }
-    if (console != null) console.readLine();
   }
 
   /** Auxiliary function to repoort a cache */
