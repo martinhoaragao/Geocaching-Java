@@ -27,7 +27,7 @@ public class Meteo{
         int Low = -10;
         int High = 40;
         int R;
-        double probability;
+        double probability = new Random().nextDouble();
         /* 5% of time it prints between -10 and 0
          * 10% of time it prints between 35 and 40
          * 15% of time it prints between 30 and 40
@@ -36,46 +36,46 @@ public class Meteo{
          * 
          */
          
-        if( (probability = new Random().nextDouble() ) <=0.03 ){
+        if( (probability) <=0.03 ){
             System.out.println(probability);
             Low = -10; High = 0;
          R = temperaturer.nextInt(High-Low) + Low;
          System.out.println(R);
         }
-        else if((probability = new Random().nextDouble() ) <=0.05) {
+        else if((probability) <=0.08) {
             System.out.println(probability);
             Low = 1; High = 10;
             R = temperaturer.nextInt(High-Low) + Low;
             System.out.println(R);
         }
-        else if((probability = new Random().nextDouble() ) <=0.13) {
+        else if((probability ) <=0.15) {
             System.out.println(probability);
-            Low = 11; High = 19;
+            Low = 11; High = 16;
             R = temperaturer.nextInt(High-Low) + Low;
             System.out.println(R);
         }
-        else if((probability = new Random().nextDouble() ) <=0.17) {
+        else if((probability) <=0.20) {
             System.out.println(probability);
             Low = 31; High = 40;
             R = temperaturer.nextInt(High-Low) + Low;
             System.out.println(R);
         }
-         else if((probability = new Random().nextDouble() ) <=0.30) {
+         else if((probability) <=0.35) {
             System.out.println(probability);
-            Low = 20; High = 23;
+            Low = 17; High = 19;
             R = temperaturer.nextInt(High-Low) + Low;
             System.out.println(R);
         }
-        else if((probability = new Random().nextDouble() ) <=0.4) {
+        else if((probability = new Random().nextDouble() ) <=0.5) {
             System.out.println(probability);
-            Low = 27; High = 30;
+            Low = 25; High = 30;
             R = temperaturer.nextInt(High-Low) + Low;
             System.out.println(R);
         }
         else{
             //Last probability of 50% chance.
             System.out.println(probability);
-            Low = 24; High = 26;
+            Low = 20; High = 24;
             R = temperaturer.nextInt(High-Low) + Low;
             System.out.println(R);
            
