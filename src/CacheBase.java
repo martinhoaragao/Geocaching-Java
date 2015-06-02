@@ -16,7 +16,7 @@ public class CacheBase implements Serializable {
     private TreeMap<Double, ArrayList<Double>> owners;  /* Map between user id and cache id */
     private TreeMap<Double, ArrayList<Report>> reported_caches;    /* Reported caches */
     private TreeMap<Coordinates, Double> coords; /* Map between coordinates and caches ids */
-    
+
     /** Unparameterized constructor */
     public CacheBase () {
         this.caches = new ArrayList<Cache>();
@@ -35,20 +35,20 @@ public class CacheBase implements Serializable {
         this.reported_caches = cbase.getAllReports();
         this.coords = cbase.getCoords();
     }
-    
+
     // Getters
 
     /** @return ArrayList with all the caches in the CacheBase */
     public ArrayList<Cache> getAllCaches () {
-      ArrayList<Cache> ts = new ArrayList<Cache>();
-      Iterator it = this.caches.iterator();
+        ArrayList<Cache> ts = new ArrayList<Cache>();
+        Iterator it = this.caches.iterator();
 
-      while (it.hasNext()) {
-        Cache cache = (Cache) it.next();
-        ts.add(cache.clone());
-      }
+        while (it.hasNext()) {
+            Cache cache = (Cache) it.next();
+            ts.add(cache.clone());
+        }
 
-      return ts;
+        return ts;
     }
 
     /** @return TreeMap with all the owners relations with caches ids */
@@ -60,15 +60,15 @@ public class CacheBase implements Serializable {
     /** @return TreeMap with all the reports */
     @SuppressWarnings("unchecked")
     public TreeMap<Double, ArrayList<Report>> getAllReports () {
-      TreeMap<Double, ArrayList<Report>> tm = new TreeMap<Double, ArrayList<Report>>();
+        TreeMap<Double, ArrayList<Report>> tm = new TreeMap<Double, ArrayList<Report>>();
 
-      for (Double id : this.reported_caches.keySet()) {
-        tm.put(id, new ArrayList<Report>());
-        for (Report rep : this.reported_caches.get(id)) {
-          tm.get(id).add(rep.clone());
+        for (Double id : this.reported_caches.keySet()) {
+            tm.put(id, new ArrayList<Report>());
+            for (Report rep : this.reported_caches.get(id)) {
+                tm.get(id).add(rep.clone());
+            }
         }
-      }
-      return tm;
+        return tm;
     }
 
     /** @return TreeMap with all the Coordinates used */
@@ -115,15 +115,17 @@ public class CacheBase implements Serializable {
         if ( this.coords.get(cache_coords) != null)
             throw new IllegalStateException("There is already a cache in that location.");
         if (cache == null)
-          throw new NullPointerException("cache can't be null.");
+            throw new NullPointerException("cache can't be null.");
 
         if ( (list = owners.get(id)) == null ) {
             /* First cache created by the user */
             list = new ArrayList<Double>();
             list.add(cache.getId());
             owners.put(id, list);
-            coords.put(cache_coords, id);
+
         } else list.add(cache.getId());
+        coords.put(cache_coords, id);
+
 
         /* !!Should check if it is replacing a cache with same id */
         this.caches.add(cache.getId().intValue() - 1, cache);
@@ -168,10 +170,10 @@ public class CacheBase implements Serializable {
         sb.append(this.caches.size() + " caches are stored.\n");
 
         while (it.hasNext()) {
-          Cache aux = (Cache) it.next();
-          Coordinates coords = aux.getCoords();
-          sb.append("Lat: " + coords.getLat());
-          sb.append(" Lon: " + coords.getLon() + "\n");
+            Cache aux = (Cache) it.next();
+            Coordinates coords = aux.getCoords();
+            sb.append("Lat: " + coords.getLat());
+            sb.append(" Lon: " + coords.getLon() + "\n");
         }
 
         while (it.hasNext()) {
@@ -216,9 +218,7 @@ public class CacheBase implements Serializable {
             delCache(id);
     }
 
-
     // Code for reported caches
-
     /** Add a report
      * @param report The report to be added}
      */
@@ -256,16 +256,57 @@ public class CacheBase implements Serializable {
     public void delReport(Double id){
         this.reported_caches.remove(id);
     }
-    
-     /**
-     * @return TreeSet with comparator implemented to Look for caches
-     * comparing the distance, given the local user coordinates.
+
+    /**
+     * This method works with the coordinates of every cache present in the arraylist of cachebase and the coordinates that the user types in everytime
+     * he calls the method to "Look for caches".
+     * 
+     * @return TreeMap with Caches orderer by distance from user location
+     * @param receives the coordinates of a given User.
      * 
      */
-    /*public TreeSet<Cache> getTreeOrderedByDistance(Coordinates ){
-        TreeSet<Cache> set = new TreeSet<>();
-            
+    public TreeMap<Double, ArrayList<Cache>> getTreeOrderedByDistance(Coordinates localuser, double range){
+        TreeMap<Double, ArrayList<Cache>> map = new TreeMap<>();
+        ArrayList<Cache> list;
+        double distanceaux = 0.0;
+
+        for(Coordinates coord : coords.keySet()){
+            distanceaux = coord.getCoordinatesDist(localuser);
+            //If this distance is <= range, add it, otherwise , ignore it, and continue for loop...
+            if(distanceaux<=range){
+                list = new ArrayList<Cache>();
+                Double idCache = coords.get(coord);
+                Cache cachetoadd = caches.get(idCache.intValue()-1);
+
+                if(map.get(distanceaux) == null){
+                    //If map in that key is null, alocate space for the arraylist and insert it
+
+                    list.add(cachetoadd);
+                    map.put(distanceaux, list);
+                }
+                else{
+                    //if the map in that key is not null, it means it exists already
+                    ArrayList<Cache> thislist = map.get(distanceaux);
+                    //returns the arraylist of that distance
+                    thislist.add(cachetoadd);
+                    //Not necessary to put again, because get 
+                } 
+            }
+        }
         
+            /*
+             * Imprime o map
+               */
+          for( ArrayList<Cache> listss : map.values() ){
+                for(Cache c : listss){
+                    
+                    System.out.println( c.getCoords().getCoordinatesDist(localuser) +c.toString());
+                }
+            }
         
-    }*/
+        return map;
+    }
+    
+    
+    
 }

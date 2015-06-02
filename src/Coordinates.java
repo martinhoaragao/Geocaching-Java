@@ -72,16 +72,16 @@ public class Coordinates implements Comparable<Coordinates>, Serializable {
     }
 
 
-    public double getCoordinatesDist(Coordinates localuser, Coordinates localcache )
+    public double getCoordinatesDist(Coordinates localuser )
     {
        double kms = 0; //This always return in kms form.
        //Coordinates are represented in meters form, so the result will be divided by 1000.
 
-       if(localuser.equals(localcache)) return 0; //Same place
+       if(this.equals(localuser)) return 0; //Same place
 
        double x1, y1, x2, y2;
        x1 = localuser.getLat(); y1 = localuser.getLon();
-       x2 = localcache.getLat(); y2 = localcache.getLon();
+       x2 = this.getLat(); y2 = this.getLon();
        /*
        double dif1 = Math.abs(x2-x1);
        double dif2 = Math.abs(y2-y1);

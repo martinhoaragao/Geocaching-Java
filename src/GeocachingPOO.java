@@ -448,6 +448,7 @@ public class GeocachingPOO implements Serializable {
         cache = (Cache) stream.readObject();
      }
      
+     /*TODO method named to "Look For Caches" */
     
     /*TODO toString equals clone*/
 
