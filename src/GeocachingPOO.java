@@ -100,7 +100,7 @@ public class GeocachingPOO implements Serializable {
      * @param pass User password
      * @param type true if logging in as Admin, false if logging in as User
      */
-    public static void login (String mail, String pass, boolean type) throws WrongPasswordException, IllegalArgumentException {
+    public  void login (String mail, String pass, boolean type) throws WrongPasswordException, IllegalArgumentException {
         if (mail.trim().equals(""))
             throw new IllegalArgumentException("mail can't be null!");
 

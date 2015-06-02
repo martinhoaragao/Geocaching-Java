@@ -60,7 +60,23 @@ public class GeocachingPOOTest
         NormalUser normalUs2 = new NormalUser("jessidsadca@gmail.com", "0", "Dasd", 1.0, gregoria1);
     }
 
-    
+
+    @Test
+    public void testLogin3()
+    {
+        NormalUser User3 = new NormalUser("j@gmail.com", "0", "Jaja", 1.0, gregoria1);
+        GeocachingPOO geocachi3 = new GeocachingPOO();
+        geocachi3.logout();
+        try{
+        geocachi3.register(User3);
+        geocachi3.login("j@gmail.com", "0", false);
+        geocachi3.logout();
+       }
+       catch(Exception e){System.out.println(e.getMessage());}
+        
+    }
 }
+
+
 
 
