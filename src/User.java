@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.io.Serializable;
+import java.io.IOException;
 
 public abstract class User implements Serializable {
     private String mail;              // User mail
@@ -236,4 +237,26 @@ public abstract class User implements Serializable {
             return pass;
         }
     }
+
+    /* ---------------------- SERIALIZABLE IMPLEMENTATION -------------------- */
+
+    /** Method which defines what will be written by the
+     *  ObjectOutputStream */
+    private void writeObject (java.io.ObjectOutputStream stream)
+     throws IOException {
+        stream.writeObject(mail);
+        stream.writeObject(pass);
+        stream.writeObject(name);
+        stream.writeObject(id);
+     }
+
+    /** Method which defines what will be read by the
+     *  ObjectInputStream */
+    private void readObject (java.io.ObjectInputStream stream)
+     throws IOException, ClassNotFoundException {
+        mail    = (String) stream.readObject();
+        pass    = (String) stream.readObject();
+        name    = (String) stream.readObject();
+        id      = (Double) stream.readObject();
+     }
 }

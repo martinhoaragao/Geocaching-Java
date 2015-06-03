@@ -338,9 +338,4 @@ public class CacheBase implements Serializable {
 
         return map;
     }
-
-
-
-
-
 }

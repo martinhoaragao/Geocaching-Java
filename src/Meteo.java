@@ -8,18 +8,18 @@ import java.util.Random;
 import java.io.Serializable;
 
 public class Meteo{
-    private int temperature;   
+    private int temperature;
     private int weather;
 
     private static int limit_points = 20;
-    /* 
+    /*
         Rainy 0
         Stormy 1
         Sunny 2
         Cloudy 3
         Windy 4
         Foggy 5
-        Hail 6 
+        Hail 6
     */
 
     public Meteo(){
@@ -28,48 +28,48 @@ public class Meteo{
         int High = 40;
         int R;
         double probability = new Random().nextDouble();
-        /* 
+        /*
          * for instance
          * 5% of time it prints between -10 and 0
          * 10% of time it prints between 35 and 40
          * 15% of time it prints between 30 and 40
          * 30% of time it prints between 21 and 25
-         * 
-         * 
+         *
+         *
          */
-         
+
         if( (probability) <=0.03 ){
-            
+
             Low = -10; High = 0;
-         R = temperaturer.nextInt(High-Low) + Low;    
+         R = temperaturer.nextInt(High-Low) + Low;
         }
         else if((probability) <=0.08) {
             Low = 1; High = 10;
             R = temperaturer.nextInt(High-Low) + Low;
         }
         else if((probability ) <=0.15) {
-            
+
             Low = 11; High = 16;
-            R = temperaturer.nextInt(High-Low) + Low;    
+            R = temperaturer.nextInt(High-Low) + Low;
         }
         else if((probability) <=0.20) {
-            
+
             Low = 31; High = 40;
-            R = temperaturer.nextInt(High-Low) + Low;     
+            R = temperaturer.nextInt(High-Low) + Low;
         }
-         else if((probability) <=0.35) {      
+         else if((probability) <=0.35) {
             Low = 17; High = 19;
-            R = temperaturer.nextInt(High-Low) + Low;       
+            R = temperaturer.nextInt(High-Low) + Low;
         }
-        else if((probability = new Random().nextDouble() ) <=0.5) {         
+        else if((probability = new Random().nextDouble() ) <=0.5) {
             Low = 25; High = 30;
-            R = temperaturer.nextInt(High-Low) + Low;        
+            R = temperaturer.nextInt(High-Low) + Low;
         }
         else{
-            //Last probability of 50% chance.        
+            //Last probability of 50% chance.
             Low = 20; High = 24;
-            R = temperaturer.nextInt(High-Low) + Low;         
-        }      
+            R = temperaturer.nextInt(High-Low) + Low;
+        }
         this.temperature = R;
         Random w = new Random();
         int W = w.nextInt(7); // 0,1,2,3,4,5,6   7 exclusive
@@ -115,14 +115,14 @@ public class Meteo{
 
             default:
             break;
-        /* 
+        /*
         Rainy 0
         Stormy 1
         Sunny 2
         Cloudy 3
         Windy 4
         Foggy 5
-        Hail 6 
+        Hail 6
         */
         }
         return p;
@@ -158,11 +158,11 @@ public class Meteo{
     public int getTemp(){
         return this.temperature;
     }
-    
+
     public void setTemp(int temperature){
         this.temperature = temperature;
     }
-    
+
     public void setWeather(int weather){
         this.weather = weather;
     }
@@ -174,7 +174,7 @@ public class Meteo{
         Cloudy 3
         Windy 4
         Foggy 5
-        Hail 6*/ 
+        Hail 6*/
     private String getStringW(){
         int w = this.weather;
         String info = new String();
@@ -202,9 +202,9 @@ public class Meteo{
             break;
 
             default:
-            break;     
+            break;
         }
-       
+
         return info;
     }
 

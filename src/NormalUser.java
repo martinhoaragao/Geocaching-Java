@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.io.Serializable;
+import java.io.IOException;
 import Exceptions.*;
 
 public class NormalUser extends User implements Serializable {
@@ -106,10 +107,8 @@ public class NormalUser extends User implements Serializable {
     public Integer getPoints () {
         return this.points;
     }
-    
 
     //Setters
-
 
     /** Change User gender
      *  @param true for female, false for male */
@@ -142,7 +141,6 @@ public class NormalUser extends User implements Serializable {
             throw new NullPointerException("address can't be null.");
         else this.address = address;
     }
-
 
     /**
      * Change the user birthdate
@@ -186,7 +184,7 @@ public class NormalUser extends User implements Serializable {
      */
     public void setBDate(GregorianCalendar date) throws NullPointerException {
         if (date == null)
-          throw new NullPointerException("date can't be null.");
+            throw new NullPointerException("date can't be null.");
         GregorianCalendar bbb = (GregorianCalendar) date.clone();
         this.bdate = bbb;
     }
@@ -197,10 +195,10 @@ public class NormalUser extends User implements Serializable {
      * @param id The user id
      */
     public void addFriendRequest (Double id) throws IllegalArgumentException {
-      if (id < 0)
-        throw new IllegalArgumentException("id has to be positive!");
+        if (id < 0)
+            throw new IllegalArgumentException("id has to be positive!");
 
-      this.friend_requests.add(id);
+        this.friend_requests.add(id);
     }
 
     /** Remove User id from the friends request
@@ -225,8 +223,8 @@ public class NormalUser extends User implements Serializable {
     }
 
     /**
-     * @return User friends list
-     */
+    * @return User friends list
+    */
     @SuppressWarnings("unchecked")
     public ArrayList<Double> getFriends () {
         return (ArrayList<Double>) this.friends.clone();
@@ -245,38 +243,37 @@ public class NormalUser extends User implements Serializable {
      * @param act Activity to be added
      */
     public void addActivity (Activity act) throws NullPointerException,NotAddedActivityYearIncorrectException {
-      Activity aux = null;
+        Activity aux = null;
 
-      if (act == null)
-        throw new NullPointerException("act can't be null!");
+        if (act == null)
+            throw new NullPointerException("act can't be null!");
 
-      /* Remove head if there are already 10 activities */
-      if (this.activities.size() == 10)
-        try {
-            aux = this.activities.first();
-        } catch (Exception e) { aux = null; }
-      if (aux != null) this.activities.remove(aux);
+        /* Remove head if there are already 10 activities */
+        if (this.activities.size() == 10)
+            try {
+                aux = this.activities.first();
+            } catch (Exception e) { aux = null; }
+        if (aux != null) this.activities.remove(aux);
 
-      this.activities.add(act);
-      this.points += act.getPoints();
+        this.activities.add(act);
+        this.points += act.getPoints();
 
-      this.statistics.addAct(act);
-
+        this.statistics.addAct(act);
 
     }
 
     /** @return TreeSet with the user activities */
     @SuppressWarnings("unchecked")
     public TreeSet<Activity> getActivities () {
-      TreeSet<Activity> ts = new TreeSet<Activity>(new CacheDateComparator());
-      Iterator it = activities.iterator();
-      Activity aux;
+        TreeSet<Activity> ts = new TreeSet<Activity>(new CacheDateComparator());
+        Iterator it = activities.iterator();
+        Activity aux;
 
-      while (it.hasNext()) {
-        aux = (Activity) it.next();
-        ts.add(aux.clone());
-      }
-      return ts;
+        while (it.hasNext()) {
+            aux = (Activity) it.next();
+            ts.add(aux.clone());
+        }
+        return ts;
     }
 
     /** @return ArrayList with the last 10 activities if the user has that many */
@@ -301,27 +298,28 @@ public class NormalUser extends User implements Serializable {
     public StatisticYear getStatistics () {
         return this.statistics.clone();
     }
+
     /**
      * @return User statistic of a given year
      * @param year
      */
     public Statistic getStatistics(int year){
-      return this.statistics.getStatistic(year).clone();
+        return this.statistics.getStatistic(year).clone();
     }
 
-    //TODO test please. 
+    //TODO test please.
     /** @returns stats in form of a string with the information of totalpoints, totalkms, and numbercaches of all years*/
     public String getSTATS_PKC(){
-      StringBuilder sb = new StringBuilder();
-      int totalpoints = this.statistics.getSumPoints();
-      double totalkms = this.statistics.getSumKms();
-      int totalcaches = this.statistics.getTotalCaches();
-      sb.append("Global Statistics: \n");
-      sb.append("Caches found:"); sb.append(Integer.toString(totalcaches) + ".\n");
-      sb.append("Kms traveled:"); sb.append(Double.toString(totalkms) + ".\n");
-      sb.append("Total earned points:"); sb.append(Integer.toString(totalpoints) + "!!!\n");
-     
-     return sb.toString();
+        StringBuilder sb = new StringBuilder();
+        int totalpoints = this.statistics.getSumPoints();
+        double totalkms = this.statistics.getSumKms();
+        int totalcaches = this.statistics.getTotalCaches();
+        sb.append("Global Statistics: \n");
+        sb.append("Caches found:"); sb.append(Integer.toString(totalcaches) + ".\n");
+        sb.append("Kms traveled:"); sb.append(Double.toString(totalkms) + ".\n");
+        sb.append("Total earned points:"); sb.append(Integer.toString(totalpoints) + "!!!\n");
+
+        return sb.toString();
 
     }
 
@@ -331,9 +329,9 @@ public class NormalUser extends User implements Serializable {
     public String getSTATS_PKC(int year) throws NullPointerException{
 
       StringBuilder sb = new StringBuilder();
-      if(this.statistics.getStatistic(year) == null) 
+      if(this.statistics.getStatistic(year) == null)
       throw new NullPointerException("There are no Statistics in that given year!");
-      
+
       int totalpoints = this.statistics.getStatistic(year).getSumPoints();
       double totalkms = this.statistics.getStatistic(year).getSumKms();
       int totalcaches = this.statistics.getStatistic(year).getTotalCaches();
@@ -346,11 +344,11 @@ public class NormalUser extends User implements Serializable {
     }
 
     /** @returns stats in form of a string with the information of totalpoints, totalkms, and numbercaches of a given month
-    * assuming that the user wants the current year as Statistic to look for the month.
-    * @param month
-    */
+     * assuming that the user wants the current year as Statistic to look for the month.
+     * @param month
+     */
 
-    //TODO test the indices of month and it keeps returning null so test in geocaching as well 
+    //TODO test the indices of month and it keeps returning null so test in geocaching as well
     //TODO add exceptions to avoid receiving the message NULL EXCEPTION...
     public String getSTATSM_PKC(int month)throws NullPointerException{
       /*GregorianCalendar gc = new GregorianCalendar();
@@ -360,16 +358,16 @@ public class NormalUser extends User implements Serializable {
       //System.out.println(years);  -> printed 2015 so all good. Moving on...
 
       StringBuilder sb = new StringBuilder();
-      
-      
-      if(this.statistics.getStatistic(year) == null) 
+
+
+      if(this.statistics.getStatistic(year) == null)
       throw new NullPointerException("There are no Statistics in the current year!");
-      
+
       int totalpoints = this.statistics.getStatistic(year).getSumPoints(month+1);
       double totalkms = this.statistics.getStatistic(year).getSumKms(month+1);
       int totalcaches = this.statistics.getStatistic(year).getTotalCaches(month+1);
 
-      
+
       sb.append("Statistics year "+ Integer.toString(year)  + ", month " + Integer.toString(month) +": \n");
       sb.append("Caches found:"); sb.append(Integer.toString(totalcaches) + ".\n");
       sb.append("Kms traveled:"); sb.append(Double.toString(totalkms) + ".\n");
@@ -380,14 +378,12 @@ public class NormalUser extends User implements Serializable {
 
     /** @returns the current year */
     public int getCurrentYear(){
-      GregorianCalendar gc = new GregorianCalendar();
-      String years = String.valueOf(gc.get(GregorianCalendar.YEAR));
-      return Integer.parseInt(years);
+        GregorianCalendar gc = new GregorianCalendar();
+        String years = String.valueOf(gc.get(GregorianCalendar.YEAR));
+        return Integer.parseInt(years);
     }
 
-
     /* ---------------------------- tostring, equals and clone --------------------------- */
-
     /**
      * Transform user info into a String
      */
@@ -432,7 +428,35 @@ public class NormalUser extends User implements Serializable {
         return new NormalUser(this);
     }
 
-    
+    /* ---------------- SERIALIZABLE IMPLEMENTATION ----------------- */
 
-    
+    /** Method which defines what will be written by the
+     *  ObjectOutputStream */
+    private void writeObject (java.io.ObjectOutputStream stream)
+    throws IOException {
+        stream.writeObject(gender);
+        stream.writeObject(address);
+        stream.writeObject(bdate);
+        stream.writeObject(points);
+        stream.writeObject(activities);
+        stream.writeObject(statistics);
+        stream.writeObject(friends);
+        stream.writeObject(friend_requests);
+    }
+
+    /** Method which defines what will be read by the
+     *  ObjectInputStream */
+    @SuppressWarnings("unchecked")
+    private void readObject (java.io.ObjectInputStream stream)
+    throws IOException, ClassNotFoundException {
+        gender          = (boolean) stream.readObject();
+        address         = (Address) stream.readObject();
+        bdate           = (GregorianCalendar) stream.readObject();
+        points          = (int) stream.readObject();
+        activities      = (TreeSet<Activity>) stream.readObject();
+        statistics      = (StatisticYear) stream.readObject();
+        friends         = (ArrayList<Double>) stream.readObject();
+        friend_requests = (ArrayList<Double>) stream.readObject();
+    }
+
 }
