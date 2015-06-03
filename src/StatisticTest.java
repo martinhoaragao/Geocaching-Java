@@ -100,9 +100,9 @@ public class StatisticTest
         assertEquals(true, statisti2.equals(stats));
         stats.getSumKms();
         stats.getSumPoints();
-        stats.getSumPointsM(8);
-        assertEquals(444, stats.getSumPointsM(6));
-        assertEquals(1, stats.getSumPointsM(5));
+        stats.getSumPoints(8);
+        assertEquals(444, stats.getSumPoints(6));
+        assertEquals(1, stats.getSumPoints(5));
         assertNotNull(stats.getinfoNCaches());
         assertEquals(2015, stats.getYearStatsMonth());
         assertEquals(2, stats.getTotalCaches());
@@ -158,8 +158,8 @@ public class StatisticTest
         assertNotNull(stats.getinfoNCaches());
         assertEquals(5, activity1.getMonth());
         stats.getYearStatsMonth();
-        assertEquals(1, stats.getTotalCachesMonth(5));
-        assertEquals(0, stats.getTotalCachesMonth(4));
+        assertEquals(1, stats.getTotalCaches(5));
+        assertEquals(0, stats.getTotalCaches(4));
     }
 
     @Test
@@ -187,7 +187,7 @@ public class StatisticTest
         STATS.getinfoNCaches();
         assertEquals(true, STATS.removeAct(activity4));
         assertEquals(0, STATS.getTotalCaches());
-        STATS.getSumkmsM(8);
+        STATS.getSumKms(8);
         
        try{
             STATS.addAct(activity4);
@@ -196,7 +196,7 @@ public class StatisticTest
             System.out.println(e.getMessage());
         }
         
-        assertEquals(5, STATS.getSumPointsM(8));
+        assertEquals(5, STATS.getSumPoints(8));
     }
 }
 

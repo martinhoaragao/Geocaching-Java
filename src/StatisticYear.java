@@ -62,7 +62,7 @@ public class StatisticYear implements Serializable
      * TODO verificar que nao precida de fazer put depois de inserir ... ?
      * tirar o boolean e mete exception...
      */
-    public void addActY(Activity a) throws NotAddedActivityYearIncorrectException{
+    public void addAct(Activity a) throws NotAddedActivityYearIncorrectException{
        int month = a.getMonth();
        int year = a.getYear();
 
@@ -82,7 +82,7 @@ public class StatisticYear implements Serializable
      *
      * @param Activity a.
      */
-    public void removeActY(Activity a){
+    public void removeAct(Activity a){
         int year = a.getYear();
         int month = a.getMonth();
 
@@ -132,7 +132,7 @@ public class StatisticYear implements Serializable
      * Returns in an auxiliary array.
      * New version
      */
-    public int[] getNCachesArray(){
+    public int[] getNumberCaches(){
         int[] caches = new int[4];
         int micro=0, multi=0, trad=0, mystery=0, virtual = 0, event = 0;
 
@@ -152,8 +152,8 @@ public class StatisticYear implements Serializable
     /**
      * @param String with information of how many caches of different type user has.
      */
-    public String getinfoNumberCachesY(){
-        int[] caches = getNCachesArray();
+    public String getinfoNCaches(){
+        int[] caches = getNumberCaches();
         StringBuilder sb = new StringBuilder();
 
         sb.append("Micro :"); sb.append(Integer.toString(caches[0]) + ".");
@@ -168,63 +168,11 @@ public class StatisticYear implements Serializable
         return sb.toString();
     }
 
-   /**
-    * Returns the current month.
-    * @return current month.
-    *
-    * TEM NA STATISTIC.. NAO VEJO QUAL UTILIDADE DE TER AQUI
-    */
-  /* public int getCMonthY(){
-    GregorianCalendar gc = new GregorianCalendar();
-        String monthh = String.valueOf(gc.get(GregorianCalendar.MONTH));
-        return Integer.parseInt(monthh)+1;
-    }
-*/
-    /**
-     * Returns a List of the last 10 activities.
-     *
-     * @return String with information.
-     * (Just for testing times).
-     *
-     * TA NO STATISTIC MAS NEM NO STATISTIC É PRECISO PORQUE ISTO
-     * TA NO USER CERTO?
-     */
-  /*  public String get10LastAYear(){
-        int number = 0; boolean acabou = false;
-        int mesatual = getCMonth()-1;
-        int meses = 0;
-        StringBuilder sb = new StringBuilder();
-        while(number < 10 || !acabou){
-
-            while(this.stats.get(mesatual).size() == 0){
-                if(mesatual == 0) mesatual = 11; else mesatual--;
-                meses++;
-            } //Encontrou no array set que tem conteudo.
-
-            for(Activity a : this.stats.get(mesatual)){
-            sb.append(Integer.toString(number+1) + "º: ");
-            sb.append(a.toString() + ".\n" );
-            number++;
-            if(number == 9) return sb.toString();
-            }
-            meses++;
-            mesatual--; if(mesatual == 0) mesatual = 11;
-            while(this.stats.get(mesatual).size() == 0){
-                if(mesatual == 0) mesatual = 0;
-                else mesatual--;
-                meses++;
-            } //Procura um set nao vazio no mês anterior a este para completar as 10.
-
-            if(meses >=11) acabou = true;
-            //call activity.toString();
-        }
-        return sb.toString();
-    }
-*/
+   
     /**
      * Find a cache with a given id
      */
-    public Cache getCacheidYear(double id){
+    public Cache getCacheid(double id){
         Cache x = null;
         for(Statistic stats : this.statsyear.values()){
             x = stats.getCacheid(id);
@@ -237,7 +185,7 @@ public class StatisticYear implements Serializable
      * Removes a Cache given the id
      * TODO  tenho duvida nisto agora... manteinho o put ou tiro?
      */
-    public boolean removeCacheY(double id){
+    public boolean removeCache(double id){
       boolean removeu = false;
       for(Statistic stats : this.statsyear.values()){
            removeu = stats.removeCache(id);
@@ -256,7 +204,7 @@ public class StatisticYear implements Serializable
      * Method that sums all points.
      * @return points : Total of points of this User's Statistic.
      */
-    public int getSumPointsY(){
+    public int getSumPoints(){
        int r=0;
        for(Statistic stats : this.statsyear.values()){
            r+=stats.getSumPoints();
@@ -268,7 +216,7 @@ public class StatisticYear implements Serializable
      * Method that sums all points of a given year.
      * @return int year Sum of points.
      */
-    public int getSumPointsY(int year){
+    public int getSumPoints(int year){
         int sum=0;
         Statistic stats = this.statsyear.get(year);
         sum+=stats.getSumPoints();
@@ -279,7 +227,7 @@ public class StatisticYear implements Serializable
      * Method that sums all kilometers of a given year.
      * @return double Total kms of a year.
      */
-     public double getSumkmsY(int year){
+     public double getSumKms(int year){
         double sum=0;
 
         Statistic stats = this.statsyear.get(year);
@@ -305,7 +253,7 @@ public class StatisticYear implements Serializable
      * Method that sums all Caches / Activities.
      * @return int Total of caches of this User's Statistic.
      */
-    public int getSumTotalCachesAY(){
+    public int getTotalCaches(){
         int r=0;
         for(Statistic stats : this.statsyear.values()){
             r+=stats.getTotalCaches();
@@ -318,7 +266,7 @@ public class StatisticYear implements Serializable
      *
      * @param year
      */
-    public int getActivitiesY(int year){
+    public int getAtivities(int year){
         Statistic stats = this.statsyear.get(year);
         return stats.getTotalCaches();
     }
@@ -363,16 +311,16 @@ public class StatisticYear implements Serializable
         for(Statistic stats : this.statsyear.values()){
             int year = stats.getYearStatsMonth();
             sb.append("Year: " + year);
-            sb.append(" #Caches: " + this.getActivitiesY(year) + ".");
+            sb.append(" #Caches: " + this.getAtivities(year) + ".");
             sb.append("\n");
-            sb.append(" #Points: " + this.getSumPointsY(year)+ ".");
+            sb.append(" #Points: " + this.getSumPoints(year)+ ".");
             sb.append("\n");
-            sb.append(" #Kms travelled: " + this.getSumkmsY(year) + ".");
+            sb.append(" #Kms travelled: " + this.getSumKms(year) + ".");
             sb.append("\n");
 
 
         }
-        sb.append(this.getinfoNumberCachesY());
+        sb.append(this.getinfoNCaches());
         System.out.println(sb.toString());
         return sb.toString();
     }

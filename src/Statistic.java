@@ -262,7 +262,7 @@ public class Statistic implements Serializable
     public int getSumPoints(){
         int i,r=0;
         for(i=0;i<12;i++){
-            r+=getSumPointsM(i+1);
+            r+=getSumPoints(i+1);
         }
         return r;
     }
@@ -271,7 +271,7 @@ public class Statistic implements Serializable
      * Method that sums all points of a given month.
      * @return int Sum of points.
      */
-    public int getSumPointsM(int month){
+    public int getSumPoints(int month){
         int sum=0;
         for(Activity a : this.stats.get(month-1)){
             sum+=a.getPoints();
@@ -283,7 +283,7 @@ public class Statistic implements Serializable
      * Method that sums all kilometers of a given month.
      * @return double Total kms of a month.
      */
-    public double getSumkmsM(int month){
+    public double getSumKms(int month){
         double sum=0;
         for(Activity a : this.stats.get(month-1)){
             sum+=a.getKms();
@@ -298,7 +298,7 @@ public class Statistic implements Serializable
     public double getSumKms(){
         int i; double r=0;
         for(i=0;i<12;i++){
-            r+=getSumkmsM(i+1);
+            r+=getSumKms(i+1);
         }
         return r;
     }
@@ -310,7 +310,7 @@ public class Statistic implements Serializable
     public int getTotalCaches(){
         int i,r=0;
         for(i=0;i<12;i++){
-            r+=getTotalCachesMonth(i+1);
+            r+=getTotalCaches(i+1);
         }
         return r;
     }
@@ -318,7 +318,7 @@ public class Statistic implements Serializable
     /**
      * Method that sums all activities / caches of a given month.
      */
-    public int getTotalCachesMonth(int month){
+    public int getTotalCaches(int month){
         int sum=0;
         for(Activity a : this.stats.get(month-1)){
             sum++;
@@ -362,11 +362,11 @@ public class Statistic implements Serializable
         int i;
         for(i=0;i<12;i++){
             sb.append("Month: " + (i+1));
-            sb.append(" #Caches: " + this.getTotalCachesMonth(i+1) + ".");
+            sb.append(" #Caches: " + this.getTotalCaches(i+1) + ".");
             sb.append("\n");
-            sb.append(" #Points: " + this.getSumPointsM(i+1)+ ".");
+            sb.append(" #Points: " + this.getSumPoints(i+1)+ ".");
             sb.append("\n");
-            sb.append(" #Kms travelled: " + this.getSumkmsM(i+1) + ".");
+            sb.append(" #Kms travelled: " + this.getSumKms(i+1) + ".");
             sb.append("\n");
 
 

@@ -422,6 +422,10 @@ public class GeocachingPOO implements Serializable {
         return this.id;
     }
 
+    //TODO - test from this on
+    
+
+
     /* -------------- APPLICATION STATE ---------------------*/
 
     private void writeObject (java.io.ObjectOutputStream stream)

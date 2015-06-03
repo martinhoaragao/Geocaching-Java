@@ -339,7 +339,7 @@ public class NormalUser extends User implements Serializable {
       this.activities.add(act);
       this.points += act.getPoints();
 
-      this.statistics.addActY(act);
+      this.statistics.addAct(act);
 
 
     }
