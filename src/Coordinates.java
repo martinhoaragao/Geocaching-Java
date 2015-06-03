@@ -71,7 +71,11 @@ public class Coordinates implements Comparable<Coordinates>, Serializable {
         this.longitude = lon;
     }
 
-
+    /**
+     * Method that gets the Distance from the user's location and the cache's location
+     * @return double kms travelled between these two points
+     * @param Coordinates localuser
+     */
     public double getCoordinatesDist(Coordinates localuser )
     {
        double kms = 0; //This always return in kms form.
@@ -82,15 +86,6 @@ public class Coordinates implements Comparable<Coordinates>, Serializable {
        double x1, y1, x2, y2;
        x1 = localuser.getLat(); y1 = localuser.getLon();
        x2 = this.getLat(); y2 = this.getLon();
-       /*
-       double dif1 = Math.abs(x2-x1);
-       double dif2 = Math.abs(y2-y1);
-
-       double value = Math.sqrt( Math.pow(dif2,2)  + Math.pow(dif1,2)  );
-       kms = value/1000;
-
-       return kms; */
-
        return getDistanceFromLatLonInKm(x1,y1,x2,y2);
 
     }
@@ -106,8 +101,9 @@ public class Coordinates implements Comparable<Coordinates>, Serializable {
             double d = R * c; // Distance in km
             return d;
       }
-
-    public double deg2rad(double deg) {
+      
+   /** Auxiliary function to convert degrees to radians*/
+    private double deg2rad(double deg) {
         return deg * (Math.PI/180);
     }
 
@@ -147,6 +143,9 @@ public class Coordinates implements Comparable<Coordinates>, Serializable {
 
     /* Method only created to be able to use the TreeMap<Coordinates, Double> in CacheBase */
     @Override
+    /**
+     * Method that compares Coordinates
+     */
     public int compareTo (Coordinates coords) {
         if ((latitude == coords.getLat()) && (longitude == coords.getLon()))
             return 0;

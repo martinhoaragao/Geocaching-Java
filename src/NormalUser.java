@@ -328,9 +328,12 @@ public class NormalUser extends User implements Serializable {
     /** @returns stats in form of a string with the information of totalpoints, totalkms, and numbercaches of a whole year
     * @param year
     */
-    public String getSTATS_PKC(int year){
+    public String getSTATS_PKC(int year) throws NullPointerException{
 
       StringBuilder sb = new StringBuilder();
+      if(this.statistics.getStatistic(year) == null) 
+      throw new NullPointerException("There are no Statistics in that given year!");
+      
       int totalpoints = this.statistics.getStatistic(year).getSumPoints();
       double totalkms = this.statistics.getStatistic(year).getSumKms();
       int totalcaches = this.statistics.getStatistic(year).getTotalCaches();
@@ -349,7 +352,7 @@ public class NormalUser extends User implements Serializable {
 
     //TODO test the indices of month and it keeps returning null so test in geocaching as well 
     //TODO add exceptions to avoid receiving the message NULL EXCEPTION...
-    public String getSTATSM_PKC(int month){
+    public String getSTATSM_PKC(int month)throws NullPointerException{
       /*GregorianCalendar gc = new GregorianCalendar();
       String years = String.valueOf(gc.get(GregorianCalendar.YEAR));
       int year = Integer.parseInt(years);*/
@@ -357,6 +360,11 @@ public class NormalUser extends User implements Serializable {
       //System.out.println(years);  -> printed 2015 so all good. Moving on...
 
       StringBuilder sb = new StringBuilder();
+      
+      
+      if(this.statistics.getStatistic(year) == null) 
+      throw new NullPointerException("There are no Statistics in the current year!");
+      
       int totalpoints = this.statistics.getStatistic(year).getSumPoints(month+1);
       double totalkms = this.statistics.getStatistic(year).getSumKms(month+1);
       int totalcaches = this.statistics.getStatistic(year).getTotalCaches(month+1);

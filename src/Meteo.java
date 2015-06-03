@@ -5,6 +5,7 @@
  */
 
 import java.util.Random;
+import java.io.Serializable;
 
 public class Meteo{
     private int temperature;   
