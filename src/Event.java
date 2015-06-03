@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
-
+import Exceptions.*;
 
 /**
  * Class to hold hosted events by the admin.
@@ -245,4 +245,43 @@ public class Event {
     }
 
     /* TODO clone */
+
+    // Other methods
+
+    /*
+     * Register user in an event
+     * @arg user, NormalUser to be registered
+     */
+    public void registerUser (NormalUser user) throws UserAlreadyRegisteredException {
+        if (this.users.contains(user))
+            throw new UserAlreadyRegisteredException("You are already registered in this event");
+        this.users.add(user);
+    }
+
+    /*
+     * Remove user from an event
+     * @arg user, NormalUser whose registration will be cancelled
+     */
+    public void removeUser (NormalUser user){
+        this.users.remove(user);
+    }
+
+    /*
+     * Checks if a user is registered to an event
+     * @arg user, NormalUser to be compared
+     * @return boolean true if user is registered
+     */
+    public boolean containsUser (NormalUser user) {
+        return this.users.contains(user);
+    }
+
+    /*
+     * Add cache to event
+     * @arg cache, cache to be inserted
+     */
+    public void addCache (Cache cache) throws CacheAlreadyAddedException {
+        if (this.caches.contains(cache))
+            throw new CacheAlreadyAddedException("Cache has already been added");
+        this.caches.add(cache);
+    }
 }
