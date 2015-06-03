@@ -22,7 +22,7 @@ public class CacheBase implements Serializable {
         this.caches = new ArrayList<Cache>();
         this.owners = new TreeMap<Double, ArrayList<Double>>();
         this.reported_caches = new TreeMap<Double, ArrayList<Report>>();
-        this.coords = new TreeMap<Coordinates, Double>();
+        this.coords = new TreeMap<Coordinates, Double>(new CoordinatesComparator());
     }
 
     /** Constructs a UserBase with the caches present on another UserBase
@@ -153,10 +153,15 @@ public class CacheBase implements Serializable {
      * @param id The Cache id
      */
     public Cache getCache (Double id) throws IllegalArgumentException {
+        Cache cache;
+
         if (id.intValue() > this.caches.size())
             throw new IllegalArgumentException("No cache with the given id!");
-        else
-            return this.caches.get(id.intValue() - 1);
+
+        if ((cache = this.caches.get(id.intValue() - 1)) == null)
+            throw new IllegalArgumentException("No cache with the given id.");
+
+        return cache;
     }
 
     // toString, equals and clone

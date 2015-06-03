@@ -310,19 +310,23 @@ public class GeocachingPOO implements Serializable {
 
     /** Add a activity to the currently logged in user
      *  @param act  Activity to be added
-     *  @param id   Id of the found cache */
+     *  @param id   Id of the found cache
+     */
     public void addActivity (Activity act, Double id) throws IllegalArgumentException, NullPointerException, NotAddedActivityYearIncorrectException, NoUserLoggedInException {
-        Cache cache = cachebase.getCache(id);
+        Cache cache             = cachebase.getCache(id);
+        ArrayList<String> reg   = null;
 
         if (user == null)
             throw new NoUserLoggedInException();
 
         if (cache == null)
             throw new IllegalArgumentException("No cache with the given id.");
-        else {
-            act.setCache(cache);
-            user.addActivity(act);
-        }
+
+        reg = cache.getRegistry();
+        reg.add(user.getName() + " - " + user.getMail());
+        cache.setRegistry(reg);
+        act.setCache(cache);
+        user.addActivity(act);
     }
 
     /* ------------------- CACHES ----------------------------*/
@@ -403,6 +407,15 @@ public class GeocachingPOO implements Serializable {
             cachebase.invalidateCache(id);
         else
             throw new NoUserLoggedInException("There is no Admin Logged in.");
+    }
+
+    /** Get the Registry of a given cache
+     *  @param id The cache id
+     *  @return ArrayList<String> with all the people tha found the Cache
+     */
+    public ArrayList<String> getCacheRegistry (Double id) {
+        Cache cache = cachebase.getCache(id);
+        return cache.getRegistry();
     }
 
     /* ------------------------- ADMIN ------------------------*

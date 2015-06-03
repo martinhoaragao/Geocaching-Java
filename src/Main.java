@@ -187,9 +187,10 @@ public class Main implements Serializable {
       System.out.println("6: Leave cache menu");
 
       switch (sc.nextInt()) {
-        case 1: createCache();  break;
-        case 2: reportCache();  break;
-        case 6: done = true;    break;
+        case 1: createCache();          break;
+        case 2: reportCache();          break;
+        case 4: displayCacheRegistry(); break;
+        case 6: done = true;            break;
         default: break;
       }
     }
@@ -578,6 +579,26 @@ public class Main implements Serializable {
         for (Report rep : tm.get(id))
           System.out.println(rep.toString());
     }
+  }
+
+  /** Auxiliary function to display Registry book of a Cache */
+  private static void displayCacheRegistry () {
+    Scanner sc = new Scanner(System.in);
+    Double id;                            /* Cache id */
+    ArrayList<String> registry;           /* Cache registry */
+
+    clean();
+    System.out.print("Cache id: ");
+    id = sc.nextDouble();
+
+    try {
+      registry = gc.getCacheRegistry(id);
+      for (String s : registry)
+        System.out.println(s);
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+    }
+    if (console != null) console.readLine();
   }
 
   /* ------------------------- FRIENDS -------------------------*/
