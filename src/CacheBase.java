@@ -71,6 +71,7 @@ public class CacheBase implements Serializable {
 
     /** @return TreeMap with all the Coordinates used */
     @SuppressWarnings("unchecked")
+    
     public TreeMap<Coordinates, Double> getCoords () {
         /* TODO: Clone the coordinates */
         return (TreeMap<Coordinates, Double>) this.coords.clone();
@@ -125,6 +126,7 @@ public class CacheBase implements Serializable {
             owners.put(id, list);
 
         } else list.add(cache.getId());
+        
         coords.put(cache_coords, id);
 
 
@@ -302,6 +304,7 @@ public class CacheBase implements Serializable {
             if(distanceaux<=range){
                 list = new ArrayList<Cache>();
                 Double idCache = coords.get(coord);
+                System.out.println( idCache );
                 Cache cachetoadd = caches.get(idCache.intValue()-1);
 
                 if(map.get(distanceaux) == null){
@@ -319,6 +322,8 @@ public class CacheBase implements Serializable {
                 }
             }
         }
+        
+        
 
             /*
              * Imprime o map
@@ -332,6 +337,8 @@ public class CacheBase implements Serializable {
 
         return map;
     }
+    
+    
 
 
 

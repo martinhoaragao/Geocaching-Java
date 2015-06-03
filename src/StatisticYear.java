@@ -74,6 +74,7 @@ public class StatisticYear implements Serializable
 
        aux.addAct(a);
        //Nao precisa de fazer put porque ele já atualiza logo, tem o get emcima.
+       this.statsyear.put(year, aux);
     }
 
 
@@ -82,13 +83,14 @@ public class StatisticYear implements Serializable
      *
      * @param Activity a.
      */
-    public void removeAct(Activity a){
+    public void removeAct(Activity a) throws NullPointerException{
         int year = a.getYear();
         int month = a.getMonth();
 
         if( !this.statsyear.containsKey(year) )
-            return; //Nao existe o ano neste map logo nao existe esta atividade no map
-        else{
+            //return; //Nao existe o ano neste map logo nao existe esta atividade no map
+            throw new NullPointerException( "Activity does not exist " );
+            else{
             Statistic stats = this.statsyear.get(year);
             //Dá me as estatisticas no mÊs desse ano.
             //É impossivel ser null agora pois já passou pelo teste acima.
@@ -183,8 +185,9 @@ public class StatisticYear implements Serializable
 
     /**
      * Removes a Cache given the id
-     * TODO  tenho duvida nisto agora... manteinho o put ou tiro?
+     * 
      */
+    //TODO testar sem o statsyear.put();
     public boolean removeCache(double id){
       boolean removeu = false;
       for(Statistic stats : this.statsyear.values()){
@@ -266,8 +269,9 @@ public class StatisticYear implements Serializable
      *
      * @param year
      */
-    public int getAtivities(int year){
+    public int getAtivities(int year) throws NullPointerException{
         Statistic stats = this.statsyear.get(year);
+        if(stats == null) throw new NullPointerException( "Activities don't exist " );
         return stats.getTotalCaches();
     }
     /**

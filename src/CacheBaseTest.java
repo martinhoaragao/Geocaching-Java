@@ -18,7 +18,7 @@ public class CacheBaseTest
     private Coordinates coordina3;
     private TraditionalCache traditio1;
     private MicroCache microCac1;
-    private MicroCache microCac2;
+    private TraditionalCache traditio2;
     private CacheBase cacheBas1;
 
     /**
@@ -36,12 +36,12 @@ public class CacheBaseTest
     @Before
     public void setUp()
     {
-        coordina1 = new Coordinates(20, 10);
-        coordina2 = new Coordinates(20.1, 10.5);
-        coordina3 = new Coordinates(20.03, 10.05);
-        traditio1 = new TraditionalCache(1.0, coordina1, "jess@gmail.com");
-        microCac1 = new MicroCache(2.0, coordina2, "jess@gmail.com");
-        microCac2 = new MicroCache(3.0, coordina3, "jess@gmail.com");
+        coordina1 = new Coordinates(1, 1);
+        coordina2 = new Coordinates(1, 1.2312356123);
+        coordina3 = new Coordinates(1.2312, 1.0221);
+        traditio1 = new TraditionalCache(1.0, coordina1, "je@gmail.com");
+        microCac1 = new MicroCache(2.0, coordina2, "je@gmail.com");
+        traditio2 = new TraditionalCache(3.0, coordina3, "je@gmail.com");
         cacheBas1 = new CacheBase();
     }
 
@@ -55,16 +55,12 @@ public class CacheBaseTest
     {
     }
 
+    
+
     @Test
-    public void testTreeOrdered()
+    public void testAddCache_getTreeOrdered()
     {
-        cacheBas1.addCache(1.0, traditio1);
-        cacheBas1.addCache(1.0, microCac1);
-        cacheBas1.addCache(1.0, microCac2);
-        assertEquals(3, cacheBas1.getNumOfCaches());
-        assertNotNull(cacheBas1.getCache(1.0));
-        cacheBas1.getTreeOrderedByDistance(coordina1, 1000);
-        cacheBas1.getTreeOrderedByDistance(coordina2, 100000);
     }
 }
+
 

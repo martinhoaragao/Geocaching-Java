@@ -174,11 +174,20 @@ public class Activity implements Serializable {
         if(cache instanceof MicroCache) points = 10;
         if(cache instanceof MultiCache) points= 30;
         if(cache instanceof TraditionalCache) points = 20;
-        /*if(cache instanceof MysteryCache){
-            //Cache cache = (MysteryCache) cache;
-            Puzzle x = cache.getPuzzle();
-            points = cache.getPuzzle().getValuePoints();
-        }*/
+        if(cache instanceof MysteryCache){
+            MysteryCache aux = (MysteryCache) cache;
+            Puzzle x = aux.getPuzzle();
+            points = x.getValuePoints();
+        }
+        return points;
+    }
+    
+    /**
+     * Method that returns and sets all points from Cache, Kms travelled and Meteo.
+     */
+    public int updatePoints(){
+        int points = this.calcPointsCache() + this.calcPointsKms() + meteo.calcPoints();
+        this.points = points;
         return points;
     }
 
