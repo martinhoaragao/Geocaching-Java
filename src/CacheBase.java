@@ -22,7 +22,7 @@ public class CacheBase implements Serializable {
         this.caches = new ArrayList<Cache>();
         this.owners = new TreeMap<Double, ArrayList<Double>>();
         this.reported_caches = new TreeMap<Double, ArrayList<Report>>();
-        this.coords = new TreeMap<Coordinates, Double>(new CoordinatesComparator());
+        this.coords = new TreeMap<Coordinates, Double>();
     }
 
     /** Constructs a UserBase with the caches present on another UserBase
@@ -127,7 +127,7 @@ public class CacheBase implements Serializable {
 
         } else list.add(cache.getId());
         
-        coords.put(cache_coords, id);
+        coords.put(cache_coords, cache.getId());
 
 
         /* !!Should check if it is replacing a cache with same id */
@@ -299,6 +299,7 @@ public class CacheBase implements Serializable {
         double distanceaux = 0.0;
 
         for(Coordinates coord : coords.keySet()){
+            System.out.println(coord.toString());
             distanceaux = coord.getCoordinatesDist(localuser);
             //If this distance is <= range, add it, otherwise , ignore it, and continue for loop...
             if(distanceaux<=range){
