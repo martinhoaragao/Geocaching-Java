@@ -147,7 +147,7 @@ public class Activity implements Serializable {
         double latitude, longitude;
 
         day = String.valueOf(date.get(GregorianCalendar.DAY_OF_MONTH));
-        month = String.valueOf(date.get(GregorianCalendar.MONTH));
+        x = String.valueOf(date.get(GregorianCalendar.MONTH));
         year = String.valueOf(date.get(GregorianCalendar.YEAR));
         latitude = this.cache.getCoords().getLat();
         longitude = this.cache.getCoords().getLon();
@@ -160,8 +160,8 @@ public class Activity implements Serializable {
     }
 
     /**
-     * Compare this Activty to another to check if they are equal
-     * @arg act Activity to use for comparison
+     * Compare this Activity to another to check if they are equal
+     * @arg act Object to use for comparison
      */
     public boolean equals (Object act) {
         if (this == act) return true;
