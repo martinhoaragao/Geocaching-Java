@@ -222,6 +222,7 @@ public class Event {
        sb.append("So far there are: " + this.users.size() + " users registered ");
        sb.append("and " + this.caches.size() + " caches to find\n\n");
        sb.append("You have until " + regMinute + ":" + regHour + " of " + regDay + "/" + regMonth + "/" + regYear + " to register\n");
+       return sb.toString();
     }
     /**
      * Compare this Event to another to check if they are equal.
