@@ -10,7 +10,8 @@ public class Puzzle {
     private String answer;
     private Coordinates local;
     private int star; //The star difficulty rating for 1 to 10;
-
+    
+    private int valuepoints; //calculates the value of this cache depending on the star rating.
 
     /**
      * Constructor with arguments
@@ -23,6 +24,7 @@ public class Puzzle {
         answer = a;
         local = l;
         this.star = 3;
+        this.valuepoints = 30;
     }
 
     /**
@@ -33,7 +35,7 @@ public class Puzzle {
         this.question = "";
         this.answer = "";
         this.star = 2;
-
+        this.valuepoints = 30;
     }
 
     /**
@@ -44,9 +46,41 @@ public class Puzzle {
         this.answer = a.answer;
         this.star = a.star;
         this.local = a.local.clone();
+        this.valuepoints = a.getValuePoints();
     }
     
-
+    /**
+     * Set the valuepoints comparing the star rating.
+     */
+    //everytime creating a puzzle ormystery cache , do the updatepoints after seting the star dificulty.
+    //This is the points for the entire mystery cache.
+    public void updatePoints(){
+        
+        setValuePoints(this.star*5); 
+        
+        /*switch (this.star){
+            case 10: setValuePoints(50); break;//maximum
+            case 9: setValuePoints(45); break;
+            case 8: setValuePoints(
+        }*/
+        
+        
+        
+    }
+    
+    /**
+     * Sets the valuepoints for this puzzle
+     */
+    public void setValuePoints(int points){
+        this.valuepoints = points;
+    }
+    
+    /**
+     * Get the valuepoints for this puzzle
+     */
+    public int getValuePoints(){
+        return this.valuepoints;
+    }
     //Setters
 
     /**
@@ -85,6 +119,10 @@ public class Puzzle {
     }
 
     //Getters and Shows
+    
+    
+    
+    
     /**
      * Get the difficulty of a Puzzle.
      */

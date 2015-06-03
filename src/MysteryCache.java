@@ -43,7 +43,13 @@ public class MysteryCache extends Cache implements Serializable
         super(mysteryCache);
         this.puzzle = mysteryCache.puzzle.clone();
     }
-
+    
+    /**
+     * @return the puzzle
+     */
+    public Puzzle getPuzzle(){
+        return this.puzzle.clone();
+    }
     // toString, equals, clone
 
     /**

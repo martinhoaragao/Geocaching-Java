@@ -12,7 +12,15 @@ public class Activity implements Serializable {
     private Cache cache;            // Cache found on this activity
     private Double kms;             // Kilometers covered
     private int points;             // Each activity gives points to the User.
-
+    private Meteo meteo;            //Each activity has a random meteorology.
+    
+    //TODO  IF it has var kms and in main asks for kms covered...   its ok right?  only calc distances for "1. Look for caches play game" all right?
+    //otherwise will be confusing and it will mess all the code.
+    private static int limit_points = 100;
+    private static int limit_points_cache = 50;
+    private static int limit_points_kms = 30;
+    
+    
     /**
      * Constructor with arguments
      * @arg year Year
@@ -30,6 +38,7 @@ public class Activity implements Serializable {
         this.cache = null;
         this.kms = 0.0;
         this.points = 0;
+        this.meteo = new Meteo();
     }
 
     /**
@@ -43,6 +52,7 @@ public class Activity implements Serializable {
         this.cache = cache;
         this.kms = kms;
         this.points = points;
+        this.meteo = new Meteo();
     }
 
     /**
@@ -54,6 +64,7 @@ public class Activity implements Serializable {
         this.cache = act.getCache();
         this.kms = act.getKms();
         this.points = act.points;
+        this.meteo = act.meteo.clone(); //TODO TEST THIS PART, im not sure...
     }
 
 
@@ -134,6 +145,41 @@ public class Activity implements Serializable {
 
     public void setPoints (int points){
         this.points = points;
+    }
+    
+    /**
+     * Auxiliary function that calculates the points for the kms with limit of 30.
+     * If the user has travelled more than 20 kms it returns the total points which are 30.
+     * Otherwise gives the user the points equivalent to the kms travelled.
+     * 
+     * @return points for kms
+     */
+    private int calcPointsKms(){
+        int points = (int) Math.round(kms) ;  //TODO CHECK THIS ALSO
+        if(kms >= limit_points_kms) points = limit_points_kms; 
+        
+        return points; 
+    }
+    
+    /**
+     * Auxiliary function to calculate the points for the cache given the type.
+     * limit_points_cache = 50.
+     * 
+     * @return points for the cache.
+     */
+    //TODO CHECK THIS ERROR... CANNOT FIND METHOD getPuzzle. but i did it... ont he mysterycache class
+    private int calcPointsCache(){
+        int points = 0;
+        
+        if(cache instanceof MicroCache) points = 10;
+        if(cache instanceof MultiCache) points= 30;
+        if(cache instanceof TraditionalCache) points = 20;
+        /*if(cache instanceof MysteryCache){
+            //Cache cache = (MysteryCache) cache;
+            Puzzle x = cache.getPuzzle();
+            points = cache.getPuzzle().getValuePoints();
+        }*/
+        return points;
     }
 
     // toString, equals and clone
