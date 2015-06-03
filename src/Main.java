@@ -671,7 +671,7 @@ public class Main implements Serializable {
   private static void displayLastActivities () {
         ArrayList<Activity> acts = null;
         try {
-          gc.getLastActivities();
+          acts = gc.getLastActivities();
         } catch (Exception e) {
           System.out.println(e.getMessage());
         }
