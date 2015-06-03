@@ -423,7 +423,15 @@ public class GeocachingPOO implements Serializable {
     }
 
     //TODO - test from this on
-    
+    /** 
+    * @param int year
+    * @return Statistic of a given year 
+    *
+    */
+    public Statistic getStatistic(int year){
+        return user.getStatistics(year);
+        //made this method in the class NormalUser
+    }
 
 
     /* -------------- APPLICATION STATE ---------------------*/
