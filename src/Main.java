@@ -45,11 +45,12 @@ public class Main implements Serializable {
         }
       } else if (user_logged) {             /* User logged in */
         userMenu();
-
+        //TODO test case 5 Statistics
         switch (sc.nextInt()) {
           case 1: infoMenu();               break;
           case 2: cachesMenu();             break;
           case 3: friendsMenu();            break;
+          case 5: mystatsMenu();            break;
           case 4: displayAllCaches();       break;
           case 6: displayLastActivities();  break;
           case 8: displayUserCaches();      break;
@@ -147,6 +148,7 @@ public class Main implements Serializable {
     System.out.println("7: Log Out");
   }
 
+  //TODO ADD SHOW STATISTICS OF THIS FRIEND YOU CLICKED ON -MENSAL (of a given year, all months) OR GLOBAL(all years)
   /** Auxiliary function to display Friends Menu */
   private static void friendsMenu () {
     Scanner sc = new Scanner(System.in);
@@ -192,6 +194,32 @@ public class Main implements Serializable {
         default: break;
       }
     }
+  }
+
+  //TODO TEST MENU STATISTIC RELATED
+
+  /** Auxiliary function to display Statistics Menu */
+  private static void mystatsMenu(){
+    Scanner sc = new Scanner(System.in);
+    boolean done = false;
+
+    while (!done) {
+      clean();
+      System.out.println("1. Global Stats");
+      System.out.println("2. Mensal Stats");
+      System.out.println("3. Statistics of a given month");
+      System.out.println("4: Leave cache menu");
+
+      switch (sc.nextInt()) {
+        case 1: displayGlobalStats();  break;
+        case 2: displayMensalStats();  break;
+        case 3: displayaMonthStats();  break;
+        case 4: done = true;    break;
+        default: break;
+      }
+    }
+
+
   }
 
   /* ----------------------- REGISTER & LOGIN ----------------------*/
@@ -624,6 +652,34 @@ public class Main implements Serializable {
         }
         if (console != null) console.readLine();
   }
+
+  /* ------------------------- STATISTIC -----------------------*/
+
+  //TODO test axiliary funtions STATISTIC
+  private static void displayGlobalStats(){
+    System.out.println(gc.getSTATSGlobal());
+  }
+
+  private static void displayMensalStats(){
+
+    System.out.println("Type the year if you want to specify or type 0");
+    Scanner sc = new Scanner(System.in);
+    int year = sc.nextInt();
+    if(year == 0){
+      year = gc.getCurrentYear(); //returns the current year function present in normaluser and passed/available in geocaching 
+    }
+
+     System.out.println(gc.getSTATSGlobal(year));
+  }
+
+  private static void displayaMonthStats(){
+      System.out.println("Type the month you want to look at: ");
+      Scanner sc = new Scanner(System.in);
+      int month = sc.nextInt();
+
+      int year = gc.getCurrentYear();
+      System.out.println(gc.getSTATS_Month(month));     
+  } 
 
   /* -------------------- ADMIN --------------------------------*/
 

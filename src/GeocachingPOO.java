@@ -432,7 +432,35 @@ public class GeocachingPOO implements Serializable {
         return user.getStatistics(year);
         //made this method in the class NormalUser
     }
+    //TODO needs testing all this stats
+    /** Method that receives a String with Global/Anual Statistic's information, from the user
+    * 
+    *@return String
+    */
+    public String getSTATSGlobal(){
+        return user.getSTATS_PKC();
+    }
 
+     /** Method that receives a String with a year Statistic's information (Mensal), from the user
+    * @param year
+    *@return String
+    */
+    public String getSTATSGlobal(int year){
+        return user.getSTATS_PKC(year);
+    }
+
+     /** Method that receives a String with Statistic's information realted only to a month, from the user
+    * @param month
+    *@return String
+    */
+    public String getSTATS_Month(int month){
+        return user.getSTATSM_PKC(month);
+    }
+
+    /** @return the current year */
+    public int getCurrentYear(){
+        return user.getCurrentYear();
+    }
 
     /* -------------- APPLICATION STATE ---------------------*/
 

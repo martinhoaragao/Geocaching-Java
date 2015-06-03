@@ -348,10 +348,12 @@ public class NormalUser extends User implements Serializable {
     */
 
     //TODO test the indices of month and it keeps returning null so test in geocaching as well 
+    //TODO add exceptions to avoid receiving the message NULL EXCEPTION...
     public String getSTATSM_PKC(int month){
-      GregorianCalendar gc = new GregorianCalendar();
+      /*GregorianCalendar gc = new GregorianCalendar();
       String years = String.valueOf(gc.get(GregorianCalendar.YEAR));
-      int year = Integer.parseInt(years);
+      int year = Integer.parseInt(years);*/
+      int year = getCurrentYear();
       //System.out.println(years);  -> printed 2015 so all good. Moving on...
 
       StringBuilder sb = new StringBuilder();
@@ -368,6 +370,12 @@ public class NormalUser extends User implements Serializable {
       return sb.toString();
     }
 
+    /** @returns the current year */
+    public int getCurrentYear(){
+      GregorianCalendar gc = new GregorianCalendar();
+      String years = String.valueOf(gc.get(GregorianCalendar.YEAR));
+      return Integer.parseInt(years);
+    }
 
 
     /* ---------------------------- tostring, equals and clone --------------------------- */
