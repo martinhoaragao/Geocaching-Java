@@ -71,7 +71,7 @@ public class CacheBase implements Serializable {
 
     /** @return TreeMap with all the Coordinates used */
     @SuppressWarnings("unchecked")
-    
+
     public TreeMap<Coordinates, Double> getCoords () {
         /* TODO: Clone the coordinates */
         return (TreeMap<Coordinates, Double>) this.coords.clone();
@@ -126,8 +126,8 @@ public class CacheBase implements Serializable {
             owners.put(id, list);
 
         } else list.add(cache.getId());
-        
-        coords.put(cache_coords, id);
+
+        coords.put(cache_coords, cache.getId());
 
 
         /* !!Should check if it is replacing a cache with same id */
@@ -322,8 +322,8 @@ public class CacheBase implements Serializable {
                 }
             }
         }
-        
-        
+
+
 
             /*
              * Imprime o map
@@ -337,8 +337,8 @@ public class CacheBase implements Serializable {
 
         return map;
     }
-    
-    
+
+
 
 
 
