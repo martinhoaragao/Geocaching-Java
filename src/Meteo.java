@@ -7,7 +7,7 @@
 import java.util.Random;
 import java.io.Serializable;
 
-public class Meteo{
+public class Meteo implements Serializable {
     private int temperature;
     private int weather;
 

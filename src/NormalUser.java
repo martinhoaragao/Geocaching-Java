@@ -427,36 +427,4 @@ public class NormalUser extends User implements Serializable {
     public NormalUser clone () {
         return new NormalUser(this);
     }
-
-    /* ---------------- SERIALIZABLE IMPLEMENTATION ----------------- */
-
-    /** Method which defines what will be written by the
-     *  ObjectOutputStream */
-    private void writeObject (java.io.ObjectOutputStream stream)
-    throws IOException {
-        stream.writeObject(gender);
-        stream.writeObject(address);
-        stream.writeObject(bdate);
-        stream.writeObject(points);
-        stream.writeObject(activities);
-        stream.writeObject(statistics);
-        stream.writeObject(friends);
-        stream.writeObject(friend_requests);
-    }
-
-    /** Method which defines what will be read by the
-     *  ObjectInputStream */
-    @SuppressWarnings("unchecked")
-    private void readObject (java.io.ObjectInputStream stream)
-    throws IOException, ClassNotFoundException {
-        gender          = (boolean) stream.readObject();
-        address         = (Address) stream.readObject();
-        bdate           = (GregorianCalendar) stream.readObject();
-        points          = (int) stream.readObject();
-        activities      = (TreeSet<Activity>) stream.readObject();
-        statistics      = (StatisticYear) stream.readObject();
-        friends         = (ArrayList<Double>) stream.readObject();
-        friend_requests = (ArrayList<Double>) stream.readObject();
-    }
-
 }

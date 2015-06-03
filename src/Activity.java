@@ -239,27 +239,4 @@ public class Activity implements Serializable {
     public Activity clone () {
         return new Activity(date, cache, kms, points);
     }
-
-    /* ---------------------------- SERIALIZABLE --------------------------------*/
-
-    /** Method which defines what will be written by the
-     *  ObjectOutputStream */
-    private void writeObject (java.io.ObjectOutputStream stream)
-     throws IOException {
-        stream.writeObject(date);
-        stream.writeObject(cache);
-        stream.writeObject(kms);
-        stream.writeObject(points);
-        stream.writeObject(meteo);
-     }
-
-    /** Method which defines what will be read by the
-     *  ObjectInputStream */
-    private void readObject (java.io.ObjectInputStream stream)
-     throws IOException, ClassNotFoundException {
-        date    = (GregorianCalendar) stream.readObject();
-        cache   = (Cache) stream.readObject();
-        kms     = (Double) stream.readObject();
-        points  = (int) stream.readObject();
-     }
 }
