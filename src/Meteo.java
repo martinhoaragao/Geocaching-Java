@@ -7,10 +7,7 @@
 import java.util.Random;
 
 public class Meteo{
-    
-    private int temperature; 
-    
-    
+    private int temperature;   
     private int weather;
 
     private static int limit_points = 20;
@@ -41,56 +38,40 @@ public class Meteo{
          */
          
         if( (probability) <=0.03 ){
-            System.out.println(probability);
+            
             Low = -10; High = 0;
-         R = temperaturer.nextInt(High-Low) + Low;
-         System.out.println(R);
+         R = temperaturer.nextInt(High-Low) + Low;    
         }
         else if((probability) <=0.08) {
-            System.out.println(probability);
             Low = 1; High = 10;
             R = temperaturer.nextInt(High-Low) + Low;
-            System.out.println(R);
         }
         else if((probability ) <=0.15) {
-            System.out.println(probability);
+            
             Low = 11; High = 16;
-            R = temperaturer.nextInt(High-Low) + Low;
-            System.out.println(R);
+            R = temperaturer.nextInt(High-Low) + Low;    
         }
         else if((probability) <=0.20) {
-            System.out.println(probability);
+            
             Low = 31; High = 40;
-            R = temperaturer.nextInt(High-Low) + Low;
-            System.out.println(R);
+            R = temperaturer.nextInt(High-Low) + Low;     
         }
-         else if((probability) <=0.35) {
-            System.out.println(probability);
+         else if((probability) <=0.35) {      
             Low = 17; High = 19;
-            R = temperaturer.nextInt(High-Low) + Low;
-            System.out.println(R);
+            R = temperaturer.nextInt(High-Low) + Low;       
         }
-        else if((probability = new Random().nextDouble() ) <=0.5) {
-            System.out.println(probability);
+        else if((probability = new Random().nextDouble() ) <=0.5) {         
             Low = 25; High = 30;
-            R = temperaturer.nextInt(High-Low) + Low;
-            System.out.println(R);
+            R = temperaturer.nextInt(High-Low) + Low;        
         }
         else{
-            //Last probability of 50% chance.
-            System.out.println(probability);
+            //Last probability of 50% chance.        
             Low = 20; High = 24;
-            R = temperaturer.nextInt(High-Low) + Low;
-            System.out.println(R);
-           
-        }
-        
+            R = temperaturer.nextInt(High-Low) + Low;         
+        }      
         this.temperature = R;
-
         Random w = new Random();
         int W = w.nextInt(7); // 0,1,2,3,4,5,6   7 exclusive
-
-
         this.weather = W;
     }
 
@@ -142,7 +123,6 @@ public class Meteo{
         Foggy 5
         Hail 6 
         */
-
         }
         return p;
     }
@@ -159,7 +139,6 @@ public class Meteo{
         else if(t>=0 && t <=15) p+=6;
         else p+=7;
             //25->30
-
         return p;
     }
 
@@ -167,10 +146,7 @@ public class Meteo{
         int p=0;
         p+=calcPointsT();
         p+=calcPointsW();
-
         return p;
-
-        
     }
 
     //Gets e Sets
@@ -225,40 +201,30 @@ public class Meteo{
             break;
 
             default:
-            break;
-
-            
+            break;     
         }
-        
+       
         return info;
-
-
     }
 
     /* toString, equals, clone */
     public String toString(){
         StringBuilder sb = new StringBuilder();
-
         sb.append("Temperature: ");
         sb.append(this.getTemp());
-
         sb.append("Weather conditions: ");
         sb.append(this.getStringW());
-
         return sb.toString();
     }
 
     public boolean equals(Object o){
         if(this == o) return true;
-
         if(this.getClass() != o.getClass()) return false;
-
         Meteo a = (Meteo) o;
         return a.getTemp() == this.getTemp() && a.getWeather() == this.getWeather();
     }
 
     public Meteo clone(){
         return new Meteo(this);
-
     }
 }
