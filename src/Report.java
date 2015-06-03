@@ -6,7 +6,7 @@
  */
 
 public class Report {
-    private static double id;      // The cache id
+    private static Double id;      // The cache id
     private static String mail;     // E-mail of the user that reported
     private static String message;  // Report message
 
@@ -22,7 +22,7 @@ public class Report {
      * @param mail The user e-mail
      * @param message The report message
      */
-    public Report (double id, String mail, String message) 
+    public Report (Double id, String mail, String message)
     throws NullPointerException, IllegalStateException {
 
         // Exceptions
@@ -44,7 +44,7 @@ public class Report {
     // Getters
 
     /** @return The cache id */
-    public double getId () {
+    public Double getId () {
         return this.id;
     }
 

@@ -517,6 +517,7 @@ public class Main implements Serializable {
     clean();
     System.out.print("Cache id: ");
     id = sc.nextDouble();
+    message = sc.nextLine();  /* To flush input */
     while (message.trim().equals("")) {
       System.out.print("Why are you reporting this cache: ");
       message = sc.nextLine();

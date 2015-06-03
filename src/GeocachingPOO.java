@@ -329,7 +329,7 @@ public class GeocachingPOO implements Serializable {
 
     /** Report a cache
      *  @param rep The report to be added */
-    public void reportCache (Report rep) throws NullPointerException, NoUserLoggedInException {
+    public void reportCache (Report rep) throws NullPointerException, NoUserLoggedInException, IllegalArgumentException {
         if (user == null)
             throw new NoUserLoggedInException();
         rep.setMail(user.getMail());
@@ -451,9 +451,9 @@ public class GeocachingPOO implements Serializable {
     }
 
     //TODO - test from this on
-    /** 
+    /**
     * @param int year
-    * @return Statistic of a given year 
+    * @return Statistic of a given year
     *
     */
     public Statistic getStatistic(int year){
@@ -462,7 +462,7 @@ public class GeocachingPOO implements Serializable {
     }
     //TODO needs testing all this stats
     /** Method that receives a String with Global/Anual Statistic's information, from the user
-    * 
+    *
     *@return String
     */
     public String getSTATSGlobal(){

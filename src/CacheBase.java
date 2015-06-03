@@ -230,7 +230,7 @@ public class CacheBase implements Serializable {
         throw new IllegalArgumentException("No Cache with the given id.");
 
       this.caches.set(id.intValue() - 1, null);
-      this.reported_caches.remove(id.intValue());
+      this.reported_caches.remove(id);
       this.coords.remove(cache.getCoords());
     }
 
@@ -239,11 +239,15 @@ public class CacheBase implements Serializable {
     /** Add a report
      * @param report The report to be added}
      */
-    public void addReport (Report report) throws NullPointerException {
+    public void addReport (Report report) throws NullPointerException, IllegalArgumentException {
         ArrayList<Report> list = reported_caches.get(report.getId());
 
         if (report == null)
             throw new NullPointerException("report can't be null!");
+        if (report.getId() > this.caches.size())
+            throw new IllegalArgumentException("No cache with the given id.");
+        if (this.caches.get(report.getId().intValue() - 1) == null)
+            throw new IllegalArgumentException("No cache with the given id.");
 
         /* Add report */
         if (list != null)
