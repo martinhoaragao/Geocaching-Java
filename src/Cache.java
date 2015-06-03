@@ -159,7 +159,8 @@ public abstract class Cache implements Serializable {
      * Set list of treasures
      * @arg treasure, ArrayList of Treasures
      */
-    public void setTreasure (ArrayList<Treasure> treasure) {
+    public void setTreasure (ArrayList<Treasure> treasure) throws NullPointerException {
+        if(treasure == null) throw new NullPointerException("parameter List<treasure> can't be null!");
         ArrayList<Treasure> newTreasure = new ArrayList<Treasure>();
 
         for(Treasure aux : treasure)

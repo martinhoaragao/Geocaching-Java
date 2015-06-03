@@ -18,7 +18,7 @@ public class StatisticTest
     private java.util.GregorianCalendar vinte52015;
     private java.util.GregorianCalendar vinte62015;
     private java.util.GregorianCalendar vinte052014;
-    private MicroCache micro;
+    private MysteryCache micro;
     private MysteryCache mys;
     private TraditionalCache tra;
     private Activity activity1;
@@ -47,7 +47,7 @@ public class StatisticTest
         vinte52015 = new java.util.GregorianCalendar(2015, 5, 20);
         vinte62015 = new java.util.GregorianCalendar(2015, 6, 20);
         vinte052014 = new java.util.GregorianCalendar(2014, 5, 20);
-        micro = new MicroCache();
+        micro = new MysteryCache();
         mys = new MysteryCache();
         tra = new TraditionalCache();
         activity1 = new Activity(vinte52015, micro, 100, 1);
