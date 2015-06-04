@@ -303,13 +303,13 @@ public class NormalUser extends User implements Serializable {
      * @return User statistic of a given year
      * @param year
      */
-    public Statistic getStatistics(int year){
+    public Statistic getStatistics(int year) throws NoStatsException{
         return this.statistics.getStatistic(year).clone();
     }
 
     //TODO test please.
     /** @returns stats in form of a string with the information of totalpoints, totalkms, and numbercaches of all years*/
-    public String getSTATS_PKC(){
+    public String getSTATS_PKC() throws NoStatsException{
         StringBuilder sb = new StringBuilder();
         int totalpoints = this.statistics.getSumPoints();
         double totalkms = this.statistics.getSumKms();
@@ -326,11 +326,11 @@ public class NormalUser extends User implements Serializable {
     /** @returns stats in form of a string with the information of totalpoints, totalkms, and numbercaches of a whole year
     * @param year
     */
-    public String getSTATS_PKC(int year) throws NullPointerException{
+    public String getSTATS_PKC(int year) throws NoStatsException{
 
       StringBuilder sb = new StringBuilder();
-      if(this.statistics.getStatistic(year) == null)
-      throw new NullPointerException("There are no Statistics in that given year!");
+      
+      
 
       int totalpoints = this.statistics.getStatistic(year).getSumPoints();
       double totalkms = this.statistics.getStatistic(year).getSumKms();
@@ -350,7 +350,7 @@ public class NormalUser extends User implements Serializable {
 
     //TODO test the indices of month and it keeps returning null so test in geocaching as well
     //TODO add exceptions to avoid receiving the message NULL EXCEPTION...
-    public String getSTATSM_PKC(int month)throws NullPointerException{
+    public String getSTATSM_PKC(int month)throws NullPointerException, NoStatsException{
       /*GregorianCalendar gc = new GregorianCalendar();
       String years = String.valueOf(gc.get(GregorianCalendar.YEAR));
       int year = Integer.parseInt(years);*/
@@ -368,11 +368,11 @@ public class NormalUser extends User implements Serializable {
       int totalcaches = this.statistics.getStatistic(year).getTotalCaches(month+1);
 
 
-      sb.append("Statistics year "+ Integer.toString(year)  + ", month " + Integer.toString(month) +": \n");
+      sb.append("Statistics year "+ Integer.toString(year)  + ", month " + Integer.toString(month+1) +": \n");
       sb.append("Caches found:"); sb.append(Integer.toString(totalcaches) + ".\n");
       sb.append("Kms traveled:"); sb.append(Double.toString(totalkms) + ".\n");
       sb.append("Total earned points:"); sb.append(Integer.toString(totalpoints) + "!!!\n");
-      System.out.println(sb.toString());
+      //System.out.println(sb.toString());
       return sb.toString();
     }
 

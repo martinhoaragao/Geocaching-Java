@@ -105,7 +105,11 @@ public class StatisticYear implements Serializable
      * Get the Statistic of Activities by a given year.
      * @param int year.
      */
-    public Statistic getStatistic(int year){
+    public Statistic getStatistic(int year) throws NoStatsException{
+        Statistic stats = this.statsyear.get(year);;
+        
+        if(stats == null) throw new NoStatsException("There are no statistics of year " + year + "." );
+        
         return this.statsyear.get(year);
     }
 
@@ -114,7 +118,7 @@ public class StatisticYear implements Serializable
      *
      * This method addes them in a new set.
      */
-    public TreeSet<Activity> getSetOfYear(){
+    public TreeSet<Activity> getSetOfYear() {
         TreeSet<Activity> novo = new TreeSet<>();
         TreeSet<Activity> aux;
         for(Statistic stats : this.statsyear.values()){

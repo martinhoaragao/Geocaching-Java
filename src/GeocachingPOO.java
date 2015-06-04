@@ -488,7 +488,7 @@ public class GeocachingPOO implements Serializable {
     * @return Statistic of a given year
     *
     */
-    public Statistic getStatistic(int year){
+    public Statistic getStatistic(int year) throws NoStatsException{
         return user.getStatistics(year);
         //made this method in the class NormalUser
     }
@@ -497,7 +497,7 @@ public class GeocachingPOO implements Serializable {
     *
     *@return String
     */
-    public String getSTATSGlobal(){
+    public String getSTATSGlobal() throws NoStatsException{
         return user.getSTATS_PKC();
     }
 
@@ -505,7 +505,7 @@ public class GeocachingPOO implements Serializable {
     * @param year
     *@return String
     */
-    public String getSTATSGlobal(int year){
+    public String getSTATSGlobal(int year) throws NoStatsException{
         return user.getSTATS_PKC(year);
     }
 
@@ -513,7 +513,7 @@ public class GeocachingPOO implements Serializable {
     * @param month
     *@return String
     */
-    public String getSTATS_Month(int month){
+    public String getSTATS_Month(int month) throws NoStatsException{
         return user.getSTATSM_PKC(month);
     }
 

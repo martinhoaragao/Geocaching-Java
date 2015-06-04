@@ -92,6 +92,7 @@ public class Main implements Serializable {
     /** Auxiliary function to display the User Menu */
     private static void userMenu () {
         clean();
+        
         System.out.println("1: Personal Information");
         System.out.println("2: Caches Menu");
         System.out.println("3: Friends");
@@ -227,11 +228,12 @@ public class Main implements Serializable {
         boolean done  = false;
 
         System.out.println("1. Global Stats");
-        System.out.println("2. Mensal Stats");
-        System.out.println("3. Statistics of a given month");
+        System.out.println("2. Year Stats");
+        System.out.println("3. Mensal Stats");
         System.out.println("4: Leave cache menu");
 
         switch (sc.nextInt()) {
+            
             case 1: displayGlobalStats();  break;
             case 2: displayMensalStats();  break;
             case 3: displayaMonthStats();  break;
@@ -781,7 +783,11 @@ public class Main implements Serializable {
 
     //TODO test axiliary funtions STATISTIC
     private static void displayGlobalStats(){
-        System.out.println(gc.getSTATSGlobal());
+        try{
+            System.out.println(gc.getSTATSGlobal());
+        }
+        catch(Exception e){ System.out.println(e.getMessage()); }
+        
     }
 
     private static void displayMensalStats(){
@@ -793,7 +799,13 @@ public class Main implements Serializable {
             year = gc.getCurrentYear(); //returns the current year function present in normaluser and passed/available in geocaching
         }
 
-        System.out.println(gc.getSTATSGlobal(year));
+       
+        
+        try{
+            System.out.println(gc.getSTATSGlobal(year));
+        }
+        catch(Exception e){ System.out.println(e.getMessage()); }
+        
     }
 
     private static void displayaMonthStats(){
@@ -802,7 +814,13 @@ public class Main implements Serializable {
         int month = sc.nextInt();
 
         int year = gc.getCurrentYear();
-        System.out.println(gc.getSTATS_Month(month));
+        
+        try{
+            System.out.println(gc.getSTATS_Month(month-1));
+        }
+        catch(Exception e){ System.out.println(e.getMessage()); }
+        
+        
     }
 
     /* -------------------- ADMIN --------------------------------*/
