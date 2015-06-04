@@ -20,6 +20,7 @@ public class Activity implements Serializable {
     private static int limit_points = 100;
     private static int limit_points_cache = 50;
     private static int limit_points_kms = 30;
+    private static int limit_points_meteo = 20;
 
 
     /**

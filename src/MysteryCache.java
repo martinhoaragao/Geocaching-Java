@@ -32,9 +32,9 @@ public class MysteryCache extends Cache implements Serializable
      * @param question  Question for Puzzle
      * @param answer    Answer for Puzzle
      */
-    public MysteryCache (double id, Coordinates coords, String mail, String question, String answer) {
+    public MysteryCache (double id, Coordinates coords, String mail, Puzzle puzzle) {
         super(id, coords, mail);
-        this.puzzle = new Puzzle(question, answer, coords);
+        this.puzzle = puzzle.clone();
     }
 
     /**

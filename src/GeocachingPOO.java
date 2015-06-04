@@ -379,7 +379,7 @@ public class GeocachingPOO implements Serializable {
      *  @param question Question for Mystery Cache
      *  @param answer   Answer for Mystery Cache
      */
-    public static void createCache (int type, ArrayList<Coordinates> coords, String answer, String question) throws IllegalStateException, NullPointerException, IllegalArgumentException, NoUserLoggedInException {
+    public static void createCache (int type, ArrayList<Coordinates> coords, Puzzle puzzle) throws IllegalStateException, NullPointerException, IllegalArgumentException, NoUserLoggedInException {
         Cache cache;
 
         if (user == null)
@@ -392,7 +392,7 @@ public class GeocachingPOO implements Serializable {
                 break;
             case 3: cache = new MicroCache(idcache, coords.get(0), user.getMail());
                 break;
-            case 4: cache = new MysteryCache(idcache, coords.get(0), user.getMail(), question, answer);
+            case 4: cache = new MysteryCache(idcache, coords.get(0), user.getMail(), puzzle);
                 break;
             default:
                 throw new IllegalArgumentException("type must be between 1 and 4.");

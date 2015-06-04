@@ -289,7 +289,7 @@ public class Main implements Serializable {
         }
 
         //New code for the bdate approval
-        GregorianCalendar bbbdate = typebdate();
+        GregorianCalendar bbbdate = typeDate();
         if(bbbdate != null){
             System.out.print("Country: ");
             country = sc.nextLine().replaceAll("[\n\r]","");
@@ -437,7 +437,7 @@ public class Main implements Serializable {
     /** Auxiliary function to change User birthdate */
     private static void changeBDate () {
         clean();
-        GregorianCalendar bb = typebdate();
+        GregorianCalendar bb = typeDate();
         try {
             gc.changeBDate(bb);
             System.out.println("Successfully changed birthdate.");
@@ -473,7 +473,7 @@ public class Main implements Serializable {
         ArrayList<Coordinates> coords;  /* Coordinates */
         int type, stages;               /* Cache type and numer of stages for Muticache */
         String question, answer;        /* For MysteryCache */
-
+        Puzzle puzzle = new Puzzle();
         clean();
         coords = new ArrayList<Coordinates>();
         question = answer = null;
@@ -507,7 +507,7 @@ public class Main implements Serializable {
 
         if ((type != 0) && (type <= 4)) {
             try {
-                gc.createCache(type, coords, question, answer);
+                gc.createCache(type, coords, puzzle);
                 System.out.println("Successfully created cache!");
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -749,10 +749,13 @@ public class Main implements Serializable {
         Double id;
 
         clean();
-        System.out.print("Date: "); act.setDate(typebdate());
+        System.out.print("Date: "); act.setDate(typeDate());
         System.out.print("Cache id: "); id = sc.nextDouble();
+        //TODO
+        //gc.getCache(id)   
         System.out.print("Kilometeres covered: "); act.setKms(sc.nextDouble());
         /* TODO: Change the way points are added */
+        //chamar o update depois dos sets kms calculado também act.update e nao precisa do points
         act.setPoints(20);
 
         try {
@@ -962,7 +965,7 @@ public class Main implements Serializable {
      * Auxiliary function to create GregorianCalendar bdate to constructor user
      * With prints
      */
-    private static GregorianCalendar typebdate(){
+    private static GregorianCalendar typeDate(){
         boolean aux = true;
         String bbdate;
         GregorianCalendar bbbdate;
@@ -970,7 +973,7 @@ public class Main implements Serializable {
         int d,m,y,yy;
         Scanner sc = new Scanner(System.in);
         do {
-            System.out.print("Birthdate (Day/Month/Year): ");
+            System.out.print("Date (Day/Month/Year): ");
             bbdate = sc.nextLine();
             bdate_fields = bbdate.split("/");
             d = Integer.parseInt(bdate_fields[0]);

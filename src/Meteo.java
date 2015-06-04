@@ -10,8 +10,6 @@ import java.io.Serializable;
 public class Meteo implements Serializable {
     private int temperature;
     private int weather;
-
-    private static int limit_points = 20;
     /*
         Rainy 0
         Stormy 1
