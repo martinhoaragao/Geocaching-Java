@@ -1,5 +1,4 @@
-/**
- * CacheBase represents the Data-Base for all the Caches that have been created (by the server
+/** * CacheBase represents the Data-Base for all the Caches that have been created (by the server
  * or by users).
  *
  * @version 07/05/2015
@@ -337,5 +336,21 @@ public class CacheBase implements Serializable {
             }
 
         return map;
+    }
+
+    /**
+     *  Get the Treasures of a given Cache
+     *  @param id The Cache ID
+     *  @param ArrayList containing clones of the Cache Treasures
+     */
+    public ArrayList<Treasure> getCacheTreasures (Double id) throws IllegalArgumentException {
+        Cache cache = null;
+
+        if (id > this.caches.size())
+            throw new IllegalArgumentException("No Cache with the given ID.");
+        if ((cache = this.caches.get(id.intValue() - 1)) == null)
+            throw new IllegalArgumentException("No Cache with the given ID.");
+
+        return cache.getTreasure();
     }
 }

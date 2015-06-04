@@ -418,6 +418,15 @@ public class GeocachingPOO implements Serializable {
         return cache.getRegistry();
     }
 
+    /**
+     *  Get the Treasures of a given Cache
+     *  @param id The Cache ID
+     *  @return ArrayList containing clones of the Cache Treasures
+     */
+    public ArrayList<Treasure> getCacheTreasures (Double id) throws IllegalArgumentException {
+        return cachebase.getCacheTreasures(id);
+    }
+
     /* ------------------------- ADMIN ------------------------*
 
 
