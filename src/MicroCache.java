@@ -27,6 +27,7 @@ public class MicroCache extends Cache implements Serializable
      */
     public MicroCache (double id, Coordinates coords, String mail) {
         super(id, coords, mail);
+        this.setTreasure(null); 
     }
 
     /**
@@ -35,6 +36,7 @@ public class MicroCache extends Cache implements Serializable
      */
     public MicroCache (MicroCache microCache) {
         super(microCache);
+        this.setTreasure(null); 
     }
 
     // clone
@@ -46,5 +48,7 @@ public class MicroCache extends Cache implements Serializable
     public MicroCache clone () {
         return new MicroCache(this);
     }
+    
+    
 
 }

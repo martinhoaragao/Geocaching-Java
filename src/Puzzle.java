@@ -230,7 +230,7 @@ public class Puzzle {
 
     public boolean equals(Object o){
         if(this == o) return true;
-        if(this.getClass() != o.getClass()) return false;
+        if(this == null || o == null || this.getClass() != o.getClass()) return false;
 
         Puzzle a = (Puzzle) o;
         return a.question.equals(this.question) && a.answer.equals(this.answer) && a.local.equals(this.local);
