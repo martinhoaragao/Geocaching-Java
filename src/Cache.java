@@ -26,13 +26,13 @@ public abstract class Cache implements Serializable {
      * Construtor without arguments
      */
     public Cache () {
-       this.id = 0.0;
-       this.coords = new Coordinates();
-       this.mail = new String();
-       this.registry = new ArrayList<String>();
-       this.treasure = new ArrayList<Treasure>();
-       this.info = new String();
-     }
+        this.id = 0.0;
+        this.coords = new Coordinates();
+        this.mail = new String();
+        this.registry = new ArrayList<String>();
+        this.treasure = new ArrayList<Treasure>();
+        this.info = new String();
+    }
 
     /**
      * Constructor of new Cache
@@ -160,13 +160,17 @@ public abstract class Cache implements Serializable {
      * @arg treasure, ArrayList of Treasures
      */
     public void setTreasure (ArrayList<Treasure> treasure) throws NullPointerException {
-        if(treasure == null) throw new NullPointerException("parameter List<treasure> can't be null!");
-        ArrayList<Treasure> newTreasure = new ArrayList<Treasure>();
+        if(this instanceof MicroCache)
+            treasure = null;
+        else{
+            if(treasure == null && !(this instanceof MicroCache)) throw new NullPointerException("parameter List<treasure> can't be null!");
 
-        for(Treasure aux : treasure)
-            newTreasure.add(aux);
+            ArrayList<Treasure> newTreasure = new ArrayList<Treasure>();
+            for(Treasure aux : treasure)
+                newTreasure.add(aux);
 
-        this.treasure = newTreasure;
+            this.treasure = newTreasure;
+        }
     }
 
     /**
@@ -191,6 +195,7 @@ public abstract class Cache implements Serializable {
 
         return sb.toString();
     }
+
     /**
      * Compares this cache with another object to check if they are equal
      * @arg cache Object to compare with it

@@ -186,10 +186,9 @@ public class Activity implements Serializable {
     /**
      * Method that returns and sets all points from Cache, Kms travelled and Meteo.
      */
-    public int updatePoints(){
+    public void updatePoints(){
         int points = this.calcPointsCache() + this.calcPointsKms() + meteo.calcPoints();
-        this.points = points;
-        return points;
+        this.setPoints (points);
     }
 
     // toString, equals and clone

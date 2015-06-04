@@ -810,6 +810,7 @@ public class Main implements Serializable {
         }
         catch(Exception e){ System.out.println(e.getMessage()); }
         
+        if (console != null) console.readLine();
     }
 
     private static void displayaMonthStats(){
@@ -824,7 +825,7 @@ public class Main implements Serializable {
         }
         catch(Exception e){ System.out.println(e.getMessage()); }
         
-        
+        if (console != null) console.readLine();
     }
 
     /* -------------------- ADMIN --------------------------------*/

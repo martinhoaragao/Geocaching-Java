@@ -213,7 +213,7 @@ public class Meteo implements Serializable {
         StringBuilder sb = new StringBuilder();
         sb.append("Temperature: ");
         sb.append(this.getTemp());
-        sb.append("Weather conditions: ");
+        sb.append(" Weather conditions: ");
         sb.append(this.getStringW());
         return sb.toString();
     }

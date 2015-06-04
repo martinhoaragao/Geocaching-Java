@@ -90,7 +90,7 @@ public class Statistic implements Serializable
 
     /**
      * Add an Activity in the Statistic.
-     * @param Activity a.
+     * @param a the Activity to add
      */
     public void addAct(Activity a) throws NotAddedActivityYearIncorrectException{  //returns a boolean if it was inserted or not.
         //Negative testing: if i want to add activity of year 2005 in stats of year 2006, should return false.
@@ -112,7 +112,7 @@ public class Statistic implements Serializable
     /**
      * Removes an Activity in the array of TreeSet<Activity>.
      *
-     * @param Activity a.
+     * @param a Activity to remove
      */
     public boolean removeAct(Activity a){
        int month = a.getMonth();
@@ -120,9 +120,9 @@ public class Statistic implements Serializable
    }
     /**
      * Get the Set of Activities by a given month.
-     * @param int m month.
+     * @param m month of the TreeSet of Activities that I want 
      */
-    public TreeSet<Activity> getTreeSet(int m){
+    public TreeSet<Activity> getMonthActivities(int m){
         //Array starts from 0 to 11. Receives 1 , returns stats[0].
         TreeSet<Activity> ret = this.stats.get(m-1);
         TreeSet<Activity> novo = new TreeSet<Activity>(new AComparator());
