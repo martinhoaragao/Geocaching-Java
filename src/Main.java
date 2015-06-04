@@ -2,8 +2,8 @@ import Exceptions.*;
 /**
  * Class that has the main method to run Geocaching
  *
- * @author jfc
- * @version 25/05/2015
+ * @author jfc, jp and ma
+ * @version 04/06/2015
  */
 
 import java.util.Scanner;
@@ -16,6 +16,7 @@ import java.io.ObjectOutputStream;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+
 
 public class Main implements Serializable {
     private static Console console = System.console();
@@ -45,7 +46,7 @@ public class Main implements Serializable {
                 }
             } else if (user_logged) {             /* User logged in */
                 userMenu();
-                //TODO test case 5 Statistics
+                
                 switch (sc.nextInt()) {
                     case 1: infoMenu();               break;
                     case 2: cachesMenu();             break;
@@ -148,7 +149,7 @@ public class Main implements Serializable {
         System.out.println("7: Log Out");
     }
 
-    //TODO ADD SHOW STATISTICS OF THIS FRIEND YOU CLICKED ON -MENSAL (of a given year, all months) OR GLOBAL(all years)
+    
     /** Auxiliary function to display Friends Menu */
     private static void friendsMenu () {
         Scanner sc = new Scanner(System.in);
@@ -199,7 +200,7 @@ public class Main implements Serializable {
         }
     }
 
-    //TODO TEST MENU STATISTIC RELATED
+    
 
     /** Auxiliary function to display and control Reporsts Menu for Admin */
     private static void reporstMenu () {
@@ -232,7 +233,7 @@ public class Main implements Serializable {
             System.out.println("1. Global Stats");
             System.out.println("2. Year Stats");
             System.out.println("3. Mensal Stats");
-            System.out.println("4: Leave cache menu");
+            System.out.println("4: Leave Statistics menu");
 
             switch (sc.nextInt()) {
             
@@ -741,22 +742,24 @@ public class Main implements Serializable {
 
     /* ------------------------- ACTIVITIES -----------------------*/
 
-    /** Auxiliary function to create a new Activity */
+    /** Auxiliary function to create a new Activity, simulates kms travelled and meteo as well.*/
     private static void createActivity () {
         Scanner sc = new Scanner(System.in);
         Activity act = new Activity();
-        GregorianCalendar date;
-        Double id;
-
+        GregorianCalendar date; Double id; Cache cache; Coordinates simulardistancia; Double kms;
         clean();
         System.out.print("Date: "); act.setDate(typeDate());
         System.out.print("Cache id: "); id = sc.nextDouble();
-        //TODO
-        //gc.getCache(id)   
-        System.out.print("Kilometeres covered: "); act.setKms(sc.nextDouble());
-        /* TODO: Change the way points are added */
-        //chamar o update depois dos sets kms calculado também act.update e nao precisa do points
-        act.setPoints(20);
+        cache = gc.getCache(id);
+        simulardistancia = cache.getCoords();
+        simulardistancia.incLat(); simulardistancia.incLon();
+        kms = simulardistancia.getCoordinatesDist( cache.getCoords() );
+        act.setKms(kms);
+        //date done, cache done, kms done and meteo will be simulated as well. After this, updatePoints should be correctly executed.
+        //Because all this information is in the Activity now. 
+        //Note: when calling the empty constructor new Activity() it creates the Meteo already. So all done.
+
+        act.updatePoints();
 
         try {
             gc.addActivity(act, id);
@@ -788,7 +791,6 @@ public class Main implements Serializable {
 
     /* ------------------------- STATISTIC -----------------------*/
 
-    //TODO test axiliary funtions STATISTIC
     private static void displayGlobalStats(){
         try{
             System.out.println(gc.getSTATSGlobal());

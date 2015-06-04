@@ -1,8 +1,10 @@
 /**
  * Class that represents an Activity, which is the finding of a cache by a User.
  *
- * @version 14/05/2015
+ * @version 04/06/2015
  */
+
+// DONE
 
 import java.util.GregorianCalendar;
 import java.io.Serializable;
@@ -13,27 +15,15 @@ public class Activity implements Serializable {
     private Cache cache;            // Cache found on this activity
     private Double kms;             // Kilometers covered
     private int points;             // Each activity gives points to the User.
-    private Meteo meteo;            //Each activity has a random meteorology.
+    private Meteo meteo;            // Each activity has a random meteorology.
 
-    //TODO  IF it has var kms and in main asks for kms covered...   its ok right?  only calc distances for "1. Look for caches play game" all right?
-    //otherwise will be confusing and it will mess all the code.
     private static int limit_points = 100;
     private static int limit_points_cache = 50;
     private static int limit_points_kms = 30;
     private static int limit_points_meteo = 20;
 
-
     /**
-     * Constructor with arguments
-     * @arg year Year
-     * @arg month Month of the year
-     * @arg day Day of the Month
-     * @arg cache Cache that was found
-     * @arg kms Quilometers covered
-     */
-
-    /**
-     * Constructor without arguments
+     * Constructor without paramuments
      */
     public Activity () {
         this.date = new GregorianCalendar();
@@ -44,10 +34,11 @@ public class Activity implements Serializable {
     }
 
     /**
-     * Constructor with arguments
-     * @arg date Date in which the cache was found
-     * @arg cache The cache that was found
-     * @arg kms Kilometers covered to find the cache
+     * Constructor with paramuments
+     * @param date Date in which the cache was found
+     * @param cache The cache that was found
+     * @param kms Kilometers covered to find the cache
+     * @param points Points gained in this Activity
      */
     public Activity (GregorianCalendar date, Cache cache, double kms, int points) {
         this.date = (GregorianCalendar) date.clone();
@@ -59,27 +50,29 @@ public class Activity implements Serializable {
 
     /**
      * Constructs an Activity using another Activity as reference
-     * @arg act Activity to use as reference
+     * @param act Activity to use as reference
      */
     public Activity (Activity act) {
         this.date = act.getDate();
         this.cache = act.getCache();
         this.kms = act.getKms();
         this.points = act.points;
-        this.meteo = act.meteo.clone(); //TODO TEST THIS PART, im not sure...
+        this.meteo = act.meteo.clone(); 
     }
 
 
     // Getters
 
     /**
-     * @return Date of the activity
+     * Method that returns the date of an Activity.
+     * @return Date of the activity in GregorianCalendar object form.
      */
     public GregorianCalendar getDate () {
         return (GregorianCalendar) this.date.clone();
     }
 
     /**
+     * Method that returns the month of an Activity as an int.
      * @return the month of the activity
      */
     public int getMonth(){
@@ -87,6 +80,7 @@ public class Activity implements Serializable {
     }
 
     /**
+     * Method that returns the year of an Activity as an int.
      * @return the year of the activity
      */
      public int getYear(){
@@ -94,30 +88,44 @@ public class Activity implements Serializable {
     }
 
     /**
-     * @return Cache found in this activity
+     * Method that returns the Cache of an Activity.
+     * @return this.cache Cache found in this activity
      */
     public Cache getCache () {
         return this.cache;
     }
 
     /**
-     * @return Kilometers covered in this activity
+     * Method that returns the kms traveled in an Activity.
+     * @return this.kms Kilometers covered in this activity
      */
     public double getKms () {
         return this.kms;
     }
 
+    /**
+    * Method that returns the points of an Activity.
+    * @return this.points
+    */
     public int getPoints () {
         return this.points;
+    }
+
+    /**
+    *   Method that returns the Meteorology of an Activity
+    * @returns this.meteo cloned, as form of Meteo object.
+    */
+    public Meteo getMeteo(){
+        return this.meteo.clone();
     }
 
     // Setters
 
     /**
      * Change date of the activity
-     * @arg day
-     * @arg month
-     * @arg year
+     * @param day day which the Activity was found
+     * @param month which the Activity was found
+     * @param year which the Activity was found
      */
     public void setDate (int day, int month, int year) {
         this.date = new GregorianCalendar(year, month, day);
@@ -131,7 +139,7 @@ public class Activity implements Serializable {
 
     /**
      * Change the cache that was found in the activity
-     * @arg cache New cache to replace
+     * @param cache New cache to replace
      */
     public void setCache (Cache cache) {
         this.cache = cache;
@@ -139,7 +147,7 @@ public class Activity implements Serializable {
 
     /**
      * Change the number of kilometers covered in this activity
-     * @arg kms New value for kilometers
+     * @param kms New value for kilometers
      */
     public void setKms (double kms) {
         this.kms = kms;
@@ -150,15 +158,23 @@ public class Activity implements Serializable {
     }
 
     /**
+    *  Method that sets the Meteo to an Activity
+    */
+    public void setMeteo(Meteo meteo){
+        this.meteo = meteo.clone();
+    }
+
+    /**
      * Auxiliary function that calculates the points for the kms with limit of 30.
-     * If the user has travelled more than 20 kms it returns the total points which are 30.
+     * If the user has travelled 1000 meters, it returns 1point.
+     * 30km or more returns maximum points which are 30 points.
      * Otherwise gives the user the points equivalent to the kms travelled.
      *
      * @return points for kms
      */
     private int calcPointsKms(){
-        int points = (int) Math.round(kms) ;  //TODO CHECK THIS ALSO
-        if(kms >= limit_points_kms) points = limit_points_kms;
+        int points = (int) Math.round(this.getKms()) ;  
+        if(points >= limit_points_kms) points = limit_points_kms;
 
         return points;
     }
@@ -169,7 +185,6 @@ public class Activity implements Serializable {
      *
      * @return points for the cache.
      */
-    //TODO CHECK THIS ERROR... CANNOT FIND METHOD getPuzzle. but i did it... ont he mysterycache class
     private int calcPointsCache(){
         int points = 0;
 
@@ -207,7 +222,7 @@ public class Activity implements Serializable {
         year = String.valueOf(date.get(GregorianCalendar.YEAR));
         latitude = this.cache.getCoords().getLat();
         longitude = this.cache.getCoords().getLon();
-        //TODO test 
+        
         sb.append("Cache found on " + day + "/" + month + "/" + year + "\n");
         sb.append("Meteo information: " +this.meteo.toString() );
         sb.append("Cache localization: (" + latitude + "," + longitude +")" +"\n");
@@ -218,7 +233,7 @@ public class Activity implements Serializable {
 
     /**
      * Compare this Activity to another to check if they are equal
-     * @arg act Object to use for comparison
+     * @param act Object to use for comparison
      */
     public boolean equals (Object act) {
         if (this == act) return true;

@@ -3,7 +3,7 @@
  *
  * @version 11/05/2015
  */
-
+import java.util.Random;
 import java.io.Serializable;
 
 public class Coordinates implements Comparable<Coordinates>, Serializable {
@@ -56,7 +56,7 @@ public class Coordinates implements Comparable<Coordinates>, Serializable {
     /**
      * Sets the latitude.
      */
-    public void setLat(int lat) throws IllegalArgumentException {
+    public void setLat(double lat) throws IllegalArgumentException {
         if (lat < 0 || lat > 90)
             throw new IllegalArgumentException("Out of boundary argument");
         this.latitude = lat;
@@ -65,10 +65,81 @@ public class Coordinates implements Comparable<Coordinates>, Serializable {
     /**
      * Sets the longitude.
      */
-    public void setLon(int lon) throws IllegalArgumentException {
+    public void setLon(double lon) throws IllegalArgumentException {
         if (lon < -180 || lon > 180)
             throw new IllegalArgumentException("Out of boundary argument");
         this.longitude = lon;
+    }
+    
+    /**
+     * Increments the latitute
+     * @param increment is the value that I want to increment
+     */
+    public void incLat(double increment){
+        this.latitude +=increment;
+        if(this.latitude > 90) this.latitude = 90;
+    }
+    
+    /**
+     * Increments the longitute
+     * @param increment is the value that I want to increment
+     */
+    public void incLon(double increment){
+        this.longitude +=increment;
+        if(this.longitude > 180) this.longitude = 180;
+    }
+
+    /**
+    * Method that increments latitude by a random value for good realistic distances between a copy with this increment and the original.
+    */
+    public void incLat(){
+        this.latitude +=this.randomValue();
+        if(this.latitude > 90) this.latitude = 90;
+    }
+
+    /**
+    * Method that increments longitude by a random value for good realistic distances between a copy with this increment and the original.
+    */
+    public void incLon(){
+        this.longitude +=this.randomValue();
+        
+        if(this.longitude > 180) this.longitude = 180;
+    }
+
+    /**
+    *   Auxiliary function that generates a random Value.
+    *
+    */
+    private double randomValue(){
+        Random random = new Random();
+        int decide = random.nextInt(3);
+        //decide gets a number between 0 and 2 and switch case for each one
+        double value = random.nextDouble();
+        //generates random double 0.372312  0.832312 
+        
+
+        switch(decide){
+            case 0:
+            //don't change value
+
+            break;
+
+            case 1:
+            value = value/10;
+            break;
+
+            case 2:
+            value = value/100;
+            break;
+
+            default:
+            break;
+        }
+
+        
+        System.out.println(value);
+
+        return value;
     }
 
     /**
