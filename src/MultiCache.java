@@ -38,6 +38,23 @@ public class MultiCache extends Cache implements Serializable
     }
 
     /**
+     *  Parameterized constructor
+     *  @param id           The Cache ID
+     *  @param coords       ArrayList with all the coordinates
+     *  @param mail         Owner e-mail
+     *  @param treasures    This cache Treasures
+     *  @param info         Information about this Cache
+     */
+    public MultiCache (Double id, ArrayList<Coordinates> coords, String mail, ArrayList<Treasure> treasures, String info) {
+        super(id, coords.get(0), mail);
+        this.locals = coords;
+        this.stage = 0;
+        this.setTreasure(treasures);
+        this.setInfo(info);
+    }
+
+
+    /**
      * CHECK THIS, MAY BE WRONG
      * Construct a MultiCache using another MultiCache as reference
      * @param mc Multicache to clone

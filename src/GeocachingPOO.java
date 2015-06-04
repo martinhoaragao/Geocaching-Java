@@ -371,39 +371,91 @@ public class GeocachingPOO implements Serializable {
         else return null;
     }
 
-    /** Create a Cache
-     *  @param type The Cache type, 1 - Traditional Cache, 2 - MultiCache,
-     *  3 - MicroCache, 4 - MisteryCache
-     *  @param coords ArrayList with Coordinates, only the first one will be used
-     *  except for MultiCache
-     *  @param question Question for Mystery Cache
-     *  @param answer   Answer for Mystery Cache
+    /**
+     *  Create a Traditional Cache associated to the logged in User
+     *  @param coords       Cache coordinates
+     *  @param treasures    The Treasures on the Cache
+     *  @param info         Information about this Cache
      */
-    public static void createCache (int type, ArrayList<Coordinates> coords, Puzzle puzzle) throws IllegalStateException, NullPointerException, IllegalArgumentException, NoUserLoggedInException {
-        Cache cache;
+    public void createTraditionalCache (Coordinates coords, ArrayList<Treasure> treasures, String info) throws NullPointerException, IllegalStateException, IllegalArgumentException, NoUserLoggedInException {
+        TraditionalCache cache;
 
+        if (coords == null)
+            throw new NullPointerException("coords can't be null.");
+        if (info == null)
+            throw new NullPointerException("info can't be null.");
         if (user == null)
-            throw new NoUserLoggedInException("Ther is no User logged in.");
+            throw new NoUserLoggedInException("There is no user logged in.");
 
-        switch (type) {
-            case 1: cache = new TraditionalCache(idcache, coords.get(0), user.getMail());
-                break;
-            case 2: cache = new MultiCache(idcache, coords, user.getMail());
-                break;
-            case 3: cache = new MicroCache(idcache, coords.get(0), user.getMail());
-                break;
-            case 4: cache = new MysteryCache(idcache, coords.get(0), user.getMail(), puzzle);
-                break;
-            default:
-                throw new IllegalArgumentException("type must be between 1 and 4.");
-        }
+        cache = new TraditionalCache(idcache, coords, user.getMail(), treasures, info);
+        cachebase.addCache(idcache, cache);
+        idcache++;
+    }
 
-        try {
-            cachebase.addCache(user.getId(), cache);
-            idcache++;
-        } catch (Exception e) {
-            throw e;
-        }
+    /**
+     *  Create a MultiCache associated to the logged in User
+     *  @param coords       List with all the Coordinates
+     *  @param treasures    Cache Treasures
+     *  @param info         Infomation about the Cache
+     */
+    public void createMultiCache (ArrayList<Coordinates> coords, ArrayList<Treasure> treasures, String info) {
+        MultiCache cache;
+
+        if (coords == null)
+            throw new NullPointerException("coords can't be null.");
+        if (treasures == null)
+            throw new NullPointerException("treasures can't be null.");
+        if (info == null)
+            throw new NullPointerException("info can't be null.");
+
+        cache = new MultiCache(idcache, coords, user.getMail(), treasures, info);
+        cachebase.addCache(idcache, cache);
+        idcache++;
+    }
+
+    /**
+     *  Create a  MicroCache associated to the logged in User
+     *  @param coords       The Cache Coordinates
+     *  @param info         Information about this Cache
+     */
+    public void createMicroCache (Coordinates coords, String info) {
+        MicroCache cache;
+
+        if (coords == null)
+            throw new NullPointerException("coords can't be null.");
+        if (info == null)
+            throw new NullPointerException("info can't be null.");
+
+        System.out.println(info);
+        cache = new MicroCache(idcache, coords, user.getMail(), info);
+        cachebase.addCache(idcache, cache);
+        idcache++;
+    }
+
+    /**
+     *  Create a MysteryCache associated to the logged in User
+     *  @param coords       The Cache Coordinates
+     *  @param treasures    List of Treasures for the Cache
+     *  @param info         Information about this Cache
+     *  @param puzzle       This Cache's Puzzle
+     */
+    public void createMysteryCache (Coordinates coords, ArrayList<Treasure> treasures, String info, Puzzle puzzle) throws NullPointerException, NoUserLoggedInException {
+        MysteryCache cache;
+
+        if (coords == null)
+            throw new NullPointerException("coords can't be null.");
+        if (treasures == null)
+            throw new NullPointerException("treasures can't be null.");
+        if (info == null)
+            throw new NullPointerException("info can't be null.");
+        if (puzzle == null)
+            throw new NullPointerException("puzzle can't be null.");
+        if (user == null)
+            throw new NoUserLoggedInException("There is no user logged in.");
+
+        cache = new MysteryCache(idcache, coords, user.getMail(), treasures, info, puzzle);
+        cachebase.addCache(idcache, cache);
+        idcache++;
     }
 
     /** Invalidate (Delete) a Cache, if a User is logged in he can only delete caches

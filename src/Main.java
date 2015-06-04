@@ -46,7 +46,7 @@ public class Main implements Serializable {
                 }
             } else if (user_logged) {             /* User logged in */
                 userMenu();
-                
+
                 switch (sc.nextInt()) {
                     case 1: infoMenu();               break;
                     case 2: cachesMenu();             break;
@@ -93,7 +93,7 @@ public class Main implements Serializable {
     /** Auxiliary function to display the User Menu */
     private static void userMenu () {
         clean();
-        
+
         System.out.println("1: Personal Information");
         System.out.println("2: Caches Menu");
         System.out.println("3: Friends");
@@ -149,7 +149,7 @@ public class Main implements Serializable {
         System.out.println("7: Log Out");
     }
 
-    
+
     /** Auxiliary function to display Friends Menu */
     private static void friendsMenu () {
         Scanner sc = new Scanner(System.in);
@@ -200,7 +200,7 @@ public class Main implements Serializable {
         }
     }
 
-    
+
 
     /** Auxiliary function to display and control Reporsts Menu for Admin */
     private static void reporstMenu () {
@@ -237,7 +237,6 @@ public class Main implements Serializable {
             System.out.println("5: Leave Statistics menu");
 
             switch (sc.nextInt()) {
-            
                 case 1: displayGlobalStats();       break;
                 case 2: displayMensalStats();       break;
                 case 3: displayaMonthStats();       break;
@@ -246,7 +245,7 @@ public class Main implements Serializable {
                 default: break;
             }
         }
-        
+
     }
 
     /* ----------------------- REGISTER & LOGIN ----------------------*/
@@ -473,12 +472,15 @@ public class Main implements Serializable {
     private static void createCache () {
         Scanner sc = new Scanner(System.in);
         Double lat, lon;                /* Latitude and Longitude */
+        String info;                    /* Cache Information */
+        ArrayList<Treasure> treasures;  /* Cache Treasures */
         ArrayList<Coordinates> coords;  /* Coordinates */
         int type, stages;               /* Cache type and numer of stages for Muticache */
         String question, answer;        /* For MysteryCache */
-        Puzzle puzzle = new Puzzle();
+
         clean();
-        coords = new ArrayList<Coordinates>();
+        coords      = new ArrayList<Coordinates>();
+        treasures   = new ArrayList<Treasure>();
         question = answer = null;
 
         System.out.println("What type of cache do you want to create? (0 to cancel)");
@@ -488,35 +490,65 @@ public class Main implements Serializable {
         System.out.println("4: Mysterycache");
 
         type = sc.nextInt();
-        if (type == 2) {                      /* MultiCache */
+        if (type == 1) {                            /* Traditional Cache */
+            System.out.print("Latitude: ");         lat = sc.nextDouble();
+            System.out.print("Longitude: ");        lon = sc.nextDouble();
+            sc.nextLine();                          /* Flush Scanner */
+            System.out.print("Treasure: "); treasures.add(new Treasure(sc.nextLine(), "1"));
+            System.out.print("More information: "); info = sc.nextLine();
+
+            try {
+                gc.createTraditionalCache(new Coordinates(lat, lon), treasures, info);
+                System.out.println("Cache successfully created.");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        } else if (type == 2) {                     /* MultiCache */
             System.out.print("Number of stages: "); stages = sc.nextInt();
             for (int i = 0; i < stages; i++) {
                 System.out.print("Latitude: ");     lat = sc.nextDouble();
                 System.out.print("Longitude: ");    lon = sc.nextDouble();
                 coords.add(new Coordinates(lat, lon));
             }
-        } else if (type == 4) {               /* MysteryCache */
-            System.out.print("Latitude: ");   lat = sc.nextDouble();
-            System.out.print("Longitude: ");  lon = sc.nextDouble();
-            sc.nextLine().replaceAll("[\n\r]","");
-            System.out.print("Question: ");   question = sc.nextLine().replaceAll("[\n\r]","");
-            System.out.print("Answer: ");     answer = sc.nextLine().replaceAll("[\n\r]","");
-            coords.add(new Coordinates(lat, lon));
-        } else {                              /* Traditional and Micro Cache */
-            System.out.print("Latitude: ");     lat = sc.nextDouble();
-            System.out.print("Longitude: ");    lon = sc.nextDouble();
-            coords.add(new Coordinates(lat, lon));
-        }
+            sc.nextLine();                          /* Flush Scanner */
+            System.out.print("Treasure: "); treasures.add(new Treasure(sc.nextLine(), "1"));
+            System.out.print("More information: "); info = sc.nextLine();
 
-        if ((type != 0) && (type <= 4)) {
             try {
-                gc.createCache(type, coords, puzzle);
-                System.out.println("Successfully created cache!");
+                gc.createMultiCache(coords, treasures, info);
+                System.out.println("Cache successfully created.");
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
-            if (console != null) console.readLine();
-        }
+        } else if (type == 3) {                     /* Micro Cache */
+            System.out.print("Latitude: ");         lat = sc.nextDouble();
+            System.out.print("Longitude: ");        lon = sc.nextDouble();
+            sc.nextLine();                          /* Flush Scanner */
+            System.out.print("More information: "); info = sc.nextLine();
+
+            try {
+                gc.createMicroCache(new Coordinates(lat, lon), info);
+                System.out.println("Cache successfully created.");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        } else if (type == 4) {                     /* Micro Cache */
+            System.out.print("Latitude: ");         lat = sc.nextDouble();
+            System.out.print("Longitude: ");        lon = sc.nextDouble();
+            sc.nextLine();                           /* Flush Scanner */
+            System.out.print("Question: ");         question = sc.nextLine();
+            System.out.print("Answer: ");           answer = sc.nextLine();
+            System.out.print("Treasure: "); treasures.add(new Treasure(sc.nextLine(), "1"));
+            System.out.print("More information: "); info = sc.nextLine();
+
+            try {
+                gc.createMysteryCache(new Coordinates(lat, lon), treasures, info, new Puzzle(question, answer));
+                System.out.println("Cache successfully created.");
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        } else System.out.println("Invalid option.");
+        if (console != null) console.readLine();
     }
 
     /** Auxiliary function to repoort a cache */
@@ -758,7 +790,7 @@ public class Main implements Serializable {
         kms = simulardistancia.getCoordinatesDist( cache.getCoords() );
         act.setKms(kms);
         //date done, cache done, kms done and meteo will be simulated as well. After this, updatePoints should be correctly executed.
-        //Because all this information is in the Activity now. 
+        //Because all this information is in the Activity now.
         //Note: when calling the empty constructor new Activity() it creates the Meteo already. So all done.
 
         act.updatePoints();
@@ -798,7 +830,7 @@ public class Main implements Serializable {
             System.out.println(gc.getSTATSGlobal());
         }
         catch(Exception e){ System.out.println(e.getMessage()); }
-        
+
     }
 
     private static void displayMensalStats(){
@@ -810,13 +842,13 @@ public class Main implements Serializable {
             year = gc.getCurrentYear(); //returns the current year function present in normaluser and passed/available in geocaching
         }
 
-       
-        
+
+
         try{
             System.out.println(gc.getSTATSGlobal(year));
         }
         catch(Exception e){ System.out.println(e.getMessage()); }
-        
+
         if (console != null) console.readLine();
     }
 
@@ -826,12 +858,12 @@ public class Main implements Serializable {
         int month = sc.nextInt();
 
         int year = gc.getCurrentYear();
-        
+
         try{
             System.out.println(gc.getSTATS_Month(month-1));
         }
         catch(Exception e){ System.out.println(e.getMessage()); }
-        
+
         if (console != null) console.readLine();
     }
 

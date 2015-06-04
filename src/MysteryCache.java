@@ -6,6 +6,7 @@
  */
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class MysteryCache extends Cache implements Serializable
 {
@@ -38,6 +39,22 @@ public class MysteryCache extends Cache implements Serializable
     }
 
     /**
+     *  Parameterized Constructor
+     *  @param id           Cache ID
+     *  @param coords       Cache Coordinates
+     *  @param mail         Owner's e-mail
+     *  @param treasures    List of Treasures for this Cache
+     *  @param info         Information about the Cache
+     *  @param puzzle       Puzzle for this Cache
+     */
+    public MysteryCache (Double id, Coordinates coords, String mail, ArrayList<Treasure> treasures, String info, Puzzle puzzle) {
+        super(id, coords, mail);
+        this.setTreasure(treasures);
+        this.setInfo(info);
+        this.setPuzzle(puzzle);
+    }
+
+    /**
      * Construct a MysteryCache using another MysteryCache as reference
      * @arg mysteryCache
      */
@@ -45,7 +62,7 @@ public class MysteryCache extends Cache implements Serializable
         super(mysteryCache);
         this.puzzle = mysteryCache.puzzle.clone();
     }
-    
+
     /**
      * @return the puzzle
      */
@@ -85,6 +102,16 @@ public class MysteryCache extends Cache implements Serializable
         comp = comp && (this.puzzle.equals(aux.getInfo()));
 
         return comp;
+    }
+
+    /**
+     *  Change the Cache's puzzle
+     *  @param puzzle New puzzle for the Cache
+     */
+    public void setPuzzle (Puzzle puzzle) throws NullPointerException {
+        if (puzzle == null)
+            throw new NullPointerException("puzzle can't be null.");
+        this.puzzle = puzzle.clone();
     }
 
     /**

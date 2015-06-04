@@ -22,13 +22,17 @@ public class TraditionalCache extends Cache implements Serializable
      }
 
     /**
-     * Constructor of new Cache
-     * @arg id double cache identifier
-     * @arg coord Coordinates
-     * @arg mail String e-mail of owner
+     *  Parameterized Constructor
+     *  @param id           The Cache ID
+     *  @param coords       Cache Coordinates
+     *  @param mail         E-mail of the owner
+     *  @param treasures    The Cache Treasures
+     *  @param info         Information about the Cache
      */
-    public TraditionalCache (double id, Coordinates coords, String mail) {
+    public TraditionalCache (Double id, Coordinates coords, String mail, ArrayList<Treasure> treasures, String info) {
         super(id, coords, mail);
+        this.setTreasure(treasures);
+        this.setInfo(info);
     }
 
     /**
