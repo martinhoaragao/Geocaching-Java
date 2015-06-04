@@ -233,14 +233,16 @@ public class Main implements Serializable {
             System.out.println("1. Global Stats");
             System.out.println("2. Year Stats");
             System.out.println("3. Mensal Stats");
-            System.out.println("4: Leave Statistics menu");
+            System.out.println("4. Graphic #caches Mensal");
+            System.out.println("5: Leave Statistics menu");
 
             switch (sc.nextInt()) {
             
-                case 1: displayGlobalStats();  break;
-                case 2: displayMensalStats();  break;
-                case 3: displayaMonthStats();  break;
-                case 4: done = true;    break;
+                case 1: displayGlobalStats();       break;
+                case 2: displayMensalStats();       break;
+                case 3: displayaMonthStats();       break;
+                case 4: displayNumberCachesTypes(); break;
+                case 5: done = true;                break;
                 default: break;
             }
         }
@@ -833,6 +835,16 @@ public class Main implements Serializable {
         if (console != null) console.readLine();
     }
 
+    private static void displayNumberCachesTypes() {
+        System.out.println("Type the month you want to look at: ");
+        Scanner sc = new Scanner(System.in);
+        int month = sc.nextInt();
+        int year = gc.getCurrentYear();
+        try{
+        System.out.println(gc.getStatistic(year).printTypesCaches(month).toString() ) ;
+        }catch(Exception e){System.out.println(e.getMessage());}
+
+    }
     /* -------------------- ADMIN --------------------------------*/
 
     /** Auxiliary function to display all Users and All admins */

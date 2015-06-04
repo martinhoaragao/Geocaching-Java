@@ -16,8 +16,7 @@ import Exceptions.*;
 
 public class Statistic implements Serializable
 {
-    //Could I declare private int month and then TreeSet<month, a> , for instace?
-    //my opinion is no, but what do you think?
+    
     private ArrayList< TreeSet<Activity>>  stats; // Visited Caches for each month. Comparable by date.
     private int year; //Year of this statistics.
 
@@ -132,6 +131,55 @@ public class Statistic implements Serializable
         return novo;
     }
 
+    /**
+    * Method that returns the number of types of caches in a given month
+    */
+    public int[] getNumberCaches(int month){
+        int[] caches = new int[4];
+        int micro=0, multi=0, trad=0, mystery=0;
+
+        for(Activity a : this.stats.get(month-1)){
+                if (a.getCache() instanceof MicroCache) caches[0]++; //micro++;
+                if(a.getCache() instanceof MultiCache) caches[1]++; //multi++;
+                if(a.getCache() instanceof TraditionalCache) caches[2]++; //trad++;
+                if(a.getCache() instanceof MysteryCache) caches[3]++;//mystery++;
+        }
+        return caches;
+    }
+
+    /**
+    *   Auxiliary function that returns a String to be printed in the Main Class. 
+    *   Shows information about how many types of caches were found in a given month.
+    * 
+    */
+    public String printTypesCaches(int month){
+        int[] caches = getNumberCaches(month);
+        int rightLimit = 20; int micro = caches[0], multi = caches[1], trad = caches[2], mystery = caches[3];
+        int index;
+        StringBuilder sb = new StringBuilder();
+        //1st line is for caches[0] which are the MicroCaches
+        //2nd line is for MultiCaches
+        //3rd line is for TraditionalCaches
+        //4th line is for MysteryCaches
+        sb.append("\n MICROcs:  ");
+        for(index = 0; index < rightLimit && index < micro ; index++)
+            sb.append("# ");
+
+        sb.append("\n MULTIcs:  ");
+        for(index = 0; index < rightLimit && index < multi ; index++)
+            sb.append("# ");
+
+        sb.append("\n TRADIcs:  ");
+        for(index = 0; index < rightLimit && index < trad ; index++)
+            sb.append("# ");
+
+        sb.append("\n MYSTERY:  ");
+        for(index = 0; index < rightLimit && index < mystery ; index++)
+           sb.append("# ");
+        
+        return sb.toString();
+
+    }
 
 
     /**
@@ -140,15 +188,14 @@ public class Statistic implements Serializable
      */
     public int[] getNumberCaches(){
         int[] caches = new int[4];
-        int micro=0, multi=0, trad=0, mystery=0, virtual = 0, event = 0,i;
+        int micro=0, multi=0, trad=0, mystery=0,i;
          for(i=0;i<12;i++){
             for(Activity a : this.stats.get(i)){
                 if (a.getCache() instanceof MicroCache) caches[0]++; //micro++;
                 if(a.getCache() instanceof MultiCache) caches[1]++; //multi++;
                 if(a.getCache() instanceof TraditionalCache) caches[2]++; //trad++;
                 if(a.getCache() instanceof MysteryCache) caches[3]++;//mystery++;
-                //if(a.getCache() instanceof Virtual) virtual++;
-                //if(a.getCache() instanceof Event) event++;
+                
             }
         }
         return caches;
