@@ -207,10 +207,11 @@ public class Activity implements Serializable {
         year = String.valueOf(date.get(GregorianCalendar.YEAR));
         latitude = this.cache.getCoords().getLat();
         longitude = this.cache.getCoords().getLon();
-
+        //TODO test 
         sb.append("Cache found on " + day + "/" + month + "/" + year + "\n");
+        sb.append("Meteo information: " +this.meteo.toString() );
+        sb.append("Cache localization: (" + latitude + "," + longitude +")" +"\n");
         sb.append(this.kms + " kilometers covered!");
-        sb.append("Cache localization: " + latitude + "," + longitude + "\n");
         sb.append(" Total points accumulated: " + this.points);
         return sb.toString();
     }

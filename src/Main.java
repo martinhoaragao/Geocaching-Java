@@ -227,19 +227,23 @@ public class Main implements Serializable {
         Scanner sc    = new Scanner(System.in);
         boolean done  = false;
 
-        System.out.println("1. Global Stats");
-        System.out.println("2. Year Stats");
-        System.out.println("3. Mensal Stats");
-        System.out.println("4: Leave cache menu");
+        while(!done){
+            clean();
+            System.out.println("1. Global Stats");
+            System.out.println("2. Year Stats");
+            System.out.println("3. Mensal Stats");
+            System.out.println("4: Leave cache menu");
 
-        switch (sc.nextInt()) {
+            switch (sc.nextInt()) {
             
-            case 1: displayGlobalStats();  break;
-            case 2: displayMensalStats();  break;
-            case 3: displayaMonthStats();  break;
-            case 4: done = true;    break;
-            default: break;
+                case 1: displayGlobalStats();  break;
+                case 2: displayMensalStats();  break;
+                case 3: displayaMonthStats();  break;
+                case 4: done = true;    break;
+                default: break;
+            }
         }
+        
     }
 
     /* ----------------------- REGISTER & LOGIN ----------------------*/
