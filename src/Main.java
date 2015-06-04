@@ -780,27 +780,37 @@ public class Main implements Serializable {
     private static void createActivity () {
         Scanner sc = new Scanner(System.in);
         Activity act = new Activity();
-        GregorianCalendar date; Double id; Cache cache; Coordinates simulardistancia; Double kms;
+        GregorianCalendar date;
+        Double id;
+        Cache cache = null;
+        Coordinates simulardistancia;
+        Double kms;
+
         clean();
         System.out.print("Date: "); act.setDate(typeDate());
         System.out.print("Cache id: "); id = sc.nextDouble();
-        cache = gc.getCache(id);
-        simulardistancia = cache.getCoords();
-        simulardistancia.incLat(); simulardistancia.incLon();
-        kms = simulardistancia.getCoordinatesDist( cache.getCoords() );
-        act.setKms(kms);
-        //date done, cache done, kms done and meteo will be simulated as well. After this, updatePoints should be correctly executed.
-        //Because all this information is in the Activity now.
-        //Note: when calling the empty constructor new Activity() it creates the Meteo already. So all done.
-
-        act.updatePoints();
-
         try {
-            gc.addActivity(act, id);
-            System.out.println("Successfully added activity!");
+            cache = gc.getCache(id);
+            simulardistancia = cache.getCoords();
+            simulardistancia.incLat(); simulardistancia.incLon();
+            kms = simulardistancia.getCoordinatesDist( cache.getCoords() );
+            act.setKms(kms);
+            //date done, cache done, kms done and meteo will be simulated as well. After this, updatePoints should be correctly executed.
+            //Because all this information is in the Activity now.
+            //Note: when calling the empty constructor new Activity() it creates the Meteo already. So all done.
+
+            act.updatePoints();
+
+            try {
+                gc.addActivity(act, id);
+                System.out.println("Successfully added activity!");
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+            }
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println(e.getMessage());
         }
+
         if (console != null) console.readLine();
     }
 
