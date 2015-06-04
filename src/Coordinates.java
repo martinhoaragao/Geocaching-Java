@@ -136,9 +136,6 @@ public class Coordinates implements Comparable<Coordinates>, Serializable {
             break;
         }
 
-        
-        System.out.println(value);
-
         return value;
     }
 
