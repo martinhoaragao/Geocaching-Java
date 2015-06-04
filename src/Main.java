@@ -191,6 +191,7 @@ public class Main implements Serializable {
                 case 2: reportCache();              break;
                 case 3: displayCacheTreasures();    break;
                 case 4: displayCacheRegistry();     break;
+                case 5: displayAllCacheInfo();      break;
                 case 6: done = true;                break;
                 default: break;
             }
@@ -609,6 +610,7 @@ public class Main implements Serializable {
         Double id;
         ArrayList<Treasure> treasures;
 
+        clean();
         System.out.print("Cache id: ");
         id = sc.nextDouble();
 
@@ -622,7 +624,49 @@ public class Main implements Serializable {
                     System.out.println(t.toString());
                 }
         } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        if (console != null) console.readLine();
+    }
 
+    /**
+     *  Auxiliary function to display All info of a given Cache
+     *  its ID, Coordinates, who created it, its registry and its
+     *  Treasures
+     */
+    private static void displayAllCacheInfo () {
+        Scanner                 sc = new Scanner(System.in);
+        Double                  id;
+        ArrayList<Treasure>     treasures;
+        ArrayList<String>       registry;
+        String                  info;
+
+        clean();
+        System.out.print("Cache id: ");
+        id = sc.nextDouble();
+
+        try {
+            treasures   = gc.getCacheTreasures(id);
+            registry    = gc.getCacheRegistry(id);
+            info        = gc.getCache(id).toString();
+
+            System.out.println(info);
+            System.out.println("REGISTRY: ");
+            if (registry.size() == 0)
+                System.out.println("No one found this cache yet.");
+            else
+                for (String s : registry) {
+                    System.out.println(s);
+                }
+            System.out.println("TREASURES: ");
+            if (treasures.size() == 0)
+                System.out.println("This Cache has no Treasures.");
+            else
+                for (Treasure t : treasures) {
+                    System.out.println(t.toString());
+                }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
         if (console != null) console.readLine();
     }

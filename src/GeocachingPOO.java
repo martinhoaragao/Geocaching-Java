@@ -323,13 +323,23 @@ public class GeocachingPOO implements Serializable {
             throw new IllegalArgumentException("No cache with the given id.");
 
         reg = cache.getRegistry();
-        reg.add(user.getName() + " - " + user.getMail());
+        reg.add(user.getName() + " ( " + user.getMail() + " ) ");
         cache.setRegistry(reg);
         act.setCache(cache);
         user.addActivity(act);
     }
 
     /* ------------------- CACHES ----------------------------*/
+
+    /**
+     *  Get a clone of a given Cache
+     *  @param id The Cache ID
+     *  @return Clone of the given cache
+     */
+    public Cache getCache (Double id) throws IllegalArgumentException {
+        Cache cache = cachebase.getCache(id);
+        return cache.clone();
+    }
 
     /** Report a cache
      *  @param rep The report to be added */
