@@ -84,69 +84,7 @@ public class Meteo implements Serializable {
         this.weather = a.getWeather();
     }
 
-    /* auxiliary functions to calculate points for weather */
-    public int calcPointsW(){
-        int p=0;
-        int w = this.getWeather();
-        switch (w){
-
-            case 0: p+=9 ;
-            break;
-
-            case 1:  p+=10;
-            break;
-
-            case 2:  p+=4;
-            break;
-
-            case 3:  p+=6;
-            break;
-
-            case 4:  p+=8;
-            break;
-
-            case 5:  p+=7;
-            break;
-
-            case 6:  p+=10;
-            break;
-
-            default:
-            break;
-        /*
-        Rainy 0
-        Stormy 1
-        Sunny 2
-        Cloudy 3
-        Windy 4
-        Foggy 5
-        Hail 6
-        */
-        }
-        return p;
-    }
-
-    /* auxiliary functions to calculate points for temperature */
-    public int calcPointsT(){
-        int p =0;
-        int t = this.getTemp();
-
-        if(t <= -5) p+=10;
-        else if(t>=30) p+=10;
-        else if(t> -5 && t < 0) p+=8;
-        else if(t>16 && t<25 ) p+=4;
-        else if(t>=0 && t <=15) p+=6;
-        else p+=7;
-            //25->30
-        return p;
-    }
-
-    public int calcPoints(){
-        int p=0;
-        p+=calcPointsT();
-        p+=calcPointsW();
-        return p;
-    }
+    
 
     //Gets e Sets
     public int getWeather(){
@@ -209,10 +147,10 @@ public class Meteo implements Serializable {
     /* toString, equals, clone */
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        sb.append("Temperature: ");
-        sb.append(this.getTemp());
+        sb.append(" |***| Temperature: ");
+        sb.append(this.getTemp() + "º | ");
         sb.append(" Weather conditions: ");
-        sb.append(this.getStringW());
+        sb.append(this.getStringW() + " |***| ");
         return sb.toString();
     }
 

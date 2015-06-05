@@ -155,27 +155,41 @@ public class Statistic implements Serializable
     public String printTypesCaches(int month){
         int[] caches = getNumberCaches(month);
         int rightLimit = 20; int micro = caches[0], multi = caches[1], trad = caches[2], mystery = caches[3];
-        int index;
+        int index; int max_four = micro;
+        if(multi>max_four) max_four = multi; if(trad>max_four)max_four=trad; if(mystery>max_four)max_four=mystery;
         StringBuilder sb = new StringBuilder();
         //1st line is for caches[0] which are the MicroCaches
         //2nd line is for MultiCaches
         //3rd line is for TraditionalCaches
         //4th line is for MysteryCaches
-        sb.append("\n MICROcs:  ");
+        sb.append("\n||||||||||||"); for(index=0;index<max_four;index++)sb.append("||");sb.append("|");
+        sb.append("\n| MICROcs:  ");
         for(index = 0; index < rightLimit && index < micro ; index++)
             sb.append("# ");
+        for(index=index; index<rightLimit && index < max_four; index++)
+            sb.append("  ");
+            sb.append("|");
 
-        sb.append("\n MULTIcs:  ");
+        sb.append("\n| MULTIcs:  ");
         for(index = 0; index < rightLimit && index < multi ; index++)
             sb.append("# ");
-
-        sb.append("\n TRADIcs:  ");
+        for(index=index; index<rightLimit && index < max_four; index++)
+            sb.append("  ");
+            sb.append("|");
+        sb.append("\n| TRADIcs:  ");
         for(index = 0; index < rightLimit && index < trad ; index++)
             sb.append("# ");
-
-        sb.append("\n MYSTERY:  ");
+        for(index=index; index<rightLimit && index < max_four; index++)
+            sb.append("  ");
+            sb.append("|");
+        sb.append("\n| MYSTERY:  ");
         for(index = 0; index < rightLimit && index < mystery ; index++)
            sb.append("# ");
+        for(index=index; index<rightLimit && index < max_four; index++)
+            sb.append("  ");
+           sb.append("|");
+
+         sb.append("\n||||||||||||"); for(index=0;index<max_four;index++)sb.append("||");sb.append("|");
         
         return sb.toString();
 

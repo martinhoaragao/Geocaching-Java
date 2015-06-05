@@ -60,9 +60,7 @@ public class Activity implements Serializable {
         this.meteo = act.meteo.clone(); 
     }
 
-
     // Getters
-
     /**
      * Method that returns the date of an Activity.
      * @return Date of the activity in GregorianCalendar object form.
@@ -83,7 +81,7 @@ public class Activity implements Serializable {
      * Method that returns the year of an Activity as an int.
      * @return the year of the activity
      */
-     public int getYear(){
+    public int getYear(){
         return this.date.get(GregorianCalendar.YEAR);
     }
 
@@ -104,17 +102,17 @@ public class Activity implements Serializable {
     }
 
     /**
-    * Method that returns the points of an Activity.
-    * @return this.points
-    */
+     * Method that returns the points of an Activity.
+     * @return this.points
+     */
     public int getPoints () {
         return this.points;
     }
 
     /**
-    *   Method that returns the Meteorology of an Activity
-    * @returns this.meteo cloned, as form of Meteo object.
-    */
+     *   Method that returns the Meteorology of an Activity
+     * @returns this.meteo cloned, as form of Meteo object.
+     */
     public Meteo getMeteo(){
         return this.meteo.clone();
     }
@@ -158,8 +156,8 @@ public class Activity implements Serializable {
     }
 
     /**
-    *  Method that sets the Meteo to an Activity
-    */
+     *  Method that sets the Meteo to an Activity
+     */
     public void setMeteo(Meteo meteo){
         this.meteo = meteo.clone();
     }
@@ -199,11 +197,75 @@ public class Activity implements Serializable {
         return points;
     }
 
+    /* auxiliary functions to calculate points for weather */
+    public int calcPointsW(){
+        int p=0;
+        int w = this.meteo.getWeather();
+        switch (w){
+
+            case 0: p+=9 ;
+            break;
+
+            case 1:  p+=10;
+            break;
+
+            case 2:  p+=4;
+            break;
+
+            case 3:  p+=6;
+            break;
+
+            case 4:  p+=8;
+            break;
+
+            case 5:  p+=7;
+            break;
+
+            case 6:  p+=10;
+            break;
+
+            default:
+            break;
+            /*
+            Rainy 0
+            Stormy 1
+            Sunny 2
+            Cloudy 3
+            Windy 4
+            Foggy 5
+            Hail 6
+             */
+        }
+        return p;
+    }
+
+    /* auxiliary functions to calculate points for temperature */
+    public int calcPointsT(){
+        int p =0;
+        int t = this.meteo.getTemp();
+
+        if(t <= -5) p+=10;
+        else if(t>=30) p+=10;
+        else if(t> -5 && t < 0) p+=8;
+        else if(t>16 && t<25 ) p+=4;
+        else if(t>=0 && t <=15) p+=6;
+        else p+=7;
+        //25->30
+        return p;
+    }
+
+    public int calcPointsMeteo(){
+        int p=0;
+        p+=calcPointsT();
+        p+=calcPointsW();
+        return p;
+    }
+
     /**
      * Method that returns and sets all points from Cache, Kms travelled and Meteo.
      */
     public void updatePoints(){
-        int points = this.calcPointsCache() + this.calcPointsKms() + meteo.calcPoints();
+        int points = this.calcPointsCache() + this.calcPointsKms() + this.calcPointsMeteo();
         this.setPoints (points);
     }
 
@@ -222,12 +284,12 @@ public class Activity implements Serializable {
         year = String.valueOf(date.get(GregorianCalendar.YEAR));
         latitude = this.cache.getCoords().getLat();
         longitude = this.cache.getCoords().getLon();
-        
+
         sb.append("Cache found on " + day + "/" + month + "/" + year + "\n");
-        sb.append("Meteo information: " +this.meteo.toString() );
-        sb.append("Cache localization: (" + latitude + "," + longitude +")" +"\n");
-        sb.append(this.kms + " kilometers covered!");
-        sb.append(" Total points accumulated: " + this.points);
+        sb.append("Meteo information: " +this.meteo.toString()+ "\n");
+        sb.append("Cache localization: (" + latitude + "," + longitude +")" +".\n");
+        sb.append("(Approx.)"+Math.round(this.kms * 100.0)/100.0 + " kilometers covered! ");
+        sb.append(" Total points accumulated: " + this.points+ ".\n");
         return sb.toString();
     }
 
