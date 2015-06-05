@@ -17,7 +17,6 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
 
-
 public class Main implements Serializable {
     private static Console console = System.console();
     private static GeocachingPOO gc;
@@ -157,7 +156,6 @@ public class Main implements Serializable {
         System.out.println("7: Log Out");
     }
 
-
     /** Auxiliary function to display Friends Menu */
     private static void friendsMenu () {
         Scanner sc = new Scanner(System.in);
@@ -209,7 +207,6 @@ public class Main implements Serializable {
             }
         }
     }
-
 
 
     /** Auxiliary function to display and control Reporsts Menu for Admin */
@@ -813,39 +810,24 @@ public class Main implements Serializable {
 
     /* ------------------------- ACTIVITIES -----------------------*/
 
-    /** Auxiliary function to create a new Activity, simulates kms travelled and meteo as well.*/
+    /** Auxiliary function to create a new Activity.
+    *   This method assumes that the starting location will be simulated for kms calculations.
+    */
     private static void createActivity () {
-        Scanner sc = new Scanner(System.in);
-        Activity act = new Activity();
+        Scanner sc = new Scanner(System.in);  
         GregorianCalendar date;
         Double id;
         Cache cache = null;
-        Coordinates simulardistancia;
-        Double kms;
 
         clean();
-        System.out.print("Date: "); act.setDate(typeDate());
+        System.out.print("Date: "); date = typeDate();
         System.out.print("Cache id: "); id = sc.nextDouble();
+
         try {
-            cache = gc.getCache(id);
-            simulardistancia = cache.getCoords();
-            simulardistancia.incLat(); simulardistancia.incLon();
-            kms = simulardistancia.getCoordinatesDist( cache.getCoords() );
-            act.setKms(kms);
-            //date done, cache done, kms done and meteo will be simulated as well. After this, updatePoints should be correctly executed.
-            //Because all this information is in the Activity now.
-            //Note: when calling the empty constructor new Activity() it creates the Meteo already. So all done.
-
-            act.updatePoints();
-
-            try {
-                gc.addActivity(act, id);
-                System.out.println("Successfully added activity!");
-            } catch (Exception e) {
-                System.out.println("Error: " + e.getMessage());
-            }
+            gc.addActivity(id, date, null);
+            System.out.println("Successfully added activity!");
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error: " + e.getMessage());
         }
 
         if (console != null) console.readLine();
@@ -890,7 +872,6 @@ public class Main implements Serializable {
         }
 
 
-
         try{
             System.out.println(gc.getSTATSGlobal(year));
         }
@@ -920,7 +901,7 @@ public class Main implements Serializable {
         int month = sc.nextInt();
         int year = gc.getCurrentYear();
         try{
-        System.out.println(gc.getStatistic(year).printTypesCaches(month).toString() ) ;
+            System.out.println(gc.getStatistic(year).printTypesCaches(month).toString() ) ;
         }catch(Exception e){System.out.println(e.getMessage());}
 
     }

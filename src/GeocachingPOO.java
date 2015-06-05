@@ -255,12 +255,15 @@ public class GeocachingPOO implements Serializable {
     }
 
     /** Add a activity to the currently logged in user
+     *  simulates kms travelled and meteo as well if____
      *  @param act  Activity to be added
      *  @param id   Id of the found cache
      */
-    public void addActivity (Activity act, Double id) throws IllegalArgumentException, NullPointerException, NotAddedActivityYearIncorrectException, NoUserLoggedInException {
+    public void addActivity (Double id, GregorianCalendar date, Coordinates coordinates ) throws IllegalArgumentException, NullPointerException, NotAddedActivityYearIncorrectException, NoUserLoggedInException {
         Cache cache             = cachebase.getCache(id);
         ArrayList<String> reg   = null;
+        Activity act = new Activity();
+         Double kms;
 
         if (user == null)
             throw new NoUserLoggedInException();
@@ -268,10 +271,34 @@ public class GeocachingPOO implements Serializable {
         if (cache == null)
             throw new IllegalArgumentException("No cache with the given id.");
 
+        //The argument of coordinates can be passed as null. If so, the coordinates will be simulated and kms will be calculated with these random coordinates
+        //Otherwise, the kms will be calculated following this coordinates.
+        //This param must be the coordinates of the previous cache location. The location of this current cache is available in the cache.
+
+        if(coordinates == null){
+            Coordinates coordinates_simulated = cache.getCoords();
+            coordinates_simulated.incLat(); coordinates_simulated.incLon();
+            kms = coordinates_simulated.getCoordinatesDist( cache.getCoords() );
+            act.setKms(kms);
+
+            //Comments on the previous Main class where these ones:
+            //date done, cache done, kms done and meteo will be simulated as well. After this, updatePoints should be correctly executed.
+            //Because all this information is in the Activity now.
+            //Note: when calling the empty constructor new Activity() it creates the Meteo already. So all done.
+
+
+        }
+        else{
+            kms = coordinates.getCoordinatesDist(cache.getCoords());
+            //This will calculate the kms already for that coordinates received as parameter.
+        }
+
         reg = cache.getRegistry();
         reg.add(user.getName() + " ( " + user.getMail() + " ) ");
         cache.setRegistry(reg);
         act.setCache(cache);
+        act.setDate(date);
+        act.updatePoints();
         user.addActivity(act);
     }
 
