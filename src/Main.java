@@ -186,7 +186,8 @@ public class Main implements Serializable {
             System.out.println("3: See treasures of a cache");
             System.out.println("4: Show registry book of a cache");
             System.out.println("5: Show other details of a cache");
-            System.out.println("6: Leave cache menu");
+            System.out.println("6: Invalidate my cache");
+            System.out.println("7: Leave cache menu");
 
             switch (sc.nextInt()) {
                 case 1: createCache();              break;
@@ -194,7 +195,8 @@ public class Main implements Serializable {
                 case 3: displayCacheTreasures();    break;
                 case 4: displayCacheRegistry();     break;
                 case 5: displayAllCacheInfo();      break;
-                case 6: done = true;                break;
+                case 6: invalidateCache();          break;
+                case 7: done = true;                break;
                 default: break;
             }
         }

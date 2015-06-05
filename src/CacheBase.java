@@ -40,10 +40,10 @@ public class CacheBase implements Serializable {
     /** @return ArrayList with all the caches in the CacheBase, if
      *  the User hasn't created any cache, the arraylist will be empty */
     public ArrayList<Cache> getAllCaches () {
-      ArrayList<Cache> ts = new ArrayList<Cache>();
+        ArrayList<Cache> ts = new ArrayList<Cache>();
 
-      for (Cache cache : this.caches)
-        if (cache != null) ts.add(cache.clone());
+        for (Cache cache : this.caches)
+            if (cache != null) ts.add(cache.clone());
 
         return ts;
     }
@@ -127,7 +127,6 @@ public class CacheBase implements Serializable {
         } else list.add(cache.getId());
 
         coords.put(cache_coords, cache.getId());
-
 
         /* !!Should check if it is replacing a cache with same id */
         this.caches.add(cache.getId().intValue() - 1, cache);
@@ -215,31 +214,42 @@ public class CacheBase implements Serializable {
         return comp;
     }
 
-    /** Invalidate (delete) a cache if the owner wants so
+    /**
+     * Invalidate (delete) a cache if the owner wants so
      * @param id Cache Id
      * @param user Owner of the cache
      */
-    public void invalidateCache (Double id, User user) {
-        if (this.getCache(id).getMail().equals(user.getMail()))
-            delCache(id);
+    public void invalidateCache (Double id, User user) throws IllegalArgumentException {
+        Cache cache = null;
+        if (id.intValue() > this.caches.size())
+            throw new IllegalArgumentException("No cache with the given id.");
+        cache = this.caches.get(id.intValue() - 1);
+        if (cache == null)
+            throw new IllegalArgumentException("No cache with the given id.");
+
+        if (this.getCache(id).getMail().equals(user.getMail())) {
+            this.caches.set(id.intValue() - 1, null);
+            this.reported_caches.remove(id);
+            this.coords.remove(cache.getCoords());
+        } else throw new IllegalArgumentException("user is not the owner of this cache.");
     }
 
-    /** Invalidate (delete) a cache
-     *  @param id Cache id
+    /**
+     * Invalidate (delete) a cache
+     * @param id Cache id
      */
     public void invalidateCache (Double id) throws IllegalArgumentException {
-      Cache cache = null;
-      if (id.intValue() > this.caches.size())
-        throw new IllegalArgumentException("No Cache with the given id.");
-      cache = this.caches.get(id.intValue() - 1);
-      if (cache == null)
-        throw new IllegalArgumentException("No Cache with the given id.");
+        Cache cache = null;
+        if (id.intValue() > this.caches.size())
+            throw new IllegalArgumentException("No Cache with the given id.");
+        cache = this.caches.get(id.intValue() - 1);
+        if (cache == null)
+            throw new IllegalArgumentException("No Cache with the given id.");
 
-      this.caches.set(id.intValue() - 1, null);
-      this.reported_caches.remove(id);
-      this.coords.remove(cache.getCoords());
+        this.caches.set(id.intValue() - 1, null);
+        this.reported_caches.remove(id);
+        this.coords.remove(cache.getCoords());
     }
-
 
     // Code for reported caches
     /** Add a report
@@ -324,16 +334,15 @@ public class CacheBase implements Serializable {
         }
 
 
+        /*
+         * Imprime o map
+         */
+        for( ArrayList<Cache> listss : map.values() ){
+            for(Cache c : listss){
 
-            /*
-             * Imprime o map
-               */
-          for( ArrayList<Cache> listss : map.values() ){
-                for(Cache c : listss){
-
-                    System.out.println( c.getCoords().getCoordinatesDist(localuser) +c.toString());
-                }
+                System.out.println( c.getCoords().getCoordinatesDist(localuser) +c.toString());
             }
+        }
 
         return map;
     }

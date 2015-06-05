@@ -458,7 +458,8 @@ public class GeocachingPOO implements Serializable {
         idcache++;
     }
 
-    /** Invalidate (Delete) a Cache, if a User is logged in he can only delete caches
+    /**
+     * Invalidate (Delete) a Cache, if a User is logged in he can only delete caches
      *  created by him, an Admin can delete any Cache
      *  @param id The cache ID
      */
