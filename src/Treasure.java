@@ -1,7 +1,6 @@
+import java.io.Serializable;
 
-
-
-public class Treasure{
+public class Treasure implements Serializable {
     private String info;
     private String id;
 

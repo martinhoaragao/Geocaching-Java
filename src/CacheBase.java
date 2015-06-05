@@ -295,52 +295,37 @@ public class CacheBase implements Serializable {
     }
 
     /**
-     * This method works with the coordinates of every cache present in the arraylist of cachebase and the coordinates that the user types in everytime
-     * he calls the method to "Look for caches".
+     * Creates a TreeMap with all the Caches that are within a certain range in
+     * relation to a given Coordinates. The TreeMap will be ordered by distance
      *
-     * @return TreeMap with Caches orderer by distance from user location
-     * @param receives the coordinates of a given User.
+     * @param cds    Coordinates from where to calculate distance
+     * @param radius Radius of the search in kilometeres
      *
      */
-    public TreeMap<Double, ArrayList<Cache>> getTreeOrderedByDistance(Coordinates localuser, double range){
-        TreeMap<Double, ArrayList<Cache>> map = new TreeMap<>();
+    public TreeMap<Double, ArrayList<Cache>> getNearCaches (Coordinates cds, Double radius) throws NullPointerException {
+        TreeMap<Double, ArrayList<Cache>> map = new TreeMap<Double, ArrayList<Cache>>();
         ArrayList<Cache> list;
-        double distanceaux = 0.0;
+        Double distance, id;
 
-        for(Coordinates coord : coords.keySet()){
-            System.out.println(coord.toString());
-            distanceaux = coord.getCoordinatesDist(localuser);
-            //If this distance is <= range, add it, otherwise , ignore it, and continue for loop...
-            if(distanceaux<=range){
-                list = new ArrayList<Cache>();
-                Double idCache = coords.get(coord);
-                System.out.println( idCache );
-                Cache cachetoadd = caches.get(idCache.intValue()-1);
+        if (cds == null)
+            throw new NullPointerException("cds can't be null.");
 
-                if(map.get(distanceaux) == null){
-                    //If map in that key is null, alocate space for the arraylist and insert it
 
-                    list.add(cachetoadd);
-                    map.put(distanceaux, list);
+        for (Coordinates c : this.coords.keySet()) {
+            /* Calculate distance  between coordinates */
+            distance = cds.getCoordinatesDist(c);
+
+            if (distance <= radius) {
+                id = this.coords.get(c);
+
+                if (map.get(distance) == null) {
+                    list = new ArrayList<Cache>();
+                    list.add(caches.get(id.intValue() - 1).clone());
+                    map.put(distance, list);
+                } else {
+                    list = map.get(distance);
+                    list.add(caches.get(id.intValue() - 1).clone());
                 }
-                else{
-                    //if the map in that key is not null, it means it exists already
-                    ArrayList<Cache> thislist = map.get(distanceaux);
-                    //returns the arraylist of that distance
-                    thislist.add(cachetoadd);
-                    //Not necessary to put again, because get
-                }
-            }
-        }
-
-
-        /*
-         * Imprime o map
-         */
-        for( ArrayList<Cache> listss : map.values() ){
-            for(Cache c : listss){
-
-                System.out.println( c.getCoords().getCoordinatesDist(localuser) +c.toString());
             }
         }
 

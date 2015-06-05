@@ -511,6 +511,16 @@ public class GeocachingPOO implements Serializable {
         return cachebase.getCacheTreasures(id);
     }
 
+    /**
+     * Create a TreeMap with the caches near a give location and inside a given radius
+     *
+     * @param coords The location from where to search
+     * @param radius Radius of the search
+     */
+    public TreeMap<Double, ArrayList<Cache>> getNearCaches (Coordinates coords, Double radius) throws NullPointerException {
+        return cachebase.getNearCaches(coords, radius);
+    }
+
     /* ------------------------- ADMIN ------------------------*
 
 
@@ -629,5 +639,4 @@ public class GeocachingPOO implements Serializable {
      /*TODO method named to "Look For Caches" */
 
     /*TODO toString equals clone*/
-
 }

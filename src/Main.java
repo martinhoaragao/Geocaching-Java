@@ -48,16 +48,17 @@ public class Main implements Serializable {
                 userMenu();
 
                 switch (sc.nextInt()) {
-                    case 1: infoMenu();               break;
-                    case 2: cachesMenu();             break;
-                    case 3: friendsMenu();            break;
-                    case 5: mystatsMenu();            break;
-                    case 4: displayAllCaches();       break;
-                    case 6: displayLastActivities();  break;
-                    case 7: displayFriendActivities();break;
-                    case 8: displayUserCaches();      break;
-                    case 9: createActivity();         break;
-                    case 10: logout();                break;
+                    case 1: infoMenu();                 break;
+                    case 2: cachesMenu();               break;
+                    case 3: friendsMenu();              break;
+                    case 5: mystatsMenu();              break;
+                    case 4: displayAllCaches();         break;
+                    case 6: displayLastActivities();    break;
+                    case 7: displayFriendActivities();  break;
+                    case 8: displayUserCaches();        break;
+                    case 9: createActivity();           break;
+                    case 10: getNearCaches();           break;
+                    case 11: logout();                  break;
                     default: break;
                 }
             } else {                              /* Admin logged in */
@@ -109,7 +110,8 @@ public class Main implements Serializable {
         System.out.println("7: Show Friend Activities");
         System.out.println("8: Show My Caches");
         System.out.println("9: Add Activity");
-        System.out.println("10: Log Out");
+        System.out.println("10: Find Caches near a location");
+        System.out.println("11: Log Out");
     }
 
     /** Auxiliary function to display and control the Information Menu */
@@ -1121,5 +1123,38 @@ public class Main implements Serializable {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    /**
+     * Auxiliary function to find caches near a given location and a radius
+     */
+    private static void getNearCaches () {
+        Scanner sc = new Scanner(System.in);
+        Double lat, lon, radius;
+        TreeMap<Double, ArrayList<Cache>> map;
+
+        clean();
+        System.out.print("Latitude: ");     lat = sc.nextDouble();
+        System.out.print("Longitude: ");    lon = sc.nextDouble();
+        System.out.print("Radius: ");       radius = sc.nextDouble();
+
+        try {
+            map = gc.getNearCaches(new Coordinates(lat, lon), radius);
+
+            if (map.size() != 0) {
+                for (Double dist : map.keySet()) {
+                    System.out.println(dist + " Kms");  /* Print distance */
+
+                    for (Cache c : map.get(dist)) {
+                        System.out.println(c.toString());
+                    }
+                }
+
+            } else System.out.println("There are no caches near.");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        if (console != null) console.readLine();
     }
 }
