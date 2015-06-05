@@ -168,50 +168,6 @@ public class GeocachingPOO implements Serializable {
         user.setGender(gender);
     }
 
-    /** Auxiliary function to print user information */
-    private static void printInfo () throws NoUserLoggedInException {
-        if (user == null)
-            throw new NullPointerException();
-        System.out.println(user.toString());
-    }
-
-    /**
-     * Auxiliary function to create GregorianCalendar bdate to constructor user
-     * With prints
-     */
-    private static GregorianCalendar typebdate(){
-      boolean aux = true;
-      String bbdate;
-      GregorianCalendar bbbdate;
-      String[] bdate_fields;
-      int d,m,y,yy;
-      Scanner sc = new Scanner(System.in);
-      do {
-        System.out.print("Birthdate (Day/Month/Year): ");
-        bbdate = sc.nextLine();
-        bdate_fields = bbdate.split("/");
-        d = Integer.parseInt(bdate_fields[0]);
-        m = Integer.parseInt(bdate_fields[1]);
-        y = Integer.parseInt(bdate_fields[2]);
-        GregorianCalendar Calendar  = new GregorianCalendar();
-        yy = Calendar.get(Calendar.YEAR); //returns the current year yay.
-
-        if(d <=0 || d >31 ) System.out.println("Day invalid!");
-        else if(m <= 0 || m >12) System.out.println("Month invalid!");
-        else if(y <=0 || y > yy) System.out.println("Year invalid!");
-        else if( (y%4 != 0 && m == 2 && d>28) || (m == 4 && d > 30) || (m == 6 && d > 30) || (m == 9 && d > 30) || (m == 11 && d > 30)   )
-        System.out.println("Date invalid!");
-
-        else {
-          aux = false;
-          bbbdate = new GregorianCalendar(y,m,d);
-          return bbbdate;
-        }
-        //when numm == 0 everything is ok.
-      } while ( aux );
-      return null;
-    }
-
     /* -------------------- FRIENDS -------------------- */
     /** Send a friend request to a given user
      *  @param mail User mail to send the request */
@@ -296,35 +252,6 @@ public class GeocachingPOO implements Serializable {
             throw new IllegalArgumentException("No friend with the given e-mail.");
 
         return friend.getLastActivities();
-    }
-
-    /** Auxiliary function to display friend 10 last activities */
-    private static void showFriendActivities () throws NoUserLoggedInException {
-        ArrayList<Double> friends = user.getFriends();
-        Scanner sc = new Scanner(System.in);
-        NormalUser friend; String mail; Iterator it;
-        ArrayList<Activity> acts;
-
-        if (user == null)
-            throw new NoUserLoggedInException();
-
-        // Get friend e-mail
-        System.out.print("Friend e-mail: ");
-        mail = sc.nextLine().replaceAll("[\n\r]","");
-        friend = userbase.getUserInfo(mail);
-
-        if (friend == null)                     /* No user with the given mail */
-            System.out.println("Theres no user with the given e-mail!");
-        else if (!friends.contains(friend.getId()))  /* No friend with the give mail */
-            System.out.println("You have no friends with the given e-mail!");
-        else {
-            acts = friend.getLastActivities();
-            if (acts.size() != 0) {
-               for (Activity act : acts)
-                System.out.println(act.toString());
-            } else
-                System.out.println("Your friend has no activities yet!");
-        }
     }
 
     /** Add a activity to the currently logged in user
@@ -445,7 +372,6 @@ public class GeocachingPOO implements Serializable {
         if (info == null)
             throw new NullPointerException("info can't be null.");
 
-        System.out.println(info);
         cache = new MicroCache(idcache, coords, user.getMail(), info);
         cachebase.addCache(idcache, cache);
         idcache++;
