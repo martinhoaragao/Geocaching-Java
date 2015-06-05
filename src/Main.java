@@ -54,6 +54,7 @@ public class Main implements Serializable {
                     case 5: mystatsMenu();            break;
                     case 4: displayAllCaches();       break;
                     case 6: displayLastActivities();  break;
+                    case 7: displayFriendActivities();break;
                     case 8: displayUserCaches();      break;
                     case 9: createActivity();         break;
                     case 10: logout();                break;
@@ -775,6 +776,33 @@ public class Main implements Serializable {
         clean();
         try {
             System.out.println(gc.getFriends());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        if (console != null) console.readLine();
+    }
+
+    /**
+     * Auxiliary function to display a friends last 10 activities
+     */
+    private static void displayFriendActivities () {
+        Scanner sc = new Scanner(System.in);
+        String mail;
+        ArrayList<Activity> acts = null;
+
+        clean();
+        System.out.print("Friend e-mail: ");
+        mail = sc.nextLine().replaceAll("[\n\r]","");
+
+        try {
+            acts = gc.getFriendLastActivities(mail);
+
+            if (acts.size() == 0)
+                System.out.println("Your friend has no activitites yet.");
+            else
+                for (Activity act : acts) {
+                    System.out.println(act.toString());
+                }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

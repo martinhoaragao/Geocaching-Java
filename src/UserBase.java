@@ -89,10 +89,11 @@ public class UserBase implements Serializable {
             return null;
     }
 
-    /** Function to be used only by the user base to get a user
+    /**
+     * Function to be used only by the user base to get a user
      * @param mail User e-mail
      */
-    private NormalUser getUser (String mail) {
+    public NormalUser getUser (String mail) {
         return this.users.get(this.userMails.get(mail).intValue() - 1);
     }
 

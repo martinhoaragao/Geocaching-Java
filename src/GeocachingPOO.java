@@ -105,7 +105,7 @@ public class GeocachingPOO implements Serializable {
 
         if (user == null)
             throw new NoUserLoggedInException("No user is logged in.");
-        else return (user.getName() + " | " + user.getPoints());
+        else return (user.getName() + " | " + user.getPoints() + " points");
     }
 
     /** Compare given password with the password of the current
@@ -279,8 +279,25 @@ public class GeocachingPOO implements Serializable {
     /** @return ArrayList with user 10 last activities */
     public ArrayList<Activity> getLastActivities () throws NoUserLoggedInException {
         if (user == null)
-            throw new NoUserLoggedInException();
+            throw new NoUserLoggedInException("There is no user logged in.");
         return user.getLastActivities();
+    }
+
+    /**
+     * Get list of a friends 10 last activities
+     * @param mail Friend's e-mail
+     * @return ArrayList with user 10 last activities
+     */
+    public ArrayList<Activity> getFriendLastActivities (String mail) throws NoUserLoggedInException {
+        NormalUser friend = userbase.getUser(mail);
+        if (user == null)
+            throw new NoUserLoggedInException("There is no user logged in.");
+        if (friend == null)
+            throw new IllegalArgumentException("No user with the given mail.");
+        if (!user.getFriends().contains(friend.getId()))
+            throw new IllegalArgumentException("No friend with the given e-mail.");
+
+        return friend.getLastActivities();
     }
 
     /** Auxiliary function to display friend 10 last activities */
