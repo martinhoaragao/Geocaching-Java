@@ -1,8 +1,9 @@
 /**
- * Class that represents the Statistics of a given User, in a given year
- * represented by an integer from 0 to 11. ????
+ * Class that represents the Global Statistics.
+ * The data Structure is a TreeMap that stores the year (represented as an Integer) for the Keys.
+ * It maps the year to a Statistic of that year.
  *
- * @version 20/05/2015
+ * @version 6/06/2015
  */
 import java.util.Comparator;
 import java.util.GregorianCalendar;
@@ -40,7 +41,8 @@ public class StatisticYear implements Serializable
     }
 
     /**
-     * Method to get the map?
+     * Method that returns the TreeMap stored in this class.
+     * @return TreeMap of global statistics
      */
     public TreeMap< Integer, Statistic > getStatsyear(){
         if(this.statsyear==null) return null;
@@ -57,13 +59,8 @@ public class StatisticYear implements Serializable
     }
 
     /**
-     * Methods
-     */
-    /**
-     * Add an Activity in the StatisticYear.
-     * @param Activity a.
-     * TODO verificar que nao precida de fazer put depois de inserir ... ?
-     * tirar o boolean e mete exception...
+     * Method that adds an Activity.
+     * @param a the Activity to be added.
      */
     public void addAct(Activity a) throws NotAddedActivityYearIncorrectException{
        int month = a.getMonth();
@@ -82,9 +79,8 @@ public class StatisticYear implements Serializable
 
 
     /**
-     * Removes an Activity
-     *
-     * @param Activity a.
+     * Method that removes an Activity.
+     * @param a Activity to be removed if exists.
      */
     public void removeAct(Activity a) throws NullPointerException{
         int year = a.getYear();
@@ -105,8 +101,9 @@ public class StatisticYear implements Serializable
     }
 
     /**
-     * Get the Statistic of Activities by a given year.
-     * @param int year.
+     * Get the Statistics of a given year.
+     * @param year the year which maps to the Statistic to be returned.
+     * @return Statistic 
      */
     public Statistic getStatistic(int year) throws NoStatsException{
         Statistic stats = this.statsyear.get(year);;
@@ -117,31 +114,11 @@ public class StatisticYear implements Serializable
     }
 
     /**
-     * Get the Set of ativities done in a year.
      *
-     * This method addes them in a new set.
+     * Auxiliary function that returns the caches number (of all statistics) of each type in an auxiliary array.
+     * @return an array with the number of caches of each type in the index positions.
      */
-    public TreeSet<Activity> getSetOfYear() {
-        TreeSet<Activity> novo = new TreeSet<>();
-        TreeSet<Activity> aux;
-        for(Statistic stats : this.statsyear.values()){
-            //Para todas as estatisticas que foram mapeadas dado um ano
-            for(int i=0; i<12; i++){ //Para todos os meses.
-                TreeSet<Activity> este = stats.getStats().get(i);
-                //Estou no mês 0, 1, ..... 11
-                //Para cada set do mês que está nessa estatistica desse ano
-                 novo.addAll(este);
-                 //Adiciona as atividades todas do set para este em vez de add uma a uma.
-            }
-           }
-        return novo;
-        }
-
-    /**
-     * Returns in an auxiliary array.
-     * New version
-     */
-    public int[] getNumberCaches(){
+    private int[] getNumberCaches(){
         int[] caches = new int[4];
         int micro=0, multi=0, trad=0, mystery=0, virtual = 0, event = 0;
 
@@ -159,7 +136,8 @@ public class StatisticYear implements Serializable
     }
 
     /**
-     * @param String with information of how many caches of different type user has.
+     * Method that returns a String with the information of how many cache of each type exist in all statistics.
+     * @return String with information related to caches number of each type.
      */
     public String getinfoNCaches(){
         int[] caches = getNumberCaches();
@@ -179,7 +157,9 @@ public class StatisticYear implements Serializable
 
    
     /**
-     * Find a cache with a given id
+     * Finds a cache with a given id.
+     * @param id the id of a cache to look for.
+     * @return Cache
      */
     public Cache getCacheid(double id){
         Cache x = null;
@@ -191,28 +171,20 @@ public class StatisticYear implements Serializable
     }
 
     /**
-     * Removes a Cache given the id
-     * 
+     * Removes a Cache given the id.
+     * @param id the id of a cache to look for and remove.
      */
-    //TODO testar sem o statsyear.put();
-    public boolean removeCache(double id){
-      boolean removeu = false;
-      for(Statistic stats : this.statsyear.values()){
-           removeu = stats.removeCache(id);
-           if(removeu){
-               statsyear.put(stats.getYearStatsMonth(), stats);
-               //Se removeu atualiza o map com ela removida.
-               //Ou seja, mapeia o Statistic que tem a cache removida.
-               //Nestas estatisticas, chamar Cache ou Atividade assumimos que diz respeito à mesma coisa.
-               return true;
-            }
+    public void removeCache(double id){
+      Cache cache = getCacheid(id);
+      if(cache != null){
+        this.statsyear.remove(id);
       }
-      return removeu;
+      
     }
 
     /**
      * Method that sums all points.
-     * @return points : Total of points of this User's Statistic.
+     * @return points: Total of points of this User's Global Statistic.
      */
     public int getSumPoints(){
        int r=0;
@@ -224,7 +196,8 @@ public class StatisticYear implements Serializable
 
     /**
      * Method that sums all points of a given year.
-     * @return int year Sum of points.
+     * @param year the year of Statistics that I want.
+     * @return the total points of a year Statistics.
      */
     public int getSumPoints(int year){
         int sum=0;
@@ -235,7 +208,8 @@ public class StatisticYear implements Serializable
 
     /**
      * Method that sums all kilometers of a given year.
-     * @return double Total kms of a year.
+     * @param year the year of Statistics that I want.
+     * @return Total kms of a year.
      */
      public double getSumKms(int year){
         double sum=0;
@@ -248,7 +222,7 @@ public class StatisticYear implements Serializable
 
     /**
      * Method that sums all kms.
-     * @return int kms : Total of kms of this User's Statistic.
+     * @return kms: Total of kms of this User's Statistic.
      */
     public double getSumKms(){
         double r=0;
@@ -260,8 +234,8 @@ public class StatisticYear implements Serializable
     }
 
     /**
-     * Method that sums all Caches / Activities.
-     * @return int Total of caches of this User's Statistic.
+     * Method that sums all Caches/Activities.
+     * @return Total of caches of this User's Statistic.
      */
     public int getTotalCaches(){
         int r=0;
@@ -273,7 +247,7 @@ public class StatisticYear implements Serializable
 
     /**
      * Method that sums all activities / caches of a given year.
-     *
+     * @param year the year of Statistics that I want.
      * @param year
      */
     public int getAtivities(int year) throws NullPointerException{
@@ -281,9 +255,7 @@ public class StatisticYear implements Serializable
         if(stats == null) throw new NullPointerException( "Activities don't exist " );
         return stats.getTotalCaches();
     }
-    /**
-     * Clone,toString and equals
-     */
+
     /**
      * Create a clone of this object
      */
