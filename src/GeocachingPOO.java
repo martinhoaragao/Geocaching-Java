@@ -63,8 +63,6 @@ public class GeocachingPOO implements Serializable {
      * @param u User to be added
      */
     public void register (NormalUser u) throws EmailAlreadyInUseException, IdAlreadyAssignedException {
-
-
         userbase.addUser(u);
 
         this.id++;
@@ -260,7 +258,7 @@ public class GeocachingPOO implements Serializable {
             for (Double id : friends) {
                 u = userbase.getUserInfo(id);
                 if (u != null)
-                    sb.append(u.getName() + " - " + u.getMail());
+                    sb.append(u.getName() + " - " + u.getMail() + "\n");
             }
         }
         return sb.toString();
