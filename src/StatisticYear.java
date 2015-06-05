@@ -43,6 +43,8 @@ public class StatisticYear implements Serializable
      * Method to get the map?
      */
     public TreeMap< Integer, Statistic > getStatsyear(){
+        if(this.statsyear==null) return null;
+        else{
         TreeMap<Integer,  Statistic> aux = new TreeMap<>();
         int year;
         for(Statistic stats : this.statsyear.values()){
@@ -51,6 +53,7 @@ public class StatisticYear implements Serializable
             aux.put(year, stats.clone());
         }
         return aux;
+       }
     }
 
     /**
