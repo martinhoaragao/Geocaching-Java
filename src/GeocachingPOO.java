@@ -97,11 +97,15 @@ public class GeocachingPOO implements Serializable {
         return userbase.getAdmins();
     }
 
-    /** @return User toString() result if a user is logged in */
+    /**
+     * @return String with current logged in user Name and points
+     */
     public String getUserInfo () throws NoUserLoggedInException {
+        StringBuilder sb = new StringBuilder();
+
         if (user == null)
             throw new NoUserLoggedInException("No user is logged in.");
-        else return user.toString();
+        else return (user.getName() + " | " + user.getPoints());
     }
 
     /** Compare given password with the password of the current

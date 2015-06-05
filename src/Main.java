@@ -93,6 +93,11 @@ public class Main implements Serializable {
     /** Auxiliary function to display the User Menu */
     private static void userMenu () {
         clean();
+        try {
+            System.out.println(gc.getUserInfo());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
         System.out.println("1: Personal Information");
         System.out.println("2: Caches Menu");
