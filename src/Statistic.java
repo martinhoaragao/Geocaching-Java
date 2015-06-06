@@ -17,7 +17,7 @@ import Exceptions.*;
 
 public class Statistic implements Serializable
 {
-    
+
     private ArrayList< TreeSet<Activity>>  stats; // Visited Caches for each month. Comparable by date.
     private int year; //Year of this statistics.
 
@@ -29,7 +29,7 @@ public class Statistic implements Serializable
        stats = new ArrayList<TreeSet<Activity>>(12);
 
        for(i=0;i<12;i++){
-           stats.add(new TreeSet<Activity>(new AComparator()));
+           stats.add(new TreeSet<Activity>(new ActivityDateComparator()));
        }
        this.year = 2015;
     }
@@ -44,7 +44,7 @@ public class Statistic implements Serializable
     }
 
     /**
-     * Method used for the Copy constructor. 
+     * Method used for the Copy constructor.
      * @return the ArrayList of this Statistic.
      */
     public ArrayList< TreeSet<Activity>> getStats(){
@@ -60,7 +60,7 @@ public class Statistic implements Serializable
      * Method that returns a clones a the set containing all Activities of a month.
      * @param the set I want to clone.
      * @return the set of activities ordered by date.
-     * 
+     *
      */
     public TreeSet<Activity> cloneTreeSet( TreeSet<Activity> ts){
         TreeSet<Activity> novo = new TreeSet<>(new AComparator());
@@ -153,10 +153,10 @@ public class Statistic implements Serializable
     }
 
     /**
-    *   Method that returns a String ready to be printed. 
+    *   Method that returns a String ready to be printed.
     *   Shows information about how many types of caches were found in a given month.
     *   @param month the month I want to process.
-    * 
+    *
     */
     public String printTypesCaches(int month){
         int[] caches = getNumberCaches(month);
@@ -196,7 +196,7 @@ public class Statistic implements Serializable
            sb.append("|");
 
          sb.append("\n||||||||||||"); for(index=0;index<max_four;index++)sb.append("||");sb.append("|");
-        
+
         return sb.toString();
 
     }
@@ -215,7 +215,7 @@ public class Statistic implements Serializable
                 if(a.getCache() instanceof MultiCache) caches[1]++; //multi++;
                 if(a.getCache() instanceof TraditionalCache) caches[2]++; //trad++;
                 if(a.getCache() instanceof MysteryCache) caches[3]++;//mystery++;
-                
+
             }
         }
         return caches;
@@ -282,7 +282,7 @@ public class Statistic implements Serializable
 
     /**
      * Method that sums all points of Statistic related to a year.
-     * Used as auxiliary method in the StatisticYear Class. 
+     * Used as auxiliary method in the StatisticYear Class.
      * @return points: Total of points of this User's Statistic.
      */
     public int getSumPoints(){
@@ -295,7 +295,7 @@ public class Statistic implements Serializable
 
     /**
      * Method that sums all points of a given month.
-     * @param month the month I want to process. 
+     * @param month the month I want to process.
      * @return Sum of points.
      */
     public int getSumPoints(int month){
@@ -321,7 +321,7 @@ public class Statistic implements Serializable
 
     /**
      * Method that sums all kms.
-     * Used as auxiliary method in the StatisticYear Class. 
+     * Used as auxiliary method in the StatisticYear Class.
      * @return int kms : Total of kms of this User's Statistic.
      */
     public double getSumKms(){

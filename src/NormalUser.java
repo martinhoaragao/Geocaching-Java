@@ -36,7 +36,7 @@ public class NormalUser extends User implements Serializable {
         this.address = new Address("New York","USA");
         this.bdate = new GregorianCalendar();
         this.points = 0;
-        this.activities = new TreeSet<Activity>(new CacheDateComparator());
+        this.activities = new TreeSet<Activity>(new ActivityDateComparator());
         this.statistics = new StatisticYear();
         this.friends = new ArrayList<Double>();
         this.friend_requests = new ArrayList<Double>();
@@ -58,7 +58,7 @@ public class NormalUser extends User implements Serializable {
 
         this.points = 0;
         //MUDEI AQUI MAN
-        this.activities = new TreeSet<Activity>(new CacheDateComparator());
+        this.activities = new TreeSet<Activity>(new ActivityDateComparator());
         this.statistics = new StatisticYear();
         this.friends = new ArrayList<Double>();
         this.friend_requests = new ArrayList<Double>();
@@ -239,8 +239,8 @@ public class NormalUser extends User implements Serializable {
 
     /* ---------------------------- ACTIVITIES --------------------------- */
 
-    /** Add an Activity to the activities queue
-     * and automaticaly to the statistics
+    /**
+     * Add an Activity to the activities queue and automaticaly to the statistics
      * @param act Activity to be added
      */
     public void addActivity (Activity act) throws NullPointerException,NotAddedActivityYearIncorrectException {
@@ -280,7 +280,7 @@ public class NormalUser extends User implements Serializable {
     /** @return ArrayList with the last 10 activities if the user has that many */
     public ArrayList<Activity> getLastActivities () {
         ArrayList<Activity> acts = new ArrayList<Activity>(10);
-        
+
         Iterator it = this.activities.descendingIterator();
 
         while (it.hasNext() && (acts.size() != 10)) {
@@ -331,8 +331,8 @@ public class NormalUser extends User implements Serializable {
     public String getSTATS_PKC(int year) throws NoStatsException{
 
       StringBuilder sb = new StringBuilder();
-      
-      
+
+
 
       int totalpoints = this.statistics.getStatistic(year).getSumPoints();
       double totalkms = this.statistics.getStatistic(year).getSumKms();
