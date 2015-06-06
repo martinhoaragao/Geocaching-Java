@@ -1,9 +1,10 @@
 import Exceptions.*;
 /**
- * Class that has the main method to run Geocaching
+ * Class that will run the Geocaching Application, will display the menus and deal with
+ * the I/O component.
  *
  * @author jfc, jp and ma
- * @version 04/06/2015
+ * @version 06/06/2015
  */
 
 import java.util.Scanner;
@@ -18,13 +19,18 @@ import java.io.ObjectOutputStream;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import Exceptions.*;
 
 public class Main implements Serializable {
     private static Console console = System.console();
     private static GeocachingPOO gc;
-    private static boolean user_logged;       /* Control if a user is logged in */
-    private static boolean admin_looged;      /* Control if a admin is logged in */
+    private static boolean user_logged;         /* Control if a user is logged in */
+    private static boolean admin_looged;        /* Control if a admin is logged in */
 
+    /**
+     * main initializes the GeocahingPOO instance and controls the main menu, and the
+     * first layer of the user menu and the admin menu
+     */
     public static void main (String args[]) {
         Scanner sc = new Scanner(System.in);
         boolean running = true;
@@ -76,7 +82,9 @@ public class Main implements Serializable {
 
     /* ---------------------------- MENUS ----------------------------*/
 
-    /** Auxiliary function to display Main Menu */
+    /**
+     * Display the main menu
+     */
     private static void mainMenu () {
         clean();
 
@@ -88,7 +96,9 @@ public class Main implements Serializable {
         System.out.println("6: Exit");
     }
 
-    /** Auxiliary function to display the User Menu */
+    /**
+     * Display the user menu
+     */
     private static void userMenu () {
         NormalUser user;
 
@@ -107,7 +117,9 @@ public class Main implements Serializable {
         }
     }
 
-    /** Auxiliary function to display and control the Information Menu */
+    /**
+     * Display and control the personal information menu
+     */
     private static void infoMenu () {
         Scanner sc = new Scanner(System.in);
         boolean done = false;
@@ -138,7 +150,9 @@ public class Main implements Serializable {
         }
     }
 
-    /** Auxiliary function to display Admin Menu */
+    /**
+     * Display Admin menu
+     */
     private static void adminMenu () {
         clean();
         System.out.println("1: Report Menu");
@@ -150,7 +164,9 @@ public class Main implements Serializable {
         System.out.println("7: Log Out");
     }
 
-    /** Auxiliary function to display Friends Menu */
+    /**
+     * Display and control friends menu
+     */
     private static void friendsMenu () {
         Scanner sc = new Scanner(System.in);
         boolean done = false;
@@ -174,7 +190,9 @@ public class Main implements Serializable {
         }
     }
 
-    /** Auxiliary function to display and control the Cache Menu */
+    /**
+     * Display and control the Caches menu
+     */
     private static void cachesMenu () {
         Scanner sc = new Scanner(System.in);
         boolean done = false;
@@ -203,7 +221,7 @@ public class Main implements Serializable {
     }
 
     /**
-     * Auxiliary function to display and control the Activities Menu
+     * Display and control the Activities menu
      */
     private static void activititesMenu () {
         Scanner sc = new Scanner(System.in);
@@ -230,7 +248,9 @@ public class Main implements Serializable {
         }
     }
 
-    /** Auxiliary function to display and control Reporsts Menu for Admin */
+    /**
+     * Display and control the Admin Reports menu
+     */
     private static void reporstMenu () {
         Scanner sc = new Scanner(System.in);
         boolean done = false;
@@ -251,7 +271,9 @@ public class Main implements Serializable {
         }
     }
 
-    /** Auxiliary function to display Statistics Menu */
+    /**
+     * Display and control the Statistics menu
+     */
     private static void mystatsMenu() {
         Scanner sc    = new Scanner(System.in);
         boolean done  = false;
@@ -277,7 +299,10 @@ public class Main implements Serializable {
 
     /* ----------------------- REGISTER & LOGIN ----------------------*/
 
-    /** Auxiliary function to register new user */
+    /**
+     * Auxiliary function to register a user, controls the I/O and the calls to
+     * GeocachingPOO instance
+     */
     private static void register () {
         Scanner sc = new Scanner(System.in);
         String name, pass, country, city, mail = "";
@@ -342,8 +367,8 @@ public class Main implements Serializable {
             console.readLine();
     }
 
-    /** Auxiliary function to login
-     * @param type true if logging is as Admin, false if logging in as User
+    /**
+     * Auxiliary function to login
      */
     private static void login (boolean type) {
         String mail, pass;
@@ -369,7 +394,9 @@ public class Main implements Serializable {
         }
     }
 
-    /** Auxiliary function to logout from Geocaching */
+    /**
+     * Logout from GeocachingPOO
+     */
     private static void logout () {
         gc.logout();
         if (user_logged)  user_logged = false;
@@ -378,7 +405,10 @@ public class Main implements Serializable {
 
     /* --------------------------- USER INFOS ------------------------*/
 
-    /** Auxiliary function to change user password */
+    /**
+     * Controls the I/O and the messages sent to GeocachingPOO to change the currently
+     * logged in user's password
+     */
     private static void changePassword() {
         String currentpass = null, newpass = null;
         Scanner sc = new Scanner(System.in);
@@ -426,7 +456,10 @@ public class Main implements Serializable {
         }
     }
 
-    /** Auxiliary function to change User name */
+    /**
+     * Controls the I/O and the messages sent to GeocachingPOO to change the currently
+     * logged in user's name
+     */
     private static void changeName () {
         Scanner sc = new Scanner(System.in);
 
@@ -441,7 +474,10 @@ public class Main implements Serializable {
         if (console != null) console.readLine();
     }
 
-    /** Auxiliary function to change User Address */
+    /**
+     * Controls the I/O and the messages sent to GeocachingPOO to change the currently
+     * logged in user's address
+     */
     private static void changeAddress () {
         Scanner sc = new Scanner(System.in);
         Address add;
@@ -463,7 +499,10 @@ public class Main implements Serializable {
         if (console != null) console.readLine();
     }
 
-    /** Auxiliary function to change User birthdate */
+    /**
+     * Controls the I/O and the messages sent to GeocachingPOO to change the currently
+     * logged in user's birthdate
+     */
     private static void changeBDate () {
         clean();
         GregorianCalendar bb = typeDate();
@@ -476,7 +515,10 @@ public class Main implements Serializable {
         }
     }
 
-    /** Auxiliary function to change User gender */
+    /**
+     * Controls the I/O and the messages sent to GeocachingPOO to change the currently
+     * logged in user's gender
+     */
     private static void changeGender () {
         Scanner sc = new Scanner(System.in);
         boolean gender;
@@ -496,7 +538,10 @@ public class Main implements Serializable {
 
     /* ----------------------- CACHES ----------------------------*/
 
-    /** Auxiliary function to create a new Cache */
+    /**
+     * Controls the I/O and the messages sent to GeocachingPOO to create different types
+     * of caches, the created cache will be associated with the currently logged in user
+     */
     private static void createCache () {
         Scanner sc = new Scanner(System.in);
         Double lat, lon;                /* Latitude and Longitude */
@@ -582,7 +627,10 @@ public class Main implements Serializable {
         if (console != null) console.readLine();
     }
 
-    /** Auxiliary function to repoort a cache */
+    /**
+     * Auxiliary function to report a cache, the Report will be associated with the
+     * currently logged in user
+     */
     private static void reportCache () {
         Scanner sc = new Scanner(System.in);
         String message = ""; Double id;
@@ -607,7 +655,9 @@ public class Main implements Serializable {
         if (console != null) console.readLine();
     }
 
-    /** Auxiliary function to display user created caches */
+    /**
+     * Display the currently logged in user caches if the user has created any
+     */
     private static void displayUserCaches() {
         ArrayList<Cache> caches = gc.getUserCaches();
 
@@ -621,7 +671,9 @@ public class Main implements Serializable {
         if (console != null) console.readLine();
     }
 
-    /** Auxiliary function to display all caches */
+    /**
+     * Display all caches that exist in GeocachingPOO
+     */
     private static void displayAllCaches () {
         ArrayList<Cache> caches = gc.getAllCaches();
 
@@ -634,7 +686,9 @@ public class Main implements Serializable {
         if (console != null) console.readLine();
     }
 
-    /** Auxiliary function to display all Reports */
+    /**
+     * Display all the reports that exist in GeocachingPOO
+     */
     private static void displayReports () {
         TreeMap <Double, ArrayList<Report>> tm = null;
         try {
@@ -653,7 +707,9 @@ public class Main implements Serializable {
         }
     }
 
-    /** Auxiliary function to display Registry book of a Cache */
+    /**
+     * Auxiliary function to display the registry of a cache specified by the user
+     */
     private static void displayCacheRegistry () {
         Scanner sc = new Scanner(System.in);
         Double id;                            /* Cache id */
@@ -676,7 +732,9 @@ public class Main implements Serializable {
         if (console != null) console.readLine();
     }
 
-    /** Auxiliary function to display Treasures of a Cache */
+    /**
+     * Auxiliary function to display the treasures of a cache specified by the user
+     */
     private static void displayCacheTreasures () {
         Scanner sc = new Scanner(System.in);
         Double id;
@@ -743,9 +801,113 @@ public class Main implements Serializable {
         if (console != null) console.readLine();
     }
 
+    /**
+     * Display list of caches near a location given it's coordinates and a radius, both
+     * will be specified by the user
+     */
+    private static void getNearCaches () {
+        Scanner sc = new Scanner(System.in);
+        Double lat, lon, radius;
+        TreeMap<Double, ArrayList<Cache>> map;
+
+        clean();
+        System.out.print("Latitude: ");     lat = sc.nextDouble();
+        System.out.print("Longitude: ");    lon = sc.nextDouble();
+        System.out.print("Radius: ");       radius = sc.nextDouble();
+
+        try {
+            map = gc.getNearCaches(new Coordinates(lat, lon), radius);
+
+            if (map.size() != 0) {
+                for (Double dist : map.keySet()) {
+                    System.out.println(dist + " Kms");  /* Print distance */
+
+                    for (Cache c : map.get(dist)) {
+                        System.out.println(c.toString());
+                    }
+                }
+
+            } else System.out.println("There are no caches near.");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        if (console != null) console.readLine();
+    }
+
+    /**
+     * Display all activities of the currently logged in user
+     */
+    private static void displayAllActivities () {
+        TreeSet<Activity> ts;
+        Iterator it;
+        Activity aux;
+
+        try {
+            ts = gc.getActivities();
+            it = ts.descendingIterator();
+
+            while (it.hasNext()) {
+                aux = (Activity) it.next();
+                System.out.println(aux.toString());
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        if (console != null) console.readLine();
+    }
+
+    /**
+     * Remove a activities that belongs to the currently logged in user
+     */
+    private static void removeActivity () {
+        Scanner sc = new Scanner(System.in);
+        TreeSet<Activity> act_ts;           /* TreeSet with all the activities */
+        ArrayList<Activity> act_list;       /* To create links between indexes and caches */
+        Iterator it;                        /* To iterate over the TreeSet */
+        Activity act;                       /* Auxiliary variable */
+        int act_num;                        /* Activity num */
+
+        clean();
+        try {
+            act_ts      = gc.getActivities();
+            act_list    = new ArrayList<Activity>();
+            it          = act_ts.descendingIterator();
+
+
+            /* Copy all the activities to the ArrayList */
+            while (it.hasNext()) {
+                act = (Activity) it.next();
+                act_list.add(act);
+            }
+
+            /* Display all Activities */
+            for (int i = 0; i < act_list.size(); i++) {
+                System.out.println("Activity number -> " + (i+1));
+                System.out.println(act_list.get(i).toString());
+            }
+
+            /* Get user choice */
+            System.out.print("Activity to delete: "); act_num = sc.nextInt();
+
+            if (act_num > act_list.size())
+                System.out.println("There is no activity with that number...");
+            else {
+                gc.removeActivity(act_list.get(act_num - 1));
+                System.out.println("Successfully deleted activity");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        if (console != null) console.readLine();
+    }
+
     /* ------------------------- FRIENDS -------------------------*/
 
-    /** Auxiliary function to send friend request */
+    /**
+     * Auxiliary function to send a friend request, the request will be associated with
+     * the currently logged in user
+     */
     private static void sendRequest () {
         Scanner sc = new Scanner(System.in);
 
@@ -761,7 +923,9 @@ public class Main implements Serializable {
         if (console != null) console.readLine();
     }
 
-    /** Auxiliary function to show friend requests */
+    /**
+     * Display all the friend requests of the currently logged in user
+     */
     private static void showRequests () {
         String requests = null;
         try {
@@ -779,7 +943,9 @@ public class Main implements Serializable {
         if (console != null) console.readLine();
     }
 
-    /** Auxiliary function to accept friend requests */
+    /**
+     * Auxiliary function to accept a friend request of the currently logged in user
+     */
     private static void acceptRequest () {
         Scanner sc = new Scanner(System.in);
 
@@ -794,7 +960,9 @@ public class Main implements Serializable {
         if (console != null) console.readLine();
     }
 
-    /** Auxiliary function to display list of friends */
+    /**
+     * Display friends list of the currently logged in user
+     */
     private static void showFriends () {
         clean();
         try {
@@ -806,7 +974,8 @@ public class Main implements Serializable {
     }
 
     /**
-     * Auxiliary function to display a friends last 10 activities
+     * Auxiliary function to display a given friend, sppecified by the user,
+     * 10 most recent activities
      */
     private static void displayFriendActivities () {
         Scanner sc = new Scanner(System.in);
@@ -834,8 +1003,8 @@ public class Main implements Serializable {
 
     /* ------------------------- ACTIVITIES -----------------------*/
 
-    /** Auxiliary function to create a new Activity.
-     *   This method assumes that the starting location will be simulated for kms calculations.
+    /**
+     *  Auxiliary function to create a new Activity.
      */
     private static void createActivity () {
         Scanner sc = new Scanner(System.in);
@@ -875,7 +1044,9 @@ public class Main implements Serializable {
         if (console != null) console.readLine();
     }
 
-    /** Auxiliary function to display user 10 last activitites */
+    /**
+     * Display the currently logged in user 10 most recent activities
+     */
     private static void displayLastActivities () {
         ArrayList<Activity> acts = null;
         try {
@@ -896,15 +1067,21 @@ public class Main implements Serializable {
 
     /* ------------------------- STATISTIC -----------------------*/
 
-    private static void displayGlobalStats(){
+    /**
+     * Display the currently logged in user global statistics
+     */
+    private static void displayGlobalStats () {
         try{
             System.out.println(gc.getSTATSGlobal());
         }
         catch(Exception e){ System.out.println(e.getMessage()); }
-
     }
 
-    private static void displayMensalStats(){
+    /**
+     * Display the currently logged in user anual statistics, given a year,
+     * specified by the user
+     */
+    private static void displayMensalStats () {
 
         System.out.println("Type the year if you want to specify or type 0");
         Scanner sc = new Scanner(System.in);
@@ -921,7 +1098,11 @@ public class Main implements Serializable {
         if (console != null) console.readLine();
     }
 
-    private static void displayaMonthStats(){
+    /**
+     * Display the currently logged in user monthly statistics, given a month,
+     * specified by the user
+     */
+    private static void displayaMonthStats () {
         System.out.println("Type the month you want to look at: ");
         Scanner sc = new Scanner(System.in);
         int month = sc.nextInt();
@@ -936,7 +1117,11 @@ public class Main implements Serializable {
         if (console != null) console.readLine();
     }
 
-    private static void displayNumberCachesTypes() {
+    /**
+     * Display a graph with the number of types of caches found for a given month,
+     * specified by the user
+     */
+    private static void displayNumberCachesTypes () {
         System.out.println("Type the month you want to look at: ");
         Scanner sc = new Scanner(System.in);
         int month = sc.nextInt();
@@ -946,9 +1131,12 @@ public class Main implements Serializable {
         }catch(Exception e){System.out.println(e.getMessage());}
 
     }
+
     /* -------------------- ADMIN --------------------------------*/
 
-    /** Auxiliary function to display all Users and All admins */
+    /**
+     * Display list of users and admins
+     */
     private static void displayUsersAdmins () {
         ArrayList<Admin> admins = gc.getAdmins();
         ArrayList<NormalUser> users = gc.getUsers();
@@ -970,7 +1158,9 @@ public class Main implements Serializable {
         if (console != null) console.readLine();
     }
 
-    /** Auxiliary function to delete an User */
+    /**
+     * Delete a user given its e-mail, to be used by an Admin
+     */
     private static void deleteUser () {
         Scanner sc = new Scanner(System.in);
 
@@ -985,7 +1175,9 @@ public class Main implements Serializable {
         if (console != null) console.readLine();
     }
 
-    /** Auxiliary function to create an Admin */
+    /**
+     * Create a new Admin if the currently logged admin has the permissions to do so
+     */
     private static void createAdmin () {
         Scanner sc = new Scanner(System.in);
         String name, pass, mail = "";
@@ -1038,7 +1230,9 @@ public class Main implements Serializable {
         if (console != null) console.readLine();
     }
 
-    /** Auxiliary function to delete an Admin */
+    /**
+     * Delete an Admin if the currently logged in admin has the permissions to do so
+     */
     private static void deleteAdmin () {
         Scanner sc = new Scanner(System.in);
         String mail;
@@ -1055,7 +1249,10 @@ public class Main implements Serializable {
         if (console != null) console.readLine();
     }
 
-    /** Auxiliary function to invalidate a Cache */
+    /**
+     * Invalidate a cache given its ID, which will be specified by the currently logged in
+     * user/admin, a user can only invalidate a cache if he's the owner
+     */
     private static void invalidateCache () {
         Scanner sc = new Scanner(System.in);
         Double id;
@@ -1077,10 +1274,10 @@ public class Main implements Serializable {
     /* ---------------------------- SEPARATOR -----------------------*/
 
     /**
-     * Auxiliary function to create GregorianCalendar bdate to constructor user
-     * With prints
+     * Auxiliary function to create a GregorianCalendar instance given a string
+     * typed by the user
      */
-    private static GregorianCalendar typeDate(){
+    private static GregorianCalendar typeDate (){
         boolean aux = true;
         String bbdate;
         GregorianCalendar bbbdate;
@@ -1113,14 +1310,18 @@ public class Main implements Serializable {
         return null;
     }
 
-    /** Auxiliary Function for us to clean the terminal when we call it */
+    /**
+     * Clean the terminal view
+     */
     private final static void clean(){
         if (console != null) System.out.print("\u001b[2J" + "\u001b[H");
     }
 
     /*--------------------- APPLICATION STATE -----------------------*/
 
-    /** Save the program state to a file name 'geocaching' */
+    /**
+     * Save the application state to an object file named 'geocaching'
+     */
     private static void saveState () {
         try {
             FileOutputStream fos = new FileOutputStream("geocaching");
@@ -1134,6 +1335,10 @@ public class Main implements Serializable {
         }
     }
 
+    /**
+     * Load a previous application state from the file 'geocaching', if the file
+     * is not in the directory the state will not be loaded
+     */
     private static void loadState () {
         try {
             FileInputStream fis = new FileInputStream("geocaching");
@@ -1145,105 +1350,5 @@ public class Main implements Serializable {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-    }
-
-    /**
-     * Auxiliary function to find caches near a given location and a radius
-     */
-    private static void getNearCaches () {
-        Scanner sc = new Scanner(System.in);
-        Double lat, lon, radius;
-        TreeMap<Double, ArrayList<Cache>> map;
-
-        clean();
-        System.out.print("Latitude: ");     lat = sc.nextDouble();
-        System.out.print("Longitude: ");    lon = sc.nextDouble();
-        System.out.print("Radius: ");       radius = sc.nextDouble();
-
-        try {
-            map = gc.getNearCaches(new Coordinates(lat, lon), radius);
-
-            if (map.size() != 0) {
-                for (Double dist : map.keySet()) {
-                    System.out.println(dist + " Kms");  /* Print distance */
-
-                    for (Cache c : map.get(dist)) {
-                        System.out.println(c.toString());
-                    }
-                }
-
-            } else System.out.println("There are no caches near.");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-        if (console != null) console.readLine();
-    }
-
-    /**
-     * Auxiliary function to display all the user activities by descending date
-     */
-    private static void displayAllActivities () {
-        TreeSet<Activity> ts;
-        Iterator it;
-        Activity aux;
-
-        try {
-            ts = gc.getActivities();
-            it = ts.descendingIterator();
-
-            while (it.hasNext()) {
-                aux = (Activity) it.next();
-                System.out.println(aux.toString());
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        if (console != null) console.readLine();
-    }
-
-    /**
-     * Auxiliary function to remove an Activity
-     */
-    private static void removeActivity () {
-        Scanner sc = new Scanner(System.in);
-        TreeSet<Activity> act_ts;           /* TreeSet with all the activities */
-        ArrayList<Activity> act_list;       /* To create links between indexes and caches */
-        Iterator it;                        /* To iterate over the TreeSet */
-        Activity act;                       /* Auxiliary variable */
-        int act_num;                        /* Activity num */
-
-        clean();
-        try {
-            act_ts      = gc.getActivities();
-            act_list    = new ArrayList<Activity>();
-            it          = act_ts.descendingIterator();
-
-
-            /* Copy all the activities to the ArrayList */
-            while (it.hasNext()) {
-                act = (Activity) it.next();
-                act_list.add(act);
-            }
-
-            /* Display all Activities */
-            for (int i = 0; i < act_list.size(); i++) {
-                System.out.println("Activity number -> " + (i+1));
-                System.out.println(act_list.get(i).toString());
-            }
-
-            /* Get user choice */
-            System.out.print("Activity to delete: "); act_num = sc.nextInt();
-
-            if (act_num > act_list.size())
-                System.out.println("There is no activity with that number...");
-            else {
-                gc.removeActivity(act_list.get(act_num - 1));
-                System.out.println("Successfully deleted activity");
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-        if (console != null) console.readLine();
     }
 }
