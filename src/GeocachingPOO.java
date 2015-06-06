@@ -263,11 +263,12 @@ public class GeocachingPOO implements Serializable {
         Cache cache             = cachebase.getCache(id);
         ArrayList<String> reg   = null;
         Activity act = new Activity();
-         Double kms;
+        Double kms;
+        String registry_entry;
 
          ArrayList<Activity> last_activity = user.getLastActivities();
          //The last activity of the user for the coordinates.
-         
+
         if (user == null)
             throw new NoUserLoggedInException();
 
@@ -298,8 +299,10 @@ public class GeocachingPOO implements Serializable {
             //This will calculate the kms already for that coordinates of the last activity.
         }
 
+        registry_entry = user.getName() + " ( " + user.getMail() + " ) ";
         reg = cache.getRegistry();
-        reg.add(user.getName() + " ( " + user.getMail() + " ) ");
+        if (!reg.contains(registry_entry))
+            reg.add(registry_entry);
         cache.setRegistry(reg);
         act.setCache(cache);
         act.setDate(date);
