@@ -95,7 +95,7 @@ public class Main implements Serializable {
     private static void userMenu () {
         clean();
         try {
-            System.out.println(gc.getUserInfo());
+            System.out.println(gc.getUserInfoLogged());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -117,6 +117,12 @@ public class Main implements Serializable {
     private static void infoMenu () {
         Scanner sc = new Scanner(System.in);
         boolean done = false;
+
+         try {
+            System.out.println(gc.getUserInfo());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
         while (!done) {
             clean();
