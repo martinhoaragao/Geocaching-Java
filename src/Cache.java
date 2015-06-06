@@ -3,14 +3,11 @@ import java.util.ArrayList;
 import java.io.Serializable;
 
 /**
- * Super-Class for all the kinds of existing caches.
- * The other classes will be sub-classes of this one by writing this signature:
+ * Abstract Class for all the kinds of existing caches.
+ * It has the mutual information that we find in every kind of cache: id, coordinates, e-mail of the creator, registry book, treasures and information related to the cache.
  *
- * public class CacheMini extends Cache
  *
- * for instance.
- *
- *  @version 08/05/2015
+ *  @version 06/06/2015
  */
 public abstract class Cache implements Serializable {
     private Double id;                  //Cache identifier
@@ -36,9 +33,9 @@ public abstract class Cache implements Serializable {
 
     /**
      * Constructor of new Cache
-     * @arg id double cache identifier
-     * @arg coord Coordininates
-     * @arg mail String e-mail of owner
+     * @param id double cache identifier
+     * @param coord Coordininates
+     * @param mail String e-mail of owner
      */
     public Cache (double id, Coordinates coords, String mail) {
         this.id = id;
@@ -51,7 +48,7 @@ public abstract class Cache implements Serializable {
 
     /**
      * Construct a Cache using another cache as reference
-     * @arg cache Cache
+     * @param cache Cache
      */
     public Cache (Cache cache) {
         this.id = cache.getId();
@@ -79,7 +76,7 @@ public abstract class Cache implements Serializable {
     }
 
     /**
-     * @return Owner e-mail
+     * @return Owner's e-mail
      */
     public String getMail () {
         return this.mail;
@@ -97,7 +94,7 @@ public abstract class Cache implements Serializable {
     }
 
     /**
-     *  @return Treasure
+     *  @return Treasures
      */
     public ArrayList<Treasure> getTreasure () {
         ArrayList<Treasure> treasure = new ArrayList<Treasure>();
@@ -109,7 +106,7 @@ public abstract class Cache implements Serializable {
     }
 
     /**
-     *  @return Information of a cache
+     *  @return a Cache's information
      */
     public String getInfo () {
         return this.info;
@@ -119,7 +116,7 @@ public abstract class Cache implements Serializable {
 
     /**
      * Set cache ID
-     * @arg id, Double cache identifier
+     * @param id, Double cache identifier
      */
     public void setId (Double id) {
         this.id = id;
@@ -127,8 +124,8 @@ public abstract class Cache implements Serializable {
 
     /**
      * Set cache coordinates
-     * @arg lon, coordinates longitude
-     * @arg lat, coordinates latitude
+     * @param lon, coordinates longitude
+     * @param lat, coordinates latitude
      */
     public void setCoordinates (double lon, double lat) {
         this.coords = new Coordinates(lon, lat);
@@ -136,7 +133,7 @@ public abstract class Cache implements Serializable {
 
     /**
      * Set mail of owner
-     * @arg mail, String email
+     * @param mail, String email
      */
     public void setMail (String mail) {
         this.mail = mail;
@@ -144,7 +141,7 @@ public abstract class Cache implements Serializable {
 
     /**
      * Set book of registers
-     * @arg registry, ArrayList of Strings regarding previous activities
+     * @param registry, ArrayList of Strings regarding previous activities
      */
     public void setRegistry (ArrayList<String> registry) {
         ArrayList<String> newRegistry = new ArrayList<String>();
@@ -157,7 +154,7 @@ public abstract class Cache implements Serializable {
 
     /**
      * Set list of treasures
-     * @arg treasure, ArrayList of Treasures
+     * @param treasure, ArrayList of Treasures
      */
     public void setTreasure (ArrayList<Treasure> treasure) throws NullPointerException {
         if(this instanceof MicroCache)
@@ -175,7 +172,7 @@ public abstract class Cache implements Serializable {
 
     /**
      * Set cache's information
-     * @arg info, String
+     * @param info, String
      */
     public void setInfo (String info) {
         this.info = info;
@@ -198,7 +195,7 @@ public abstract class Cache implements Serializable {
 
     /**
      * Compares this cache with another object to check if they are equal
-     * @arg cache Object to compare with it
+     * @param cache Object to compare with it
      */
     public boolean equals (Object cache) {
         if (this == cache) return true;

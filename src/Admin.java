@@ -1,5 +1,6 @@
 /**
- * Class to represent a an admin
+ * Class to represent a an Admin.
+ * This is a sub-class of User.
  *
  * @version 08/05/2015
  */
