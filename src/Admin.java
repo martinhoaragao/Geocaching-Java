@@ -44,6 +44,7 @@ public class Admin extends User implements Serializable {
     /**
      * Construct a new User with the same info as a given User
      * @param user User from which the information will be fetched
+     * @return admin, a new admin
      */
     public Admin (Admin admin) throws NullPointerException {
         super(admin);
@@ -77,6 +78,7 @@ public class Admin extends User implements Serializable {
 
     /**
      * Transform Admin info into a String
+     * @return information regarding an admin's, namely his permission level
      */
     public String toString () {
         StringBuilder sb = new StringBuilder();
@@ -90,6 +92,7 @@ public class Admin extends User implements Serializable {
     /**
      * Compares this object with another Admin to check if they are equal
      * @param admin Admin to compare with
+     * @return boolean, true if the param is equal to the object
      */
     public boolean equals (Object admin) throws NullPointerException {
         if (admin == null)
@@ -105,6 +108,7 @@ public class Admin extends User implements Serializable {
 
     /**
      * Create a clone of this object
+     * @return Admin, a clone of the currnt admin
      */
     @Override
     public Admin clone () {
