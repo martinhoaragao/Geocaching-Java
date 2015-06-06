@@ -243,8 +243,52 @@ public class NormalUser extends User implements Serializable {
      * Add an Activity to the activities queue and automaticaly to the statistics
      * @param act Activity to be added
      */
-    public void addActivity (Activity act) throws NullPointerException,NotAddedActivityYearIncorrectException {
-        Activity aux = null;
+    public void addActivity (Cache cache, GregorianCalendar date) throws NullPointerException,NotAddedActivityYearIncorrectException {
+        Activity aux = null;  //for the 10 last activities
+        
+        //Changes to this method
+        
+        ArrayList<String> reg   = null;
+        Activity act = new Activity();
+        Double kms;
+        String registry_entry;
+
+        ArrayList<Activity> last_activity = this.getLastActivities();
+
+        //The argument of coordinates can be passed as null. If so, the coordinates will be simulated and kms will be calculated with these random coordinates
+        //Otherwise, the kms will be calculated following this coordinates.
+        //This param must be the coordinates of the previous cache location. The location of this current cache is available in the cache.
+
+        if(last_activity.size() == 0){
+            Coordinates coordinates_simulated = cache.getCoords();
+            coordinates_simulated.incLat(); coordinates_simulated.incLon();
+            kms = coordinates_simulated.getCoordinatesDist( cache.getCoords() );
+            act.setKms(kms);
+
+            //Comments on the previous Main class where these ones:
+            //date done, cache done, kms done and meteo will be simulated as well. After this, updatePoints should be correctly executed.
+            //Because all this information is in the Activity now.
+            //Note: when calling the empty constructor new Activity() it creates the Meteo already. So all done.
+
+
+        }
+        else{
+            Coordinates coordinates = last_activity.get(0).getCache().getCoords();
+            kms = coordinates.getCoordinatesDist(cache.getCoords());
+            act.setKms(kms);
+            //This will calculate the kms already for that coordinates of the last activity.
+        }
+
+        registry_entry = this.getName() + " ( " + this.getMail() + " ) ";
+        reg = cache.getRegistry();
+        if (!reg.contains(registry_entry))
+            reg.add(registry_entry);
+        cache.setRegistry(reg);
+        act.setCache(cache);
+        act.setDate(date);
+        act.updatePoints();
+
+
 
         if (act == null)
             throw new NullPointerException("act can't be null!");
