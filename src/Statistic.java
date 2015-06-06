@@ -1,9 +1,10 @@
 /**
- * Class that represents the Statistics of a given User, in a given month
- * represented by an integer from 0 to 11.
- * Name has to be different from statistics (already used in class User) so I called it "stats".
+ * Class that represents the Statistics of a given year.
+ * The data structure is an ArrayList which indexes represent the month (from 0 to 12).
+ * In each index there is a TreeSet containing all Activities of that month.
+ * It has the field year representing this Statistic's year.
  *
- * @version 20/05/2015
+ * @version 06/06/2015
  */
 import java.util.Comparator;
 import java.util.GregorianCalendar;
@@ -43,7 +44,8 @@ public class Statistic implements Serializable
     }
 
     /**
-     * Method to get the list
+     * Method used for the Copy constructor. 
+     * @return the ArrayList of this Statistic.
      */
     public ArrayList< TreeSet<Activity>> getStats(){
         ArrayList<TreeSet<Activity>> aux = new ArrayList<>();
@@ -55,7 +57,10 @@ public class Statistic implements Serializable
     }
 
     /**
-     * Method to clone the set
+     * Method that returns a clones a the set containing all Activities of a month.
+     * @param the set I want to clone.
+     * @return the set of activities ordered by date.
+     * 
      */
     public TreeSet<Activity> cloneTreeSet( TreeSet<Activity> ts){
         TreeSet<Activity> novo = new TreeSet<>(new AComparator());
@@ -68,28 +73,25 @@ public class Statistic implements Serializable
         return novo;
     }
 
-
     /**
-     * Methods
-     */
-
-    /**
-     * Get the year
+     * Get the year of this Statistic.
+     * @return the integer value of the year.
      */
     public int getYearStatsMonth(){
         return this.year;
     }
 
     /**
-     * Set the year. IMPORTANT!
+     * Method that sets the year of this Statistic.
+     *@param year the year that will be set in this Statistic.
      */
     public void setYearStatsMonth(int year){
         this.year = year;
     }
 
     /**
-     * Add an Activity in the Statistic.
-     * @param a the Activity to add
+     * Adds an Activity in the Statistic.
+     * @param a the Activity to add.
      */
     public void addAct(Activity a) throws NotAddedActivityYearIncorrectException{  //returns a boolean if it was inserted or not.
         //Negative testing: if i want to add activity of year 2005 in stats of year 2006, should return false.
@@ -109,17 +111,18 @@ public class Statistic implements Serializable
 
 
     /**
-     * Removes an Activity in the array of TreeSet<Activity>.
+     * Removes an Activity.
      *
      * @param a Activity to remove
      */
-    public boolean removeAct(Activity a){
+    public void removeAct(Activity a){
        int month = a.getMonth();
        return this.stats.get(month-1).remove(a);
    }
     /**
-     * Get the Set of Activities by a given month.
-     * @param m month of the TreeSet of Activities that I want 
+     * Gets the Set of Activities by a given month.
+     * @param m month of activities present in this statitic.
+     * @return the set of activities of the month received as parameter.
      */
     public TreeSet<Activity> getMonthActivities(int m){
         //Array starts from 0 to 11. Receives 1 , returns stats[0].
@@ -132,7 +135,9 @@ public class Statistic implements Serializable
     }
 
     /**
-    * Method that returns the number of types of caches in a given month
+    * Method that returns the number of types of caches in a given month.
+    *@param month the month of which activities I want to process.
+    *@return an array with the information of how many caches of each type exists.
     */
     public int[] getNumberCaches(int month){
         int[] caches = new int[4];
@@ -148,11 +153,12 @@ public class Statistic implements Serializable
     }
 
     /**
-    *   Auxiliary function that returns a String to be printed in the Main Class. 
+    *   Auxiliary function that returns a String ready to be printed. 
     *   Shows information about how many types of caches were found in a given month.
+    *   @param month the month I want to process.
     * 
     */
-    public String printTypesCaches(int month){
+    private String printTypesCaches(int month){
         int[] caches = getNumberCaches(month);
         int rightLimit = 20; int micro = caches[0], multi = caches[1], trad = caches[2], mystery = caches[3];
         int index; int max_four = micro;
@@ -197,8 +203,8 @@ public class Statistic implements Serializable
 
 
     /**
-     * Returns in an auxiliary array.
-     * New version.
+     * Returns an auxiliary array with the number of all type caches that exists in a year.
+     * @return the array which contains the information of number of caches in the indexes.
      */
     public int[] getNumberCaches(){
         int[] caches = new int[4];
@@ -216,12 +222,9 @@ public class Statistic implements Serializable
     }
 
     /**
-     * Presents as a string the previous data. In replace of the getinfoNumberCaches().
-     * Test before deleting the getinfoNumberCaches() and mantain this two methods in replace.
-     * (Done. Foto no Trello)
+     * Method that returns information related to caches number of a year.
      *
-     *
-     * @param String with information of how many caches of different type user has.
+     * @return String with information of how many caches of different type user has.
      */
     public String getinfoNCaches(){
         int[] caches = getNumberCaches();
@@ -250,45 +253,8 @@ public class Statistic implements Serializable
     }
 
     /**
-     * Returns a List of the last 10 activities.
-     *
-     * @return String with information.
-     * (Just for testing times).
-     */
-    public String get10LastA(){
-        int number = 0; boolean acabou = false;
-        int mesatual = getCMonth()-1;
-        int meses = 0;
-        StringBuilder sb = new StringBuilder();
-        while(number < 10 || !acabou){
-
-            while(this.stats.get(mesatual).size() == 0){
-                if(mesatual == 0) mesatual = 11; else mesatual--;
-                meses++;
-            } //Encontrou no array set que tem conteudo.
-
-            for(Activity a : this.stats.get(mesatual)){
-            sb.append(Integer.toString(number+1) + "º: ");
-            sb.append(a.toString() + ".\n" );
-            number++;
-            if(number == 9) return sb.toString();
-            }
-            meses++;
-            mesatual--; if(mesatual == 0) mesatual = 11;
-            while(this.stats.get(mesatual).size() == 0){
-                if(mesatual == 0) mesatual = 0;
-                else mesatual--;
-                meses++;
-            } //Procura um set nao vazio no mês anterior a este para completar as 10.
-
-            if(meses >=11) acabou = true;
-            //call activity.toString();
-        }
-        return sb.toString();
-    }
-
-    /**
-     * Find a cache with a given id
+     * Finds a cache with a given id.
+     * @return Cache that I want to look for.
      */
     public Cache getCacheid(double id){
         int i;
@@ -302,23 +268,22 @@ public class Statistic implements Serializable
     }
 
     /**
-     * Removes a Cache given the id
+     * Removes a Cache given the id.
      */
-    public boolean removeCache(double id){
+    public void removeCache(double id){
         int i;
         for(i=0;i<12;i++){
             for(Activity a : this.stats.get(i)){
                 if(a.getCache().getId() == id)
                 this.stats.get(i).remove(id);
-                return true;
             }
         }
-        return false;
     }
 
     /**
-     * Method that sums all points.
-     * @return points : Total of points of this User's Statistic.
+     * Method that sums all points of Statistic related to a year.
+     * Used as auxiliary method in the StatisticYear Class. 
+     * @return points: Total of points of this User's Statistic.
      */
     public int getSumPoints(){
         int i,r=0;
@@ -330,7 +295,8 @@ public class Statistic implements Serializable
 
     /**
      * Method that sums all points of a given month.
-     * @return int Sum of points.
+     * @param month the month I want to process. 
+     * @return Sum of points.
      */
     public int getSumPoints(int month){
         int sum=0;
@@ -342,7 +308,8 @@ public class Statistic implements Serializable
 
     /**
      * Method that sums all kilometers of a given month.
-     * @return double Total kms of a month.
+     * @param month the month I want to process.
+     * @return Total kms of a month.
      */
     public double getSumKms(int month){
         double sum=0;
@@ -354,6 +321,7 @@ public class Statistic implements Serializable
 
     /**
      * Method that sums all kms.
+     * Used as auxiliary method in the StatisticYear Class. 
      * @return int kms : Total of kms of this User's Statistic.
      */
     public double getSumKms(){
@@ -386,9 +354,7 @@ public class Statistic implements Serializable
         }
         return sum;
     }
-    /**
-     * Clone,toString and equals
-     */
+
     /**
      * Create a clone of this object
      */
