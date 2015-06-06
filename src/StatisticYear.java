@@ -304,3 +304,7 @@ public class StatisticYear implements Serializable
         sb.append(this.getinfoNCaches());
         //System.out.println(sb.toString());
         return sb.toString();
+    }
+
+
+}
