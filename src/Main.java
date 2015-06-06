@@ -121,7 +121,7 @@ public class Main implements Serializable {
         boolean done = false;
 
          try {
-            System.out.println(gc.getUserInfo());
+            System.out.println(gc.getLoggedUser().toString());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
