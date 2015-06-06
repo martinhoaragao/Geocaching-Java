@@ -279,9 +279,7 @@ public class StatisticYear implements Serializable
 
         for ( Statistic stats : a.statsyear.values() ){
             if(!this.statsyear.containsValue(stats)) return false;
-        }
-
-        //TODO verificar que duas sao iguais
+        }     
         return true;
     }
 
