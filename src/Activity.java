@@ -57,7 +57,7 @@ public class Activity implements Serializable {
         this.cache = act.getCache();
         this.kms = act.getKms();
         this.points = act.points;
-        this.meteo = act.meteo.clone(); 
+        this.meteo = act.meteo.clone();
     }
 
     // Getters
@@ -171,7 +171,7 @@ public class Activity implements Serializable {
      * @return points for kms
      */
     private int calcPointsKms(){
-        int points = (int) Math.round(this.getKms()) ;  
+        int points = (int) Math.round(this.getKms()) ;
         if(points >= limit_points_kms) points = limit_points_kms;
 
         return points;
@@ -315,6 +315,6 @@ public class Activity implements Serializable {
      * Create a clone of this object
      */
     public Activity clone () {
-        return new Activity(date, cache, kms, points);
+        return new Activity(this);
     }
 }
