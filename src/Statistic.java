@@ -152,7 +152,8 @@ public class Statistic implements Serializable
         return caches;
     }
 
-    /*
+    /**
+     * 
      * Get average of number of caches found per day by type during the current year
      * @return avg, average of caches found per day this year
      */
@@ -253,7 +254,6 @@ public class Statistic implements Serializable
 
     /**
      * Method that returns information related to caches number of a year.
-     *
      * @return String with information of how many caches of different type user has.
      */
     public String getinfoNCaches(){

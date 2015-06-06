@@ -1,6 +1,5 @@
 /**
- * Class to represent a user with some personal information, the user activities,
- * statistics and friends
+ * Super class that represents the Users that will be using the application.
  *
  * @version 08/05/2015
  */
@@ -76,6 +75,7 @@ public abstract class User implements Serializable {
     // Getters
 
     /**
+     * Gets the User's e-mail.
      * @return User mail
      */
     public String getMail () {
@@ -83,6 +83,7 @@ public abstract class User implements Serializable {
     }
 
     /**
+     * Gets the User's name.
      * @return User name
      */
     public String getName () {
@@ -90,6 +91,7 @@ public abstract class User implements Serializable {
     }
 
     /**
+     * Gets the encrypted password of an User to be treated when logging in.
      * @return User encrypted password
      */
     public String getPass () {
@@ -97,6 +99,7 @@ public abstract class User implements Serializable {
     }
 
     /**
+     * Gets the User Id.
      * @return The user Id
      */
     public Double getId () {
@@ -106,6 +109,7 @@ public abstract class User implements Serializable {
     //Setters
 
     /**
+     * 
      * Changes the User name
      * @param name String username
      */

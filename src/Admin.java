@@ -68,7 +68,7 @@ public class Admin extends User implements Serializable {
      */
     public void setPermi (Integer permi) throws NullPointerException, IllegalStateException {
         if (permi < 0)
-          throw new IllegalStateException("id can't be negative!");
+            throw new IllegalStateException("id can't be negative!");
 
         this.permi = permi;
     }

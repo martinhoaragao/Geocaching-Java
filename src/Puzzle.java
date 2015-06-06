@@ -15,9 +15,8 @@ public class Puzzle implements Serializable {
 
     /**
      * Constructor with arguments
-     * @arg q Question
-     * @arg a Answer
-     * @arg l Coordinates
+     * @param q Question
+     * @param a Answer
      */
     public Puzzle(String q, String a){
         this.question = q;
@@ -47,26 +46,18 @@ public class Puzzle implements Serializable {
     }
     
     /**
-     * Set the valuepoints comparing the star rating.
+     * Updates the valuepoints of this puzzle by comparing the star rating.
      */
     //everytime creating a puzzle ormystery cache , do the updatepoints after seting the star dificulty.
     //This is the points for the entire mystery cache.
     public void updatePoints(){
         
         setValuePoints(this.star*5); 
-        
-        /*switch (this.star){
-            case 10: setValuePoints(50); break;//maximum
-            case 9: setValuePoints(45); break;
-            case 8: setValuePoints(
-        }*/
-        
-        
-        
     }
     
     /**
      * Sets the valuepoints for this puzzle
+     *@param points the new points I want to set this Puzzle with.
      */
     public void setValuePoints(int points){
         this.valuepoints = points;
@@ -74,6 +65,7 @@ public class Puzzle implements Serializable {
     
     /**
      * Get the valuepoints for this puzzle
+     *@return this.valuepoints
      */
     public int getValuePoints(){
         return this.valuepoints;
@@ -84,8 +76,8 @@ public class Puzzle implements Serializable {
     /**
      * Make a question and an answer for this Puzzle
      *
-     * @arg q Question as a String
-     * @arg a Answer as a String
+     * @param q Question as a String
+     * @param a Answer as a String
      */
     public void setQuestion(String q, String a){
         this.question = q;
@@ -95,7 +87,7 @@ public class Puzzle implements Serializable {
     /**
      * Sets the rate of the difficulty of the puzzle by giving a 1-10 star.
      *
-     * @arg n Number ratting.
+     * @param n Number ratting.
      */
     public void setStar(int n) throws PuzzleStarEx{
         if(n<=0 || n >=11) //star only of range 1-10
@@ -107,12 +99,10 @@ public class Puzzle implements Serializable {
     }
 
     //Getters and Shows
-    
-    
-    
-    
+     
     /**
      * Get the difficulty of a Puzzle.
+     * return the puzzle difficulty.
      */
     public int getStar(){
         return this.star;
@@ -120,6 +110,7 @@ public class Puzzle implements Serializable {
 
     /**
      * Get the Question of this puzzle
+     *@return the Question of this Puzzle
      */
     public String getQuestion(){
         return this.question;
@@ -127,7 +118,8 @@ public class Puzzle implements Serializable {
 
 
     /**
-     * Get the answer of this puzzle
+     * Get the answer of this puzzle after solving it.
+     *@return the Answer to this puzzle.
      */
     public String getAnswer(){
         return this.answer;
@@ -151,7 +143,6 @@ public class Puzzle implements Serializable {
      *
      * (String q, String a, Coordinates l)
      */
-    //TODO - dá erro se nao tiver o catch, mas acho que nao faz sentido meter aqui catch do erro porque eu vou mete estrela 7 e já sei qual o range.... 
     public Puzzle pNumber0() throws PuzzleStarEx{
         Puzzle a = new Puzzle(" It is Transcendental and irrational. \n We learn it since pre-school... \n We may confuse it with food \n which makes us look like a fool. ", "PI");
         a.setStar(8);
@@ -162,6 +153,10 @@ public class Puzzle implements Serializable {
      * Clone, toString and equals
      */
 
+    /**
+    * Method that compares this Puzzle with another Puzzle and returns true if equals or false otherwise.
+    * For two puzzles to be equal they must have the same question and answer.
+    */
     public boolean equals(Object o){
         if(this == o) return true;
         if(this == null || o == null || this.getClass() != o.getClass()) return false;
@@ -171,12 +166,21 @@ public class Puzzle implements Serializable {
 
     }
 
+    /**
+    * Method that converts This puzzle information into a String.
+    * 
+    */
+
     public String toString(){
         StringBuilder sb = new StringBuilder();
         sb.append("Q: " + this.getQuestion()); sb.append(" A: " + this.getAnswer());
         return sb.toString();
     }
 
+
+    /**
+    * Method that clones this Puzzle.
+    */
     public Puzzle clone(){
         return new Puzzle(this);
     }

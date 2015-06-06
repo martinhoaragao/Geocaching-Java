@@ -1,5 +1,4 @@
 
-
 import static org.junit.Assert.*;
 import org.junit.After;
 import org.junit.Before;
@@ -8,8 +7,8 @@ import org.junit.Test;
 /**
  * The test class CoordinatesTest.
  *
- * @author  (your name)
- * @version (a version number or a date)
+ * @author  jp
+ * @version 5/6/2015
  */
 public class CoordinatesTest
 {
@@ -46,6 +45,9 @@ public class CoordinatesTest
     {
     }
 
+    /**
+     * This tests the values calculating kms.
+     */
     @Test
     public void testValueOfKms()
     {

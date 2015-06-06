@@ -86,7 +86,6 @@ public class Address implements Serializable {
         this.country = country;
     }
 
-
     /**
      * Compare this Address to another to check if they are equal
      * @param ad Address to use for comparison
@@ -98,7 +97,6 @@ public class Address implements Serializable {
         Address aux = (Address) ad;
         return aux.getCity().equals(this.getCity()) && aux.getCountry().equals(this.getCountry());
     }
-
 
     /**
      * Return Address info as String

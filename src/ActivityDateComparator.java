@@ -1,11 +1,10 @@
-/**
- * Compare two Activity dates
- */
-
 import java.util.Comparator;
 import java.io.Serializable;
 import java.util.GregorianCalendar;
 
+/**
+ * Compare two Activity dates
+ */
 public class ActivityDateComparator implements Comparator<Activity>, Serializable {
 
   /** Compare two activities dates */

@@ -159,7 +159,7 @@ public class StatisticYear implements Serializable
     /**
      * Finds a cache with a given id.
      * @param id the id of a cache to look for.
-     * @return Cache
+     * @return Cache the cache with the given id.
      */
     public Cache getCacheid(double id){
         Cache x = null;
@@ -184,7 +184,7 @@ public class StatisticYear implements Serializable
 
     /**
      * Method that sums all points.
-     * @return points: Total of points of this User's Global Statistic.
+     * @return points Total of points of this User's Global Statistic.
      */
     public int getSumPoints(){
        int r=0;
@@ -209,7 +209,7 @@ public class StatisticYear implements Serializable
     /**
      * Method that sums all kilometers of a given year.
      * @param year the year of Statistics that I want.
-     * @return Total kms of a year.
+     * @return kms Total kms of a year.
      */
      public double getSumKms(int year){
         double sum=0;
@@ -248,7 +248,6 @@ public class StatisticYear implements Serializable
     /**
      * Method that sums all activities / caches of a given year.
      * @param year the year of Statistics that I want.
-     * @param year
      */
     public int getAtivities(int year) throws NullPointerException{
         Statistic stats = this.statsyear.get(year);
@@ -265,7 +264,7 @@ public class StatisticYear implements Serializable
 
     /**
      * Compare this Statistic to another to check if they are equal
-     * @arg sa Statistic to use for comparison
+     * @param o Statistic to use for comparison
      */
     public boolean equals(Object o){
         int i;

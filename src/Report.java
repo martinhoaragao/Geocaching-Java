@@ -1,7 +1,7 @@
 /**
  * Class to represent the report of a cache
  *
- * @author João Costa
+ * @author Jc
  * @version 20/05/2015
  */
 
@@ -17,7 +17,8 @@ public class Report {
         this.message = "";
     }
 
-    /** Parameterized constructor
+    /** 
+    * Parameterized constructor
      * @param id The cache id
      * @param mail The user e-mail
      * @param message The report message
@@ -43,68 +44,82 @@ public class Report {
 
     // Getters
 
-    /** @return The cache id */
+    /** 
+    * Gets the id of the reported cache.
+    *@return The cache id 
+    */
     public Double getId () {
         return this.id;
     }
 
-    /** @return The user e-mail */
+    /** 
+    * Gets the e-mail of the person who has created this report.
+    * @return The user e-mail */
     public String getMail () {
         return this.mail;
     }
 
-    /** @return The report message */
+    /** 
+    * Gets the report message.
+    * @return The report message 
+    */
     public String getMessage () {
         return this.message;
     }
 
     // Setters
 
-    /** Change the reported cache id
+    /** 
+    * Change the reported cache id
      * @param id The cache id
      */
     public void setId (double id) {
         this.id = id;
     }
 
-    /** Change the mail of the user that reported
+    /** 
+    * Change the mail of the user that reported
      * @param mail The user e-mail
      */
     public void setMail (String mail) throws NullPointerException, IllegalStateException {
-      if (mail == null)
-        throw new NullPointerException("mail can't be null!");
-      if (mail.trim().equals(""))
-        throw new IllegalStateException("mail can't be empty");
+        if (mail == null)
+            throw new NullPointerException("mail can't be null!");
+        if (mail.trim().equals(""))
+            throw new IllegalStateException("mail can't be empty");
 
         this.mail = mail;
     }
 
-    /** Change the report message
+    /** 
+    * Change the report message
      * @param message New report message
      */
     public void setMessage (String message) throws NullPointerException, IllegalStateException {
-      if (message == null)
-        throw new NullPointerException("message can't be null!");
-      if (message.trim().equals(""))
-        throw new IllegalStateException("message can't be empty!");
+        if (message == null)
+            throw new NullPointerException("message can't be null!");
+        if (message.trim().equals(""))
+            throw new IllegalStateException("message can't be empty!");
 
         this.message = message;
     }
 
     // toString, clone & equals
 
-    /** Create String with report info */
+    /** 
+    * Create String with report info 
+    */
     public String toString () {
-      StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
 
-      sb.append("Cache id: " + id + "\n");
-      sb.append("Reported by: " + mail + "\n");
-      sb.append("Report message: " + message + "\n");
+        sb.append("Cache id: " + id + "\n");
+        sb.append("Reported by: " + mail + "\n");
+        sb.append("Report message: " + message + "\n");
 
-      return sb.toString();
+        return sb.toString();
     }
 
-    /** Check if two Report are equals
+    /** 
+    *Check if two Report are equals
      * @param report Report to use for comparison
      * @return true if they have the same e-mail and id, false otherwise
      */
@@ -123,6 +138,6 @@ public class Report {
 
     /** Create clone of the Report */
     public Report clone () {
-      return new Report(id, mail, message);
+        return new Report(id, mail, message);
     }
 }

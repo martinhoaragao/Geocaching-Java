@@ -55,7 +55,7 @@ public class MultiCache extends Cache implements Serializable
 
 
     /**
-     * CHECK THIS, MAY BE WRONG
+     * TODO may be wrong
      * Construct a MultiCache using another MultiCache as reference
      * @param mc Multicache to clone
      */
@@ -91,7 +91,7 @@ public class MultiCache extends Cache implements Serializable
 
     /**
      * Set List of Coordinates (caches of multiCache)
-     * @arg locals, ArrayList of Coordinates of caches in multiCache
+     * @param locals, ArrayList of Coordinates of caches in multiCache
      */
     public void setLocals (ArrayList<Coordinates> locals) {
         ArrayList<Coordinates> newLocals = new ArrayList<Coordinates>();
@@ -104,7 +104,7 @@ public class MultiCache extends Cache implements Serializable
 
     /**
      * Set stage number
-     * @arg stage, Int to identify stage
+     * @param stage, Int to identify stage
      */
     public void setStage (int stage) {
         this.stage = stage;
@@ -127,7 +127,7 @@ public class MultiCache extends Cache implements Serializable
 
     /**
      * Compares this MultiCache with another object to check if they are equal
-     * @arg MultiCache Object to compare with it
+     * @param MultiCache Object to compare with it
      */
     public boolean equals (Object multiCache) {
         if (this == multiCache) return true;

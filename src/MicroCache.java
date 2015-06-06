@@ -11,7 +11,7 @@ public class MicroCache extends Cache implements Serializable
 {
     // Constructors
 
-    /*+
+    /**
      * Construtor without arguments
      */
     public MicroCache () {
@@ -21,9 +21,9 @@ public class MicroCache extends Cache implements Serializable
 
     /**
      * Constructor of new MicroCache
-     * @arg id double cache identifier
-     * @arg coord Coordinates
-     * @arg mail String e-mail of owner
+     * @param id double cache identifier
+     * @param coord Coordinates
+     * @param mail String e-mail of owner
      */
     public MicroCache (double id, Coordinates coords, String mail) {
         super(id, coords, mail);
@@ -45,7 +45,7 @@ public class MicroCache extends Cache implements Serializable
 
     /**
      * Construct a MicroCache using another MicroCache as reference
-     * @arg microCache MicroCache
+     * @param microCache MicroCache
      */
     public MicroCache (MicroCache microCache) {
         super(microCache);

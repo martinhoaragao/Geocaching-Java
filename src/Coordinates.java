@@ -12,8 +12,8 @@ public class Coordinates implements Comparable<Coordinates>, Serializable {
 
     /**
      * Constructor with arguments
-     * @arg lat Latitude
-     * @arg lon Longitude
+     * @param lat Latitude
+     * @param lon Longitude
      */
     public Coordinates (double lat, double lon) {
         this.latitude = lat;
@@ -203,7 +203,7 @@ public class Coordinates implements Comparable<Coordinates>, Serializable {
     /**
      * Test if this Coordinates and another ones are equal.
      *
-     * @arg cc Coordinates to test.
+     * @param cc Coordinates to test.
      */
     public boolean equals(Object cc){
         if(cc == this) return true;

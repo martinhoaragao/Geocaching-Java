@@ -1,11 +1,14 @@
 import java.io.Serializable;
 
+/**
+* This class represents the Treasures contained in every Caches (except in the Micro Cache that has none).
+*/
 public class Treasure implements Serializable {
     private String info;
     private String id;
 
 
-    /*+
+    /**
      * Construtor without arguments
      */
     public Treasure(){
@@ -15,8 +18,8 @@ public class Treasure implements Serializable {
 
     /**
      * Constructor of new Treasure
-     * @arg info String info of treasure
-     * @arg id String identifier of treasure
+     * @param info String info of treasure
+     * @param id String identifier of treasure
      */
     public Treasure(String info, String id){
         this.info = info;
@@ -25,7 +28,7 @@ public class Treasure implements Serializable {
 
     /**
      * Construct a Treasure using another Treasure as reference
-     * @arg cache Cache
+     * @param cache Cache
      */
     public Treasure(Treasure treasure){
         this.info = treasure.info;
@@ -51,15 +54,15 @@ public class Treasure implements Serializable {
     // Setters
 
     /**
-     * Set treasure info
-     * @arg id, String cache's info
+     * Sets treasure info
+     * @param info String cache's info
      */
     public void setInfo (String info) {
         this.info = info;
     }
     /**
      * Set treasure ID
-     * @arg id, String treasure identifier
+     * @param id, String treasure identifier
      */
     public void setId (String id) {
         this.id = id;
@@ -81,7 +84,7 @@ public class Treasure implements Serializable {
 
     /**
      * Compares this object with another Treasure to check if they are equal
-     * @arg treasure Object to compare with
+     * @param treasure Object to compare with
      */
     public boolean equals (Object treasure) {
         if (this == treasure) return true;

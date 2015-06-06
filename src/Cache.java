@@ -19,7 +19,7 @@ public abstract class Cache implements Serializable {
 
     // Constructors
 
-    /*+
+    /**
      * Construtor without arguments
      */
     public Cache () {
@@ -62,6 +62,7 @@ public abstract class Cache implements Serializable {
     // Getters
 
     /**
+     * Gets the ID of a Cache
      * @return ID of a Cache
      */
     public Double getId() {
@@ -69,6 +70,7 @@ public abstract class Cache implements Serializable {
     }
 
     /**
+     * Gets the Coordinates of a cache
      * @return Cache coordinates
      */
     public Coordinates getCoords () {
@@ -76,6 +78,7 @@ public abstract class Cache implements Serializable {
     }
 
     /**
+     * Gets this Cache's owner's e-mail.
      * @return Owner's e-mail
      */
     public String getMail () {
@@ -83,6 +86,7 @@ public abstract class Cache implements Serializable {
     }
 
     /**
+     * Gets the list of people that has found this cache.
      *  @return Registry (The Record book)
      */
     public ArrayList<String> getRegistry () {
@@ -94,6 +98,7 @@ public abstract class Cache implements Serializable {
     }
 
     /**
+     * Gets the list of Treasures that this Cache has.
      *  @return Treasures
      */
     public ArrayList<String> getTreasure () {
@@ -106,6 +111,7 @@ public abstract class Cache implements Serializable {
     }
 
     /**
+     * Gets some adicional information about this Cache.
      *  @return a Cache's information
      */
     public String getInfo () {
@@ -187,7 +193,7 @@ public abstract class Cache implements Serializable {
         StringBuilder sb = new StringBuilder();
         sb.append("Id: " + this.id.intValue() + " | ");
         sb.append(this.coords.toString());
-        
+
         sb.append(" , created by: " + this.mail + "\n");
         sb.append(" More info: " + this.info + "\n");
 

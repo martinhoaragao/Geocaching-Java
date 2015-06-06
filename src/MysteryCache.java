@@ -17,7 +17,7 @@ public class MysteryCache extends Cache implements Serializable
 
     // Constructors
 
-    /*+
+    /**
      * Construtor without arguments
      */
     public MysteryCache () {
@@ -30,8 +30,7 @@ public class MysteryCache extends Cache implements Serializable
      * @param id        Cache identifier
      * @param coord     Coordinates
      * @param mail      String e-mail of owner
-     * @param question  Question for Puzzle
-     * @param answer    Answer for Puzzle
+     * @param puzzle    the Puzzle I want to set this cache with.
      */
     public MysteryCache (double id, Coordinates coords, String mail, Puzzle puzzle) {
         super(id, coords, mail);
@@ -56,7 +55,7 @@ public class MysteryCache extends Cache implements Serializable
 
     /**
      * Construct a MysteryCache using another MysteryCache as reference
-     * @arg mysteryCache
+     * @param mysteryCache
      */
     public MysteryCache (MysteryCache mysteryCache) {
         super(mysteryCache);
@@ -64,6 +63,7 @@ public class MysteryCache extends Cache implements Serializable
     }
 
     /**
+     * Method that gets the Puzzle of this Cache.
      * @return the puzzle
      */
     public Puzzle getPuzzle(){
@@ -73,6 +73,7 @@ public class MysteryCache extends Cache implements Serializable
 
     /**
      * Translate MicroCache's basic info to a String
+     *@return the information as a String.
      */
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -89,7 +90,7 @@ public class MysteryCache extends Cache implements Serializable
 
     /**
      * Compares this MysteryCache with another object to check if they are equal
-     * @arg MysteryCache Object to compare with it
+     * @param MysteryCache Object to compare with it
      */
     public boolean equals (Object mysteryCache) {
         if (this == mysteryCache) return true;

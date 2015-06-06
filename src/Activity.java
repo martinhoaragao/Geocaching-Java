@@ -4,7 +4,6 @@
  * @version 04/06/2015
  */
 
-
 import java.util.GregorianCalendar;
 import java.io.Serializable;
 import java.io.IOException;
@@ -149,10 +148,11 @@ public class Activity implements Serializable {
     public void setKms (double kms) {
         this.kms = kms;
     }
+
     /**
-    * Method that sets this Activity points with new ponctuation.
-    * @param points the new ponctuation
-    */
+     * Method that sets this Activity points with new ponctuation.
+     * @param points the new ponctuation
+     */
     public void setPoints (int points){
         this.points = points;
     }

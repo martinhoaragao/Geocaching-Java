@@ -1,13 +1,15 @@
 import java.util.ArrayList;
 /**
- * Write a description of class testMeteoProbability here.
+ * This class was created to test the Meteorology and its probability.
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Jp
+ * @date 30/05/2015
  */
 public class testMeteoProbability
 {
-    
+    /**
+    *   This will print the medium value of 10 temperatures created in a Meteorology to test if values are correct.
+    */
     public static void main(String args[]){
         int i,j;
         int media = 0;
