@@ -171,7 +171,7 @@ public class Statistic implements Serializable
             numberCaches = this.getNumberCaches(i);
 
             /* Go through each cache type */
-            for(int cacheType = 0; i < 4; cacheType++) {
+            for(int cacheType = 0; cacheType < 4; cacheType++) {
                 avg[cacheType] += numberCaches[cacheType];
             }
         }
