@@ -117,7 +117,7 @@ public class Statistic implements Serializable
      */
     public void removeAct(Activity a){
        int month = a.getMonth();
-       return this.stats.get(month-1).remove(a);
+       this.stats.get(month-1).remove(a);
    }
     /**
      * Gets the Set of Activities by a given month.
@@ -153,12 +153,12 @@ public class Statistic implements Serializable
     }
 
     /**
-    *   Auxiliary function that returns a String ready to be printed. 
+    *   Method that returns a String ready to be printed. 
     *   Shows information about how many types of caches were found in a given month.
     *   @param month the month I want to process.
     * 
     */
-    private String printTypesCaches(int month){
+    public String printTypesCaches(int month){
         int[] caches = getNumberCaches(month);
         int rightLimit = 20; int micro = caches[0], multi = caches[1], trad = caches[2], mystery = caches[3];
         int index; int max_four = micro;

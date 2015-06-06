@@ -259,11 +259,14 @@ public class GeocachingPOO implements Serializable {
      *  @param act  Activity to be added
      *  @param id   Id of the found cache
      */
-    public void addActivity (Double id, GregorianCalendar date, Coordinates coordinates ) throws IllegalArgumentException, NullPointerException, NotAddedActivityYearIncorrectException, NoUserLoggedInException {
+    public void addActivity (Double id, GregorianCalendar date ) throws IllegalArgumentException, NullPointerException, NotAddedActivityYearIncorrectException, NoUserLoggedInException {
         Cache cache             = cachebase.getCache(id);
         ArrayList<String> reg   = null;
         Activity act = new Activity();
          Double kms;
+
+         Activity last_activity = user.getLastActivities().get(0);
+         //The last activity of the user for the coordinates.
 
         if (user == null)
             throw new NoUserLoggedInException();
@@ -275,7 +278,7 @@ public class GeocachingPOO implements Serializable {
         //Otherwise, the kms will be calculated following this coordinates.
         //This param must be the coordinates of the previous cache location. The location of this current cache is available in the cache.
 
-        if(coordinates == null){
+        if(last_activity == null){
             Coordinates coordinates_simulated = cache.getCoords();
             coordinates_simulated.incLat(); coordinates_simulated.incLon();
             kms = coordinates_simulated.getCoordinatesDist( cache.getCoords() );
@@ -289,8 +292,9 @@ public class GeocachingPOO implements Serializable {
 
         }
         else{
+            Coordinates coordinates = last_activity.getCache().getCoords();
             kms = coordinates.getCoordinatesDist(cache.getCoords());
-            //This will calculate the kms already for that coordinates received as parameter.
+            //This will calculate the kms already for that coordinates of the last activity.
         }
 
         reg = cache.getRegistry();

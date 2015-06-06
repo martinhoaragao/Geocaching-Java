@@ -23,7 +23,7 @@ public class NormalUser extends User implements Serializable {
     private int points;               // User points
 
     private TreeSet<Activity> activities;       // Last 10 User activities
-    private StatisticYear statistics;               // User statistics
+    private StatisticYear statistics;           // User statistics
     private ArrayList<Double> friends;          // User friends
     private ArrayList<Double> friend_requests;  // Friend Requests
 

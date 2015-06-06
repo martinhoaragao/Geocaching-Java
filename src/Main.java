@@ -824,7 +824,7 @@ public class Main implements Serializable {
         System.out.print("Cache id: "); id = sc.nextDouble();
 
         try {
-            gc.addActivity(id, date, null);
+            gc.addActivity(id, date);
             System.out.println("Successfully added activity!");
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
