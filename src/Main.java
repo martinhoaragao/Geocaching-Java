@@ -210,7 +210,6 @@ public class Main implements Serializable {
         }
     }
 
-
     /** Auxiliary function to display and control Reporsts Menu for Admin */
     private static void reporstMenu () {
         Scanner sc = new Scanner(System.in);
@@ -608,7 +607,7 @@ public class Main implements Serializable {
             System.out.println("There are no caches.");
         else
             for (Cache c : caches)
-                System.out.println(c.toString());
+                System.out.println("Type of cache: "+ c.getClass().getName().toString() +".\n "+ c.toString());
         if (console != null) console.readLine();
     }
 
@@ -813,23 +812,53 @@ public class Main implements Serializable {
     /* ------------------------- ACTIVITIES -----------------------*/
 
     /** Auxiliary function to create a new Activity.
-    *   This method assumes that the starting location will be simulated for kms calculations.
-    */
+     *   This method assumes that the starting location will be simulated for kms calculations.
+     */
     private static void createActivity () {
         Scanner sc = new Scanner(System.in);
         GregorianCalendar date;
         Double id;
         Cache cache = null;
+        boolean canadd = false;
 
         clean();
         System.out.print("Date: "); date = typeDate();
         System.out.print("Cache id: "); id = sc.nextDouble();
 
-        try {
-            gc.addActivity(id, date);
-            System.out.println("Successfully added activity!");
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+        //Mystery Cache answer right the question
+        try{
+            cache = gc.getCache(id); //get the cache to see if its a mystery cache
+        } catch(Exception e ) {
+            System.out.println(e.getMessage());
+        }
+        if(cache instanceof MysteryCache){
+
+            MysteryCache mys = (MysteryCache) cache;
+            System.out.println("Q: " + mys.getPuzzle().getQuestion().toString());
+            System.out.println("What's the correct answer? ");
+            String answer = sc.next();
+
+            if(answer.toLowerCase().contains(mys.getPuzzle().getAnswer().toLowerCase())    ){ 
+                System.out.println("Correct! Here are the coordinates: " + mys.getCoords().toString());
+                canadd = true;
+            }
+            else{
+                System.out.println("Nope.");
+
+            }
+        }
+        else canadd = true;
+
+        if(canadd){
+
+            try {
+
+                gc.addActivity(id, date);
+                System.out.println("Successfully added activity!");
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
+            }
+
         }
 
         if (console != null) console.readLine();
@@ -872,7 +901,6 @@ public class Main implements Serializable {
         if(year == 0){
             year = gc.getCurrentYear(); //returns the current year function present in normaluser and passed/available in geocaching
         }
-
 
         try{
             System.out.println(gc.getSTATSGlobal(year));

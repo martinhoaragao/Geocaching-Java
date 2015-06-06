@@ -77,8 +77,12 @@ public class MysteryCache extends Cache implements Serializable
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append(super.toString());
-        sb.append(this.puzzle.toString());
+        sb.append("Id: " + this.getId().intValue() + " | ");
+       
+
+        sb.append(this.puzzle.getQuestion().toString());
+        sb.append(" , created by: " + this.getMail() + "\n");
+        sb.append(" More info: " + this.getInfo() + "\n");
 
         return sb.toString();
     }
@@ -98,7 +102,6 @@ public class MysteryCache extends Cache implements Serializable
         comp = comp && (this.getCoords().equals(aux.getCoords()));
         comp = comp && (this.getRegistry().equals(aux.getRegistry()));
         comp = comp && (this.getTreasure().equals(aux.getTreasure()));
-        comp = comp && (this.getInfo().equals(aux.getInfo()));
         comp = comp && (this.puzzle.equals(aux.getInfo()));
 
         return comp;

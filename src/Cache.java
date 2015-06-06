@@ -187,6 +187,7 @@ public abstract class Cache implements Serializable {
         StringBuilder sb = new StringBuilder();
         sb.append("Id: " + this.id.intValue() + " | ");
         sb.append(this.coords.toString());
+        
         sb.append(" , created by: " + this.mail + "\n");
         sb.append(" More info: " + this.info + "\n");
 

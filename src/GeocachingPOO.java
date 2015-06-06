@@ -261,6 +261,9 @@ public class GeocachingPOO implements Serializable {
      */
     public void addActivity (Double id, GregorianCalendar date ) throws IllegalArgumentException, NullPointerException, NotAddedActivityYearIncorrectException, NoUserLoggedInException {
         Cache cache             = cachebase.getCache(id);
+
+        //TODO Mystery
+
         ArrayList<String> reg   = null;
         Activity act = new Activity();
         Double kms;
@@ -525,7 +528,6 @@ public class GeocachingPOO implements Serializable {
         return this.id;
     }
 
-    //TODO - test from this on
     /**
     * @param int year
     * @return Statistic of a given year
@@ -535,7 +537,6 @@ public class GeocachingPOO implements Serializable {
         return user.getStatistics(year);
         //made this method in the class NormalUser
     }
-    //TODO needs testing all this stats
     /** Method that receives a String with Global/Anual Statistic's information, from the user
     *
     *@return String
@@ -595,7 +596,6 @@ public class GeocachingPOO implements Serializable {
         cache = (Cache) stream.readObject();
      }
 
-     /*TODO method named to "Look For Caches" */
 
     /*TODO toString equals clone*/
 }

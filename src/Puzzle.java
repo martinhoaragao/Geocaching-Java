@@ -1,11 +1,12 @@
 import Exceptions.*;
+import java.io.Serializable;
 /**
  * A puzzle to solve by the user, when looking for a "MisteryCache".
  *
  * @version 08/05/2015
  */
 
-public class Puzzle {
+public class Puzzle implements Serializable {
     private String question;
     private String answer;
     private int star; //The star difficulty rating for 1 to 10;
@@ -124,12 +125,6 @@ public class Puzzle {
         return this.question;
     }
 
-    /**
-     * Show the Question of this puzzle
-     */
-    public void showQuestion(){
-        System.out.println(this.getQuestion());
-    }
 
     /**
      * Get the answer of this puzzle
@@ -138,12 +133,6 @@ public class Puzzle {
         return this.answer;
     }
 
-    /**
-     * Show the answer of this puzzle
-     */
-    public void showAnswer(){
-        System.out.println(this.getAnswer());
-    }
 
     /**
      * Some Puzzles.

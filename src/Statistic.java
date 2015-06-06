@@ -63,7 +63,7 @@ public class Statistic implements Serializable
      *
      */
     public TreeSet<Activity> cloneTreeSet( TreeSet<Activity> ts){
-        TreeSet<Activity> novo = new TreeSet<>(new AComparator());
+        TreeSet<Activity> novo = new TreeSet<>(new ActivityDateComparator());
         Iterator<Activity> it = ts.iterator();
 
         while(it.hasNext()){
@@ -127,7 +127,7 @@ public class Statistic implements Serializable
     public TreeSet<Activity> getMonthActivities(int m){
         //Array starts from 0 to 11. Receives 1 , returns stats[0].
         TreeSet<Activity> ret = this.stats.get(m-1);
-        TreeSet<Activity> novo = new TreeSet<Activity>(new AComparator());
+        TreeSet<Activity> novo = new TreeSet<Activity>(new ActivityDateComparator());
         for(Activity ac : ret){
             novo.add(ac.clone());
         }

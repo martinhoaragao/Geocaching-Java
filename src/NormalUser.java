@@ -266,7 +266,7 @@ public class NormalUser extends User implements Serializable {
     /** @return TreeSet with the user activities */
     @SuppressWarnings("unchecked")
     public TreeSet<Activity> getActivities () {
-        TreeSet<Activity> ts = new TreeSet<Activity>(new CacheDateComparator());
+        TreeSet<Activity> ts = new TreeSet<Activity>(new ActivityDateComparator());
         Iterator it = activities.iterator();
         Activity aux;
 
