@@ -283,12 +283,11 @@ public class GeocachingPOO implements Serializable {
     }
 
     /**
-    * Method that removes an Activity
+    * Remove a user Activity
+    * @param act Activity to be removed
     */
-    public void removeActivity(){
-        //TODO
-       // Activity act = buscar nao sei aonde...
-       // user.removeAct(act);
+    public void removeActivity (Activity act) throws NullPointerException {
+      user.removeAct(act);
     }
 
     /* ------------------- CACHES ----------------------------*/

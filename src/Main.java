@@ -58,9 +58,10 @@ public class Main implements Serializable {
                     case 7: displayAllActivities();     break;
                     case 8: displayFriendActivities();  break;
                     case 9: displayUserCaches();        break;
-                    case 10: createActivity();           break;
+                    case 10: createActivity();          break;
                     case 11: getNearCaches();           break;
-                    case 12: logout();                  break;
+                    case 12: removeActivity();          break;
+                    case 13: logout();                  break;
                     default: break;
                 }
             } else {                              /* Admin logged in */
@@ -113,7 +114,8 @@ public class Main implements Serializable {
             System.out.println("9: Show My Caches");
             System.out.println("10: Add Activity");
             System.out.println("11: Find Caches near a location");
-            System.out.println("12: Log Out");
+            System.out.println("12: Remove Activity");
+            System.out.println("13: Log Out");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -1191,6 +1193,51 @@ public class Main implements Serializable {
             while (it.hasNext()) {
                 aux = (Activity) it.next();
                 System.out.println(aux.toString());
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        if (console != null) console.readLine();
+    }
+
+    /**
+     * Auxiliary function to remove an Activity
+     */
+    private static void removeActivity () {
+        Scanner sc = new Scanner(System.in);
+        TreeSet<Activity> act_ts;           /* TreeSet with all the activities */
+        ArrayList<Activity> act_list;       /* To create links between indexes and caches */
+        Iterator it;                        /* To iterate over the TreeSet */
+        Activity act;                       /* Auxiliary variable */
+        int act_num;                        /* Activity num */
+
+        clean();
+        try {
+            act_ts      = gc.getActivities();
+            act_list    = new ArrayList<Activity>();
+            it          = act_ts.descendingIterator();
+
+
+            /* Copy all the activities to the ArrayList */
+            while (it.hasNext()) {
+                act = (Activity) it.next();
+                act_list.add(act);
+            }
+
+            /* Display all Activities */
+            for (int i = 0; i < act_list.size(); i++) {
+                System.out.println("Activity number -> " + (i+1));
+                System.out.println(act_list.get(i).toString());
+            }
+
+            /* Get user choice */
+            System.out.print("Activity to delete: "); act_num = sc.nextInt();
+
+            if (act_num > act_list.size())
+                System.out.println("There is no activity with that number...");
+            else {
+                gc.removeActivity(act_list.get(act_num - 1));
+                System.out.println("Successfully deleted activity");
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());

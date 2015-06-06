@@ -300,11 +300,16 @@ public class NormalUser extends User implements Serializable {
 
     /**
     * Removes an Activity.
-    * @param a Activity to remove in both Statistics and Activities
+    * @param act Activity to remove in both Statistics and Activities
     */
-    public void removeAct(Activity a){
-      this.statistics.removeAct(a);
-      this.activities.remove(a);
+    public void removeAct (Activity act) throws NullPointerException {
+      if (act == null)
+        throw new NullPointerException("act can't be null.");
+      if (this.activities.contains(act)) {
+        this.activities.remove(act);
+        points -= act.getPoints();
+        this.statistics.removeAct(act);
+      }
     }
 
     /** @return TreeSet with the user activities */

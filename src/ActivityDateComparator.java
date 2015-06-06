@@ -10,10 +10,9 @@ public class ActivityDateComparator implements Comparator<Activity>, Serializabl
 
   /** Compare two activities dates */
   public int compare (Activity a, Activity b) {
-    int m;
+    if (a.equals(b)) return 0;                  /* Check if activities are equal */
 
-    m = a.getDate().compareTo(b.getDate());
-
+    int m = a.getDate().compareTo(b.getDate());
     if (m == 0) return -1;
     else return m;
   }
