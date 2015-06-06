@@ -347,4 +347,13 @@ public class CacheBase implements Serializable {
 
         return comp;
     }
+
+    /**
+     * Create a copy of the CacheBase
+     * @return Instance of CacheBase that contains the same information as the
+     * object which received the message
+     */
+    public CacheBase clone () {
+        return new CacheBase(this);
+    }
 }

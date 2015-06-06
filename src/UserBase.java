@@ -1,8 +1,7 @@
-import Exceptions.*;
 /**
- * Classe to save information of all the Users that have been created.
+ * Class that stores instances of NormalUser and Admin
  *
- * @version 08/05/2015
+ * @version 06/06/2015
  */
 
 import java.util.TreeMap;
@@ -11,18 +10,19 @@ import java.util.Iterator;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.io.Serializable;
+import Exceptions.*;
 
 public class UserBase implements Serializable {
-    private ArrayList<Admin> admins;          /* Array to store admins */
-    private ArrayList<NormalUser> users;          /* Array to store users */
-    private TreeMap<String, Double> userMails;  /* Map between mails and ids */
-    private TreeMap<String, Double> adminMails;  /* Map between mails and ids */
+    private ArrayList<Admin> admins;                /* Array to store admins */
+    private ArrayList<NormalUser> users;            /* Array to store users */
+    private TreeMap<String, Double> userMails;      /* Map between mails and ids */
+    private TreeMap<String, Double> adminMails;     /* Map between mails and ids */
 
 
-    // Constructors
+    /* Constructors */
 
     /**
-     * Constructor without arguments
+     * Constructor without arguments, only the instance variables are initialized
      */
     public UserBase () {
         this.admins = new ArrayList<Admin>();
@@ -43,23 +43,18 @@ public class UserBase implements Serializable {
 
     }
 
-    // Getters
+    /* Getters */
 
-    /** Function to be used only by the user base to get an admin
-     * @param id Admin id
+    /**
+     * Get a Admin given its ID
+     * @param id Admin ID
+     * @return The Admin if it exists, otherwise null will be returned
      */
     private Admin getAdmin (Double id) {
         if (id < this.admins.size())
             return this.admins.get(id.intValue() - 1);
         else
             return null;
-    }
-
-    /** Function to be used only by the user base to get an admin
-     * @param mail Admin mail
-     */
-    private Admin getAdmin (String mail) {
-        return this.admins.get(this.adminMails.get(mail).intValue() - 1);
     }
 
     /**
@@ -79,7 +74,8 @@ public class UserBase implements Serializable {
             throw new IllegalArgumentException("No Admin with the given mail.");
     }
 
-    /** Function to be used only by the user base to get a user
+    /**
+     * Get a NormalUser given its ID
      * @param id User id
      */
     private NormalUser getUser (Double id) {
@@ -92,13 +88,14 @@ public class UserBase implements Serializable {
     /**
      * Function to be used only by the user base to get a user
      * @param mail User e-mail
+     * @return The NormalUser if it exists, otherwise null will be returned
      */
     public NormalUser getUser (String mail) {
         return this.users.get(this.userMails.get(mail).intValue() - 1);
     }
 
     /**
-     * Returns the user with the specified e-mail if passwords match
+     * Get instance of a NormalUser given its e-mail and password
      * @param mail User mail
      * @param pass User password
      */
@@ -116,6 +113,7 @@ public class UserBase implements Serializable {
     }
 
     /**
+     * Calculate the number of Admin instances on the UserBase
      * @return Number of admins in the user data base
      */
     public int getNumOfAdmins () {
@@ -123,6 +121,7 @@ public class UserBase implements Serializable {
     }
 
     /**
+     * Calculate the number of Normaluser instances on the UserBase
      * @return Number of users in the user data base
      */
     public int getNumOfUsers () {
@@ -130,6 +129,7 @@ public class UserBase implements Serializable {
     }
 
     /**
+     * Get the List with clones of all the instances of Admin in the UserBase
      * @return ArrayList with all the admins in the UserBase
      */
     @SuppressWarnings("unchecked")
@@ -143,6 +143,7 @@ public class UserBase implements Serializable {
     }
 
     /**
+     * Get list with clones of all the instances of NormalUser in the UserBase
      * @return ArrayList with all the users in the UserBase
      */
     @SuppressWarnings("unchecked")
@@ -156,7 +157,10 @@ public class UserBase implements Serializable {
         return list;
     }
 
-    /** @return TreeMap with the mapping between admin's usernames and ids */
+    /**
+     * Get the mapping between admin's e-mails and IDs
+     * @return TreeMap with the mapping between admin's e-mails and IDs
+     */
     @SuppressWarnings("unchecked")
     public TreeMap<String, Double> getAdminMails () {
         TreeMap<String, Double> tm = new TreeMap<String, Double>();
@@ -167,7 +171,10 @@ public class UserBase implements Serializable {
         return tm;
     }
 
-    /** @return TreeMap with the mapping between e-mails and ids */
+    /**
+     * Get the mapping between user's e-mails and IDs
+     * @return TreeMap with the mapping between user's e-mails and IDs
+     */
     @SuppressWarnings("unchecked")
     public TreeMap<String, Double> getUserMails () {
         TreeMap<String, Double> tm = new TreeMap<String, Double>();
@@ -176,64 +183,6 @@ public class UserBase implements Serializable {
             tm.put(mail, userMails.get(mail));
 
         return tm;
-    }
-
-    // toString, equals and clone
-
-    /**
-     * Create a String with all the e-mails in the UserBase
-     */
-    public String toString () {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("\nCurrent DataBase\n");
-
-        sb.append(this.admins.size() + " Admins.\n");
-        for(Admin admin : this.admins)
-            sb.append(admin.getName() + " - Email: " + admin.getMail()  + " - Power: " + admin.getPermi() + "\n");
-
-        sb.append(this.users.size() + " Users.\n");
-        Iterator it = this.users.iterator();
-        while (it.hasNext()) {
-          User u = (User) it.next();
-          sb.append(u.getName() + " - " + u.getMail() + "\n");
-        }
-
-        return sb.toString();
-    }
-
-    /**
-     * Compare if two UserBase have the same e-mails and the same number of users,
-     * should be modified to also check if the users are equal
-     * @param ubase UserBase to use for comparison
-     */
-    public boolean equals (Object ubase) {
-        if (ubase == this) return true;
-
-        if ((ubase == null) || (ubase.getClass() != this.getClass())) return false;
-
-        UserBase aux = (UserBase) ubase;
-        boolean result;
-
-        /* Compare number of admins */
-        result = (this.admins.size() == aux.getNumOfAdmins());
-        /* Compare all admins */
-        for (Admin admin : aux.getAdmins())
-            result = result && (this.getAdmin(admin.getId()).equals(admin));
-
-        /* Compare number of users */
-        result = (this.users.size() == aux.getNumOfUsers());
-        /* Compare all users */
-        for (NormalUser user : aux.getUsers())
-            result = result && (this.getUser(user.getId()).equals(user));
-        return result;
-    }
-
-    /**
-     * Create a clone of this UserBase
-     */
-    public UserBase clone () {
-        return new UserBase(this);
     }
 
     /**
@@ -252,22 +201,7 @@ public class UserBase implements Serializable {
     }
 
     /**
-     * Create a clone of the user and eliminate the password
-     * @param mail User e-mail
-     */
-    public NormalUser getUserInfo (String mail) {
-        if (!userMails.containsKey(mail))
-            return null;
-        int id = this.userMails.get(mail).intValue();
-        NormalUser user = this.users.get(id - 1).clone();
-        user.setPass("----");
-        return user;
-    }
-
-    // Other methods
-
-    /**
-     * Add an admin to the data base
+     * Add an admin to the UserBase
      * @param adm Admin to be added
      */
     public void addAdmin (Admin adm) throws IllegalArgumentException, NullPointerException {
@@ -281,7 +215,7 @@ public class UserBase implements Serializable {
     }
 
     /**
-     * Add a user to the data base
+     * Add a user to the UserBase
      * @param user User to be added
      */
     public void addUser (NormalUser user) throws EmailAlreadyInUseException, IdAlreadyAssignedException {
@@ -295,8 +229,10 @@ public class UserBase implements Serializable {
         }
     }
 
-    /** Remove an admin from the data base
-     *  @param mail String to be removed */
+    /**
+     * Remove an admin from the UserBase
+     *  @param mail E-mail of the admin to bew removed
+     */
     public void removeAdmin (String mail) throws IllegalArgumentException {
         if (!this.adminExists(mail)) /* Admin e-mail doesn't exist */
             throw new IllegalArgumentException("Admin doesn't exist.");
@@ -305,8 +241,8 @@ public class UserBase implements Serializable {
     }
 
     /**
-     * Remove an user from the data base
-     * @param mail String to be removed
+     * Remove an user from the UserBase
+     * @param mail E-mail of the user to be removed
      */
     public void removeUser (String mail) throws IllegalArgumentException {
         if (!this.userExists(mail)) /* User e-mail doesn't exist */
@@ -332,38 +268,18 @@ public class UserBase implements Serializable {
     }
 
     /**
-     * Check if a given Admin is in the UserBase
-     * @param admin Admin to be found in the UserBase
+     * Check if a user exists given its ID
+     * @param id The user ID
+     * @return true if the user exists, false otherwise
      */
-    public boolean userExists (Admin admin) {
-        int id = admin.getId().intValue();
-
-        if (id < this.admins.size())
-            return (this.admins.get(id - 1).equals(admin));
-        else
-            return false;
-    }
-
-    /**
-     * Check if a given User is in the UserBase
-     * @param user User to be found in the UserBase
-     */
-    public boolean userExists (NormalUser user) {
-        int id = user.getId().intValue();
-
-        if (id < this.users.size())
-            return (this.users.get(id - 1).equals(user));
-        else
-            return false;
-    }
-
     public boolean userExists (Double id) {
         if (id <= this.users.size())
             return (this.users.get(id.intValue() - 1) != null);
         else return false;
     }
 
-    /** Create friend request from a given user to another
+    /**
+     * Create friend request from a given user to another
      * @param id Id of the user sending the request
      * @param mail Mail of the user to whom the request will be sent
      */
@@ -383,9 +299,8 @@ public class UserBase implements Serializable {
             }
     }
 
-    /** Accept a friend request
-     * Add the id of the user that accepted to the list of friends of the user
-     * that sent the request
+    /**
+     * Accept a friend request
      * @param id Id of the user that accepted the request
      * @param mail E-mail of the user that sent the request
      */
@@ -403,5 +318,63 @@ public class UserBase implements Serializable {
         u1.removeFriendRequest(u2.getId());    /* Remove friend request */
         u1.addFriend(u2.getId());              /* Add friend */
         u2.addFriend(id);                   /* Add friend */
+    }
+
+        /* toString, equals and clone */
+
+    /**
+     * Create a String with all the e-mails in the UserBase
+     */
+    public String toString () {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("\nCurrent DataBase\n");
+
+        sb.append(this.admins.size() + " Admins.\n");
+        for(Admin admin : this.admins)
+            sb.append(admin.getName() + " - Email: " + admin.getMail()  + " - Power: " + admin.getPermi() + "\n");
+
+        sb.append(this.users.size() + " Users.\n");
+        Iterator it = this.users.iterator();
+        while (it.hasNext()) {
+          User u = (User) it.next();
+          sb.append(u.getName() + " - " + u.getMail() + "\n");
+        }
+
+        return sb.toString();
+    }
+
+    /**
+     * Compare if two UserBase have the same e-mails and the same number of users
+     * @param ubase UserBase to use for comparison
+     */
+    public boolean equals (Object ubase) {
+        if (ubase == this) return true;
+
+        if ((ubase == null) || (ubase.getClass() != this.getClass())) return false;
+
+        UserBase aux = (UserBase) ubase;
+        boolean result;
+
+        /* Compare number of admins */
+        result = (this.admins.size() == aux.getNumOfAdmins());
+        /* Compare all admins */
+        for (Admin admin : aux.getAdmins())
+            result = result && (this.getAdmin(admin.getId()).equals(admin));
+
+        /* Compare number of users */
+        result = (this.users.size() == aux.getNumOfUsers());
+        /* Compare all users */
+        for (NormalUser user : aux.getUsers())
+            result = result && (this.getUser(user.getId()).equals(user));
+        return result;
+    }
+
+    /**
+     * Create a clone of the UserBase
+     * @return Instance of UserBase containing clones of the information of the UserBase
+     */
+    public UserBase clone () {
+        return new UserBase(this);
     }
 }
