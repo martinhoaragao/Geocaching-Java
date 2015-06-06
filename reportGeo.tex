@@ -4,6 +4,8 @@
 \usepackage{listings}
 \usepackage[utf8]{inputenc}
 \usepackage{listings}
+\lstset{language=Java, breaklines=true, basicstyle=\footnotesize} % Especificar Haskell, mudar de linha quando acabar espaço, diminuir tamanho da letra.
+\usepackage{indentfirst} %Identação nos parágrafos iniciais
 %\graphicspath{ {/home/jessica/Documentos/Engineer/Geocaching-Java} }
 
 \renewcommand{\baselinestretch}{2}
@@ -13,20 +15,42 @@
 
 
 \begin{document}
-\maketitle
-\begin{center}
-Grupo 42 \\
-Realizado por: \\
-Jéssica Pereira a71164	\\
-\includegraphics[height=3\baselineskip,natwidth=369,natheight=430]{jessica0.jpg}\\
-Adelino Costa a70563\\
-\includegraphics[height=3\baselineskip,natwidth=369,natheight=430]{adelino.jpg}\\
-Martinho Aragão a72205 \\
-\includegraphics[height=3\baselineskip,natwidth=369,natheight=430]{martinho.jpg}
-\end{center}
+  \begin{titlepage}
 
-\pagebreak
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
 
+\center % Center everything on the page
+
+\textsc{\LARGE Universidade do Minho}\\[1.5cm] % Name of your university/college
+\textsc{\Large LEI}\\[0.5cm] % Major heading such as course name
+\textsc{\large Programação Orientada aos Objetos}\\[0.5cm] % Minor heading such as course title
+
+\HRule \\[0.4cm]
+{ \huge \bfseries Geocaching}\\[0.4cm] % Title of your document
+\HRule \\[1.5cm]
+
+\begin{figure}[!htb]
+\minipage{0.31\textwidth}
+  \includegraphics[width=\linewidth]{adelino.jpg}
+  \caption*{João Costa A70563}\label{fig:awesome_image1}
+\endminipage\hfill
+\minipage{0.31\textwidth}
+  \includegraphics[width=\linewidth]{jessica0.jpg}
+  \caption*{Jéssica Pereira A70563}\label{fig:awesome_image2}
+\endminipage\hfill
+\minipage{0.29\textwidth}%
+  \includegraphics[width=\linewidth]{martinho.jpg}
+  \caption{Martinho Aragão A72205}
+\endminipage
+\end{figure}
+
+{\large \today}\\[3cm] % Date, change the \today to a set date if you want to be precise
+
+%\includegraphics[width=0.30\textwidth]{UM-EENG.jpg}\\[1cm] % Include a department/university logo - this will require the graphicx package
+
+\vfill % Fill the rest of the page with whitespace
+
+\end{titlepage}
 
 \tableofcontents
 
@@ -195,7 +219,7 @@ caches que se encontram a uma determinada distância (raio) de uma certa localiz
 \par Esta atividade têm como informações a data em que foi adicinada, a Cache que foi encontrada, os kilometros que foram percorridos para encontrar esta Cache, a pontuação ganha pelo feito e a Meteorologia desse dia.
 \par O utilizador apenas tem de fornecer os dados quanto à Cache que encontrou e em que dia foi. O resto é tratado pelo programa, havendo simulações e cálculos.
 
-\subsubsection{Kilómetros}
+\subsubsection{Quilómetros}
 \quad  Quando adiciona a primeira atividade, são criadas as coordenadas iniciais do local onde o User iniciou a procura, geradas aleatóriamente fazendo cópia das coordenadas da Cache e um incremento da latitude e longitude de valores entre 0,001 e 0,4 por exemplo. No momento em que, ao adicionar esta primeira atividade, o programa calcula as distâncias entre estas coordenadas geradas aleatóriamente com base neste range, e as coordenadas da Cache, os kilometros calculados dão entre valores de 0,1km até 40 kms, em média.
 Este incremento de latitude e longitude são métodos que usam o Math.Random, presentes na classe "Coordinates".
 \par Caso já exista uma atividade anterior a esta que está prestes a ser adicionada, a distância calculada será entre as coordenadas desta cache e as coordenadas da cache da ultima atividade, tornando isto o mais realista possivel. A última atividade é a última posição conhecida do utilizador.
