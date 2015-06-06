@@ -147,6 +147,9 @@ Como tratamos da Invalidação de uma Cache?
 Como permitirmos ao user para reportar uma cache e quando é que ela é efetivamente reportada? pelo admin... 
 
 Mencionar que Cache é superclasse e os tipos de cache são sub-classes Estrutura de cada uma;
+
+Ao fazer report de uma cache o admin tem acesso a essas caches e pode remover essa cache aceitando o report ou eliminar esse report. Se o utilizador remover a cache (invalidando-a) depois de ter feito report a essa cache, quando voltamos para o contexto do admin, essa cache já nao existe nos reports porque foi eliminada.
+
 \subsection{ Cache Tradicional}
 \subsection{ Micro Cache }
 \subsection{ Multi Cache}
