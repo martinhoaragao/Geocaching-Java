@@ -52,16 +52,9 @@ public class Main implements Serializable {
                     case 1: infoMenu();                 break;
                     case 2: cachesMenu();               break;
                     case 3: friendsMenu();              break;
+                    case 4: activititesMenu();          break;
                     case 5: mystatsMenu();              break;
-                    case 4: displayAllCaches();         break;
-                    case 6: displayLastActivities();    break;
-                    case 7: displayAllActivities();     break;
-                    case 8: displayFriendActivities();  break;
-                    case 9: displayUserCaches();        break;
-                    case 10: createActivity();          break;
-                    case 11: getNearCaches();           break;
-                    case 12: removeActivity();          break;
-                    case 13: logout();                  break;
+                    case 6: logout();                  break;
                     default: break;
                 }
             } else {                              /* Admin logged in */
@@ -104,18 +97,11 @@ public class Main implements Serializable {
             user = gc.getLoggedUser();
             System.out.println(user.getName() + " | " + user.getPoints() + " points");
             System.out.println("1: Personal Information");
-            System.out.println("2: Caches Menu");
+            System.out.println("2: Caches");
             System.out.println("3: Friends");
-            System.out.println("4: Show Caches");
-            System.out.println("5: Show My Statistics");
-            System.out.println("6: Show Last 10 activities");
-            System.out.println("7: Show All Activities");
-            System.out.println("8: Show Friend Activities");
-            System.out.println("9: Show My Caches");
-            System.out.println("10: Add Activity");
-            System.out.println("11: Find Caches near a location");
-            System.out.println("12: Remove Activity");
-            System.out.println("13: Log Out");
+            System.out.println("4: Activities");
+            System.out.println("5: Statistics");
+            System.out.println("6: Logout");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -171,17 +157,17 @@ public class Main implements Serializable {
 
         while (!done) {
             clean();
-            System.out.println("1: Send Friend Request");
-            System.out.println("2: Show Friend Requests");
-            System.out.println("3: Accept Friend Request");
-            System.out.println("4: Friends List");
-            System.out.println("5: Main Menu");
+            System.out.println("1: Friends List");
+            System.out.println("2: Send Friend Request");
+            System.out.println("3: Show Friend Requests");
+            System.out.println("4: Accept Friend Request");
+            System.out.println("5: Return");
 
             switch (sc.nextInt()) {
-                case 1: sendRequest();    break;
-                case 2: showRequests();   break;
-                case 3: acceptRequest();  break;
-                case 4: showFriends();    break;
+                case 1: showFriends();    break;
+                case 2: sendRequest();    break;
+                case 3: showRequests();   break;
+                case 4: acceptRequest();  break;
                 case 5: done = true;      break;
                 default: break;
             }
@@ -197,20 +183,48 @@ public class Main implements Serializable {
             clean();
             System.out.println("1: Create a cache");
             System.out.println("2: Report one cache ");
-            System.out.println("3: See treasures of a cache");
-            System.out.println("4: Show registry book of a cache");
-            System.out.println("5: Show other details of a cache");
+            System.out.println("3: Show all caches");
+            System.out.println("4: Show my caches");
+            System.out.println("5: Find caches near a position");
             System.out.println("6: Invalidate my cache");
-            System.out.println("7: Leave cache menu");
+            System.out.println("7: Return");
 
             switch (sc.nextInt()) {
-                case 1: createCache();              break;
-                case 2: reportCache();              break;
-                case 3: displayCacheTreasures();    break;
-                case 4: displayCacheRegistry();     break;
-                case 5: displayAllCacheInfo();      break;
-                case 6: invalidateCache();          break;
-                case 7: done = true;                break;
+                case 1: createCache();          break;
+                case 2: reportCache();          break;
+                case 3: displayAllCaches();     break;
+                case 4: displayUserCaches();    break;
+                case 5: getNearCaches();        break;
+                case 6: invalidateCache();      break;
+                case 7: done = true;            break;
+                default: break;
+            }
+        }
+    }
+
+    /**
+     * Auxiliary function to display and control the Activities Menu
+     */
+    private static void activititesMenu () {
+        Scanner sc = new Scanner(System.in);
+        boolean done = false;
+
+        while (!done) {
+            clean();
+            System.out.println("1: Add Activity");
+            System.out.println("2: Show my last activitites");
+            System.out.println("3: Show friend last activitites");
+            System.out.println("4: Show all my activitites");
+            System.out.println("5: Remove activity");
+            System.out.println("6: Return");
+
+            switch (sc.nextInt()) {
+                case 1: createActivity();           break;
+                case 2: displayLastActivities();    break;
+                case 3: displayFriendActivities();  break;
+                case 4: displayAllActivities();     break;
+                case 5: removeActivity();           break;
+                case 6: done = true;            break;
                 default: break;
             }
         }
@@ -248,7 +262,7 @@ public class Main implements Serializable {
             System.out.println("2. Year Stats");
             System.out.println("3. Mensal Stats");
             System.out.println("4. Graphic #caches Mensal");
-            System.out.println("5: Leave Statistics menu");
+            System.out.println("5: Return");
 
             switch (sc.nextInt()) {
                 case 1: displayGlobalStats();       break;
@@ -259,7 +273,6 @@ public class Main implements Serializable {
                 default: break;
             }
         }
-
     }
 
     /* ----------------------- REGISTER & LOGIN ----------------------*/
@@ -471,6 +484,7 @@ public class Main implements Serializable {
         clean();
         System.out.print("Gender (F: Female | M: Male): ");
         gender = sc.nextLine().replaceAll("[\n\r]","").equals("F");
+        System.out.println(gender);
         try {
             gc.changeGender(gender);
             System.out.println("Successfully change gender.");
@@ -828,7 +842,6 @@ public class Main implements Serializable {
         GregorianCalendar date;
         Double id;
         Cache cache = null;
-        boolean canadd = false;
 
         clean();
         System.out.print("Date: "); date = typeDate();
@@ -837,37 +850,26 @@ public class Main implements Serializable {
         //Mystery Cache answer right the question
         try{
             cache = gc.getCache(id); //get the cache to see if its a mystery cache
-        } catch(Exception e ) {
-            System.out.println(e.getMessage());
-        }
-        if(cache instanceof MysteryCache){
 
-            MysteryCache mys = (MysteryCache) cache;
-            System.out.println("Q: " + mys.getPuzzle().getQuestion().toString());
-            System.out.println("What's the correct answer? ");
-            String answer = sc.next();
+            if (cache instanceof MysteryCache){
+                MysteryCache mys = (MysteryCache) cache;
+                System.out.println("Q: " + mys.getPuzzle().getQuestion().toString());
+                System.out.println("What's the correct answer? ");
+                String answer = sc.next();
 
-            if(answer.toLowerCase().contains(mys.getPuzzle().getAnswer().toLowerCase())    ){
-                System.out.println("Correct! Here are the coordinates: " + mys.getCoords().toString());
-                canadd = true;
-            }
-            else{
-                System.out.println("Nope.");
-
-            }
-        }
-        else canadd = true;
-
-        if(canadd){
-
-            try {
-
+                if(answer.toLowerCase().contains(mys.getPuzzle().getAnswer().toLowerCase())    ){
+                    System.out.println("Correct! Here are the coordinates: " + mys.getCoords().toString());
+                    gc.addActivity(id, date);
+                    System.out.println("Successfully added activity!");
+                } else{
+                    System.out.println("Nope.");
+                }
+            } else {
                 gc.addActivity(id, date);
                 System.out.println("Successfully added activity!");
-            } catch (Exception e) {
-                System.out.println("Error: " + e.getMessage());
             }
-
+        } catch(Exception e ) {
+            System.out.println(e.getMessage());
         }
 
         if (console != null) console.readLine();

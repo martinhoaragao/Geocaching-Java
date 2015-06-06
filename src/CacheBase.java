@@ -129,7 +129,8 @@ public class CacheBase implements Serializable {
         if (cache == null)
             throw new NullPointerException("cache can't be null.");
 
-        if ( (list = owners.get(id)) == null ) {
+        list = owners.get(id);
+        if ( list == null ) {
             /* First cache created by the user */
             list = new ArrayList<Double>();
             list.add(cache.getId());
