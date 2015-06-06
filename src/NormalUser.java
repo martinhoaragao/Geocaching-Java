@@ -241,7 +241,8 @@ public class NormalUser extends User implements Serializable {
 
     /**
      * Add an Activity to the activities queue and automaticaly to the statistics
-     * @param act Activity to be added
+     * @param cache Cache to be added
+     * @param date the date of the activity
      */
     public void addActivity (Cache cache, GregorianCalendar date) throws NullPointerException,NotAddedActivityYearIncorrectException {
         Activity aux = null;  //for the 10 last activities
@@ -305,6 +306,15 @@ public class NormalUser extends User implements Serializable {
 
         this.statistics.addAct(act);
 
+    }
+
+    /**
+    * Removes an Activity.
+    * @param a Activity to remove in both Statistics and Activities
+    */
+    public void removeAct(Activity a){
+      this.statistics.removeAct(a);
+      this.activities.remove(a);
     }
 
     /** @return TreeSet with the user activities */

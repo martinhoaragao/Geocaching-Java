@@ -275,6 +275,15 @@ public class GeocachingPOO implements Serializable {
         user.addActivity(cache, date);
     }
 
+    /**
+    * Method that removes an Activity
+    */
+    public void removeActivity(){
+        //TODO
+       // Activity act = buscar nao sei aonde...
+       // user.removeAct(act);
+    }
+
     /* ------------------- CACHES ----------------------------*/
 
     /**
