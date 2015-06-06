@@ -267,7 +267,7 @@ public class GeocachingPOO implements Serializable {
 
          ArrayList<Activity> last_activity = user.getLastActivities();
          //The last activity of the user for the coordinates.
-         System.out.println(last_activity.toString());
+         
         if (user == null)
             throw new NoUserLoggedInException();
 
