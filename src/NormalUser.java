@@ -245,9 +245,9 @@ public class NormalUser extends User implements Serializable {
      */
     public void addActivity (Cache cache, GregorianCalendar date) throws NullPointerException,NotAddedActivityYearIncorrectException {
         Activity aux = null;  //for the 10 last activities
-        
+
         //Changes to this method
-        
+
         ArrayList<String> reg   = null;
         Activity act = new Activity();
         Double kms;
@@ -292,19 +292,9 @@ public class NormalUser extends User implements Serializable {
 
         if (act == null)
             throw new NullPointerException("act can't be null!");
-
-        /* Remove head if there are already 10 activities */
-        if (this.activities.size() == 10)
-            try {
-                aux = this.activities.first();
-            } catch (Exception e) { aux = null; }
-        if (aux != null) this.activities.remove(aux);
-
         this.activities.add(act);
         this.points += act.getPoints();
-
         this.statistics.addAct(act);
-
     }
 
     /** @return TreeSet with the user activities */

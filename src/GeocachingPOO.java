@@ -238,6 +238,13 @@ public class GeocachingPOO implements Serializable {
     }
 
     /**
+     * Get all the Activities of the current logged in User
+     */
+    public TreeSet<Activity> getActivities () {
+      return user.getActivities();
+    }
+
+    /**
      * Get list of a friends 10 last activities
      * @param mail Friend's e-mail
      * @return ArrayList with user 10 last activities
@@ -260,10 +267,10 @@ public class GeocachingPOO implements Serializable {
      *  @param id   Id of the found cache
      */
     public void addActivity (Double id, GregorianCalendar date ) throws IllegalArgumentException, NullPointerException, NotAddedActivityYearIncorrectException, NoUserLoggedInException {
-        
+
 
         Cache cache             = cachebase.getCache(id);
-    
+
          //The last activity of the user for the coordinates.
 
         if (user == null)
