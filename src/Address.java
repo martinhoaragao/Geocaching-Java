@@ -12,8 +12,8 @@ public class Address implements Serializable {
 
     /**
      * Constructor with arguments
-     * @arg city City name
-     * @arg country Country name
+     * @param city City name
+     * @param country Country name
      */
     public Address (String city, String country) {
         if ((city == null) || (country == null))
@@ -60,7 +60,7 @@ public class Address implements Serializable {
 
     /**
      * Change city in the address
-     * @arg city New city for the address
+     * @param city New city for the address
      */
     public void setCity (String city) {
         if (city == null)
@@ -73,7 +73,7 @@ public class Address implements Serializable {
 
     /**
      * Change country in the address
-     * @arg country New country for the adress
+     * @param country New country for the adress
      */
     public void setCountry (String country) {
         if (country == null)
@@ -87,7 +87,7 @@ public class Address implements Serializable {
 
     /**
      * Compare this Address to another to check if they are equal
-     * @arg ad Address to use for comparison
+     * @param ad Address to use for comparison
      */
     public boolean equals(Address ad){
         if(this == ad) return true;

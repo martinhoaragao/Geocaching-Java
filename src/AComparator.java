@@ -1,6 +1,9 @@
 import java.util.Comparator;
 import java.io.Serializable;
 
+/**	
+*	This comparator compares two activities depending on the date.
+*/
 public class AComparator implements Comparator<Activity>, Serializable{
         public int compare(Activity a, Activity b){
             if(a.equals(b)) return 0;
