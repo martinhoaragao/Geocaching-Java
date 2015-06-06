@@ -82,6 +82,7 @@ public class NormalUser extends User implements Serializable {
     // Getters
 
     /**
+     * Gets user gender, true if girl
      * @return User gender
      */
     public boolean getGender () {
@@ -89,6 +90,7 @@ public class NormalUser extends User implements Serializable {
     }
 
     /**
+     * Gets User location
      * @return User Address
      */
     public Address getAddress () {
@@ -96,6 +98,7 @@ public class NormalUser extends User implements Serializable {
     }
 
     /**
+     * Gets user birthdate
      * @return User birthdate
      */
     public GregorianCalendar getBDate () {
@@ -103,6 +106,7 @@ public class NormalUser extends User implements Serializable {
     }
 
     /**
+     * Gets user's points
      * @return User points
      */
     public Integer getPoints () {
@@ -111,14 +115,18 @@ public class NormalUser extends User implements Serializable {
 
     //Setters
 
-    /** Change User gender
-     *  @param true for female, false for male */
+    /**
+     * Change User gender
+     * @param true for female, false for male
+     */
     public void setGender (boolean gender) {
         this.gender = gender;
     }
 
     /**
      * Change the adress
+     * @param city of user's current address
+     * @param country of user's current address
      */
     public void setAddress (String city, String country) throws NullPointerException, IllegalStateException {
 
@@ -135,8 +143,10 @@ public class NormalUser extends User implements Serializable {
         this.address = new Address(city, country);
     }
 
-    /** Change user Address
-     *  @param address The new Address */
+    /**
+     * Change user Address
+     * @param address The new Address
+     */
     public void setAddress (Address address) throws NullPointerException {
         if (address == null)
             throw new NullPointerException("address can't be null.");
@@ -192,7 +202,8 @@ public class NormalUser extends User implements Serializable {
 
     /* -------------------------------- FRIENDS -----------------------------*/
 
-    /** Add a User id to the friends request
+    /**
+     * Add a User id to the friends request
      * @param id The user id
      */
     public void addFriendRequest (Double id) throws IllegalArgumentException {
@@ -202,7 +213,8 @@ public class NormalUser extends User implements Serializable {
         this.friend_requests.add(id);
     }
 
-    /** Remove User id from the friends request
+    /**
+     * Remove User id from the friends request
      * @param id Id to be removed
      */
     public void removeFriendRequest (Double id) throws IllegalArgumentException {
@@ -224,14 +236,18 @@ public class NormalUser extends User implements Serializable {
     }
 
     /**
-    * @return User friends list
-    */
+     * Gets list of user's friends
+     * @return User friends list
+     */
     @SuppressWarnings("unchecked")
     public ArrayList<Double> getFriends () {
         return (ArrayList<Double>) this.friends.clone();
     }
 
-    /** @return Friend Requests list */
+    /**
+     * Gets list of user's friend requests
+     * @return Friend Requests list
+     */
     @SuppressWarnings("unchecked")
     public ArrayList<Double> getFriendRequests () {
         return (ArrayList<Double>) this.friend_requests.clone();
@@ -247,8 +263,6 @@ public class NormalUser extends User implements Serializable {
     public void addActivity (Cache cache, GregorianCalendar date) throws NullPointerException,NotAddedActivityYearIncorrectException {
         Activity aux = null;  //for the 10 last activities
 
-        //Changes to this method
-
         ArrayList<String> reg   = null;
         Activity act = new Activity();
         Double kms;
@@ -256,28 +270,17 @@ public class NormalUser extends User implements Serializable {
 
         ArrayList<Activity> last_activity = this.getLastActivities();
 
-        //The argument of coordinates can be passed as null. If so, the coordinates will be simulated and kms will be calculated with these random coordinates
-        //Otherwise, the kms will be calculated following this coordinates.
-        //This param must be the coordinates of the previous cache location. The location of this current cache is available in the cache.
-
         if(last_activity.size() == 0){
             Coordinates coordinates_simulated = cache.getCoords();
             coordinates_simulated.incLat(); coordinates_simulated.incLon();
             kms = coordinates_simulated.getCoordinatesDist( cache.getCoords() );
             act.setKms(kms);
-
-            //Comments on the previous Main class where these ones:
-            //date done, cache done, kms done and meteo will be simulated as well. After this, updatePoints should be correctly executed.
-            //Because all this information is in the Activity now.
-            //Note: when calling the empty constructor new Activity() it creates the Meteo already. So all done.
-
-
         }
         else{
             Coordinates coordinates = last_activity.get(0).getCache().getCoords();
             kms = coordinates.getCoordinatesDist(cache.getCoords());
             act.setKms(kms);
-            //This will calculate the kms already for that coordinates of the last activity.
+            //This will calculate the kms already for that coordinates based on  the last activity.
         }
 
         registry_entry = this.getName() + " ( " + this.getMail() + " ) ";
@@ -312,7 +315,10 @@ public class NormalUser extends User implements Serializable {
       }
     }
 
-    /** @return TreeSet with the user activities */
+    /**
+     * Gets a  list of user's activities
+     * @return TreeSet with the user activities
+     */
     @SuppressWarnings("unchecked")
     public TreeSet<Activity> getActivities () {
         TreeSet<Activity> ts = new TreeSet<Activity>(new ActivityDateComparator());
@@ -326,7 +332,10 @@ public class NormalUser extends User implements Serializable {
         return ts;
     }
 
-    /** @return ArrayList with the last 10 activities if the user has that many */
+    /**
+     * Gets the list of the 10 most recent activities
+     * @return ArrayList with the last 10 activities if the user has that many
+     */
     public ArrayList<Activity> getLastActivities () {
         ArrayList<Activity> acts = new ArrayList<Activity>(10);
 
@@ -341,9 +350,9 @@ public class NormalUser extends User implements Serializable {
     }
 
     /* ---------------------------- STATISTIC --------------------------- */
-    //TODO
 
     /**
+     * Gets the entire statistics of a user
      * @return User statistics of all years
      */
     public StatisticYear getStatistics () {
@@ -351,15 +360,18 @@ public class NormalUser extends User implements Serializable {
     }
 
     /**
-     * @return User statistic of a given year
+     * Gets the statistics of a given year
      * @param year
+     * @return User statistic of a given year
      */
     public Statistic getStatistics(int year) throws NoStatsException{
         return this.statistics.getStatistic(year).clone();
     }
 
-    //TODO test please.
-    /** @returns stats in form of a string with the information of totalpoints, totalkms, and numbercaches of all years*/
+    /**
+     * Gets the information of totalpoints, totalkms, and numbercaches of all years
+     * @returns stats in form of a string w
+     */
     public String getSTATS_PKC() throws NoStatsException{
         StringBuilder sb = new StringBuilder();
         int totalpoints = this.statistics.getSumPoints();
@@ -383,9 +395,11 @@ public class NormalUser extends User implements Serializable {
         return this.getStatistics(year).averageActPerDay();
     }
 
-    /** @returns stats in form of a string with the information of totalpoints, totalkms, and numbercaches of a whole year
-    * @param year
-    */
+    /**
+     * Gets the information of totalpoints, totalkms, and numbercaches of an entire year
+     * @param year
+     * @returns stats in form of a string
+     */
     public String getSTATS_PKC(int year) throws NoStatsException{
 
       StringBuilder sb = new StringBuilder();
@@ -403,19 +417,14 @@ public class NormalUser extends User implements Serializable {
       return sb.toString();
     }
 
-    /** @returns stats in form of a string with the information of totalpoints, totalkms, and numbercaches of a given month
-     * assuming that the user wants the current year as Statistic to look for the month.
-     * @param month
+    /**
+     * Gets the information of totalpoints, totalkms, and numbercaches of a given month
+     * @param month of which to get statistics
+     * @returns stats in form of a string
      */
-
-    //TODO test the indices of month and it keeps returning null so test in geocaching as well
-    //TODO add exceptions to avoid receiving the message NULL EXCEPTION...
     public String getSTATSM_PKC(int month)throws NullPointerException, NoStatsException{
-      /*GregorianCalendar gc = new GregorianCalendar();
-      String years = String.valueOf(gc.get(GregorianCalendar.YEAR));
-      int year = Integer.parseInt(years);*/
+
       int year = getCurrentYear();
-      //System.out.println(years);  -> printed 2015 so all good. Moving on...
 
       StringBuilder sb = new StringBuilder();
 
@@ -432,11 +441,14 @@ public class NormalUser extends User implements Serializable {
       sb.append("Caches found:"); sb.append(Integer.toString(totalcaches) + ".\n");
       sb.append("Kms traveled:"); sb.append(Double.toString(totalkms) + ".\n");
       sb.append("Total earned points:"); sb.append(Integer.toString(totalpoints) + "!!!\n");
-      //System.out.println(sb.toString());
+
       return sb.toString();
     }
 
-    /** @returns the current year */
+    /**
+     * Gets the current year
+     * @returns the current year
+     */
     public int getCurrentYear(){
         GregorianCalendar gc = new GregorianCalendar();
         String years = String.valueOf(gc.get(GregorianCalendar.YEAR));
@@ -446,6 +458,7 @@ public class NormalUser extends User implements Serializable {
     /* ---------------------------- tostring, equals and clone --------------------------- */
     /**
      * Transform user info into a String
+     * @return String with all the information
      */
     public String toString () {
         StringBuilder sb = new StringBuilder();
@@ -467,6 +480,7 @@ public class NormalUser extends User implements Serializable {
     /**
      * Compares this object with another User to check if they are equal
      * @param user User to compare with
+     * @return bollean, true if equals
      */
     public boolean equals (Object user) throws NullPointerException {
         if (user == null)
