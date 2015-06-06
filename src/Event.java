@@ -13,8 +13,6 @@ import Exceptions.*;
 public class Event {
     private Double id;                      // Identifier
     private GregorianCalendar registTime;   // Date of last opportunity to register
-    private GregorianCalendar beginTime;    // Date of event's start
-    private GregorianCalendar finishTime;   // Date of event's end
     private ArrayList<Cache> caches;        // Caches related to this Event
     private ArrayList<NormalUser> users;    // Users registered in the Event
 
@@ -26,8 +24,6 @@ public class Event {
     public Event () {
         this.id = 0.0;
         this.registTime = new GregorianCalendar();
-        this.beginTime = new GregorianCalendar();
-        this.finishTime = new GregorianCalendar();
         this.caches = new ArrayList<Cache>();
         this.users = new ArrayList<NormalUser>();
     }
@@ -40,8 +36,6 @@ public class Event {
                   GregorianCalendar finishTime, ArrayList<Cache> caches) {
         this.id = id;
         this.registTime = (GregorianCalendar) registTime.clone();
-        this.beginTime = (GregorianCalendar) beginTime.clone();
-        this.finishTime = (GregorianCalendar) finishTime.clone();
         this.setCaches(caches);
         this.users = new ArrayList<NormalUser>();
     }
@@ -53,8 +47,6 @@ public class Event {
     public Event (Event event) {
         this.id = event.getId();
         this.registTime = event.getRegTime();
-        this.beginTime = event.getBegTime();
-        this.finishTime = event.getFinTime();
         this.caches = event.getCaches();
         this.users = event.getUsers();
     }
@@ -73,20 +65,6 @@ public class Event {
      */
     public GregorianCalendar getRegTime () {
         return (GregorianCalendar) this.registTime.clone();
-    }
-
-    /**
-     * @return Date of event's start
-     */
-    public GregorianCalendar getBegTime () {
-        return (GregorianCalendar) this.beginTime.clone();
-    }
-
-    /**
-     * @return Date of event's end
-     */
-    public GregorianCalendar getFinTime () {
-        return (GregorianCalendar) this.finishTime.clone();
     }
 
     /**
@@ -138,30 +116,6 @@ public class Event {
     }
 
     /**
-     * Set time for the beggining of the event
-     * @arg day
-     * @arg month
-     * @arg year
-     * @arg hour
-     * @arg minute
-     */
-    public void setBegTime (int day, int month, int year, int hour, int minute) {
-        this.beginTime = new GregorianCalendar(year, month, day, hour, minute);
-    }
-
-    /**
-     * Set time for the end of the event
-     * @arg day
-     * @arg month
-     * @arg year
-     * @arg hour
-     * @arg minute
-     */
-    public void setFinTime (int day, int month, int year, int hour, int minute) {
-        this.finishTime = new GregorianCalendar(year, month, day, hour, minute);
-    }
-
-    /**
      * Set list of caches
      * @arg caches, ArrayList of Caches of this event
      */
@@ -194,30 +148,13 @@ public class Event {
      */
     public String toString () {
         StringBuilder sb = new StringBuilder();
-        String regYear, regMonth, regDay, regHour, regMinute,
-               begYear, begMonth, begDay, begHour, begMinute,
-               finYear, finMonth, finDay, finHour, finMinute;
+        String regYear, regMonth, regDay, regHour, regMinute;
 
        regYear = String.valueOf(registTime.get(GregorianCalendar.YEAR));
        regMonth = String.valueOf(registTime.get(GregorianCalendar.MONTH)+1);
        regDay = String.valueOf(registTime.get(GregorianCalendar.DAY_OF_MONTH));
        regHour = String.valueOf(registTime.get(GregorianCalendar.HOUR));
        regMinute = String.valueOf(registTime.get(GregorianCalendar.MINUTE));
-
-       begYear = String.valueOf(beginTime.get(GregorianCalendar.YEAR));
-       begMonth = String.valueOf(beginTime.get(GregorianCalendar.MONTH)+1);
-       begDay = String.valueOf(beginTime.get(GregorianCalendar.DAY_OF_MONTH));
-       begHour = String.valueOf(beginTime.get(GregorianCalendar.HOUR));
-       begMinute = String.valueOf(beginTime.get(GregorianCalendar.MINUTE));
-
-       finYear = String.valueOf(finishTime.get(GregorianCalendar.YEAR));
-       finMonth = String.valueOf(finishTime.get(GregorianCalendar.MONTH)+1);
-       finDay = String.valueOf(finishTime.get(GregorianCalendar.DAY_OF_MONTH));
-       finHour = String.valueOf(finishTime.get(GregorianCalendar.HOUR));
-       finMinute = String.valueOf(finishTime.get(GregorianCalendar.MINUTE));
-
-       sb.append("Event begins at " + begMinute + ":" + begHour + " of " + begDay + "/" + begMonth + "/" + begYear + "\n");
-       sb.append("Event ends at " + finMinute + ":" + finHour + " of " + finDay + "/" + finMonth + "/" + finYear + "\n");
 
        sb.append("So far there are: " + this.users.size() + " users registered ");
        sb.append("and " + this.caches.size() + " caches to find\n\n");
@@ -237,8 +174,6 @@ public class Event {
        Event aux = (Event) event;
        boolean comp = (aux.id == this.id);
        comp = comp && (aux.registTime.equals(this.registTime));
-       comp = comp && (aux.beginTime.equals(this.beginTime));
-       comp = comp && (aux.finishTime.equals(this.finishTime));
        comp = comp && (aux.users.size() == this.users.size());
        comp = comp && (aux.caches.size() == this.caches.size());
 
@@ -256,7 +191,7 @@ public class Event {
     public void registerUser (NormalUser user) throws UserAlreadyRegisteredException {
         if (this.users.contains(user))
             throw new UserAlreadyRegisteredException("You are already registered in this event");
-        this.users.add(user);
+        this.users.add(user.clone());
     }
 
     /*
@@ -284,5 +219,9 @@ public class Event {
         if (this.caches.contains(cache))
             throw new CacheAlreadyAddedException("Cache has already been added");
         this.caches.add(cache);
+    }
+
+    public void simulateEvent {
+
     }
 }
