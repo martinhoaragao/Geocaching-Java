@@ -91,7 +91,7 @@ public abstract class User implements Serializable {
     }
 
     /**
-     * Gets the encrypted password of an User to be treated when logging in.
+     * Get the encrypted password of an User.
      * @return User encrypted password
      */
     public String getPass () {
