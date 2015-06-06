@@ -288,11 +288,15 @@ executadas.
 exemplo com uma Interface Gráfica.
 
 \pagebreak
-\section{Salvaguarda do Estado e Load do último Estado}
-TODO explain how this works
-
-
-
+\section{Salvaguarda do Estado}
+\par Para guardar o estado da aplicação utilizamos classes já definidas em Java, nomeadamente a class 
+\textbf{ObjectOutputStream}. Utilizando esta classe é possível criar um ficheiro objecto com as informações de todos os 
+objectos da aplicação no estado actual. Para isso incluimos uma opção no menu principal que guardar o estado actual 
+da aplicação num ficheiro com o nome 'geocaching'.
+\par Para carregar um estado anterior da aplicação utilizamos a class \textbf{ObjectInputStream} que permite ler objectos de 
+um ficherio objecto. Adicionamos uma opção no menu principal para carregar um estado anterior da aplicação, a aplicação 
+tenta automaticamente ler o ficheiro 'geocahing' criado quando se guardar o estado da aplicação, caso o ficheiro não esteja 
+na mesma diretoria onde se executa a aplicação o estado anterior não será carregado.
 
 \pagebreak
 \section{Tratamento de Excepções}
