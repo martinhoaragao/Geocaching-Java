@@ -120,6 +120,12 @@ public class Main implements Serializable {
         Scanner sc = new Scanner(System.in);
         boolean done = false;
 
+         try {
+            System.out.println(gc.getUserInfo());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
         while (!done) {
             clean();
             try {

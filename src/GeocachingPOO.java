@@ -99,6 +99,8 @@ public class GeocachingPOO implements Serializable {
      * @return Clone of the currently logged in user
      */
     public NormalUser getLoggedUser () throws NoUserLoggedInException {
+        StringBuilder sb = new StringBuilder();
+
         if (user == null)
             throw new NoUserLoggedInException("No user is logged in.");
         else return user.clone();
