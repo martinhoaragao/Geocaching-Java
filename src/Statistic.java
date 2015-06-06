@@ -159,7 +159,7 @@ public class Statistic implements Serializable
     public double[] averageActPerDay () {
         int[] numberCaches;
         double[] avg = new double[4];
-        int numberMonths = stats.size() + 1;
+        int numberMonths = stats.size();
 
         /* Reset Array */
         for (int i = 0; i < 4; i++)

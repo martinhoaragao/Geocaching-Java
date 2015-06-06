@@ -245,7 +245,7 @@ public class Event {
      * @arg finishTime, last day of the event, will do a time period based on register
      * @ currentUser, user on which we are doing the simulation
      */
-    public void simulateUserEvent (GregorianCalendar finishTime, NormalUser currentUser) {
+    public void simulateUserEvent (GregorianCalendar finishTime, NormalUser currentUser) throws NullPointerException,NotAddedActivityYearIncorrectException, NoStatsException {
         Random random = new Random();
         ArrayList<Cache> caches = this.caches;
 
@@ -305,7 +305,8 @@ public class Event {
      * Simulate entire event for list of users
      * @arg finishTime, last day of the event, will do a time period based on register
      */
-    public void simulateEvent (GregorianCalendar finishTime) {
-
+    public void simulateEvent (GregorianCalendar finishTime) throws NullPointerException,NotAddedActivityYearIncorrectException, NoStatsException {
+        for(NormalUser user : this.users)
+            simulateUserEvent(finishTime, user);
     }
 }

@@ -379,7 +379,7 @@ public class NormalUser extends User implements Serializable {
      * @param int year to know average
      * @return avg, average of caches found per day this year
      */
-    public double[] averageActPerDay (int year) {
+    public double[] averageActPerDay (int year) throws NoStatsException {
         return this.getStatistics(year).averageActPerDay();
     }
 
