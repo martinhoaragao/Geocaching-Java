@@ -280,7 +280,7 @@ public class Activity implements Serializable {
         double latitude, longitude;
 
         day = String.valueOf(date.get(GregorianCalendar.DAY_OF_MONTH));
-        month = String.valueOf(date.get(GregorianCalendar.MONTH)+1);
+        month = String.valueOf(date.get(GregorianCalendar.MONTH));
         year = String.valueOf(date.get(GregorianCalendar.YEAR));
         latitude = this.cache.getCoords().getLat();
         longitude = this.cache.getCoords().getLon();
