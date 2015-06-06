@@ -133,8 +133,9 @@ public class CacheBase implements Serializable {
             throw new IllegalArgumentException("There is already a cache in that location.");
         if (cache == null)
             throw new NullPointerException("cache can't be null.");
-        if (id < this.caches.size())
+        if (cache.getId() < this.caches.size())
             throw new IllegalArgumentException("There is already a cache with the given id.");
+
 
         list = owners.get(id);      /* Get the list of caches created by the user */
         if ( list == null ) {       /* First cache created by the user */

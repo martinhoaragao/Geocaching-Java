@@ -396,7 +396,7 @@ public class GeocachingPOO implements Serializable {
             throw new NoUserLoggedInException("There is no user logged in.");
 
         cache = new TraditionalCache(idcache, coords, user.getMail(), treasures, info);
-        cachebase.addCache(idcache, cache);
+        cachebase.addCache(user.getId(), cache);
         idcache++;
     }
 
@@ -417,7 +417,7 @@ public class GeocachingPOO implements Serializable {
             throw new NullPointerException("info can't be null.");
 
         cache = new MultiCache(idcache, coords, user.getMail(), treasures, info);
-        cachebase.addCache(idcache, cache);
+        cachebase.addCache(user.getId(), cache);
         idcache++;
     }
 
@@ -435,7 +435,7 @@ public class GeocachingPOO implements Serializable {
             throw new NullPointerException("info can't be null.");
 
         cache = new MicroCache(idcache, coords, user.getMail(), info);
-        cachebase.addCache(idcache, cache);
+        cachebase.addCache(user.getId(), cache);
         idcache++;
     }
 
@@ -461,7 +461,7 @@ public class GeocachingPOO implements Serializable {
             throw new NoUserLoggedInException("There is no user logged in.");
 
         cache = new MysteryCache(idcache, coords, user.getMail(), treasures, info, puzzle);
-        cachebase.addCache(idcache, cache);
+        cachebase.addCache(user.getId(), cache);
         idcache++;
     }
 

@@ -99,11 +99,10 @@ public class Randomizer {
                     multi_coords.add(new Coordinates(cache_coords.getLat() + (rnd.nextDouble() * 5), cache_coords.getLon() + (rnd.nextDouble() * 5)));
                     gc.createMultiCache(multi_coords, treasures, "");
                 }
-
-                gc.createTraditionalCache(cache_coords, treasures, "");
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
+            gc.logout();
         }
 
         /* Establish relationships between the users */
@@ -119,6 +118,7 @@ public class Randomizer {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
+            gc.logout();
         }
 
         /* Create Activities */
@@ -136,6 +136,7 @@ public class Randomizer {
             } catch (Exception e) {
                 System.out.println(e.getClass() + e.getMessage());
             }
+            gc.logout();
         }
 
         saveState();    /* Save the application state to a file named 'geocaching' */
