@@ -10,6 +10,8 @@ import java.util.Scanner;
 import java.util.GregorianCalendar;
 import java.util.ArrayList;
 import java.util.TreeMap;
+import java.util.TreeSet;
+import java.util.Iterator;
 import java.io.Console;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
@@ -53,11 +55,12 @@ public class Main implements Serializable {
                     case 5: mystatsMenu();              break;
                     case 4: displayAllCaches();         break;
                     case 6: displayLastActivities();    break;
-                    case 7: displayFriendActivities();  break;
-                    case 8: displayUserCaches();        break;
-                    case 9: createActivity();           break;
-                    case 10: getNearCaches();           break;
-                    case 11: logout();                  break;
+                    case 7: displayAllActivities();     break;
+                    case 8: displayFriendActivities();  break;
+                    case 9: displayUserCaches();        break;
+                    case 10: createActivity();           break;
+                    case 11: getNearCaches();           break;
+                    case 12: logout();                  break;
                     default: break;
                 }
             } else {                              /* Admin logged in */
@@ -105,11 +108,12 @@ public class Main implements Serializable {
             System.out.println("4: Show Caches");
             System.out.println("5: Show My Statistics");
             System.out.println("6: Show Last 10 activities");
-            System.out.println("7: Show Friend Activities");
-            System.out.println("8: Show My Caches");
-            System.out.println("9: Add Activity");
-            System.out.println("10: Find Caches near a location");
-            System.out.println("11: Log Out");
+            System.out.println("7: Show All Activities");
+            System.out.println("8: Show Friend Activities");
+            System.out.println("9: Show My Caches");
+            System.out.println("10: Add Activity");
+            System.out.println("11: Find Caches near a location");
+            System.out.println("12: Log Out");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -841,7 +845,7 @@ public class Main implements Serializable {
             System.out.println("What's the correct answer? ");
             String answer = sc.next();
 
-            if(answer.toLowerCase().contains(mys.getPuzzle().getAnswer().toLowerCase())    ){ 
+            if(answer.toLowerCase().contains(mys.getPuzzle().getAnswer().toLowerCase())    ){
                 System.out.println("Correct! Here are the coordinates: " + mys.getCoords().toString());
                 canadd = true;
             }
@@ -1169,6 +1173,28 @@ public class Main implements Serializable {
             System.out.println(e.getMessage());
         }
 
+        if (console != null) console.readLine();
+    }
+
+    /**
+     * Auxiliary function to display all the user activities by descending date
+     */
+    private static void displayAllActivities () {
+        TreeSet<Activity> ts;
+        Iterator it;
+        Activity aux;
+
+        try {
+            ts = gc.getActivities();
+            it = ts.descendingIterator();
+
+            while (it.hasNext()) {
+                aux = (Activity) it.next();
+                System.out.println(aux.toString());
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         if (console != null) console.readLine();
     }
 }
