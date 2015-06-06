@@ -171,9 +171,14 @@ os métodos necessários da classe \textbf{GeocachingPOO} que por sua vez invoca
 \par Caso o utilizador especifique um e-mail já em uso será negado o registo da conta. Caso se verifique que o utilizador se
 possa registar uma mensagem de sucesso aparecerá no ecrã, caso contrário uma mensagem de erro, informando o utilizador
 o porquê da falha do registo.
-\par Aproveitamos para implementar um método que encripta a password do utilizador para que deste modo, se um utilizador
-executar o método da classe \textbf{User} que permite obter a password apenas verá o resultado da encriptação.
-Sempre que é necessário confirmar se a password fornecida coincide com a guardada no utilizador o programar encripta a password fornecida e verifica se é igual ao resultado da encriptação já armazenado.
+\par Aproveitamos para implementar um método que encripta a password do utilizador para que deste modo, se um utilizador 
+executar o método da classe \textbf{User} que permite obter a password apenas verá o resultado da encriptação. 
+Sempre que é necessário confirmar se a password fornecida coincide com a guardada no utilizador o programar encripta a password fornecida e verifica se é igual ao resultado da encriptação já armazenado.\\
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=110mm]{registo.png}
+\caption{Registo de um utilizador}
+\end{figure}
 \\
 \par Depois de um utilizador criar uma conta pode então executar o login, a classe \textbf{Main}, como trata de I/O, recebe qual
 o e-mail e a password do utilizador, a classe \textbf{GeocachingPOO} trata do resto das invocações dos métodos necessários
@@ -184,8 +189,13 @@ até ao momento.
 \par A partir deste menu de utilizador o utilizador consegue executar todas as funções básicas propostas, como, por exemplo,
 mudar informações pessoais (nome, e-mail, género, password,..), criar uma cache de enter os 4 tipos que a aplicação
 conhece, registar uma activadade, consultar as suas actividades, enviar pedidos de amizade, etc.
-\par Decidimos também implementar uma opção no menu relativo a caches que permita a um utilizador descobrir quais as
-caches que se encontram a uma determinada distância (raio) de uma certa localização, indicada pelo utilizador.
+\par Decidimos também implementar uma opção no menu relativo a caches que permita a um utilizador descobrir quais as 
+caches que se encontram a uma determinada distância (raio) de uma certa localização, indicada pelo utilizador. \\
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=110mm]{login.png}
+\caption{Menu após o login}
+\end{figure}
 
 \pagebreak
 \section{Atividades e Estatísticas}
