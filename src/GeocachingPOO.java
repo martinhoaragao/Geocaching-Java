@@ -27,11 +27,12 @@ import Exceptions.*;
 
 public class GeocachingPOO implements Serializable {
     private static Double id;            // User ID
-    private static NormalUser user;     // User that is logged in
     private static Double idAdmin;     // Admin ID
     private static Admin admin;     // Admin that is logged in
     private static UserBase userbase;   // User data base
     private static CacheBase cachebase;
+    private static ArrayList<Event> events;
+    private static NormalUser user;     // User that is logged in
     private static Double idcache;
     private static Cache cache;
     private static Console c = System.console();
@@ -43,6 +44,7 @@ public class GeocachingPOO implements Serializable {
         this.idcache = 1.0;
         this.userbase = new UserBase();
         this.cachebase = new CacheBase();
+        this.events = new ArrayList<Event>();
         this.user = null;
         this.admin = null;
         this.cache = null;
@@ -555,12 +557,14 @@ public class GeocachingPOO implements Serializable {
         stream.writeObject(admin);
         stream.writeObject(userbase);
         stream.writeObject(cachebase);
+        stream.writeObject(events);
         stream.writeObject(idcache);
         stream.writeObject(cache);
      }
 
     /** Method which defines what will be read by the
      *  ObjectInputStream */
+     @SuppressWarnings("unchecked")
     private void readObject (java.io.ObjectInputStream stream)
      throws IOException, ClassNotFoundException {
         id = (Double) stream.readObject();
@@ -569,6 +573,7 @@ public class GeocachingPOO implements Serializable {
         admin = (Admin) stream.readObject();
         userbase = (UserBase) stream.readObject();
         cachebase = (CacheBase) stream.readObject();
+        events = (ArrayList<Event>) stream.readObject();
         idcache = (Double) stream.readObject();
         cache = (Cache) stream.readObject();
      }
