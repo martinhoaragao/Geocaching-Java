@@ -75,4 +75,21 @@ public class EventTest
     public void tearDown()
     {
     }
+
+    @Test
+    public void testEvent()
+    {
+        java.util.ArrayList<NormalUser> arrayLis3 = new java.util.ArrayList<NormalUser>();
+        normalUs3.addActivity(multiCac1, gregoria1);
+        normalUs3.addActivity(traditio2, gregoria1);
+        normalUs1.addActivity(traditio2, gregoria1);
+        normalUs2.addActivity(traditio2, gregoria1);
+        normalUs2.addActivity(multiCac1, gregoria1);
+        arrayLis3.add(normalUs3);
+        arrayLis3.add(normalUs1);
+        arrayLis3.add(normalUs2);
+        event1.setUsers(arrayLis3);
+        java.util.GregorianCalendar gregoria2 = new java.util.GregorianCalendar(2015, 8, 30);
+    }
 }
+
