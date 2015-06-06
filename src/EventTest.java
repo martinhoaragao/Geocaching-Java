@@ -80,6 +80,7 @@ public class EventTest
     public void testEvent()
     {
         java.util.ArrayList<NormalUser> arrayLis3 = new java.util.ArrayList<NormalUser>();
+        try{
         normalUs3.addActivity(multiCac1, gregoria1);
         normalUs3.addActivity(traditio2, gregoria1);
         normalUs1.addActivity(traditio2, gregoria1);
@@ -89,6 +90,7 @@ public class EventTest
         arrayLis3.add(normalUs1);
         arrayLis3.add(normalUs2);
         event1.setUsers(arrayLis3);
+    }catch(Exception e){System.out.println(e.getMessage());}
         java.util.GregorianCalendar gregoria2 = new java.util.GregorianCalendar(2015, 8, 30);
     }
 }
