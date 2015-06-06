@@ -1,5 +1,8 @@
 /**
- * Class to randomly create Users, caches and activities in GeocachingPOO
+ * Class to randomly create Users, caches and activities in GeocachingPOO. Will also
+ * create relationships between users.
+ * Before finishing a method is run to save the application state to and object file
+ * name 'geocaching'
  *
  * @author jfc
  * @version 05/06/2015
@@ -27,8 +30,8 @@ public class Randomizer {
     private static Double user_id = 1.0;
     private static Double cache_id = 1.0;
 
-    private static String[] nomes = {"Joao", "Pedro", "Carlos", "Miguel", "Afonso", "Ana", "Raquel", "Maria", "Beatriz", "Catarina"};
-    private static String[] sobrenomes = {"Costa", "Faria", "Oliveira", "Sampaio", "Ferreira", "Pereira", "Matos", "Henriques", "Antunes", "Moura"};
+    private static String[] names = {"Joao", "Pedro", "Carlos", "Miguel", "Afonso", "Ana", "Raquel", "Maria", "Beatriz", "Catarina"};
+    private static String[] surnames = {"Costa", "Faria", "Oliveira", "Sampaio", "Ferreira", "Pereira", "Matos", "Henriques", "Antunes", "Moura"};
 
     public static void main (String args[]) {
         int a, b;
@@ -36,23 +39,23 @@ public class Randomizer {
 
         treasures.add("Chocolate");
 
-        /* Criar utilizadores */
+        /* Create names, e-mails and passwords for users */
         for (int i = 0; i < 50; i++) {
             do {
                 a = rnd.nextInt(limit);
                 b = rnd.nextInt(limit);
-                aux = nomes[a] + " " + sobrenomes[b];
+                aux = names[a] + " " + surnames[b];
             } while (user_names.contains(aux));
             user_names.add(aux);
-            pass = nomes[a].replaceAll("[\n\r]", "");
+            pass = names[a].replaceAll("[\n\r]", "");
             passwords.add(pass);
-            mail = (nomes[a] + sobrenomes[b] + "@gmail.com").replaceAll("[\n\r]", "");
+            mail = (names[a] + surnames[b] + "@gmail.com").replaceAll("[\n\r]", "");
             mails.add(mail);
             if (a > 4) gender.add(true);
             else gender.add(false);
         }
 
-        /* Registar os utilizadores */
+        /* Create and register users */
         for (int i = 0; i < 50; i++) {
             user = new NormalUser(mails.get(i), passwords.get(i), user_names.get(i), user_id, new GregorianCalendar(1995, 11, 25));
             user.setGender(gender.get(i));
@@ -67,7 +70,7 @@ public class Randomizer {
             user_id++;
         }
 
-        /* Criar caches */
+        /* Create caches */
         for (int i = 0; i < 50; i++) {
             Coordinates cache_coords;
             ArrayList<Coordinates> multi_coords;
@@ -96,14 +99,13 @@ public class Randomizer {
                     multi_coords.add(new Coordinates(cache_coords.getLat() + (rnd.nextDouble() * 5), cache_coords.getLon() + (rnd.nextDouble() * 5)));
                     gc.createMultiCache(multi_coords, treasures, "");
                 }
-
-                gc.createTraditionalCache(cache_coords, treasures, "");
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
+            gc.logout();
         }
 
-        /* Pedidos de Amizade */
+        /* Establish relationships between the users */
         for (int i = 0; i < 50; i++) {
             try {
                 gc.login(mails.get(i), passwords.get(i), false);
@@ -116,9 +118,10 @@ public class Randomizer {
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
+            gc.logout();
         }
 
-        /* Criar Actividades */
+        /* Create Activities */
         for (int i = 0; i < 50; i++) {
 
             Double cache_id;
@@ -133,18 +136,15 @@ public class Randomizer {
             } catch (Exception e) {
                 System.out.println(e.getClass() + e.getMessage());
             }
+            gc.logout();
         }
 
-        saveState();
+        saveState();    /* Save the application state to a file named 'geocaching' */
     }
 
-    private static String randomString( int len ) {
-        StringBuilder sb = new StringBuilder( len );
-        for( int i = 0; i < len; i++ )
-            sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );
-        return sb.toString();
-    }
-
+    /**
+     * Save the current application state to a object file named 'geocaching'
+     */
     private static void saveState () {
         try {
             FileOutputStream fos = new FileOutputStream("geocaching");

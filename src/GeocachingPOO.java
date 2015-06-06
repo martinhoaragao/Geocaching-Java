@@ -1,4 +1,3 @@
-import Exceptions.*;
 /**
  * This class will represent the program in which a random user with an e-mail will login
  * and do all the available operations, with his account.
@@ -26,18 +25,21 @@ import java.io.IOException;
 import Exceptions.*;
 
 public class GeocachingPOO implements Serializable {
-    private static Double id;            // User ID
-    private static Double idAdmin;     // Admin ID
-    private static Admin admin;     // Admin that is logged in
-    private static UserBase userbase;   // User data base
-    private static CacheBase cachebase;
-    private static ArrayList<Event> events;
-    private static NormalUser user;     // User that is logged in
-    private static Double idcache;
-    private static Cache cache;
-    private static Console c = System.console();
+    private static Double id;               /* User ID */
+    private static NormalUser user;         /* User that is logged in */
+    private static Double idAdmin;          /* Admin ID */
+    private static Admin admin;             /* Admin that is logged in */
+    private static UserBase userbase;       /* User data base */
+    private static CacheBase cachebase;     /* Cache data base */
+    private static Double idcache;          /* Cache ID */
+    private static ArrayList<Event> events; /* List of events */
 
-    /** Unparameterized Constructor */
+    /**
+     * Unparameterized Constructor, all instance variables are initialized, the following
+     * values are attributed: id = 1.0, idAdmin = 2.0, idcache = 1.0.
+     * user and admin are set to null and a Admin with e-mail "grupoajm@gmail.com" and pass
+     * "AdminAdmin" is created and saved in the UserBase
+     */
     public GeocachingPOO () {
         this.id = 1.0;
         this.idAdmin = 2.0;
@@ -47,21 +49,14 @@ public class GeocachingPOO implements Serializable {
         this.events = new ArrayList<Event>();
         this.user = null;
         this.admin = null;
-        this.cache = null;
         Admin ad = new Admin("grupoajm@gmail.com", "Alhpa", "AdminAdmin", 1.0, 2);
         this.userbase.addAdmin(ad);
     }
 
-
-    /** Logout the User from the application */
-    public void logout () {
-        this.user = null;
-        this.admin = null;
-    }
-
     /* ------------------- REGISTER & LOGIN --------------------- */
 
-    /** Add a user to the user base
+    /**
+     * Add a user to the User data base
      * @param u User to be added
      */
     public void register (NormalUser u) throws EmailAlreadyInUseException, IdAlreadyAssignedException {
@@ -70,7 +65,8 @@ public class GeocachingPOO implements Serializable {
         this.id++;
     }
 
-    /** Retrieve a user from the UserBase if login suceeded
+    /**
+     * Login to GeocahingPOO
      * @param mail User e-mail
      * @param pass User password
      * @param type true if logging in as Admin, false if logging in as User
@@ -85,19 +81,35 @@ public class GeocachingPOO implements Serializable {
             user = userbase.getUser(mail, pass);
     }
 
+
+    /**
+     * Logout the User from the application
+     */
+    public void logout () {
+        this.user = null;
+        this.admin = null;
+    }
+
     /* ----------------- INFORMATION MODIFICATION --------------------*/
 
-    /** @return ArrayList with all the users */
+    /**
+     * Get list with all the users currently registered
+     * @return ArrayList with all the instances of NormalUser
+     */
     public ArrayList<NormalUser> getUsers () {
         return userbase.getUsers();
     }
 
-    /** @return ArrayList with all the admins */
+    /**
+     * Get list with all the admins currently registered
+     * @return ArrayList with all the instances of Admin
+     */
     public ArrayList<Admin> getAdmins () {
         return userbase.getAdmins();
     }
 
     /**
+     * Get the currently logged in user
      * @return Clone of the currently logged in user
      */
     public NormalUser getLoggedUser () throws NoUserLoggedInException {
@@ -108,19 +120,22 @@ public class GeocachingPOO implements Serializable {
         else return user.clone();
     }
 
-    /** Compare given password with the password of the current
-     *  logged in user
-     *  @param pass Password to be compared
-     *  @return true if the password matches, false otherwise */
+    /**
+     * Compare given password with the password of the current
+     * logged in user
+     * @param pass Password to be compared
+     * @return true if the password matches, false otherwise
+     */
     public boolean confirmPass (String pass) throws NoUserLoggedInException {
         if (user == null)
             throw new NoUserLoggedInException("No user logged in.");
         return user.confirmPass(pass);
     }
 
-    /** Change logged in User Password
-     *  @arg currentpass    The Current Password
-     *  @arg newpass        New password
+    /**
+     * Change the password of the currently logged in user
+     * @param currentpass    The Current Password
+     * @param newpass        New password
      */
     public void changePassword (String currentpass, String newpass) throws IllegalArgumentException, NullPointerException, NoUserLoggedInException {
         if ((currentpass == null) || (newpass == null))
@@ -134,8 +149,10 @@ public class GeocachingPOO implements Serializable {
             throw new IllegalArgumentException("Current Password is wrong.");
     }
 
-    /** Change logged in User Name
-     *  @param name New name for the user */
+    /**
+     * Change the name of the currently logged in user
+     *  @param name New name for the user
+     */
     public static void changeName (String name) throws NullPointerException, NoUserLoggedInException {
         if (user == null)
             throw new NoUserLoggedInException("No user logged in.");
@@ -144,16 +161,20 @@ public class GeocachingPOO implements Serializable {
         user.setName(name);
     }
 
-    /** Change logged in User Adrress
-     *  @param address The new Address */
+    /**
+     * Change the Address of the currently logged in user
+     * @param address The new Address
+     */
     public static void changeAddress (Address address) throws NullPointerException, NoUserLoggedInException {
         if (user == null)
             throw new NoUserLoggedInException();
         user.setAddress(address);
     }
 
-    /** Change logged in User Birthdate
-     *  @param bdate GregorianCalendar Object with the new bdate */
+    /**
+     * Change the birthdate of the currently logged in user
+     * @param bdate GregorianCalendar Object with the new birthdate
+     */
     public static void changeBDate (GregorianCalendar bdate) throws NullPointerException, NoUserLoggedInException {
         if (user == null)
             throw new NoUserLoggedInException();
@@ -162,8 +183,9 @@ public class GeocachingPOO implements Serializable {
         user.setBDate(bdate);
     }
 
-    /** Change logged in User gender
-     *  @param gender true for female, false for male */
+    /**
+     * Change the gender of the currently logged in user
+     * @param gender true for female, false for male */
     public static void changeGender (boolean gender) throws NoUserLoggedInException {
         if (user == null)
           throw new NoUserLoggedInException();
@@ -171,8 +193,11 @@ public class GeocachingPOO implements Serializable {
     }
 
     /* -------------------- FRIENDS -------------------- */
-    /** Send a friend request to a given user
-     *  @param mail User mail to send the request */
+
+    /**
+     * Send a friend request to a given user with the currently logged in user
+     * @param mail User mail to send the request
+     */
     public void sendFriendRequest (String mail) throws NullPointerException, NoUserLoggedInException {
         if (user == null)
             throw new NoUserLoggedInException();
@@ -181,7 +206,9 @@ public class GeocachingPOO implements Serializable {
         userbase.sendFriendRequest(user.getId(), mail);
     }
 
-    /** Auxiliary function to show friend requests */
+    /**
+     * Get String with all the pending friend requests of the currently logged in user
+     */
     public String getFriendRequests () throws NoUserLoggedInException {
         ArrayList<Double> requests = user.getFriendRequests();
         StringBuilder sb = new StringBuilder();
@@ -201,7 +228,9 @@ public class GeocachingPOO implements Serializable {
         }
     }
 
-    /** Auxiliary function to show friends */
+    /**
+     * Get String with all the friends of the currently logged in user
+     */
     public String getFriends () throws NoUserLoggedInException {
         User u;
         ArrayList<Double> friends = user.getFriends();
@@ -222,8 +251,10 @@ public class GeocachingPOO implements Serializable {
         return sb.toString();
     }
 
-    /** Accept friend request
-     *  @param mail User that sent the request */
+    /**
+     * Accept friend request with the currently logged in user
+     * @param mail User that sent the friend request
+     */
     public static void acceptFriendRequest (String mail) throws NullPointerException, IllegalArgumentException, NoUserLoggedInException {
         if (user == null)
             throw new NoUserLoggedInException();
@@ -232,7 +263,10 @@ public class GeocachingPOO implements Serializable {
 
     /* ------------------- ACTIVITIES -------------------------*/
 
-    /** @return ArrayList with user 10 last activities */
+    /**
+     * Get the currently logged in most recent 10 activities if he has that many
+     * @return ArrayList with user 10 most recent activities
+     */
     public ArrayList<Activity> getLastActivities () throws NoUserLoggedInException {
         if (user == null)
             throw new NoUserLoggedInException("There is no user logged in.");
@@ -247,9 +281,9 @@ public class GeocachingPOO implements Serializable {
     }
 
     /**
-     * Get list of a friends 10 last activities
+     * Get list of a friends 10 most recent activities
      * @param mail Friend's e-mail
-     * @return ArrayList with user 10 last activities
+     * @return ArrayList with user 10 most recent activities
      */
     public ArrayList<Activity> getFriendLastActivities (String mail) throws NoUserLoggedInException {
         NormalUser friend = userbase.getUser(mail);
@@ -263,10 +297,11 @@ public class GeocachingPOO implements Serializable {
         return friend.getLastActivities();
     }
 
-    /** Add a activity to the currently logged in user
-     *  simulates kms travelled and meteo as well if____
-     *  @param act  Activity to be added
-     *  @param id   Id of the found cache
+    /**
+     * Add a activity as the currently logged in user, this simulates the activity
+     * meteorology aswell as the kilometers traveled
+     * @param act  Activity to be added
+     * @param id   Id of the cache found
      */
     public void addActivity (Double id, GregorianCalendar date ) throws IllegalArgumentException, NullPointerException, NotAddedActivityYearIncorrectException, NoUserLoggedInException {
 
@@ -285,7 +320,7 @@ public class GeocachingPOO implements Serializable {
     }
 
     /**
-    * Remove a user Activity
+    * Remove a user Activity from the list of activities of the currently logged in user
     * @param act Activity to be removed
     */
     public void removeActivity (Activity act) throws NullPointerException {
@@ -304,8 +339,9 @@ public class GeocachingPOO implements Serializable {
         return cache.clone();
     }
 
-    /** Report a cache
-     *  @param rep The report to be added */
+    /**
+     * Report a cache as the currently logged in user
+     * @param rep The report to be added */
     public void reportCache (Report rep) throws NullPointerException, NoUserLoggedInException, IllegalArgumentException {
         if (user == null)
             throw new NoUserLoggedInException();
@@ -313,7 +349,10 @@ public class GeocachingPOO implements Serializable {
         cachebase.addReport(rep);
     }
 
-    /** Get all reports from the CacheBase */
+    /**
+     * Get all the reports from the Cache data base
+     * @return TreeMap with the mapping between caches IDs and the list of its reports
+     */
     public TreeMap<Double, ArrayList<Report>> getAllReports () throws NoUserLoggedInException {
         if (admin == null)
             throw new NoUserLoggedInException("No admin logged in.");
@@ -321,12 +360,18 @@ public class GeocachingPOO implements Serializable {
         return cachebase.getAllReports();
     }
 
-    /** @return ArrayList with clone of all of the caches */
+    /**
+     * Get all the caches stored in the Cache data base
+     * @return ArrayList with clone of all of the caches
+     */
     public ArrayList<Cache> getAllCaches () {
         return cachebase.getAllCaches();
     }
 
-    /** @return ArrayList with all the caches created by a given user */
+    /**
+     * Get the list of caches created by the currently logged in user
+     * @return ArrayList with all the caches created by a given user
+     */
     public ArrayList<Cache> getUserCaches () {
         ArrayList<Cache> caches = cachebase.getCaches(user.getId());
 
@@ -335,7 +380,7 @@ public class GeocachingPOO implements Serializable {
     }
 
     /**
-     *  Create a Traditional Cache associated to the logged in User
+     *  Create a Traditional Cache associated to the logged in user
      *  @param coords       Cache coordinates
      *  @param treasures    The Treasures on the Cache
      *  @param info         Information about this Cache
@@ -351,12 +396,12 @@ public class GeocachingPOO implements Serializable {
             throw new NoUserLoggedInException("There is no user logged in.");
 
         cache = new TraditionalCache(idcache, coords, user.getMail(), treasures, info);
-        cachebase.addCache(idcache, cache);
+        cachebase.addCache(user.getId(), cache);
         idcache++;
     }
 
     /**
-     *  Create a MultiCache associated to the logged in User
+     *  Create a MultiCache associated to the logged in user
      *  @param coords       List with all the Coordinates
      *  @param treasures    Cache Treasures
      *  @param info         Infomation about the Cache
@@ -372,12 +417,12 @@ public class GeocachingPOO implements Serializable {
             throw new NullPointerException("info can't be null.");
 
         cache = new MultiCache(idcache, coords, user.getMail(), treasures, info);
-        cachebase.addCache(idcache, cache);
+        cachebase.addCache(user.getId(), cache);
         idcache++;
     }
 
     /**
-     *  Create a  MicroCache associated to the logged in User
+     *  Create a  MicroCache associated to the logged in user
      *  @param coords       The Cache Coordinates
      *  @param info         Information about this Cache
      */
@@ -390,12 +435,12 @@ public class GeocachingPOO implements Serializable {
             throw new NullPointerException("info can't be null.");
 
         cache = new MicroCache(idcache, coords, user.getMail(), info);
-        cachebase.addCache(idcache, cache);
+        cachebase.addCache(user.getId(), cache);
         idcache++;
     }
 
     /**
-     *  Create a MysteryCache associated to the logged in User
+     *  Create a MysteryCache associated to the logged in user
      *  @param coords       The Cache Coordinates
      *  @param treasures    List of Treasures for the Cache
      *  @param info         Information about this Cache
@@ -416,14 +461,14 @@ public class GeocachingPOO implements Serializable {
             throw new NoUserLoggedInException("There is no user logged in.");
 
         cache = new MysteryCache(idcache, coords, user.getMail(), treasures, info, puzzle);
-        cachebase.addCache(idcache, cache);
+        cachebase.addCache(user.getId(), cache);
         idcache++;
     }
 
     /**
      * Invalidate (Delete) a Cache, if a User is logged in he can only delete caches
-     *  created by him, an Admin can delete any Cache
-     *  @param id The cache ID
+     * created by him, an Admin can delete any Cache
+     * @param id The cache ID
      */
     public void invalidateCache (Double id) throws IllegalArgumentException, NoUserLoggedInException {
         if (user != null && admin == null)      /* Invalidate as User */
@@ -434,9 +479,10 @@ public class GeocachingPOO implements Serializable {
             throw new NoUserLoggedInException("There is no Admin Logged in.");
     }
 
-    /** Get the Registry of a given cache
-     *  @param id The cache id
-     *  @return ArrayList<String> with all the people tha found the Cache
+    /**
+     * Get the Registry of a given cache
+     * @param id The cache ID
+     * @return ArrayList<String> with all the people tha found the Cache
      */
     public ArrayList<String> getCacheRegistry (Double id) {
         Cache cache = cachebase.getCache(id);
@@ -462,11 +508,12 @@ public class GeocachingPOO implements Serializable {
         return cachebase.getNearCaches(coords, radius);
     }
 
-    /* ------------------------- ADMIN ------------------------*
+    /* ------------------------- ADMIN ------------------------*/
 
-
-    /** Create a new Admin if the logged in admin has permissions to do so
-     *  @param new_admin Admin to be added */
+    /**
+     * Create a new Admin if the logged in admin has permissions to do so
+     * @param new_admin Admin to be added to the User data base
+     */
     public void createAdmin (Admin new_admin) throws IllegalStateException, IllegalArgumentException, NullPointerException, NoAdminLoggedInException {
         if (new_admin == null)
             throw new NullPointerException("new_admin can't be null");
@@ -478,8 +525,10 @@ public class GeocachingPOO implements Serializable {
         idAdmin++;
     }
 
-    /** Delete an admin if the logged in user has permissions
-     *  @param mail Mail of the admin to be deleted */
+    /**
+     * Delete an admin if the logged in admin has permissions
+     * @param mail Mail of the admin to be deleted
+     */
     public void deleteAdmin (String mail) throws IllegalStateException, NoAdminLoggedInException {
         if (this.admin.getPermi() != 2)
             throw new IllegalStateException("You have no permissions.");
@@ -489,8 +538,9 @@ public class GeocachingPOO implements Serializable {
         userbase.removeAdmin(mail);
     }
 
-    /** Delete user given it's e-mail
-     *  @param mail User e-mail */
+    /**
+     * Delete user given it's e-mail
+     * @param mail User e-mail */
     public void deleteUser (String mail) throws IllegalStateException, IllegalArgumentException, NoAdminLoggedInException {
         if (admin.getPermi() < 1)
             throw new IllegalStateException("You lack permission.");
@@ -502,53 +552,64 @@ public class GeocachingPOO implements Serializable {
 
     /* ----------------------- STATISTICS -----------------*/
 
-    /** @return Current User id */
+    /**
+     * Get the current number of user ID
+     * @return Current User id
+     */
     public Double getCurrentUserId () {
         return this.id;
     }
 
     /**
-    * @param int year
-    * @return Statistic of a given year
-    *
-    */
+     * Get the statistics of a given year for the currently logged in user
+     * @param int year
+     * @return Statistic of a given year
+     */
     public Statistic getStatistic(int year) throws NoStatsException{
         return user.getStatistics(year);
         //made this method in the class NormalUser
     }
-    /** Method that receives a String with Global/Anual Statistic's information, from the user
-    *
-    *@return String
-    */
+
+    /**
+     * Get the Global statistics for the currently logged in user
+     * @return String with the statistics
+     */
     public String getSTATSGlobal() throws NoStatsException{
         return user.getSTATS_PKC();
     }
 
-     /** Method that receives a String with a year Statistic's information (Mensal), from the user
-    * @param year
-    *@return String
-    */
+    /**
+     * Get the statistics of a given year for the currently logged in user
+     * @param year Year for which to get the statistics
+     * @return String with the statistics
+     */
     public String getSTATSGlobal(int year) throws NoStatsException{
         return user.getSTATS_PKC(year);
     }
 
-     /** Method that receives a String with Statistic's information realted only to a month, from the user
-    * @param month
-    *@return String
-    */
+
+    /**
+     * Get the statistics of a given month for the currently logged in user
+     * @param month MOnth for which to get the statistics
+     * @return String with the statistics
+     */
     public String getSTATS_Month(int month) throws NoStatsException{
         return user.getSTATSM_PKC(month);
     }
 
-    /** @return the current year */
+    /**
+     * Get the current year
+     * @return the current year
+     */
     public int getCurrentYear(){
         return user.getCurrentYear();
     }
 
     /* -------------- APPLICATION STATE ---------------------*/
 
-    /** Method which defines what will be written by the
-     *  ObjectOutputStream */
+    /**
+     * Define which variables that will be written by the ObjectOutputStream
+     */
     private void writeObject (java.io.ObjectOutputStream stream)
      throws IOException {
         stream.writeObject(id);
@@ -559,12 +620,12 @@ public class GeocachingPOO implements Serializable {
         stream.writeObject(cachebase);
         stream.writeObject(events);
         stream.writeObject(idcache);
-        stream.writeObject(cache);
      }
 
-    /** Method which defines what will be read by the
-     *  ObjectInputStream */
-     @SuppressWarnings("unchecked")
+    /**
+     * Define which variables will hold what's read by the ObjectInputStream
+     */
+    @SuppressWarnings("unchecked")
     private void readObject (java.io.ObjectInputStream stream)
      throws IOException, ClassNotFoundException {
         id = (Double) stream.readObject();
@@ -575,7 +636,6 @@ public class GeocachingPOO implements Serializable {
         cachebase = (CacheBase) stream.readObject();
         events = (ArrayList<Event>) stream.readObject();
         idcache = (Double) stream.readObject();
-        cache = (Cache) stream.readObject();
      }
 
 
