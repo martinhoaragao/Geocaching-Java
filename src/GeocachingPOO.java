@@ -265,9 +265,9 @@ public class GeocachingPOO implements Serializable {
         Activity act = new Activity();
          Double kms;
 
-         Activity last_activity = user.getLastActivities().get(0);
+         ArrayList<Activity> last_activity = user.getLastActivities();
          //The last activity of the user for the coordinates.
-
+         System.out.println(last_activity.toString());
         if (user == null)
             throw new NoUserLoggedInException();
 
@@ -278,7 +278,7 @@ public class GeocachingPOO implements Serializable {
         //Otherwise, the kms will be calculated following this coordinates.
         //This param must be the coordinates of the previous cache location. The location of this current cache is available in the cache.
 
-        if(last_activity == null){
+        if(last_activity.size() == 0){
             Coordinates coordinates_simulated = cache.getCoords();
             coordinates_simulated.incLat(); coordinates_simulated.incLon();
             kms = coordinates_simulated.getCoordinatesDist( cache.getCoords() );
@@ -292,7 +292,7 @@ public class GeocachingPOO implements Serializable {
 
         }
         else{
-            Coordinates coordinates = last_activity.getCache().getCoords();
+            Coordinates coordinates = last_activity.get(0).getCache().getCoords();
             kms = coordinates.getCoordinatesDist(cache.getCoords());
             //This will calculate the kms already for that coordinates of the last activity.
         }

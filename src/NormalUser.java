@@ -279,6 +279,7 @@ public class NormalUser extends User implements Serializable {
     /** @return ArrayList with the last 10 activities if the user has that many */
     public ArrayList<Activity> getLastActivities () {
         ArrayList<Activity> acts = new ArrayList<Activity>(10);
+        
         Iterator it = this.activities.descendingIterator();
 
         while (it.hasNext() && (acts.size() != 10)) {
