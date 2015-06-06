@@ -29,7 +29,7 @@ public class TraditionalCache extends Cache implements Serializable
      *  @param treasures    The Cache Treasures
      *  @param info         Information about the Cache
      */
-    public TraditionalCache (Double id, Coordinates coords, String mail, ArrayList<Treasure> treasures, String info) {
+    public TraditionalCache (Double id, Coordinates coords, String mail, ArrayList<String> treasures, String info) {
         super(id, coords, mail);
         this.setTreasure(treasures);
         this.setInfo(info);

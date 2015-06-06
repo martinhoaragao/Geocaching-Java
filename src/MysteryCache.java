@@ -47,7 +47,7 @@ public class MysteryCache extends Cache implements Serializable
      *  @param info         Information about the Cache
      *  @param puzzle       Puzzle for this Cache
      */
-    public MysteryCache (Double id, Coordinates coords, String mail, ArrayList<Treasure> treasures, String info, Puzzle puzzle) {
+    public MysteryCache (Double id, Coordinates coords, String mail, ArrayList<String> treasures, String info, Puzzle puzzle) {
         super(id, coords, mail);
         this.setTreasure(treasures);
         this.setInfo(info);

@@ -45,7 +45,7 @@ public class MultiCache extends Cache implements Serializable
      *  @param treasures    This cache Treasures
      *  @param info         Information about this Cache
      */
-    public MultiCache (Double id, ArrayList<Coordinates> coords, String mail, ArrayList<Treasure> treasures, String info) {
+    public MultiCache (Double id, ArrayList<Coordinates> coords, String mail, ArrayList<String> treasures, String info) {
         super(id, coords.get(0), mail);
         this.locals = coords;
         this.stage = 0;

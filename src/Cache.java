@@ -10,12 +10,12 @@ import java.io.Serializable;
  *  @version 06/06/2015
  */
 public abstract class Cache implements Serializable {
-    private Double id;                  //Cache identifier
+    private Double id;                   //Cache identifier
     private Coordinates coords;          // Cache coordinates
-    private String mail;                // Cache owner mail
+    private String mail;                 // Cache owner mail
     private ArrayList<String> registry;  // registration of the cache / Record book / Registry
-    private ArrayList<Treasure> treasure;  // Cache treasure
-    private String info;    // Cache info
+    private ArrayList<String> treasure;  // Cache treasure
+    private String info;                // Cache info
 
     // Constructors
 
@@ -27,7 +27,7 @@ public abstract class Cache implements Serializable {
         this.coords = new Coordinates();
         this.mail = new String();
         this.registry = new ArrayList<String>();
-        this.treasure = new ArrayList<Treasure>();
+        this.treasure = new ArrayList<String>();
         this.info = new String();
     }
 
@@ -42,7 +42,7 @@ public abstract class Cache implements Serializable {
         this.coords = coords.clone();
         this.mail = mail;
         this.registry = new ArrayList<String>();
-        this.treasure = new ArrayList<Treasure>();
+        this.treasure = new ArrayList<String>();
         this.info = new String();
     }
 
@@ -96,12 +96,12 @@ public abstract class Cache implements Serializable {
     /**
      *  @return Treasures
      */
-    public ArrayList<Treasure> getTreasure () {
-        ArrayList<Treasure> treasure = new ArrayList<Treasure>();
+    public ArrayList<String> getTreasure () {
+        ArrayList<String> treasure = new ArrayList<String>();
 
-        for(Treasure aux : this.treasure)
+        for(String t : this.treasure)
         //fazer clone treasuere
-            treasure.add(aux);
+            treasure.add(t);
         return treasure;
     }
 
@@ -156,15 +156,15 @@ public abstract class Cache implements Serializable {
      * Set list of treasures
      * @param treasure, ArrayList of Treasures
      */
-    public void setTreasure (ArrayList<Treasure> treasure) throws NullPointerException {
+    public void setTreasure (ArrayList<String> treasures) throws NullPointerException {
         if(this instanceof MicroCache)
             treasure = null;
         else{
             if(treasure == null && !(this instanceof MicroCache)) throw new NullPointerException("parameter List<treasure> can't be null!");
 
-            ArrayList<Treasure> newTreasure = new ArrayList<Treasure>();
-            for(Treasure aux : treasure)
-                newTreasure.add(aux);
+            ArrayList<String> newTreasure = new ArrayList<String>();
+            for(String t : treasures)
+                newTreasure.add(t);
 
             this.treasure = newTreasure;
         }

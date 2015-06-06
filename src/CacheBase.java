@@ -1,4 +1,4 @@
-/**   
+/**
  * Represents the Data-Base for all the Caches that have been created (by the server or by users).
  *
  * @version 06/06/2015
@@ -337,7 +337,7 @@ public class CacheBase implements Serializable {
      *  @param id The Cache ID
      *  @param ArrayList containing clones of the Cache Treasures
      */
-    public ArrayList<Treasure> getCacheTreasures (Double id) throws IllegalArgumentException {
+    public ArrayList<String> getCacheTreasures (Double id) throws IllegalArgumentException {
         Cache cache = null;
 
         if (id > this.caches.size())

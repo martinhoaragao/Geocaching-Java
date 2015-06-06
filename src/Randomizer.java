@@ -21,8 +21,7 @@ public class Randomizer {
     private static ArrayList<String> mails = new ArrayList<String>(50);
     private static ArrayList<Boolean> gender = new ArrayList<Boolean>(50);
     private static ArrayList<Coordinates> coords = new ArrayList<Coordinates>(50);
-    private static ArrayList<Treasure> treasures = new ArrayList<Treasure>(1);
-    private static Treasure t = new Treasure();
+    private static ArrayList<String> treasures = new ArrayList<String>(1);
     private static String aux, mail, pass;
     private static NormalUser user;
     private static Double user_id = 1.0;
@@ -35,8 +34,7 @@ public class Randomizer {
         int a, b;
         gc = new GeocachingPOO();
 
-        t.setInfo("Caneta");
-        treasures.add(t);
+        treasures.add("Chocolate");
 
         /* Criar utilizadores */
         for (int i = 0; i < 50; i++) {

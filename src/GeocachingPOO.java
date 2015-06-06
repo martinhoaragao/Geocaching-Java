@@ -323,7 +323,7 @@ public class GeocachingPOO implements Serializable {
      *  @param treasures    The Treasures on the Cache
      *  @param info         Information about this Cache
      */
-    public void createTraditionalCache (Coordinates coords, ArrayList<Treasure> treasures, String info) throws NullPointerException, IllegalStateException, IllegalArgumentException, NoUserLoggedInException {
+    public void createTraditionalCache (Coordinates coords, ArrayList<String> treasures, String info) throws NullPointerException, IllegalStateException, IllegalArgumentException, NoUserLoggedInException {
         TraditionalCache cache;
 
         if (coords == null)
@@ -344,7 +344,7 @@ public class GeocachingPOO implements Serializable {
      *  @param treasures    Cache Treasures
      *  @param info         Infomation about the Cache
      */
-    public void createMultiCache (ArrayList<Coordinates> coords, ArrayList<Treasure> treasures, String info) {
+    public void createMultiCache (ArrayList<Coordinates> coords, ArrayList<String> treasures, String info) {
         MultiCache cache;
 
         if (coords == null)
@@ -384,7 +384,7 @@ public class GeocachingPOO implements Serializable {
      *  @param info         Information about this Cache
      *  @param puzzle       This Cache's Puzzle
      */
-    public void createMysteryCache (Coordinates coords, ArrayList<Treasure> treasures, String info, Puzzle puzzle) throws NullPointerException, NoUserLoggedInException {
+    public void createMysteryCache (Coordinates coords, ArrayList<String> treasures, String info, Puzzle puzzle) throws NullPointerException, NoUserLoggedInException {
         MysteryCache cache;
 
         if (coords == null)
@@ -431,7 +431,7 @@ public class GeocachingPOO implements Serializable {
      *  @param id The Cache ID
      *  @return ArrayList containing clones of the Cache Treasures
      */
-    public ArrayList<Treasure> getCacheTreasures (Double id) throws IllegalArgumentException {
+    public ArrayList<String> getCacheTreasures (Double id) throws IllegalArgumentException {
         return cachebase.getCacheTreasures(id);
     }
 

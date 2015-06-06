@@ -481,14 +481,14 @@ public class Main implements Serializable {
         Scanner sc = new Scanner(System.in);
         Double lat, lon;                /* Latitude and Longitude */
         String info;                    /* Cache Information */
-        ArrayList<Treasure> treasures;  /* Cache Treasures */
+        ArrayList<String> treasures;    /* Cache Treasures */
         ArrayList<Coordinates> coords;  /* Coordinates */
         int type, stages;               /* Cache type and numer of stages for Muticache */
         String question, answer;        /* For MysteryCache */
 
         clean();
         coords      = new ArrayList<Coordinates>();
-        treasures   = new ArrayList<Treasure>();
+        treasures   = new ArrayList<String>();
         question = answer = null;
 
         System.out.println("What type of cache do you want to create? (0 to cancel)");
@@ -502,7 +502,8 @@ public class Main implements Serializable {
             System.out.print("Latitude: ");         lat = sc.nextDouble();
             System.out.print("Longitude: ");        lon = sc.nextDouble();
             sc.nextLine();                          /* Flush Scanner */
-            System.out.print("Treasure: "); treasures.add(new Treasure(sc.nextLine(), "1"));
+            System.out.print("Treasure: ");
+            treasures.add(sc.nextLine().replaceAll("[\n\r]", ""));
             System.out.print("More information: "); info = sc.nextLine();
 
             try {
@@ -519,7 +520,8 @@ public class Main implements Serializable {
                 coords.add(new Coordinates(lat, lon));
             }
             sc.nextLine();                          /* Flush Scanner */
-            System.out.print("Treasure: "); treasures.add(new Treasure(sc.nextLine(), "1"));
+            System.out.print("Treasure: ");
+            treasures.add(sc.nextLine().replaceAll("[\n\r]", ""));
             System.out.print("More information: "); info = sc.nextLine();
 
             try {
@@ -546,7 +548,8 @@ public class Main implements Serializable {
             sc.nextLine();                           /* Flush Scanner */
             System.out.print("Question: ");         question = sc.nextLine();
             System.out.print("Answer: ");           answer = sc.nextLine();
-            System.out.print("Treasure: "); treasures.add(new Treasure(sc.nextLine(), "1"));
+            System.out.print("Treasure: ");
+            treasures.add(sc.nextLine().replaceAll("[\n\r]", ""));
             System.out.print("More information: "); info = sc.nextLine();
 
             try {
@@ -657,7 +660,7 @@ public class Main implements Serializable {
     private static void displayCacheTreasures () {
         Scanner sc = new Scanner(System.in);
         Double id;
-        ArrayList<Treasure> treasures;
+        ArrayList<String> treasures;
 
         clean();
         System.out.print("Cache id: ");
@@ -669,8 +672,8 @@ public class Main implements Serializable {
             if (treasures.size() == 0)
                 System.out.println("This cache has no Treasures.");
             else
-                for (Treasure t : treasures) {
-                    System.out.println(t.toString());
+                for (String t : treasures) {
+                    System.out.println(t);
                 }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -686,7 +689,7 @@ public class Main implements Serializable {
     private static void displayAllCacheInfo () {
         Scanner                 sc = new Scanner(System.in);
         Double                  id;
-        ArrayList<Treasure>     treasures;
+        ArrayList<String>       treasures;
         ArrayList<String>       registry;
         String                  info;
 
@@ -711,8 +714,8 @@ public class Main implements Serializable {
             if (treasures.size() == 0)
                 System.out.println("This Cache has no Treasures.");
             else
-                for (Treasure t : treasures) {
-                    System.out.println(t.toString());
+                for (String t : treasures) {
+                    System.out.println(t);
                 }
         } catch (Exception e) {
             System.out.println(e.getMessage());
