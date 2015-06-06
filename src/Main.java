@@ -93,24 +93,26 @@ public class Main implements Serializable {
 
     /** Auxiliary function to display the User Menu */
     private static void userMenu () {
+        NormalUser user;
+
         clean();
         try {
-            System.out.println(gc.getUserInfoLogged());
+            user = gc.getLoggedUser();
+            System.out.println(user.getName() + " | " + user.getPoints() + " points");
+            System.out.println("1: Personal Information");
+            System.out.println("2: Caches Menu");
+            System.out.println("3: Friends");
+            System.out.println("4: Show Caches");
+            System.out.println("5: Show My Statistics");
+            System.out.println("6: Show Last 10 activities");
+            System.out.println("7: Show Friend Activities");
+            System.out.println("8: Show My Caches");
+            System.out.println("9: Add Activity");
+            System.out.println("10: Find Caches near a location");
+            System.out.println("11: Log Out");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-
-        System.out.println("1: Personal Information");
-        System.out.println("2: Caches Menu");
-        System.out.println("3: Friends");
-        System.out.println("4: Show Caches");
-        System.out.println("5: Show My Statistics");
-        System.out.println("6: Show Last 10 activities");
-        System.out.println("7: Show Friend Activities");
-        System.out.println("8: Show My Caches");
-        System.out.println("9: Add Activity");
-        System.out.println("10: Find Caches near a location");
-        System.out.println("11: Log Out");
     }
 
     /** Auxiliary function to display and control the Information Menu */
@@ -121,7 +123,7 @@ public class Main implements Serializable {
         while (!done) {
             clean();
             try {
-                System.out.println(gc.getUserInfo());
+                System.out.println(gc.getLoggedUser().toString());
                 System.out.println("1: Change Password");
                 System.out.println("2: Change Name");
                 System.out.println("3: Change Address");
@@ -814,7 +816,7 @@ public class Main implements Serializable {
     *   This method assumes that the starting location will be simulated for kms calculations.
     */
     private static void createActivity () {
-        Scanner sc = new Scanner(System.in);  
+        Scanner sc = new Scanner(System.in);
         GregorianCalendar date;
         Double id;
         Cache cache = null;
