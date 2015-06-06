@@ -57,6 +57,7 @@ public class NormalUser extends User implements Serializable {
         this.bdate = (GregorianCalendar) bdate.clone();
 
         this.points = 0;
+        //MUDEI AQUI MAN
         this.activities = new TreeSet<Activity>(new CacheDateComparator());
         this.statistics = new StatisticYear();
         this.friends = new ArrayList<Double>();

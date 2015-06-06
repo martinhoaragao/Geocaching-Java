@@ -278,7 +278,7 @@ public class GeocachingPOO implements Serializable {
         //Otherwise, the kms will be calculated following this coordinates.
         //This param must be the coordinates of the previous cache location. The location of this current cache is available in the cache.
 
-        if(last_activity.size() == 0){
+       // if(last_activity.size() == 0){
             Coordinates coordinates_simulated = cache.getCoords();
             coordinates_simulated.incLat(); coordinates_simulated.incLon();
             kms = coordinates_simulated.getCoordinatesDist( cache.getCoords() );
@@ -290,12 +290,13 @@ public class GeocachingPOO implements Serializable {
             //Note: when calling the empty constructor new Activity() it creates the Meteo already. So all done.
 
 
-        }
+       /* }
         else{
             Coordinates coordinates = last_activity.get(0).getCache().getCoords();
             kms = coordinates.getCoordinatesDist(cache.getCoords());
+            act.setKms(kms);
             //This will calculate the kms already for that coordinates of the last activity.
-        }
+        }*/
 
         reg = cache.getRegistry();
         reg.add(user.getName() + " ( " + user.getMail() + " ) ");
