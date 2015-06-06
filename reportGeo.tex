@@ -10,6 +10,8 @@
 %\author{no realizado por :P}
 \title{Geocaching POO}
 \date{Junho 2015}
+
+
 \begin{document}
 \maketitle
 \begin{center}
@@ -57,8 +59,15 @@ em toda a descoberta de Caches/Actividades e não somente no decorrer de Eventos
 
 \section{Modularização - Classes criadas}
 
+\quad Decidimos apenas criar 4 tipos de Caches visto a Cache-Evento nao fazer sentido quando temos uma classe que simula eventos, e a Cache Virtual ... 
+\par Guardamos todos os users e todas as caches criadas numa base de dados.
+\par Para classes que usam estruturas do tipo set criamos vários comparadores úteis para diferentes tipos de ordenação a diferentes classes.
+\par Inicialmente tinhamos uma classe chamada 'Server' que acabamos por eliminar pois esta baseia-se na classe GeocachingPOO. A ideia era na classe Server ter acesso a toda a informação, sendo esta apenas acessível aos Admins, mas no próprio GeocachingPOO temos a opção de fazer login como Admin, simplificando e colocando tudo numa classe.
+\par Temos hierarquia quanto às caches e quanto aos users.
+\par Temos Estatísticas globais, anuais e mensais.
+\\
 %adicionar imagem do trello final do diagrama
-\includegraphics[height=3\baselineskip,natwidth=369,natheight=430]{Diagrama.jpg}
+\includegraphics[height=8\baselineskip,natwidth=369,natheight=430]{Diagrama.PNG}
 
 \pagebreak
 \section{Bases de dados}
@@ -139,7 +148,7 @@ registo dos seus amigos falar onde diz TODO AMIGOS
 
 \pagebreak
 
-TODO TODO TODO TODO 
+TODO
 \section{ Caches }
 Como criamos uma Cache?
 Como tratamos da Invalidação de uma Cache?
@@ -154,15 +163,20 @@ Mencionar que Cache é superclasse e os tipos de cache são sub-classes Estrutur
 \pagebreak
 \section{Atividades e Estatísticas}
 
+\subsection{Atividades}
 \quad Quando o user encontra uma cache, regista uma nova Atividade que é automaticamente adicionada às Estatísticas.
 \par Esta atividade têm como informações a data em que foi adicinada, a Cache que foi encontrada, os kilometros que foram percorridos para encontrar esta Cache, a pontuação ganha pelo feito e a Meteorologia desse dia.
-\par O utilizador apenas tem de fornecer os dados quanto à Cache que encontrou e em que dia foi. O resto é tratado pelo programa, havendo simulações e cálculos: 
-\par * kilometros: Quando adiciona a primeira atividade, são criadas as coordenadas iniciais do local onde o User iniciou a procura, geradas aleatóriamente fazendo cópia das coordenadas da Cache e um incremento da latitude e longitude de valores entre 0,001 e 0,4 por exemplo. No momento em que, ao adicionar esta primeira atividade, o programa calcula as distâncias entre estas coordenadas geradas aleatóriamente com base neste range, e as coordenadas da Cache, os kilometros calculados dão entre valores de 0,1km até 40 kms, em média.
+\par O utilizador apenas tem de fornecer os dados quanto à Cache que encontrou e em que dia foi. O resto é tratado pelo programa, havendo simulações e cálculos.
+
+\subsubsection{Kilómetros}
+\quad  Quando adiciona a primeira atividade, são criadas as coordenadas iniciais do local onde o User iniciou a procura, geradas aleatóriamente fazendo cópia das coordenadas da Cache e um incremento da latitude e longitude de valores entre 0,001 e 0,4 por exemplo. No momento em que, ao adicionar esta primeira atividade, o programa calcula as distâncias entre estas coordenadas geradas aleatóriamente com base neste range, e as coordenadas da Cache, os kilometros calculados dão entre valores de 0,1km até 40 kms, em média.
 Este incremento de latitude e longitude são métodos que usam o Math.Random, presentes na classe "Coordinates".
 \par Caso já exista uma atividade anterior a esta que está prestes a ser adicionada, a distância calculada será entre as coordenadas desta cache e as coordenadas da cache da ultima atividade, tornando isto o mais realista possivel. A última atividade é a última posição conhecida do utilizador.
 \\
 
-\par * Meteorologia: Na classe Meteo são geradas as meteorologias de uma forma aleatória também. Existem dois campos que dizem respeito à Temperatura e ao Estado de Tempo. 
+
+\subsubsection{Meteorologia}
+\quad  Na classe Meteo são geradas as meteorologias de uma forma aleatória também. Existem dois campos que dizem respeito à Temperatura e ao Estado de Tempo. 
 \par int Low = -10;
 \par int High = 40;
 \par São definidos os valores mínimos e máximos para a Temperatura. Para a Weather existem 7 tipos possíveis que são os seguintes:
@@ -179,25 +193,33 @@ Este incremento de latitude e longitude são métodos que usam o Math.Random, pr
 \par Tudo isto é muito importante para as Estatísticas pois são calculados os pontos em cada Atividade, conforme o estado de tempo, os kilometros percorridos e o tipo de cache encontrada. 
 \par Para cada atividade existe um limite de pontos que decidimos atribuir: 100 pontos. Assim se quisermos diminuir ou aumentar este limite é só tratar da escala deste limite que será mais fácil. (Por exemplo, para cada atividade apenas querer 10 pontos, ou querer 1000, etc. ...).
 \par Este limite de pontos total rege-se também por um limite às 3 atribuiçoes de pontos que criamos,  kilometros, meteorologia e cache, que são apresentados de seguida:
-\par     private static int limit_points = 100;
-\par     private static int limit_points_cache = 50;
-\par     private static int limit_points_kms = 30;
-\par     private static int limit_points_meteo = 20;
-\par Decidimos atribuir mais pontos ao fator do tipo da cache. Se for uma Micro Cache atribuimos o mínimo de pontos (10) mas se for uma Mystery Cache o user consegue obter os 50 pontos máximos, dependendo também da dificuldade do Puzzle que foi atribuida. Como a estrela de dificuldade vai de 1 a 10, decidimos atribuir dificuldade * 5 pontos pela Mystery Cache.
+\begin{lstlisting}
+private static int limit_points = 100;
+private static int limit_points_cache = 50;
+private static int limit_points_kms = 30;
+private static int limit_points_meteo = 20;
+\end{lstlisting}
+
+\par * Decidimos atribuir mais pontos ao fator do tipo da cache. Se for uma Micro Cache atribuimos o mínimo de pontos (10) mas se for uma Mystery Cache o user consegue obter os 50 pontos máximos, dependendo também da dificuldade do Puzzle que foi atribuida. Como a estrela de dificuldade vai de 1 a 10, decidimos atribuir dificuldade * 5 pontos pela Mystery Cache.
 \par Da mesma forma, tomamos decisões para o cálculo de pontos da Meteorologia e dos kilometros. Se percorrer mais kilómetros, ganha mais pontos e se o tempo estiver mau (Stormy, Hail ...) atribuimos o máximo de pontos para a Weather que são 10 pontos. Não esquecer que também temos a Temperatura, e para o caso de temperaturas extremas (muito baixas e muito altas) atribuimos também pontuações máximas. Depois, para cada situação à uma atribuição mediana conforme a meteorologia e temperatura.
 
-TODO TODO TODO TODO CODIGO A SER FEITO
+TODO CODIGO A SER FEITO
 \par O user tem possibilidade de visualizar as 10 últimas Atividades tanto dele como dos amigos, e de, se assim o quiser, as remover. Quando remove uma atividade, todas as informações e pontos adquiridos por esta são automaticamente retirados das estatisticas.
-TODO TODO TODO TODO
 
-\\
-\par Quando às Estatísticas temos duas classes: StatisticYear e Statistic.
+
+\subsection{Estatísticas}
+\quad Quando às Estatísticas temos duas classes: StatisticYear e Statistic.
 A razão pela qual temos duas classes é porque decidimos guardar também as Estatísticas Globais do user, ou seja, as estatísticas de todos os anos. Para melhor entender o funcionamento e a estrutura destas classes, começaremos por explicar a Statistic.
 
-\par Na Statistic temos as estatísticas de um dado ano. A estrutura é um ArrayList < TreeSet<Activity>>. Tentamos criar um array para ter em cada indice o mês ligado ao conjunto de atividades desse mês mas é impossivel criar array com valores que não sejam primitivos, logo tivemos de mudar a estrutura para um ArrayList. Este ArrayList terá como indices o mês da estatistica. O seu conteúdo será o conjunto de Atividades realizadas nesse mês. Para adicionar uma atividade garantimos que não é possivel adicionar uma atividade se o ano não for o mesmo. Por isso é importante buscar o ano desta estatística, fazer set do ano desta estatística... O ano assumido como default é o current year que é 2015. Também são disponibilizadas funções como o de contar quantos tipos de cache num dado mês existem, e devolver num array, soma de pontos, de kms totais, numero de todas as caches encontradas, tanto para este ano como para um dado mês. Estas função são usadas como auxiliares na classe StatisticYear, e o porquê será entendido em seguida, quando for explicada a estrutuda da mesma.
+\par Na Statistic temos as estatísticas de um dado ano. A estrutura é a seguinte:
+\begin{lstlisting} 
+ArrayList < TreeSet<Activity>>. 
+\end{lstlisting}
+
+Tentamos criar um array para ter em cada indice o mês ligado ao conjunto de atividades desse mês mas é impossivel criar array com valores que não sejam primitivos, logo tivemos de mudar a estrutura para um ArrayList. Este ArrayList terá como indices o mês da estatistica. O seu conteúdo será o conjunto de Atividades realizadas nesse mês. Para adicionar uma atividade garantimos que não é possivel adicionar uma atividade se o ano não for o mesmo. Por isso é importante buscar o ano desta estatística, fazer set do ano desta estatística... O ano assumido como default é o current year que é 2015. Também são disponibilizadas funções como o de contar quantos tipos de cache num dado mês existem, e devolver num array, soma de pontos, de kms totais, numero de todas as caches encontradas, tanto para este ano como para um dado mês. Estas função são usadas como auxiliares na classe StatisticYear, e o porquê será entendido em seguida, quando for explicada a estrutuda da mesma.
 \par StatisticYear é basicamente uma estrutura que mapeia um dado ano para uma Statistic. É esta a estrutura usada no programa pois facilmente se adiciona uma atividade nesta estrutuda, tendo o ano em que queremos inserir na data da atividade e usando os métodos existentes no Statistic como auxiliares. Todo o resto sobre o numero total de pontos, kilometros percorridos, numero de caches, etc... também são fornecidos por métodos de assinaturas iguais (tirando partido do Overloading), tanto para um dado ano como para todos os anos (global).
 
-\\
+
 \par Permitimos ao user ver as suas estatiticas globais, anuais (de um dado ano) e mensais. Para as estatisticas mensais assumimos que ele quer ver um dado mês do current year (2015). Mas tal pode ser alterado facilmente, pedindo apenas mais uma informação extra ao user (que ano quer) antes de mostrar informações destas estatísticas.
 
 \par Existe ainda uma opção para ver um gráfico de quantas caches dos tipos existentes o usuário encontrou, num dado mês.
@@ -252,13 +274,6 @@ clareza no diagrama. Para todas as classes que implementam Excepções é feito 
 \section{Conclusão}
 
 
-
-\pagebreak
-\section{}
-\subsection{}
-\subsubsection{}
-
-\paragraph{paragraph title here}
 
 
 \end{document}
