@@ -161,22 +161,31 @@ Para fazer login como admin existe uma conta: grupoajm@gmail.com   cuja pass é 
 
 
 \pagebreak
-\section{Register e Login}
-TODO
-Falar no user e o que ele pode fazer : atividades, registos de estatisticas, amigos...
-registo dos seus amigos falar onde diz TODO AMIGOS
-
-Ao iniciar o programa, o user efetua o seu registo com e-mail, pass, nome, morada etc... Quando faz login é-lhe apresentado a sua pontuação a 0 ao lado do seu nome, e um menu inicial.
-Neste menu, o user pode ver as caches que estão a uma dada distância da sua localização (fornecendo coordenadas ao programa/ aplicação), identificadas pelo seu id. Pode criar caches dos 4 tipos existentes, adicionar uma atividade, fazer pedidos de amizade, entre outros requisitos básicos explicitos no enunciado.
-
-Este login usa uma encriptação da pass tornando a informação do user segura e tornando este programa mais realísta.
-
-
-
-
-
-
-
+\section{Registo e Login}
+\par Uma das funções mais básicas da aplicação baseia-se no registo e login de Utilizadores. No Menu inicial o utilizador tem 
+a opção de se registar ou então fazer login caso já possua uma conta.
+\par Caso o utilizador deseje registar uma conta na aplicação terá de fornecer o seu e-mail, nome, password, 
+data de nascimento, a cidade e país de residência e o seu género (Masculino ou Feminino). A class \textbf{Main} invocará 
+os métodos necessários da classe \textbf{GeocachingPOO} que por sua vez invocará métodos da classe 
+\textbf{UserBase} para registar o utilizador.
+\par Caso o utilizador especifique um e-mail já em uso será negado o registo da conta. Caso se verifique que o utilizador se 
+possa registar uma mensagem de sucesso aparecerá no ecrã, caso contrário uma mensagem de erro, informando o utilizador 
+o porquê da falha do registo.
+\par Aproveitamos para implementar um método que encripta a password do utilizador para que deste modo, se um utilizador 
+executar o método da classe \textbf{User} que permite obter a password apenas verá o resultado da encriptação. 
+Sempre que é necessário confirmar se a password fornecida coincide com a guardada no utilizador o programar encripta a password fornecida e verifica se é igual ao resultado da encriptação já armazenado.
+\\
+\par Depois de um utilizador criar uma conta pode então executar o login, a classe \textbf{Main}, como trata de I/O, recebe qual 
+o e-mail e a password do utilizador, a classe \textbf{GeocachingPOO} trata do resto das invocações dos métodos necessários 
+para executar o login.
+\par Caso o e-mail esteja associado a uma conta existente e a password fornecida confira com a password guardada então 
+será apresentado um menu ao utilizador, onde no topo lhe é apresentado o seu nome e o total de pontos que consegui juntar 
+até ao momento.
+\par A partir deste menu de utilizador o utilizador consegue executar todas as funções básicas propostas, como, por exemplo, 
+mudar informações pessoais (nome, e-mail, género, password,..), criar uma cache de enter os 4 tipos que a aplicação 
+conhece, registar uma activadade, consultar as suas actividades, enviar pedidos de amizade, etc.
+\par Decidimos também implementar uma opção no menu relativo a caches que permita a um utilizador descobrir quais as 
+caches que se encontram a uma determinada distância (raio) de uma certa localização, indicada pelo utilizador.
 
 \pagebreak
 \section{Atividades e Estatísticas}
@@ -246,15 +255,21 @@ Tentamos criar um array para ter em cada indice o mês ligado ao conjunto de ati
 
 
 \pagebreak
-TODO AMIGOS
 \section{Amigos}
-Pedidos de amizade, ver atividades dele, etc ....
-
-Dá para ver a lista de pedidos, aceitar, e em ambos os lados no users depois aparece o mail da pessoa na lista dos amigos.
-
-
-
-
+\par Implementamos também uma rede de amigos, cada instância de \textbf{NormalUser} contém variáveis para guardar 
+os IDs dos utilizadores que são seus amigos e os IDs dos utilizadores que enviaram pedidos de amizade.
+Essas variáveis ficaram então definidas da seguinte forma:
+\begin{lstlisting}[language=Java]
+/* IDs dos amigos do utilizador */
+ArrayList<Double> friends;
+/* IDs dos utlizadores que enviaram pedidos de amizade */
+ArrayList<Double> friend_requests;
+\end{lstlisting}
+\par A aplicação permite que utilizadores enviem pedidos de amizade a outros utilizadores inserindo o e-mail a quem desejam 
+enviar o pedido de amizade. O utilizador que recebe o pedido de amizade pode aceitar o pedido de amizade e ambos os 
+utilizadores guardam o ID um do outros na sua lista de amigos. A lista de amigos pode depois ser visualizada dentro da 
+própria aplicação.
+\par Ao adicionar um amigo um utilizador poderá então, se desejar, visualizar a lista das 10 actividades mais recentes de qualquer um dos seus amigos.
 
 \pagebreak
 \section{Eventos}
