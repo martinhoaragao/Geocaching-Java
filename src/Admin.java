@@ -53,6 +53,7 @@ public class Admin extends User implements Serializable {
     // Getters
 
     /**
+     * Method that returns the permission level.
      * @return Admin permission level
      */
     public Integer getPermi () {

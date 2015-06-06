@@ -39,6 +39,7 @@ public class Coordinates implements Comparable<Coordinates>, Serializable {
     // Getters
 
     /**
+     * Method that gives the Latitude.
      * @return Coordinates latitude
      */
     public double getLat () {
@@ -46,6 +47,7 @@ public class Coordinates implements Comparable<Coordinates>, Serializable {
     }
 
     /**
+     * Method that gives the longitude.
      * @return Coordinates longitude
      */
     public double getLon () {
@@ -55,6 +57,7 @@ public class Coordinates implements Comparable<Coordinates>, Serializable {
     //Setters
     /**
      * Sets the latitude.
+     * @param Lat the new latitude to be set.
      */
     public void setLat(double lat) throws IllegalArgumentException {
         if (lat < 0 || lat > 90)
@@ -64,6 +67,7 @@ public class Coordinates implements Comparable<Coordinates>, Serializable {
 
     /**
      * Sets the longitude.
+     *@param Lon the new longitude to be set.
      */
     public void setLon(double lon) throws IllegalArgumentException {
         if (lon < -180 || lon > 180)

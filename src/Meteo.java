@@ -1,11 +1,12 @@
+import java.util.Random;
+import java.io.Serializable;
+
+
 /**
  * This class represents the Meteorology to be used in Activity.
  * This will calculate points depending on the temperature, time_state, etc...
  * And sets these fields in the constructors arbitrarily.
  */
-
-import java.util.Random;
-import java.io.Serializable;
 
 public class Meteo implements Serializable {
     private int temperature;
@@ -20,6 +21,9 @@ public class Meteo implements Serializable {
         Hail 6
     */
 
+    /**
+    * Empty Constructor
+    */    
     public Meteo(){
         Random temperaturer = new Random();
         int Low = -10;
@@ -74,11 +78,21 @@ public class Meteo implements Serializable {
         this.weather = W;
     }
 
+    /**
+    * Constructor with parameters.
+    * @param temperature the temperature of this meteorology
+    * @param weather the weather I want to set for this meteorology
+    */
     public Meteo(int temperature, int weather){
         this.temperature = temperature;
         this.weather = weather;
     }
 
+    /**
+    *
+    * Copy Constructor
+    * @param a Meteorology to be copied.
+    */
     public Meteo(Meteo a){
         this.temperature = a.getTemp();
         this.weather = a.getWeather();
@@ -87,23 +101,43 @@ public class Meteo implements Serializable {
     
 
     //Gets e Sets
+
+    /**
+    * Gets the weather
+    * @return this.weather
+    */
     public int getWeather(){
         return this.weather;
     }
 
+
+    /** 
+    *  Gets the Temperature
+    * @return this.temperature
+    */
     public int getTemp(){
         return this.temperature;
     }
 
+    /**
+    * Method that sets a new temperature
+    * @param temperature new temperature to be set.
+    */
     public void setTemp(int temperature){
         this.temperature = temperature;
     }
 
+    /**
+    * Method that sets a new Weather
+    * @param weather the new weather to be set.
+    */
     public void setWeather(int weather){
         this.weather = weather;
     }
 
-    /* auxiliary function to get String of weather */
+    /** Auxiliary function to get String of weather 
+    * @return the String with the information of the weather.
+    */
     /*Rainy 0
         Stormy 1
         Sunny 2
@@ -145,6 +179,11 @@ public class Meteo implements Serializable {
     }
 
     /* toString, equals, clone */
+
+    /**
+    * Converts the information of this Meteo in a String
+    *@return String information of this meteorology
+    */
     public String toString(){
         StringBuilder sb = new StringBuilder();
         sb.append(" |***| Temperature: ");
@@ -154,6 +193,9 @@ public class Meteo implements Serializable {
         return sb.toString();
     }
 
+    /**
+    * Tests if two Meteorologies are equal.
+    */
     public boolean equals(Object o){
         if(this == o) return true;
         if(this.getClass() != o.getClass()) return false;
@@ -161,6 +203,9 @@ public class Meteo implements Serializable {
         return a.getTemp() == this.getTemp() && a.getWeather() == this.getWeather();
     }
 
+    /**
+    * Clones this meteorology.
+    */
     public Meteo clone(){
         return new Meteo(this);
     }

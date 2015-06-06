@@ -37,8 +37,12 @@ public class CacheBase implements Serializable {
 
     // Getters
 
-    /** @return ArrayList with all the caches in the CacheBase, if
-     *  the User hasn't created any cache, the arraylist will be empty */
+    /**
+     * Method that returns all Caches in an ArrayList.
+     * if the User hasn't created any cache, the arraylist will be empty 
+     * @return ArrayList with all the caches in the CacheBase, if
+     *   
+     */
     public ArrayList<Cache> getAllCaches () {
         ArrayList<Cache> ts = new ArrayList<Cache>();
 
@@ -48,13 +52,18 @@ public class CacheBase implements Serializable {
         return ts;
     }
 
-    /** @return TreeMap with all the owners relations with caches ids */
+    /** 
+    * Method that returns a TreeMap with all the ownsers relations to caches ids.
+    * @return TreeMap with all the owners relations with caches ids 
+    */
     @SuppressWarnings("unchecked")
     public TreeMap<Double, ArrayList<Double>> getAllOwners () {
         return (TreeMap<Double, ArrayList<Double>>)this.owners.clone();
     }
 
-    /** @return TreeMap with all the reports */
+    /** 
+    * Method that returns all reports in a TreeMap.
+    * @return TreeMap with all the reports */
     @SuppressWarnings("unchecked")
     public TreeMap<Double, ArrayList<Report>> getAllReports () {
         TreeMap<Double, ArrayList<Report>> tm = new TreeMap<Double, ArrayList<Report>>();
@@ -68,7 +77,9 @@ public class CacheBase implements Serializable {
         return tm;
     }
 
-    /** @return TreeMap with all the Coordinates used */
+    /** 
+    * Method that returns all the coordinates used. 
+    *@return TreeMap with all the Coordinates used */
     @SuppressWarnings("unchecked")
 
     public TreeMap<Coordinates, Double> getCoords () {

@@ -43,6 +43,7 @@ public class Address implements Serializable {
     // Getters
 
     /**
+     * Method that returns the city of this Address.
      * @return City in the address
      */
     public String getCity () {
@@ -50,6 +51,7 @@ public class Address implements Serializable {
     }
 
     /**
+     * Method that returns the Country of this Address.
      * @return Country in the address
      */
     public String getCountry () {

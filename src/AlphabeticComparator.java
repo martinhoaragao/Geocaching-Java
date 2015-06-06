@@ -3,7 +3,6 @@ import java.util.Comparator;
 /**
 * Compares two Users depending on their names.
 */
-
 class AlphabeticComparator implements Comparator<User> {
     /**
      * Compare two user's names

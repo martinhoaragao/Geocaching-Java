@@ -4,7 +4,6 @@
  * @version 04/06/2015
  */
 
-// DONE
 
 import java.util.GregorianCalendar;
 import java.io.Serializable;
@@ -23,7 +22,7 @@ public class Activity implements Serializable {
     private static int limit_points_meteo = 20;
 
     /**
-     * Constructor without paramuments
+     * Constructor without parameters
      */
     public Activity () {
         this.date = new GregorianCalendar();
@@ -34,7 +33,7 @@ public class Activity implements Serializable {
     }
 
     /**
-     * Constructor with paramuments
+     * Constructor with parameters
      * @param date Date in which the cache was found
      * @param cache The cache that was found
      * @param kms Kilometers covered to find the cache
@@ -150,13 +149,17 @@ public class Activity implements Serializable {
     public void setKms (double kms) {
         this.kms = kms;
     }
-
+    /**
+    * Method that sets this Activity points with new ponctuation.
+    * @param points the new ponctuation
+    */
     public void setPoints (int points){
         this.points = points;
     }
 
     /**
      *  Method that sets the Meteo to an Activity
+     * @param meteo the meteorology to set
      */
     public void setMeteo(Meteo meteo){
         this.meteo = meteo.clone();
@@ -197,7 +200,7 @@ public class Activity implements Serializable {
         return points;
     }
 
-    /* auxiliary functions to calculate points for weather */
+    /** Method to calculate points for weather */
     public int calcPointsW(){
         int p=0;
         int w = this.meteo.getWeather();
@@ -239,7 +242,7 @@ public class Activity implements Serializable {
         return p;
     }
 
-    /* auxiliary functions to calculate points for temperature */
+    /** Method to calculate points for temperature */
     public int calcPointsT(){
         int p =0;
         int t = this.meteo.getTemp();
@@ -254,6 +257,7 @@ public class Activity implements Serializable {
         return p;
     }
 
+    /** This method calculates the points for an Activity's Meteorology */
     public int calcPointsMeteo(){
         int p=0;
         p+=calcPointsT();
