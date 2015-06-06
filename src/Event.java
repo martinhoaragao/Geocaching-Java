@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
+import java.util.Random;
+import java.util.Collections;
 import Exceptions.*;
 
 /**
@@ -48,7 +50,11 @@ public class Event {
         this.id = event.getId();
         this.registTime = event.getRegTime();
         this.caches = event.getCaches();
-        this.users = event.getUsers();
+        ArrayList<NormalUser> list = new ArrayList<NormalUser>();
+
+        for (NormalUser user : event.users)
+            list.add(user.clone());
+        this.users = list;
     }
 
     // Getters
@@ -184,7 +190,7 @@ public class Event {
 
     // Other methods
 
-    /*
+    /**
      * Register user in an event
      * @arg user, NormalUser to be registered
      */
@@ -194,7 +200,7 @@ public class Event {
         this.users.add(user.clone());
     }
 
-    /*
+    /**
      * Remove user from an event
      * @arg user, NormalUser whose registration will be cancelled
      */
@@ -202,7 +208,7 @@ public class Event {
         this.users.remove(user);
     }
 
-    /*
+    /**
      * Checks if a user is registered to an event
      * @arg user, NormalUser to be compared
      * @return boolean true if user is registered
@@ -211,7 +217,7 @@ public class Event {
         return this.users.contains(user);
     }
 
-    /*
+    /**
      * Add cache to event
      * @arg cache, cache to be inserted
      */
@@ -221,7 +227,85 @@ public class Event {
         this.caches.add(cache);
     }
 
-    public void simulateEvent {
+    /**
+     * Auxiliary function to sum the doubles of an array
+     * @arg avg, the avg numbers we want to sum
+     * @return sum, the total sum of the values
+     */
+    private double sumArray(double[] avg) {
+        double sum  = 0;
+        for (int i = 0; i < 4; i++)
+            sum += avg[i];
+
+        return sum;
+    }
+
+    /**
+     * Function to simulate a user's event, adds activities based on his past experience
+     * @arg finishTime, last day of the event, will do a time period based on register
+     * @ currentUser, user on which we are doing the simulation
+     */
+    public void simulateUserEvent (GregorianCalendar finishTime, NormalUser currentUser) {
+        Random random = new Random();
+        ArrayList<Cache> caches = this.caches;
+
+        /* How many days long this simulation is */
+        double diffTime = (finishTime.getTime().getTime() - this.registTime.getTime().getTime()) / (1000 * 60 * 60 * 24);
+
+        int currentYear = currentUser.getCurrentYear();
+        double[] avgNumberCaches = currentUser.averageActPerDay(currentYear);
+        double[] numberCachesToFind = new double[4];
+
+        /* Number of Caches to be found */
+        for (int i = 0; i < 4; i++) {
+            avgNumberCaches[i] *= random.nextDouble() * 1.5;
+            numberCachesToFind[i] = avgNumberCaches[i] * diffTime;
+        }
+        /* Randomise caches */
+        long seed = System.nanoTime();
+        Collections.shuffle(caches, new Random(seed));
+
+        /* Add first caches of randomised array */
+        int daysPassed;
+        for (int i = 0; i < this.caches.size() && sumArray(numberCachesToFind) > 0; i++) {
+            Cache cache = caches.get(i);
+            GregorianCalendar currentDate = (GregorianCalendar) this.registTime.clone();
+            if (cache instanceof MicroCache && numberCachesToFind[0] > 0 ) {
+                numberCachesToFind[0]--;
+                daysPassed =(int) ( numberCachesToFind[0] / avgNumberCaches[0]); /* Check how many days to go */
+                daysPassed =(int)  (diffTime - daysPassed); /* It's day (daysPassed) of the event */
+                currentDate.add((GregorianCalendar.DAY_OF_MONTH), daysPassed);
+                currentUser.addActivity(cache, currentDate);
+            }
+            else if (cache instanceof MultiCache && numberCachesToFind[1] > 0) {
+                numberCachesToFind[1]--;
+                daysPassed =(int) ( numberCachesToFind[1] / avgNumberCaches[1]); /* Check how many days to go */
+                daysPassed =(int)  (diffTime - daysPassed); /* It's day (daysPassed) of the event */
+                currentDate.add((GregorianCalendar.DAY_OF_MONTH), daysPassed);
+                currentUser.addActivity(cache, currentDate);
+            }
+            else if (cache instanceof TraditionalCache && numberCachesToFind[2] > 0) {
+                numberCachesToFind[2]--;
+                daysPassed =(int) ( numberCachesToFind[2] / avgNumberCaches[2]); /* Check how many days to go */
+                daysPassed =(int)  (diffTime - daysPassed); /* It's day (daysPassed) of the event */
+                currentDate.add((GregorianCalendar.DAY_OF_MONTH), daysPassed);
+                currentUser.addActivity(cache, currentDate);
+            }
+            else if (cache instanceof MysteryCache && numberCachesToFind[3] > 0) {
+                numberCachesToFind[3]--;
+                daysPassed =(int) ( numberCachesToFind[3] / avgNumberCaches[3]); /* Check how many days to go */
+                daysPassed =(int)  (diffTime - daysPassed); /* It's day (daysPassed) of the event */
+                currentDate.add((GregorianCalendar.DAY_OF_MONTH), daysPassed);
+                currentUser.addActivity(cache, currentDate);
+            }
+        }
+    }
+
+    /**
+     * Simulate entire event for list of users
+     * @arg finishTime, last day of the event, will do a time period based on register
+     */
+    public void simulateEvent (GregorianCalendar finishTime) {
 
     }
 }

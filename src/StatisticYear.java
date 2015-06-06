@@ -103,13 +103,13 @@ public class StatisticYear implements Serializable
     /**
      * Get the Statistics of a given year.
      * @param year the year which maps to the Statistic to be returned.
-     * @return Statistic 
+     * @return Statistic
      */
     public Statistic getStatistic(int year) throws NoStatsException{
         Statistic stats = this.statsyear.get(year);;
-        
+
         if(stats == null) throw new NoStatsException("There are no statistics of year " + year + "." );
-        
+
         return this.statsyear.get(year);
     }
 
@@ -155,7 +155,7 @@ public class StatisticYear implements Serializable
         return sb.toString();
     }
 
-   
+
     /**
      * Finds a cache with a given id.
      * @param id the id of a cache to look for.
@@ -179,7 +179,7 @@ public class StatisticYear implements Serializable
       if(cache != null){
         this.statsyear.remove(id);
       }
-      
+
     }
 
     /**
@@ -279,7 +279,7 @@ public class StatisticYear implements Serializable
 
         for ( Statistic stats : a.statsyear.values() ){
             if(!this.statsyear.containsValue(stats)) return false;
-        }     
+        }
         return true;
     }
 
@@ -304,7 +304,3 @@ public class StatisticYear implements Serializable
         sb.append(this.getinfoNCaches());
         //System.out.println(sb.toString());
         return sb.toString();
-    }
-
-
-}

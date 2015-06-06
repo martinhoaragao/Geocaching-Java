@@ -374,6 +374,15 @@ public class NormalUser extends User implements Serializable {
 
     }
 
+    /**
+     * Get average of number of caches found per day by type during a given year
+     * @param int year to know average
+     * @return avg, average of caches found per day this year
+     */
+    public double[] averageActPerDay (int year) {
+        return this.getStatistics(year).averageActPerDay();
+    }
+
     /** @returns stats in form of a string with the information of totalpoints, totalkms, and numbercaches of a whole year
     * @param year
     */

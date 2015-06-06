@@ -152,6 +152,36 @@ public class Statistic implements Serializable
         return caches;
     }
 
+    /*
+     * Get average of number of caches found per day by type during the current year
+     * @return avg, average of caches found per day this year
+     */
+    public double[] averageActPerDay () {
+        int[] numberCaches;
+        double[] avg = new double[4];
+        int numberMonths = stats.size() + 1;
+
+        /* Reset Array */
+        for (int i = 0; i < 4; i++)
+            avg[i] = 0.0;
+
+        /* Go through each month */
+        for(int i = 0; i < numberMonths; i++) {
+            numberCaches = this.getNumberCaches(i);
+
+            /* Go through each cache type */
+            for(int cacheType = 0; i < 4; cacheType++) {
+                avg[cacheType] += numberCaches[cacheType];
+            }
+        }
+
+        /* Do the average */
+        for (int i = 0; i < 4; i++)
+            avg[i] /= numberMonths * 30.45;
+
+        return avg;
+    }
+
     /**
     *   Method that returns a String ready to be printed.
     *   Shows information about how many types of caches were found in a given month.
