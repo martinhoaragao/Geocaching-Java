@@ -186,6 +186,11 @@ Por essa razão nenhuma das duas foi contemplada pela nossa estrutura.
 
 \pagebreak
 \section{Registo e Login}
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=60mm]{menuprincipal.png}
+\caption{Menu inicial}
+\end{figure}
 \par Uma das funções mais básicas da aplicação baseia-se no registo e login de Utilizadores. No Menu inicial o utilizador tem
 a opção de se registar ou então fazer login caso já possua uma conta.
 \par Caso o utilizador deseje registar uma conta na aplicação terá de fornecer o seu e-mail, nome, password,
@@ -195,9 +200,14 @@ os métodos necessários da classe \textbf{GeocachingPOO} que por sua vez invoca
 \par Caso o utilizador especifique um e-mail já em uso será negado o registo da conta. Caso se verifique que o utilizador se
 possa registar uma mensagem de sucesso aparecerá no ecrã, caso contrário uma mensagem de erro, informando o utilizador
 o porquê da falha do registo.
-\par Aproveitamos para implementar um método que encripta a password do utilizador para que deste modo, se um utilizador
-executar o método da classe \textbf{User} que permite obter a password apenas verá o resultado da encriptação.
-Sempre que é necessário confirmar se a password fornecida coincide com a guardada no utilizador o programar encripta a password fornecida e verifica se é igual ao resultado da encriptação já armazenado.
+\par Aproveitamos para implementar um método que encripta a password do utilizador para que deste modo, se um utilizador 
+executar o método da classe \textbf{User} que permite obter a password apenas verá o resultado da encriptação. 
+Sempre que é necessário confirmar se a password fornecida coincide com a guardada no utilizador o programar encripta a password fornecida e verifica se é igual ao resultado da encriptação já armazenado.\\
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=100mm]{registo.png}
+\caption{Registo de um utilizador}
+\end{figure}
 \\
 \par Depois de um utilizador criar uma conta pode então executar o login, a classe \textbf{Main}, como trata de I/O, recebe qual
 o e-mail e a password do utilizador, a classe \textbf{GeocachingPOO} trata do resto das invocações dos métodos necessários
@@ -208,10 +218,20 @@ até ao momento.
 \par A partir deste menu de utilizador o utilizador consegue executar todas as funções básicas propostas, como, por exemplo,
 mudar informações pessoais (nome, e-mail, género, password,..), criar uma cache de enter os 4 tipos que a aplicação
 conhece, registar uma activadade, consultar as suas actividades, enviar pedidos de amizade, etc.
-\par Decidimos também implementar uma opção no menu relativo a caches que permita a um utilizador descobrir quais as
-caches que se encontram a uma determinada distância (raio) de uma certa localização, indicada pelo utilizador.
+\par Decidimos também implementar uma opção no menu relativo a caches que permita a um utilizador descobrir quais as 
+caches que se encontram a uma determinada distância (raio) de uma certa localização, indicada pelo utilizador. \\
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=100mm]{login.png}
+\caption{Menu após o login}
 
-\pagebreak
+\end{figure}
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=90mm]{getNearCaches.png}
+\caption{Encontrar caches perto de uma dada localização}
+\end{figure}
+\newpage
 \section{Atividades e Estatísticas}
 
 \subsection{Atividades}
@@ -274,9 +294,16 @@ Tentamos criar um array para ter em cada indice o mês ligado ao conjunto de ati
 \par Permitimos ao user ver as suas estatiticas globais, anuais (de um dado ano) e mensais. Para as estatisticas mensais assumimos que ele quer ver um dado mês do current year (2015). Mas tal pode ser alterado facilmente, pedindo apenas mais uma informação extra ao user (que ano quer) antes de mostrar informações destas estatísticas.
 
 \par Existe ainda uma opção para ver um gráfico de quantas caches dos tipos existentes o usuário encontrou, num dado mês.
-
-
-
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=90mm]{2015STATS.png}
+\caption{Estatísticas anuais do ano 2015 de um utilizador}
+\end{figure}
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=90mm]{statsmes.png}
+\caption{Exemplo de estatísticas de um dado mês}
+\end{figure}
 
 \pagebreak
 \section{Amigos}
