@@ -510,7 +510,7 @@ public class Main implements Serializable {
             sc.nextLine();                          /* Flush Scanner */
             System.out.print("Treasure: ");
             treasures.add(sc.nextLine().replaceAll("[\n\r]", ""));
-            System.out.print("More information: "); info = sc.nextLine();
+            
 
             try {
                 gc.createTraditionalCache(new Coordinates(lat, lon), treasures, info);
@@ -528,7 +528,7 @@ public class Main implements Serializable {
             sc.nextLine();                          /* Flush Scanner */
             System.out.print("Treasure: ");
             treasures.add(sc.nextLine().replaceAll("[\n\r]", ""));
-            System.out.print("More information: "); info = sc.nextLine();
+            
 
             try {
                 gc.createMultiCache(coords, treasures, info);
@@ -540,7 +540,7 @@ public class Main implements Serializable {
             System.out.print("Latitude: ");         lat = sc.nextDouble();
             System.out.print("Longitude: ");        lon = sc.nextDouble();
             sc.nextLine();                          /* Flush Scanner */
-            System.out.print("More information: "); info = sc.nextLine();
+            
 
             try {
                 gc.createMicroCache(new Coordinates(lat, lon), info);
@@ -556,7 +556,7 @@ public class Main implements Serializable {
             System.out.print("Answer: ");           answer = sc.nextLine();
             System.out.print("Treasure: ");
             treasures.add(sc.nextLine().replaceAll("[\n\r]", ""));
-            System.out.print("More information: "); info = sc.nextLine();
+           
 
             try {
                 gc.createMysteryCache(new Coordinates(lat, lon), treasures, info, new Puzzle(question, answer));
