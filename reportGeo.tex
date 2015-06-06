@@ -270,15 +270,22 @@ TODO
 
 
 \pagebreak
-\section{Programa Principal e Main}
-\quad Na classe \textbf{GeocachingPOO} estão as chamadas de todos os métodos existentes em todas as classes que 
-permitem uma interação a nível de Objetos.
-
-\par No Main estão todos os Menus e toda a interação I/O entre o utilizador e o nosso programa. sCom isto permitimos que o nosso programa possa ser implementado com outras Interfaces Gráficas, nomeadamente para a 
-web, etc. ...
-
-
-
+\section{Classes Main e GeocahingPOO}
+\par Para poder utilizar as classes desenvolvidas para o projecto criamos uma class à parte, a classe \textbf{Main}, que contém 
+o método \em main. O único propósito desta classe é então lidar com a parte de I/O, relativamente apresentação de menus 
+e tratamento de input por parte do utilizador, esta classe também é responsável por invocar os diferentes métodos existentes 
+na classe \textbf{Geocaching} quando o utilizador necessitar de se registar, criar uma actividade, etc.
+Também é neste método \em main que se lida com as Excepções criadas.
+\par A classe \textbf{GeocachingPOO} contém variáveis das classes \textbf{CacheBase} e \textbf{UserBase} para poder guardar 
+os utilizadores e as caches criadas. Contêm também variáveis para guardar o utilizador ou administrador atualmente 'loggado' 
+e variáveis para controlo de IDs actuais a utilizar.
+\par A classe contêm métodos para executar os vários requisitos do projecto, por exemplo, registar um utilizador novo, a classe 
+faz isto invocando métodos existentes em \textbf{UserBase}, já no caso de criação de caches, por exemplo, a classe invoca 
+métodos definidos em \textbf{CacheBase}. Basicamente a classe \textbf{GeocahingPOO} agrupa os vários métodos que sejam 
+precisos para utilizar a aplicação, definindo também quais os métodos necessários invocar para os diferentes objectos e ações 
+executadas.
+\par Separar a parte de I/O da classe \textbf{GeocachingPOO} permite que a classe seja reutilizada noutros ambientes, por 
+exemplo com uma Interface Gráfica.
 
 \pagebreak
 \section{Salvaguarda do Estado e Load do último Estado}
