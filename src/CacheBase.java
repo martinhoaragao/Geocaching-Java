@@ -16,7 +16,10 @@ public class CacheBase implements Serializable {
     private TreeMap<Double, ArrayList<Report>> reported_caches;    /* Reported caches */
     private TreeMap<Coordinates, Double> coords; /* Map between coordinates and caches ids */
 
-    /** Unparameterized constructor */
+    /**
+     * Unparameterized constructor, all the instance variables will be initialized
+     * but all of them will be empty
+     */
     public CacheBase () {
         this.caches = new ArrayList<Cache>();
         this.owners = new TreeMap<Double, ArrayList<Double>>();
@@ -24,7 +27,8 @@ public class CacheBase implements Serializable {
         this.coords = new TreeMap<Coordinates, Double>();
     }
 
-    /** Constructs a UserBase with the caches present on another UserBase
+    /**
+     * Constructs a CacheBase with the caches present on another CacheBase
      * @param cbase CacheBase from where the caches will be copied
      */
     public CacheBase (CacheBase cbase) {
@@ -35,13 +39,11 @@ public class CacheBase implements Serializable {
         this.coords = cbase.getCoords();
     }
 
-    // Getters
+    /* Getters */
 
     /**
-     * Method that returns all Caches in an ArrayList.
-     * if the User hasn't created any cache, the arraylist will be empty 
-     * @return ArrayList with all the caches in the CacheBase, if
-     *   
+     * Get all Caches store in the CacheBase
+     * @return ArrayList with all the caches in the CacheBase
      */
     public ArrayList<Cache> getAllCaches () {
         ArrayList<Cache> ts = new ArrayList<Cache>();
@@ -52,18 +54,18 @@ public class CacheBase implements Serializable {
         return ts;
     }
 
-    /** 
-    * Method that returns a TreeMap with all the ownsers relations to caches ids.
-    * @return TreeMap with all the owners relations with caches ids 
+    /**
+    * Get TreeMap with all the owners relations to caches IDs.
     */
     @SuppressWarnings("unchecked")
     public TreeMap<Double, ArrayList<Double>> getAllOwners () {
         return (TreeMap<Double, ArrayList<Double>>)this.owners.clone();
     }
 
-    /** 
-    * Method that returns all reports in a TreeMap.
-    * @return TreeMap with all the reports */
+    /**
+    * Get all reports stored in the CacheBase.
+    * @return TreeMap with mapping between cache IDs and it's reports
+    */
     @SuppressWarnings("unchecked")
     public TreeMap<Double, ArrayList<Report>> getAllReports () {
         TreeMap<Double, ArrayList<Report>> tm = new TreeMap<Double, ArrayList<Report>>();
@@ -77,18 +79,20 @@ public class CacheBase implements Serializable {
         return tm;
     }
 
-    /** 
-    * Method that returns all the coordinates used. 
-    *@return TreeMap with all the Coordinates used */
+    /**
+     * Get the TreeMap that contains the relation between coordinates and caches IDs
+     * @return TreeMap with all the Coordinates used mapped to the caches IDs
+     */
     @SuppressWarnings("unchecked")
-
     public TreeMap<Coordinates, Double> getCoords () {
-        /* TODO: Clone the coordinates */
         return (TreeMap<Coordinates, Double>) this.coords.clone();
     }
 
-    /** Get caches given a user id
-     *  @param id User id
+    /**
+     * Get caches created by a User
+     * @param id User id
+     * @return ArrayList with clones of all the caches created by the user. If the user
+     * has not created any caches the return will be null.
      */
     public ArrayList<Cache> getCaches (Double id) {
         ArrayList<Double> caches_ids = this.owners.get(id);
@@ -99,7 +103,7 @@ public class CacheBase implements Serializable {
         else {
             for (Double c_id : caches_ids) {
                 Cache cache = this.caches.get(c_id.intValue() - 1);
-                if (cache != null) user_caches.add(cache);
+                if (cache != null) user_caches.add(cache.clone());
             }
         }
 
@@ -109,59 +113,52 @@ public class CacheBase implements Serializable {
     }
 
     /**
-     * @return Number of caches stored in the CacheBase
+     * Get the number of caches stored in the CacheBase
      */
     public int getNumOfCaches () {
         return this.caches.size();
     }
 
-    /** Add a cache to the CacheBase
+    /**
+     * Add a cache to the CacheBase
      * @param id Id of the user creating the cache
      * @param cache Cache to be added
      */
-    public void addCache (Double id, Cache cache) throws IllegalStateException, NullPointerException {
+    public void addCache (Double id, Cache cache) throws NullPointerException, IllegalArgumentException {
         ArrayList<Double> list;
         Coordinates cache_coords = cache.getCoords();
 
-        /* Make sure there is no cache in the argument cache location */
+        /* Make sure there is no cache in the same coordinates */
         if ( this.coords.get(cache_coords) != null)
-            throw new IllegalStateException("There is already a cache in that location.");
+            throw new IllegalArgumentException("There is already a cache in that location.");
         if (cache == null)
             throw new NullPointerException("cache can't be null.");
+        if (id < this.caches.size())
+            throw new IllegalArgumentException("There is already a cache with the given id.");
 
-        list = owners.get(id);
-        if ( list == null ) {
-            /* First cache created by the user */
+        list = owners.get(id);      /* Get the list of caches created by the user */
+        if ( list == null ) {       /* First cache created by the user */
             list = new ArrayList<Double>();
             list.add(cache.getId());
             owners.put(id, list);
-
         } else list.add(cache.getId());
 
         coords.put(cache_coords, cache.getId());
-
-        /* !!Should check if it is replacing a cache with same id */
         this.caches.add(cache.getId().intValue() - 1, cache);
     }
 
     /**
-     * Check if a given Cache is present in the Cache data base
-     * @arg cache
+     * Check if a given Cache is stored in the CacheBase
+     * @arg cache Cache to check for existence
      */
     public boolean exists (Cache cache) {
         if (cache.getId().intValue() > this.caches.size())
             return false;
-        else return (cache.equals(caches.get(cache.getId().intValue() -1 )));
+        else return (cache.equals(caches.get(cache.getId().intValue() - 1)));
     }
 
-    /** Check if a given id has a cache associated
-     * @param id Cache id
-     */
-    public boolean exists (Double id) {
-        return (this.caches.size() > id.intValue());
-    }
-
-    /** Return a Cache with a given id
+    /**
+     * Get the cache associated with a given id
      * @param id The Cache id
      */
     public Cache getCache (Double id) throws IllegalArgumentException {
@@ -176,60 +173,10 @@ public class CacheBase implements Serializable {
         return cache;
     }
 
-    // toString, equals and clone
-
-    /**
-     * Return CacheBase info in String
-     */
-    public String toString () {
-        StringBuilder sb = new StringBuilder();
-        Iterator it = this.caches.iterator();
-
-        sb.append(this.caches.size() + " caches are stored.\n");
-
-        while (it.hasNext()) {
-            Cache aux = (Cache) it.next();
-            Coordinates coords = aux.getCoords();
-            sb.append("Lat: " + coords.getLat());
-            sb.append(" Lon: " + coords.getLon() + "\n");
-        }
-
-        while (it.hasNext()) {
-            Cache aux = (Cache) it.next();
-            Coordinates coords = (Coordinates) aux.getCoords();
-            sb.append("Lat: " + coords.getLat());
-            sb.append(" Lon: " + coords.getLon() + "\n");
-        }
-
-        return sb.toString();
-    }
-
-    /**
-     * Compares this CacheBase to another CacheBase to check if they are equal
-     * @arg cbase CacheBase to use for comparison
-     */
-    public boolean equals (Object cbase) {
-        if (cbase == this) return true;
-
-        if ((cbase == null) || (cbase.getClass() != this.getClass())) return false;
-
-        CacheBase aux = (CacheBase) cbase;
-        boolean comp = (this.caches.size() == aux.getNumOfCaches());
-
-        if (comp) {
-            Iterator it = this.caches.iterator();
-
-            while (it.hasNext() && comp)
-                comp = comp && (aux.exists((Cache) it.next()));
-        }
-
-        return comp;
-    }
-
     /**
      * Invalidate (delete) a cache if the owner wants so
-     * @param id Cache Id
-     * @param user Owner of the cache
+     * @param id    The Cache ID
+     * @param user  Owner of the cache
      */
     public void invalidateCache (Double id, User user) throws IllegalArgumentException {
         Cache cache = null;
@@ -263,9 +210,11 @@ public class CacheBase implements Serializable {
         this.coords.remove(cache.getCoords());
     }
 
-    // Code for reported caches
-    /** Add a report
-     * @param report The report to be added}
+    /* Reporting Caches */
+
+    /**
+     * Add a report to the CacheBase
+     * @param report The report to be added
      */
     public void addReport (Report report) throws NullPointerException, IllegalArgumentException {
         ArrayList<Report> list = reported_caches.get(report.getId());
@@ -287,20 +236,9 @@ public class CacheBase implements Serializable {
         }
     }
 
-    /** Delete a cache from the CacheBase, and from the reported caches
-     * if any reports for the given cache are Present
-     * @param id The Cache id
-     */
-    public void delCache (Double id) {
-        Cache cache;
-
-        if (id.intValue() <= this.caches.size())
-            caches.add(id.intValue() - 1, null);
-        this.reported_caches.remove(id);            /* Remove cache from reports */
-    }
-
     /**
-     * Delete a report only
+     * Delete a report for a given Cache
+     * @param id The Cache ID
      */
     public void delReport(Double id){
         this.reported_caches.remove(id);
@@ -347,7 +285,7 @@ public class CacheBase implements Serializable {
     /**
      *  Get the Treasures of a given Cache
      *  @param id The Cache ID
-     *  @param ArrayList containing clones of the Cache Treasures
+     *  @param ArrayList containing the Cache Treasures
      */
     public ArrayList<String> getCacheTreasures (Double id) throws IllegalArgumentException {
         Cache cache = null;
@@ -358,5 +296,55 @@ public class CacheBase implements Serializable {
             throw new IllegalArgumentException("No Cache with the given ID.");
 
         return cache.getTreasure();
+    }
+
+    /* toString, equals and clone */
+
+    /**
+     * Construct a String with information about the CacheBase
+     */
+    public String toString () {
+        StringBuilder sb = new StringBuilder();
+        Iterator it = this.caches.iterator();
+
+        sb.append(this.caches.size() + " caches are stored.\n");
+
+        while (it.hasNext()) {
+            Cache aux = (Cache) it.next();
+            Coordinates coords = aux.getCoords();
+            sb.append("Lat: " + coords.getLat());
+            sb.append(" Lon: " + coords.getLon() + "\n");
+        }
+
+        while (it.hasNext()) {
+            Cache aux = (Cache) it.next();
+            Coordinates coords = (Coordinates) aux.getCoords();
+            sb.append("Lat: " + coords.getLat());
+            sb.append(" Lon: " + coords.getLon() + "\n");
+        }
+
+        return sb.toString();
+    }
+
+    /**
+     * Compares this CacheBase to another CacheBase to check if they are equal
+     * @arg cbase CacheBase to use for comparison
+     */
+    public boolean equals (Object cbase) {
+        if (cbase == this) return true;
+
+        if ((cbase == null) || (cbase.getClass() != this.getClass())) return false;
+
+        CacheBase aux = (CacheBase) cbase;
+        boolean comp = (this.caches.size() == aux.getNumOfCaches());
+
+        if (comp) {
+            Iterator it = this.caches.iterator();
+
+            while (it.hasNext() && comp)
+                comp = comp && (aux.exists((Cache) it.next()));
+        }
+
+        return comp;
     }
 }
